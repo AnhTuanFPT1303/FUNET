@@ -1,0 +1,212 @@
+body {
+    background-color: #f8f9fa;
+}
+
+header {
+    position: sticky;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+
+.chat-content {
+    display: flex;
+    height: 90vh;
+}
+
+.contain-body {
+    width: 100vw;
+    height: 100vh;
+}
+
+.custom-navbar {
+    background-color: #ececec;
+    padding: 0.5rem 1rem;
+}
+
+.custom-navbar.form-control {
+    margin-left: 1rem;
+    max-width: 300px;
+}
+
+.log-out {
+    margin-right: 1rem;
+    border: 0;
+}
+
+.sidebar {
+    border-right: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    height: 100%;
+}
+
+.profile-section {
+    text-align: center;
+}
+
+.profile-section.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.profile-section a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+}
+
+.profile-section p {
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.chat-box {
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+}
+
+.post {
+    height: auto;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    font-weight: bold;
+}
+
+.add-friend {
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+}
+
+.list-group-item {
+    border: none;
+    padding-left: 0;
+}
+
+.left-section {
+    border-right: 1px solid #ddd;
+    padding: 15px;
+    overflow-y: auto;
+    background-color: #fff;
+}
+
+.right-section {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    background-color: #f1f1f1;
+}
+
+#message-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column; /* add this line */
+}
+
+#message-form {
+    display: flex;
+    align-items: center;
+}
+
+#message-input {
+    flex-grow: 1;
+}
+
+.my-message,.received-message {
+    max-width: 70%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    word-wrap: break-word;
+    width: fit-content;
+}
+
+.my-message {
+    background-color: #87CEEB; /* blue color for my messages */
+    align-self: flex-end;
+    text-align: right;
+    margin-left: auto; /* add this line */
+    float: right; /* add this line */
+    margin-bottom: 10px; /* add this line */
+}
+
+.received-message {
+    background-color: #fff; /* white color for received messages */
+    border: 1px solid #ddd;
+}
+
+.my-message::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -10px;
+    border-width: 10px 10px 10px 0;
+    border-style: solid;
+    border-color: transparent #87CEEB transparent transparent;
+}
+
+.received-message::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -10px;
+    border-width: 10px 0 10px 10px;
+    border-style: solid;
+    border-color: transparent transparent transparent #fff;
+}
+
+.friend {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    background-color: #ececec;
+    cursor: pointer;
+}
+
+.friend:hover,.friend.active {
+    background-color: #d0d0d0;
+}
+
+.friend img {
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.friend-name {
+    font-weight: bold;
+}
+
+@media screen and (max-width: 768px) {
+   .ava-name {
+        display: none;
+    }
+
+   .friend-list {
+        display: none;
+    }
+
+   .chat-box {
+        display: none;
+    }
+
+   .post-method {
+        width: 125%;
+    }
+
+   .home-logo {
+        display: none;
+    }
+
+   .all-post {
+        margin-top: 5%;
+    }
+}

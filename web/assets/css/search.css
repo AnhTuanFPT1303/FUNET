@@ -1,0 +1,107 @@
+
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+
+/* 
+    Created on : Jun 19, 2024, 1:35:13 PM
+    Author     : bim26
+*/
+body {
+    background-color: #f8f9fa;
+}
+header{
+    position: sticky;
+    width:100%;
+    top: 0;
+    left: 0;
+}
+
+.custom-navbar {
+    background-color: #ececec;
+    padding: 0.5rem 1rem;
+}
+
+.custom-navbar .form-control {
+    margin-left: 1rem;
+    max-width: 300px;
+}
+.log-out{
+    margin-right: 1rem;
+    border: 0;
+}
+.sidebar {
+    border-right: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    height: 100%;
+}
+
+.profile-section {
+    text-align: center;
+}
+
+.profile-section .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.profile-section a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+}
+
+.profile-section p {
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.chat-box {
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+}
+
+.post {
+    height: auto;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    font-weight: bold;
+}
+
+.add-friend {
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+}
+
+.list-group-item {
+    border: none;
+    padding-left: 0;
+}
+
+
+
+@media screen and (max-width: 768px) {
+    .ava-name{
+        display: none;
+    }
+    .friend-list{
+        display: none;
+    }
+    .chat-box{
+        display: none;
+    }
+    .post-method{
+        width: 125%;
+    }
+    .home-logo{
+        display: none;
+    }
+    .all-post{
+        margin-top: 5%;
+    }
+
+}

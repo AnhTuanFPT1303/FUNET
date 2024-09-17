@@ -1,0 +1,45 @@
+.centered {
+    text-align: center;
+    width: 100%;
+    max-width: 300px;
+}
+
+.btn-facebook {
+    padding: 20px;
+    margin: 10px 0;
+    background-color: #3b5998;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.3s ease;
+}
+
+.btn-facebook:hover {
+    background-color: #2d4373;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-facebook:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 89, 152, 0.5);
+}
+
+@media (max-width: 576px) {
+    .btn-facebook {
+        font-size: 16px;
+    }
+}
+
+.bg-light {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.btn-facebook i {
+    font-size: 2rem;
+}
+
+.btn-facebook span {
+    margin-top: 10px;
+}

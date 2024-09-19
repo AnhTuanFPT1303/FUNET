@@ -9,9 +9,9 @@ DROP TABLE IF EXISTS message;
 DROP TABLE IF EXISTS comment;
 DROP TABLE IF EXISTS post_like;
 DROP TABLE IF EXISTS post;
+DROP TABLE IF EXISTS conversation_member;
 DROP TABLE IF EXISTS userAccount;
 DROP TABLE IF EXISTS conversation;
-DROP TABLE IF EXISTS conversation_member;
 drop procedure if exists checkDuplicateEmail
 drop procedure if exists registerUser
 drop procedure if exists getAllFriends
@@ -146,10 +146,9 @@ BEGIN
         AND f.status = 'accepted';
 END;
 
-insert into userAccount values ('Nguyen', 'Tuan' , '123', 'nguyenhuuanhtuan123@gmail.com', 'default_avt.jpg')
-insert into userAccount values ('Ha', 'Phan', '123', 'haphan123@gmail.com', 'default_avt.jpg')
-insert into userAccount values ('Tung', 'Nui', '123', 'tungnui123@gmail.com', 'default_avt.jpg')
-insert into userAccount values ('Tuan', 'Khi', '123', 'tuankhi123@gmail.com', 'default_avt.jpg')
+insert into userAccount values ('Nguyen', 'Tuan' , '123', 'anhtuan123@gmail.com', 'default_avt.jpg', 'student', 'false')
+insert into userAccount values ('Ha', 'Phan', '123', 'haphan123@gmail.com', 'default_avt.jpg', 'staft', 'false')
+insert into userAccount values ('Thanh', 'Tung', '123', 'thanhtung123@gmail.com', 'default_avt.jpg', 'student', 'true')
 
 
 Go

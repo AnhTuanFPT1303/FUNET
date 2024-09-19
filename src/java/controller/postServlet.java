@@ -119,7 +119,7 @@ public class postServlet extends HttpServlet {
             Part file = request.getPart("image");
             String image_path = file.getSubmittedFileName();
 //            String uploadPath = "D:/fpt/prj301/project/FUNET_FINAL/FUNET/Downloads/FUNET/web/assets/post_image/" + image_path;
-            String uploadPath = "assets/post_image/" + image_path;
+            String uploadPath = getServletContext().getRealPath("/assets/profile_avt/") + image_path;
             //E:\FUNET\FUNET\web\assets
             try {
                 FileOutputStream fos = new FileOutputStream(uploadPath);

@@ -50,7 +50,7 @@
                 <nav class="col-2 py-3 bg-light sticky-sidebar">
                     <div class="profile-section mb-3 d-flex align-items-center">
                         <a href="userpageServlet?userId=${sessionScope.user['user_id']}" class="d-flex align-items-center text-decoration-none text-dark">
-                            <img src="assets/profile_avt/${user.profile_pic}" class="img-fluid rounded-circle avatar" style="object-fit: cover;">
+                            <img src="assets/profile_avt/${sessionScope.user['profile_pic']}" class="img-fluid rounded-circle avatar" style="object-fit: cover;">
                             <p class="mb-0 ms-2 ava-name">${sessionScope.user['first_name']} ${sessionScope.user['last_name']}</p>
                         </a>
                     </div>

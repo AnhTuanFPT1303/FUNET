@@ -73,13 +73,8 @@ public class userpageServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession();
+        HttpSession session = req.getSession(false);
         User currentUser = (User) session.getAttribute("user");
-        if (currentUser == null) {
-            resp.sendRedirect("login.jsp");
-            return;
-        }
-
         String userIdParam = req.getParameter("userId");
         int userId = currentUser.getUser_id();
 
@@ -102,7 +97,7 @@ public class userpageServlet extends HttpServlet {
             resp.sendRedirect("login.jsp");
             return;
         }
-
+        
         postDAO postDAO = new postDAO();
         List<Post> posts = null;
         try {

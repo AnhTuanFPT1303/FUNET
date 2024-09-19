@@ -42,9 +42,9 @@
             <div class="row all-post">
                 <nav class="col-2 py-3 bg-light sticky-sidebar">
                     <div class="profile-section mb-3 text-center">
-                        <a href="userpageServlet?userId=${user.user_id}" class="text-decoration-none text-dark d-flex align-items-center">
-                            <img src="assets/profile_avt/${user.profile_pic}" class="img-fluid rounded-circle avatar">
-                            <p class="ms-3" style="text-align: left;">${user.first_name} ${user.last_name}</p>
+                        <a href="userpageServlet?userId=${sessionScope.user['user_id']}" class="d-flex align-items-center text-decoration-none text-dark">
+                            <img src="assets/profile_avt/${sessionScope.user['profile_pic']}" class="img-fluid rounded-circle avatar" style="object-fit: cover;">
+                            <p class="mb-0 ms-2 ava-name">${sessionScope.user['first_name']} ${sessionScope.user['last_name']}</p>
                         </a>
 
                     </div>

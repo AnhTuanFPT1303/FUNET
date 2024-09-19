@@ -5,6 +5,7 @@
         <group>
             <file>file:/E:/FUNET/FUNET/web/WEB-INF/search.jsp</file>
             <file>file:/E:/FUNET/FUNET/src/java/controller/deleteServlet.java</file>
+            <file>file:/E:/FUNET/FUNET/src/java/controller/searchServlet.java</file>
             <file>file:/E:/FUNET/FUNET/web/WEB-INF/friendRequest.jsp</file>
             <file>file:/E:/FUNET/FUNET/src/java/util/SmtpProtocol.java</file>
             <file>file:/E:/FUNET/FUNET/web/WEB-INF/signup.jsp</file>

@@ -16,18 +16,25 @@ public class User {
     private String password;
     private String email;
     private String profile_pic;
-
+    private String role;
+    private boolean is_banned;
+    
+    
     public User() {
     }
 
-    public User(int user_id, String first_name, String last_name, String password, String email, String profile_pic) {
+    public User(int user_id, String first_name, String last_name, String password, String email, String profile_pic, String role, boolean is_banned) {
         this.user_id = user_id;
         this.first_name = first_name;
         this.last_name = last_name;
         this.password = password;
         this.email = email;
         this.profile_pic = profile_pic;
+        this.role = role;
+        this.is_banned = is_banned;
     }
+
+    
 
     public int getUser_id() {
         return user_id;
@@ -75,6 +82,22 @@ public class User {
 
     public void setProfile_pic(String profile_pic) {
         this.profile_pic = profile_pic;
+    }
+   
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public boolean getStatus() {
+        return is_banned;
+    }
+
+    public void setStatus(boolean is_banned) {
+        this.is_banned = is_banned;
     }
 
 }

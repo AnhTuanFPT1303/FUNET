@@ -99,7 +99,8 @@ public class VerifyServlet extends HttpServlet {
                 user.setLast_name(pendingUserInfo.get("lastName"));
                 user.setPassword(pendingUserInfo.get("password"));
                 user.setProfile_pic("default_avt.jpg");
-
+                user.setRole("student");
+                user.setStatus(false);
                 String result = userDao.register(user);
 
                 // Clean up session
@@ -109,7 +110,6 @@ public class VerifyServlet extends HttpServlet {
 
                 // Regenerate session ID to prevent session fixation
                 request.changeSessionId();
-
                 request.setAttribute("msg", result);
                 request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
             }

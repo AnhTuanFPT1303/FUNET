@@ -84,6 +84,8 @@ public class LoginSubmit extends HttpServlet {
         user.setFirst_name((String)session.getAttribute("first_name"));
         user.setLast_name((String)session.getAttribute("last_name"));
         user.setProfile_pic("default_avt.jpg");
+        user.setRole("student");
+        user.setStatus(false);
         userDAO dao = new userDAO();
         dao.register(user);
         

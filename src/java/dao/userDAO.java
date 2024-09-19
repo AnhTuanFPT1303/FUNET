@@ -27,12 +27,14 @@ public class userDAO {
     public String register(User user) {
         try {
             Connection conn = sqlConnect.getInstance().getConnection();
-            CallableStatement st = conn.prepareCall("INSERT INTO userAccount Values (?,?,?,?,?)"); //Call register procedure in SQL Server
+            CallableStatement st = conn.prepareCall("INSERT INTO userAccount Values (?,?,?,?,?,?,?)"); //Call register procedure in SQL Server
             st.setString(1, user.getFirst_name());
             st.setString(2, user.getLast_name());
             st.setString(3, user.getPassword());
             st.setString(4, user.getEmail());
             st.setString(5, user.getProfile_pic());
+            st.setString(6, user.getRole());
+            st.setBoolean(7, user.getStatus());
             st.execute();
             return "Registration Successful.";
         } catch (SQLException e) {
@@ -77,9 +79,10 @@ public class userDAO {
                 u.setUser_id(rs.getInt(1));
                 u.setFirst_name(rs.getString(2));
                 u.setLast_name(rs.getString(3));
-                u.setPassword(rs.getString(4));
                 u.setEmail(rs.getString(5));
                 u.setProfile_pic(rs.getString(6));
+                u.setRole(rs.getString(7));
+                u.setStatus(false);
             }
 
         } catch (Exception e) {
@@ -169,25 +172,7 @@ public class userDAO {
         ArrayList<User> friends = new ArrayList<>();
         try {
             Connection conn = sqlConnect.getInstance().getConnection();
-            PreparedStatement st = conn.prepareStatement(
-                    "SELECT u.user_id, u.first_name, u.last_name, u.email, u.profile_pic "
-                    + "FROM userAccount u "
-                    + "INNER JOIN friendship f ON (u.user_id = f.user_request OR u.user_id = f.user_accept) "
-                    + "WHERE ((f.user_request = ? OR f.user_accept = ?) AND u.user_id != ? AND f.status = 'accepted')"
-            );
-            st.setInt(1, userId);
-            st.setInt(2, userId);
-            st.setInt(3, userId);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                User u = new User();
-                u.setUser_id(rs.getInt("user_id"));
-                u.setFirst_name(rs.getString("first_name"));
-                u.setLast_name(rs.getString("last_name"));
-                u.setEmail(rs.getString("email"));
-                u.setProfile_pic(rs.getString("profile_pic"));
-                friends.add(u);
-            }
+            
         } catch (SQLException e) {
             System.out.println("Error fetching user friends: " + e.getMessage());
         }

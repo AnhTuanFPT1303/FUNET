@@ -74,22 +74,31 @@ Author : bim26
             </nav>
         </header>
 
-        
+
         <div class="container-fluid">
-            <div class="row all-post">
-                <nav class="col-2 py-3 bg-light">   
+            <div class="row">
+                <!-- Fixed Sidebar Left -->
+                <nav class="col-2 py-3 bg-light fixed-sidebar aside-left">
                     <div class="profile-section mb-3 d-flex align-items-center">
                         <a href="userpageServlet?userId=${sessionScope.user['user_id']}" class="d-flex align-items-center text-decoration-none text-dark">
                             <img src="assets/profile_avt/${user.profile_pic}" class="img-fluid rounded-circle avatar">
                             <p class="mb-0 ms-2 ava-name">${sessionScope.user['first_name']} ${sessionScope.user['last_name']}</p>
                         </a>
                     </div>
-                    <div class="chat-box mb-3">
-                        <h5>Chat box</h5>   
-                    </div>
+                    <div class="d-flex flex-column">
+                        <button class="btn btn-light mb-2 text-start"><i class="fas fa-users me-2"></i> Groups</button>
+                        <button class="btn btn-light mb-2 text-start"><i class="fas fa-chalkboard me-2"></i> Classes</button>
+                        <button class="btn btn-light mb-2 text-start"><i class="fas fa-store me-2"></i> Marketplace</button>
+                        <button class="btn btn-light mb-2 text-start"><i class="fas fa-book me-2"></i> Study Materials</button>
+                        <button class="btn btn-light mb-2 text-start"><i class="fas fa-calendar me-2"></i> Schedule</button>
+                        <button class="btn btn-light mb-2 text-start"><i class="fas fa-gamepad me-2"></i> Game</button>            </div>
                 </nav>
+            </div>
 
-                <main class="main-class col-8">
+
+            <!-- Main Content -->
+            <div class="col-12 col-md-8 content-wrapper">
+                <main class="main-class">
                     <h1 class="mt-3 text-primary home-logo">HOME</h1>
                     <c:if test="${not empty param.notification}">
                         <div class="alert alert-danger">${param.notification}</div>
@@ -139,7 +148,6 @@ Author : bim26
                                 </c:forEach>
                             </div>
 
-                            
                             <form action="/FUNET/commentServlet" method="post" class="mb-4 post-method">
                                 <div class="mb-3">
                                     <textarea class="form-control" id="body" name="commentContent" rows="2" placeholder="Reply"></textarea>
@@ -151,20 +159,13 @@ Author : bim26
                         <br>
                     </c:forEach>
                 </main>
-
-                        
-                        
-                <aside class="col-2 py-3 bg-light friend-list" style="z-index: -5">
-                    <h2>List Friends</h2>
-                    <ul class="list-group">
-                        <li class="list-group-item">Friend 1</li>
-                        <li class="list-group-item">Friend 2</li>
-                        <li class="list-group-item">Friend 3</li>
-                    </ul>
-                </aside>
             </div>
-        </div>
 
+            <!-- Fixed Sidebar Right -->
+
+
+
+        </div>
         <script src="assets/js/likeButton.js" defer></script>
         <script src="assets/js/bootstrap.min.js"></script>
     </body>

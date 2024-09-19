@@ -12,7 +12,7 @@ body {
     background-color: #f8f9fa;
 }
 header{
-    position: sticky;
+    position: fixed;
     width:100%;
     top: 0;
     left: 0;
@@ -137,7 +137,12 @@ header{
     align-items: center;
     cursor: default;
 }
-
+.fixed-sidebar {
+    position: fixed;
+    height: calc(100vh - 56px); 
+    top: 60px;
+    overflow-y: auto; 
+}
 .post-rating-selected > .post-rating-button,
 .post-rating-selected > .post-rating-count {
     color: #009578;

@@ -93,89 +93,89 @@ public class postServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurse
      * @throws IOException if an I/O error occurs
      */
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession(false);  
-        //like fichua
-       String pathInfo = request.getPathInfo();
-        if (pathInfo != null && pathInfo.startsWith("/")) {
-            String[] pathParts = pathInfo.split("/");
-            if (pathParts.length == 3) {
-                int postId = Integer.parseInt(pathParts[1]);
-                String action = pathParts[2];
-                
-                if (session != null && session.getAttribute("user") != null) {
-                    User currentUser = (User) session.getAttribute("user");
-                    int userId = currentUser.getUser_id();
-                    
-                    postDAO dao = new postDAO();
-                    try {
-                        if ("like".equals(action)) {
-                            dao.addLike(userId, postId);
-                        } else if ("unlike".equals(action)) {
-                            dao.removeLike(userId, postId);
-                        }
-                        
-                        int newLikeCount = dao.getLikeCount(postId);
-                        response.setContentType("application/json");
-                        response.getWriter().write("{\"like_count\":" + newLikeCount + "}");
-                        return;
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                        return;
+    HttpSession session = request.getSession(false);
+
+    // Xử lý like/unlike
+    String pathInfo = request.getPathInfo();
+    if (pathInfo != null && pathInfo.startsWith("/")) {
+        String[] pathParts = pathInfo.split("/");
+        if (pathParts.length == 3) {
+            int postId = Integer.parseInt(pathParts[1]);
+            String action = pathParts[2];
+
+            if (session != null && session.getAttribute("user") != null) {
+                User currentUser = (User) session.getAttribute("user");
+                int userId = currentUser.getUser_id();
+
+                postDAO dao = new postDAO();
+                try {
+                    if ("like".equals(action)) {
+                        dao.addLike(userId, postId);
+                    } else if ("unlike".equals(action)) {
+                        dao.removeLike(userId, postId);
                     }
+
+                    int newLikeCount = dao.getLikeCount(postId);
+                    response.setContentType("application/json");
+                    response.getWriter().write("{\"like_count\":" + newLikeCount + "}");
+                    return;
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    return;
                 }
             }
         }
+    }
 
-    
-        
-    // ------------------------------------------------------------------------------------------------- 
+    // Xử lý đăng bài
+    if (session != null && session.getAttribute("user") != null) {
+        User user = (User) session.getAttribute("user");
+        String body = request.getParameter("postContent");
 
-    
-        if (session != null && session.getAttribute("user") != null) {
-            User user = (User) session.getAttribute("user");
-            String body = request.getParameter("postContent");
+        Part file = request.getPart("image");
+        String image_path = file.getSubmittedFileName();
+        String uploadPath = "E:/blahproject/BLAH/web/assets/post_image/" + image_path;
 
-            Part file = request.getPart("image");
-            String image_path = file.getSubmittedFileName();
-            String uploadPath = "E:/blahproject/BLAH/web/assets/post_image/" + image_path;
-            //E:\blahproject\BLAH\web\assets
+        try {
+            // Lưu ảnh lên server
+            FileOutputStream fos = new FileOutputStream(uploadPath);
+            InputStream is = file.getInputStream();
+
+            byte[] data = new byte[is.available()];
+            is.read(data);
+            fos.write(data);
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Kiểm tra nếu bài viết hoặc ảnh không trống thì thêm bài
+        if (!body.trim().equals("") || !image_path.equals("")) {
+            Post post = new Post();
+            post.setUser_id(user.getUser_id());
+            post.setBody(body);
+            post.setImage_path(image_path);
+            postDAO PostDao = new postDAO();
             try {
-                FileOutputStream fos = new FileOutputStream(uploadPath);
-                InputStream is = file.getInputStream();
+                PostDao.addPost(post);
 
-                byte[] data = new byte[is.available()];
-                is.read(data);
-                fos.write(data);
-                fos.close();
+                // Sau khi thêm bài thành công, chuyển hướng lại trang home và hiển thị bài mới
+                response.sendRedirect("home");
             } catch (Exception e) {
                 e.printStackTrace();
-            }
-
-            if (!body.trim().equals("") || !image_path.equals("")) {
-                Post post = new Post();
-                post.setUser_id(user.getUser_id());
-                post.setBody(body);
-                post.setImage_path(image_path);
-                postDAO PostDao = new postDAO();
-                try {
-                    PostDao.addPost(post);
-                    response.sendRedirect("home");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    request.setAttribute("errorMessage", "Error saving post");
-                    response.sendRedirect("home");
-                }
-            }
-            else {
+                request.setAttribute("errorMessage", "Error saving post");
                 response.sendRedirect("home");
             }
         } else {
-            response.sendRedirect("home");  
+            response.sendRedirect("home");
         }
+    } else {
+        response.sendRedirect("home");
     }
+}
+
 
     /**
      * Returns a short description of the servlet.

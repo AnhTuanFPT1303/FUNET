@@ -67,7 +67,10 @@
 
         <div class="container-fluid mt-5 pt-3">
             <div class="row">
-                <nav class="col-2 py-3 bg-light fixed-sidebar aside-left">
+                <nav class="col-2 py-3 bg-light fixed-sidebar aside-left" style="border-right: 1px solid #ddd;
+    position: sticky;
+    top: 60px;
+    overflow-y: auto;">
                     <div class="profile-section mb-3 d-flex align-items-center">
                         <a href="userpageServlet?userId=${sessionScope.user['user_id']}" class="d-flex align-items-center text-decoration-none text-dark">
                             <img src="assets/profile_avt/${user.profile_pic}" class="img-fluid rounded-circle avatar">
@@ -157,7 +160,19 @@
                         </div>
                     </c:forEach>
                 </div>
-
+             <aside class="col-2 py-3 bg-light  " style="z-index: -5">
+                 <div class="friend-list" style="border-left: 1px solid #ddd;
+                position: sticky;
+                top: 60px;
+                overflow-y: auto;">
+                    <h2>List Friends</h2>
+                    <ul class="list-group">
+                        <li class="list-group-item">Friend 1</li>
+                        <li class="list-group-item">Friend 2</li>
+                        <li class="list-group-item">Friend 3</li>
+                    </ul>
+                 </div>
+                </aside>
 
 
 

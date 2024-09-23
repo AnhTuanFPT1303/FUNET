@@ -101,17 +101,21 @@ header {
 }
 
 /* Sidebar */
-.sidebar, .fixed-sidebar {
+
+
+.fixed-sidebar {
+    height: calc(100vh - 56px); 
     border-right: 1px solid #ddd;
     position: sticky;
     top: 60px;
     overflow-y: auto;
 }
-
-.fixed-sidebar {
-    height: calc(100vh - 56px);
-}
-
+ .friend-list {
+                border-left: 1px solid #ddd;
+                position: sticky;
+                top: 60px;
+                overflow-y: auto;
+            }
 
 
 /* Main content area */
@@ -211,6 +215,12 @@ header {
 .profile-section p {
     font-weight: 600;
     margin-bottom: 0;
+}
+
+.sticky-element {
+    position: sticky;
+    top: 0;
+    z-index: 1000; 
 }
 
 /* Media Queries for Responsive Design */

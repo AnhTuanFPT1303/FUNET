@@ -21,7 +21,7 @@ CREATE TABLE userAccount (
   user_id INT IDENTITY(1,1) PRIMARY KEY,
   first_name NVARCHAR(50) NOT NULL,
   last_name NVARCHAR(50) NOT NULL,
-  password NVARCHAR(MAX) NOT NULL,
+  password TEXT NOT NULL,
   email VARCHAR(70) NOT NULL UNIQUE,
   profile_pic VARCHAR(MAX) NOT NULL,
   role VARCHAR(20) NOT NULL, 
@@ -121,7 +121,7 @@ BEGIN
         AND f.status = 'accepted';
 END;
 
-INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned, salt) 
+INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned) 
 VALUES 
 ('Nguyen', 'Tuan', '123', 'anhtuan123@gmail.com', 'default_avt.jpg', 'student', 0), 
 ('Ha', 'Phan', '123', 'haphan123@gmail.com', 'default_avt.jpg', 'staff', 0), 

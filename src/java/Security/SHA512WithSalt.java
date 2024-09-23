@@ -48,7 +48,7 @@ public class SHA512WithSalt {
     
     public static void main(String[] args) {
         //test case thử
-        String password = "123456789vuaga1260vuaga";
+        String password = "123";
         
         byte[] salt = createSalt();
         String hashedPassword = hashPassWordWithSHA512(password, salt);

@@ -21,11 +21,11 @@ CREATE TABLE userAccount (
   user_id INT IDENTITY(1,1) PRIMARY KEY,
   first_name NVARCHAR(50) NOT NULL,
   last_name NVARCHAR(50) NOT NULL,
-  password VARCHAR(30) NOT NULL,
+  password NVARCHAR(MAX) NOT NULL,
   email VARCHAR(70) NOT NULL UNIQUE,
-  profile_pic VARCHAR(max) NOT NULL,
+  profile_pic VARCHAR(MAX) NOT NULL,
   role VARCHAR(20) NOT NULL, 
-  is_banned BIT NOT NULL
+  is_banned BIT NOT NULL,
 );
 
 GO
@@ -102,31 +102,6 @@ CREATE TABLE conversation_member (
 )
 
 GO
-CREATE PROCEDURE registerUser
-    @first_name varchar(20),
-    @last_name varchar(20),
-    @password varchar(20),
-    @email varchar(50)
-AS
-	BEGIN TRANSACTION	
-    
-	IF EXISTS (
-        SELECT 1
-        FROM userAccount
-        WHERE email = @email
-    )
-    BEGIN
-        ROLLBACK TRANSACTION;
-		THROW 5000, 'Duplicated Email.', 1;
-        RETURN;
-    END
-    
-    INSERT INTO userAccount (first_name, last_name, password, email) 
-    VALUES (@first_name, @last_name, @password, @email)
-    
-    COMMIT TRANSACTION;
-
-GO
 CREATE PROCEDURE getAllFriends
     @user_id INT
 AS
@@ -146,9 +121,11 @@ BEGIN
         AND f.status = 'accepted';
 END;
 
-insert into userAccount values ('Nguyen', 'Tuan' , '123', 'anhtuan123@gmail.com', 'default_avt.jpg', 'student', 'false')
-insert into userAccount values ('Ha', 'Phan', '123', 'haphan123@gmail.com', 'default_avt.jpg', 'staft', 'false')
-insert into userAccount values ('Thanh', 'Tung', '123', 'thanhtung123@gmail.com', 'default_avt.jpg', 'student', 'true')
+INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned, salt) 
+VALUES 
+('Nguyen', 'Tuan', '123', 'anhtuan123@gmail.com', 'default_avt.jpg', 'student', 0), 
+('Ha', 'Phan', '123', 'haphan123@gmail.com', 'default_avt.jpg', 'staff', 0), 
+('Thanh', 'Tung', '123', 'thanhtung123@gmail.com', 'default_avt.jpg', 'student', 1);
 
 
 Go

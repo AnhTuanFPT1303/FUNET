@@ -1,48 +1,74 @@
 package dao;
 
+import Security.SHA512WithSalt;
 import util.sqlConnect;
 import java.sql.*;
 import model.User;
 import java.util.ArrayList;
+import java.util.Base64;
 
 public class userDAO {
-
+    
     public boolean login(String email, String password) {
-        boolean result = false;
-        try {
-            Connection conn = sqlConnect.getInstance().getConnection();
-            PreparedStatement st = conn.prepareStatement("Select * from userAccount where email=? AND password=?");
-            st.setString(1, email);
-            st.setString(2, password);
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
+    boolean result = false;
+    try {
+        Connection conn = sqlConnect.getInstance().getConnection();
+        PreparedStatement st = conn.prepareStatement("SELECT * FROM userAccount WHERE email=?");
+        st.setString(1, email);
+        ResultSet rs = st.executeQuery();
+        
+        if (rs.next()) {
+            // Lấy chuỗi kết hợp
+            String combinedHash = rs.getString("password");
+            
+            // Tách salt và hashedPassword
+            String[] parts = combinedHash.split(":"); // Sử dụng dấu phân cách
+            byte[] salt = Base64.getDecoder().decode(parts[0]); // Giải mã salt
+            String storedHash = parts[1]; // hashedPassword
+            
+            // Băm mật khẩu đã nhập với salt
+            String hashedInputPassword = SHA512WithSalt.hashPassWordWithSHA512(password, salt);
+            
+            // So sánh mật khẩu đã băm
+            if (hashedInputPassword.equals(storedHash)) {
                 result = true;
             }
-        } catch (Exception e) {
-            System.out.println("Connect Failed");
         }
-        return result;
+    } catch (Exception e) {
+        System.out.println("Connect Failed: " + e.getMessage());
     }
+    return result;
+}
+
+
 
     public String register(User user) {
-        try {
-            Connection conn = sqlConnect.getInstance().getConnection();
-            CallableStatement st = conn.prepareCall("INSERT INTO userAccount Values (?,?,?,?,?,?,?)"); //Call register procedure in SQL Server
-            st.setString(1, user.getFirst_name());
-            st.setString(2, user.getLast_name());
-            st.setString(3, user.getPassword());
-            st.setString(4, user.getEmail());
-            st.setString(5, user.getProfile_pic());
-            st.setString(6, user.getRole());
-            st.setBoolean(7, user.getStatus());
-            st.execute();
-            return "Registration Successful.";
-        } catch (SQLException e) {
-            return "Duplicate Email.";
-        } catch (Exception e) {
-            return "Unknown Exception";
-        }
+    try {
+        Connection conn = sqlConnect.getInstance().getConnection();
+        
+        byte[] salt = SHA512WithSalt.createSalt();
+        String hashedPassword = SHA512WithSalt.hashPassWordWithSHA512(user.getPassword(), salt);
+        
+        // Kết hợp salt và hashedPassword
+        String combinedHash = Base64.getEncoder().encodeToString(salt) + ":" + hashedPassword;
+        
+        CallableStatement st = conn.prepareCall("INSERT INTO userAccount VALUES (?,?,?,?,?,?,?)");
+        st.setString(1, user.getFirst_name());
+        st.setString(2, user.getLast_name());
+        st.setString(3, combinedHash); // Lưu chuỗi kết hợp
+        st.setString(4, user.getEmail());
+        st.setString(5, user.getProfile_pic());
+        st.setString(6, user.getRole());
+        st.setBoolean(7, user.getStatus());
+        st.execute();
+        return "Registration Successful.";
+    } catch (SQLException e) {
+        return "Duplicate Email." + e.getMessage();
+    } catch (Exception e) {
+        return "Unknown Exception" + e.getMessage();
     }
+}
+
 
     public User getUserByEmail(String email) throws SQLException {
         User u = new User();

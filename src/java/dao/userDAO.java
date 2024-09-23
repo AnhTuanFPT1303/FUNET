@@ -18,7 +18,7 @@ public class userDAO {
         ResultSet rs = st.executeQuery();
         
         if (rs.next()) {
-            // Lấy chuỗi kết hợp
+            // Lấy chuỗi kết hợp (lưu cả salt và sha512 hash vào password)
             String combinedHash = rs.getString("password");
             
             // Tách salt và hashedPassword

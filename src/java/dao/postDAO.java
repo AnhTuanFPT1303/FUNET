@@ -98,8 +98,7 @@ public class postDAO {
 
     public boolean hasUserLikedPost(int userId, int postId) throws SQLException {
         String query = "SELECT COUNT(*) FROM post_like WHERE user_id = ? AND post_id = ?";
-        try (Connection conn = sqlConnect.getInstance().getConnection(); 
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, userId);
             stmt.setInt(2, postId);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -133,7 +132,7 @@ public class postDAO {
         try {
             ResultSet rs = null;
             Connection conn = null;
-            PreparedStatement  stmt = null;
+            PreparedStatement stmt = null;
             conn = sqlConnect.getInstance().getConnection();
 
             String query = "SELECT DISTINCT p.post_id, p.body, p.post_time, p.user_id, p.image_path, p.like_count, u.first_name, u.last_name, u.profile_pic "
@@ -223,8 +222,7 @@ public class postDAO {
             stmt = conn.prepareStatement("SELECT p.post_id, p.body, p.post_time, p.user_id, p.like_count, p.image_path, u.first_name, u.last_name "
                     + "FROM post p JOIN userAccount u ON p.user_id = u.user_id "
                     + "WHERE p.user_id =? "
-                    + "ORDER BY p.post_time DESC"
-                    + "offset 20 rows fetch next 20 rows only");
+                    + "ORDER BY p.post_time DESC");
             stmt.setInt(1, userId);
             rs = stmt.executeQuery();
             while (rs.next()) {
@@ -249,7 +247,6 @@ public class postDAO {
 
     public void deletePost(int postId) {
         String deletePostQuery = "DELETE FROM post WHERE post_id = ?";
-
         try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(deletePostQuery)) {
             stmt.setInt(1, postId);
             stmt.executeUpdate();
@@ -260,4 +257,29 @@ public class postDAO {
         }
 
     }
+
+    public void updatePost(Post post) {
+        String query = "UPDATE post SET body = ?, image_path = ? WHERE post_id = ?";
+        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, post.getBody());
+            stmt.setString(2, post.getImage_path());
+            stmt.setInt(3, post.getPost_id());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public static void main(String[] args) {
+        // Tạo đối tượng Post mẫu
+        Post post = new Post();
+        post.setPost_id(2);  // Giả sử post_id là 1
+        post.setBody("Updated post body");
+        // Gọi hàm updatePost để cập nhật bài viết
+        postDAO DAO = new postDAO();
+        DAO.updatePost(post);
+    }
+    
+    
 }

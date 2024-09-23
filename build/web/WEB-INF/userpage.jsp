@@ -12,6 +12,9 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <script src="https://kit.fontawesome.com/7f80ec1f7e.js" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
     </head>
     <body>
         <header id="header">
@@ -87,6 +90,10 @@
                                             <button type="submit" class="btn btn-danger delete-button">Delete</button>
                                         </form>
                                     </div>
+                                    <!-- Update form -->  
+                                    <div class="update-button">
+                                        <button type="button" class="btn btn-primary update-post-btn" data-post-id="${post.post_id}">Update</button>
+                                    </div>
                                 </c:if>
                                 <img src="assets/profile_avt/${user.profile_pic}" class="img-fluid rounded-circle avatar me-2" style="width: 30px; height: 30px; margin-top: 5px; object-fit: cover; ">
                                 <small>${post.first_name} ${post.last_name} -- <fmt:formatDate value="${post.post_time}" pattern="yyyy-MM-dd HH:mm:ss" /></small>
@@ -131,6 +138,77 @@
                         </div>
                         <br>
                     </c:forEach>
+                    <!-- Thêm modal để hiển thị form cập nhật bài đăng -->
+                    <div class="modal fade" id="updatePostModal" tabindex="-1" aria-labelledby="updatePostModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="updatePostModalLabel">Update Post</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form id="updatePostForm" method="post" enctype="multipart/form-data">
+                                    <div class="modal-body">
+                                        <input type="hidden" name="postId" id="postIdInput">
+                                        <div class="mb-3">
+                                            <label for="newBody" class="form-label">New Content</label>
+                                            <textarea class="form-control" id="newBody" name="newBody" rows="2"></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="newImage" class="form-label">New Image</label>
+                                            <input type="file" class="form-control" id="newImage" name="newImage" accept=".jpeg, .png, .jpg">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Update</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        // Thêm sự kiện click cho nút cập nhật bài đăng
+                        document.querySelectorAll('.update-post-btn').forEach(btn => {
+                            btn.addEventListener('click', () => {
+                                const postId = btn.dataset.postId;
+                                document.getElementById('postIdInput').value = postId;
+                                // Điền dữ liệu hiện tại của bài đăng vào form cập nhật
+                                // ...
+                                $('#updatePostModal').modal('show');
+                            });
+                        });
+
+                        // Thêm sự kiện submit cho form cập nhật bài đăng
+                        $('#updatePostForm').on('submit', function (event) {
+                            event.preventDefault();  
+
+                            var formData = new FormData(this);  // Lấy dữ liệu từ form
+
+                            $.ajax({
+                                url: 'updatepage', 
+                                type: 'POST', 
+                                data: formData, 
+                                contentType: false, 
+                                processData: false, 
+                                dataType: 'json',
+                                success: function (data) {
+                                    if (data.success) {
+                                        // Nếu thành công, đóng modal và refresh trang
+                                        $('#updatePostModal').modal('hide');
+                                        location.reload();  // Tải lại trang để cập nhật nội dung
+                                    } else {
+                                        // Nếu có lỗi từ phía server, hiển thị lỗi
+                                        alert('Error updating post: ' + (response.error || 'Unknown error'));
+                                    }
+                                },
+                                error: function (xhr, status, error) {
+                                    // Xử lý lỗi từ yêu cầu AJAX
+                                    alert('Error updating post: ' + error);
+                                }
+                            });
+                        });
+                    </script>
                 </main>
                 <aside class="col-2 py-3 bg-light friend-list sticky-sidebar">
                     <h2 style="color: #0d6efd">List Friends</h2>

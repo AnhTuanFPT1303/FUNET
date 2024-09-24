@@ -98,10 +98,10 @@
                                 <img src="assets/profile_avt/${user.profile_pic}" class="img-fluid rounded-circle avatar me-2" style="width: 30px; height: 30px; margin-top: 5px; object-fit: cover; ">
                                 <small>${post.first_name} ${post.last_name} -- <fmt:formatDate value="${post.post_time}" pattern="yyyy-MM-dd HH:mm:ss" /></small>
                             </div>
-                            <p style="font-size: 14px;">${post.body}</p>
+                            <p style="font-size: 14px;" id="postbody">${post.body}</p>
                             <c:if test="${not empty post.image_path}">
                                 <div>
-                                    <img src="${post.image_path}" style="max-width : 60%">
+                                    <img src="${post.image_path}" style="max-width : 60%" id="postpicture">
                                 </div>
                             </c:if>
                             <div class="post-ratings-container">
@@ -150,12 +150,12 @@
                                     <div class="modal-body">
                                         <input type="hidden" name="postId" id="postIdInput">
                                         <div class="mb-3">
-                                            <label for="newBody" class="form-label">New Content</label>
+                                            <label for="newBody" class="form-label" id="formupdateidcontent">New Content</label>
                                             <textarea class="form-control" id="newBody" name="newBody" rows="2"></textarea>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="newImage" class="form-label">New Image</label>
-                                            <input type="file" class="form-control" id="newImage" name="newImage" accept=".jpeg, .png, .jpg">
+                                            <label for="newImage" class="form-label" id="formupdateidimage">New Image</label>
+                                            <input type="file" class="form-control" id="newImage" name="newImage" accept=".jpeg, .png, .jpg" onchange="updateFileName(this)">
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -172,39 +172,57 @@
                         document.querySelectorAll('.update-post-btn').forEach(btn => {
                             btn.addEventListener('click', () => {
                                 const postId = btn.dataset.postId;
+
+
+                                document.getElementById('formupdateidcontent').value = document.getElementById('postbody').textContent;
+
+                                const formupdateidimage = document.getElementById('formupdateidimage');
+                                const postPicture = document.getElementById('postpicture');
+                                if (formupdateidimage && postPicture) {
+                                    formupdateidimage.value = postPicture.src;
+                                }
+                                $('#updatePostModal').modal('show');
+                            });
+                        });
+
+                        // Thêm sự kiện click cho nút cập nhật bài đăng
+                        document.querySelectorAll('.update-post-btn').forEach(btn => {
+                            btn.addEventListener('click', () => {
+                                const postId = btn.dataset.postId;
+                                const postBody = btn.closest('.post').querySelector('#postbody').textContent;
+
                                 document.getElementById('postIdInput').value = postId;
-                                // Điền dữ liệu hiện tại của bài đăng vào form cập nhật
-                                // ...
+                                document.getElementById('newBody').value = postBody;
+
                                 $('#updatePostModal').modal('show');
                             });
                         });
 
                         // Thêm sự kiện submit cho form cập nhật bài đăng
                         $('#updatePostForm').on('submit', function (event) {
-                            event.preventDefault();  
+                            event.preventDefault();
 
-                            var formData = new FormData(this);  // Lấy dữ liệu từ form
+                            var formData = new FormData(this);
 
                             $.ajax({
-                                url: 'updatepage', 
-                                type: 'POST', 
-                                data: formData, 
-                                contentType: false, 
-                                processData: false, 
-                                dataType: 'json',
-                                success: function (data) {
-                                    if (data.success) {
-                                        // Nếu thành công, đóng modal và refresh trang
+                                url: 'updatepage',
+                                type: 'POST',
+                                data: formData,
+                                contentType: false,
+                                processData: false,
+                                success: function (response) {
+                                    if (response.trim() === 'success') {
+                                       
                                         $('#updatePostModal').modal('hide');
-                                        location.reload();  // Tải lại trang để cập nhật nội dung
+                                        location.reload();
                                     } else {
-                                        // Nếu có lỗi từ phía server, hiển thị lỗi
-                                        alert('Error updating post: ' + (response.error || 'Unknown error'));
+                                       
+                                        alert('Error updating post server: ' + response);
                                     }
                                 },
                                 error: function (xhr, status, error) {
-                                    // Xử lý lỗi từ yêu cầu AJAX
-                                    alert('Error updating post: ' + error);
+                                   
+                                    alert('Error updating post ajax: ' + error);
                                 }
                             });
                         });

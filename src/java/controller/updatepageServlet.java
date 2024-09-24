@@ -78,34 +78,34 @@ public class updatepageServlet extends HttpServlet {
                     // Xử lý ảnh mới nếu có
                     if (filePart != null && filePart.getSize() > 0) {
                         String fileName = getSubmittedFileName(filePart);
-                        String uploadPath = getServletContext().getRealPath("/") + "assets/post_image/" + fileName;
+                        String uploadPath = getServletContext().getRealPath("/") + "assets/profile_avt/" + fileName;
                         filePart.write(uploadPath);
-                        post.setImage_path("assets/post_image/" + fileName);
+                        post.setImage_path("assets/profile_avt/" + fileName);
                     }
 
                     postDAO postDao = new postDAO();
                     postDao.updatePost(post);
 
-                    response.setContentType("application/json");
-                    response.getWriter().write("{\"success\":true}");
+                    response.setContentType("text/plain");
+                    response.getWriter().write("success");
                 } else {
-                    response.setContentType("application/json");
-                    response.getWriter().write("{\"success\":false, \"error\":\"Invalid post ID\"}");
+                    response.setContentType("text/plain");
+                    response.getWriter().write("error: Invalid post ID");
                 }
             } catch (Exception e) {
-                e.printStackTrace(); // In stack trace vào log của server
+                e.printStackTrace();
                 String errorMessage = "Error updating post: " + e.getMessage();
-                log(errorMessage); // Log lỗi
-                response.setContentType("application/json");
-                response.getWriter().write("{\"success\":false, \"error\":\"" + errorMessage + "\"}");
+                log(errorMessage);
+                response.setContentType("text/plain");
+                response.getWriter().write("error: " + errorMessage);
             }
         } else {
-            response.setContentType("application/json");
-            response.getWriter().write("{\"success\":false, \"error\":\"Invalid session\"}");
+            response.setContentType("text/plain");
+            response.getWriter().write("error: Invalid session");
         }
     }
-
 // Helper method to get file name from Part
+
     private String getSubmittedFileName(Part part) {
         for (String cd : part.getHeader("content-disposition").split(";")) {
             if (cd.trim().startsWith("filename")) {

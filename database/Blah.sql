@@ -134,3 +134,5 @@ insert into userAccount values ('Tuan', 'Khi', '123', 'tuankhi123@gmail.com', 'a
 UPDATE userAccount
 SET profile_pic = 'default_avt.jpg'
 WHERE profile_pic = 'assets/profile_avt/default_avt.jpg';
+
+select * from post

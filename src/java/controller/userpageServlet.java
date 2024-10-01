@@ -34,7 +34,7 @@ public class userpageServlet extends HttpServlet {
 
             Part file = request.getPart("image");
             String image_path = file.getSubmittedFileName();
-            String uploadPath = "assets/post_image/" + image_path;
+            String uploadPath = "E:/FUNET/FUNET/web/assets/profile_avt/" + image_path;
             //E:\FUNET\FUNET\web\assets
             try {
                 FileOutputStream fos = new FileOutputStream(uploadPath);

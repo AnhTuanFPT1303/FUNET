@@ -65,7 +65,6 @@ public class GoogleLogin {
             user.setEmail(googleUserData.get("email").getAsString());
         }
         user.setProfile_pic("default_avt.jpg");
-        user.setPassword(null);
         return user;
     }
 }

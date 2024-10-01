@@ -15,6 +15,7 @@ import java.util.Random;
 
 public class SmtpProtocol {
 
+    //Host email, and API password
     final String from = "tuannhade180647@fpt.edu.vn";
     final String password = "vxiziwxgfwrakdgx";
 
@@ -42,6 +43,7 @@ public class SmtpProtocol {
 
     public int sendMail(String userEmail) {
         Random rand = new Random();
+        //random range of OTP
         int userOtp = rand.nextInt(100000);
         try {
             Message message = new MimeMessage(setupProtocol());

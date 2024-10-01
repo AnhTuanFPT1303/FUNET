@@ -90,11 +90,11 @@ public class MessageServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int fromUser = Integer.parseInt(request.getParameter("fromUser"));
-        int toUser = Integer.parseInt(request.getParameter("toUser"));
+        int sender = Integer.parseInt(request.getParameter("sender"));
+        int receiver = Integer.parseInt(request.getParameter("receiver"));
         String messageText = request.getParameter("message");
 
-        Message message = new Message(fromUser, toUser, messageText);
+        Message message = new Message(sender, receiver, messageText);
 
         try {
             MessageDao.getInstance().saveMessage(message);

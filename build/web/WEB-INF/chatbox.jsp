@@ -37,6 +37,7 @@
             </nav>
         </header>
         <div class="content-body">
+            <div hidden id="user-info" data-session-id="<%= session.getAttribute("user_id") %>"></div>
             <div class="container-fluid chat-content">
                 <div class="left-section col-3">
                     <main>
@@ -44,137 +45,27 @@
                         <hr>
                         <c:forEach var="friend" items="${friends}">
                             <div class="post mb-4 d-flex align-items-center" style="overflow-wrap: break-word">
-                                <a href="#" class="user-link friend" data-user-id="${friend.user_id}">
+                                <a href="#" class="user-link friend" data-user-id="${friend.user_id}" onclick="conversationInit.call(this)">
                                     <img src="assets/profile_avt/${friend.profile_pic}" alt="avatar picture" class="img-thumbnail mr-3" style="width: 50px; height: 50px; object-fit: cover;">
                                 </a>
-                                <a href="#" class="user-link friend-name" data-user-id="${friend.user_id}" style="margin-left: 5px">${friend.first_name} ${friend.last_name}</a>
+                                <a href="#" class="user-link friend-name" data-user-id="${friend.user_id}" style="margin-left: 5px" onclick="conversationInit.call(this)">${friend.first_name} ${friend.last_name}</a>
                             </div>
                         </c:forEach>
+                        <div id="chat-container" style="display:none;">
+                            <div id="message-container" style="max-height: 300px; overflow-y: auto; border: 1px solid #ddd; padding: 10px;">
+                            </div>
+                            <form id="message-form" style="margin-top: 10px;">
+                                <input type="text" id="message-input" placeholder="Type your message..." required style="width: 80%;">
+                                <button type="submit">Send</button>
+                            </form>
+                        </div>
                     </main>
-                </div>
-                <div class="right-section col-9">
-                    <div id="message-container">
-                        <!-- Messages will be dynamically loaded here -->
-                    </div>
-                    <form id="message-form" class="d-flex mt-3">
-                        <input type="text" id="message-input" class="form-control me-2" placeholder="Type your message...">
-                        <button type="submit" class="btn btn-primary">Send</button>
-                    </form>
                 </div>
             </div>
         </div>
         <script src="assets/js/bootstrap.min.js"></script>
         <script src="assets/js/jquery-3.7.1.min.js"></script>
-        <script>
-            var socket;
-            var currentChatUserId;
-
-            window.onload = function () {
-                connectSessionUserSocket();
-            };
-
-            function connectSessionUserSocket() {
-                var sessionId = '<%= session.getAttribute("user_id") %>';
-                socket = new WebSocket('ws://' + window.location.host + '/FUNET/chat/' + sessionId);
-
-                socket.onopen = function () {
-                    console.log('WebSocket connection opened for session user');
-                };
-
-                socket.onmessage = function (event) {
-                    var content = JSON.parse(event.data);
-                    displayMessage(content, currentChatUserId);
-                    console.log('Message received: ', content);
-                };
-
-                socket.onclose = function (event) {
-                    console.log('WebSocket connection closed unexpectedly. Reconnecting...');
-                    setTimeout(connectSessionUserSocket, 2000); // Example: retry after 2 seconds
-                };
-
-                socket.onerror = function (error) {
-                    console.error('WebSocket error:', error);
-                };
-            }
-
-            $(document).on('click', '.user-link', function (e) {
-                e.preventDefault();
-                $('.user-link').removeClass('active');
-                $(this).addClass('active');
-                currentChatUserId = $(this).data('user-id');
-                loadMessages(currentChatUserId);
-            });
-
-            function displayMessage(content, currentChatUserId) {
-                var currentChatUser = currentChatUserId;
-                var messageContainer = document.getElementById('message-container');
-                var newMessage = document.createElement('div');
-                if (currentChatUser !== null) {
-                    newMessage.className = content.fromUser === '<%= session.getAttribute("user_id") %>' ? 'my-message' : 'received-message';
-                    newMessage.textContent = content.message;
-                    messageContainer.appendChild(newMessage);
-                }
-            }
-
-            function loadMessages(currentChatUserId) {
-                $.ajax({
-                    url: '/FUNET/MessageServlet',
-                    type: 'GET',
-                    data: {
-                        userId: currentChatUserId
-                    },
-                    success: function (messages) {
-                        var messageContainer = $('#message-container');
-                        messageContainer.empty();
-                        messages.forEach(function (message) {
-                            var messageClass = message.fromUser == '<%= session.getAttribute("user_id") %>' ? 'my-message' : 'received-message';
-                            messageContainer.append('<div class="' + messageClass + '">' + message.message + '</div>');
-                        });
-                    },
-                    error: function () {
-                        alert('Failed to load messages.');
-                    }
-                });
-            }
-
-            $('#message-form').on('submit', function (e) {
-                e.preventDefault();
-                var messageInput = $('#message-input').val();
-                if (messageInput !== '') {
-                    var message = {
-                        fromUser: '<%= session.getAttribute("user_id") %>',
-                        toUser: $('.user-link.active').data('user-id'),
-                        content: messageInput
-                    };
-
-                    $('#message-container').append('<div class="my-message">' + messageInput + '</div>');
-                    // Send message via WebSocket
-                    socket.send(JSON.stringify(message));
-
-                    // Save message to database via AJAX
-                    $.ajax({
-                        url: '/FUNET/MessageServlet',
-                        type: 'POST',
-                        data: {
-                            fromUser: message.fromUser,
-                            toUser: message.toUser,
-                            message: message.content
-                        },
-                        success: function () {
-                            console.log('Message saved successfully.');
-                        },
-                        error: function () {
-                            alert('Failed to save message.');
-                        }
-                    });
-
-                    // Clear the input field
-                    $('#message-input').val('');
-                } else if (socket.readyState !== WebSocket.OPEN) {
-                    connectSessionUserSocket();
-                }
-            });
-        </script>
+        <script src="assets/js/websocketChat.js"></script>
         <script src="assets/js/bootstrap.min.js"></script>   
     </body>
 </html>

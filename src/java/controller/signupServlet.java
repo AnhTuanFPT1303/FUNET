@@ -60,12 +60,6 @@ public class signupServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String param = request.getParameter("param");
-        if ("hadaccount".equals(param)) {
-            request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
-        } else {
-            request.getRequestDispatcher("WEB-INF/signup.jsp").forward(request, response);
-        }
     }
 
     /**
@@ -88,7 +82,7 @@ public class signupServlet extends HttpServlet {
 
         if (!status) {
             request.setAttribute("msg", "No empty fields allowed.");
-            request.getRequestDispatcher("WEB-INF/signup.jsp").forward(request, response);
+            request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
         } else {
             userDAO dao = new userDAO();
             if (!dao.checkEmail(email)) {
@@ -105,7 +99,7 @@ public class signupServlet extends HttpServlet {
                 request.getRequestDispatcher("WEB-INF/verify.jsp").forward(request, response);
             } else {
                 request.setAttribute("msg", "Duplicated Email.");
-                request.getRequestDispatcher("WEB-INF/signup.jsp").forward(request, response);
+                request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
             }
         }
     }

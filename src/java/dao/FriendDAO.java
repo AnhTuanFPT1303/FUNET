@@ -32,7 +32,7 @@ public class FriendDAO {
     public void acceptFriendRequest(int userRequest, int userAccept) {
         try {
             Connection conn = sqlConnect.getInstance().getConnection();
-            PreparedStatement st = conn.prepareStatement("UPDATE friendship SET status = 'accepted' WHERE (user_request = ? AND user_accept = ?) OR (user_request = ? AND user_accept = ?)");
+            PreparedStatement st = conn.prepareStatement("UPDATE friendship SET status = 'accepted' WHERE (sender = ? AND receiver = ?) OR (sender = ? AND receiver = ?)");
             st.setInt(1, userRequest);
             st.setInt(2, userAccept);
             st.setInt(3, userAccept);
@@ -48,7 +48,7 @@ public class FriendDAO {
     public void rejectFriendRequest(int userRequest, int userAccept) {
         try {
             Connection conn = sqlConnect.getInstance().getConnection();
-            PreparedStatement st = conn.prepareStatement("Delete from friendship where status = 'pending' AND user_request = ? AND user_accept = ?");
+            PreparedStatement st = conn.prepareStatement("Delete from friendship where status = 'pending' AND sender = ? AND receiver = ?");
             st.setInt(1, userRequest);
             st.setInt(2, userAccept);
             st.executeUpdate();
@@ -62,7 +62,7 @@ public class FriendDAO {
     public ArrayList<String> getAllFriendRequest(int userId) throws Exception {
         ArrayList<String> requested_userId_List = new ArrayList<>();
         Connection conn = sqlConnect.getInstance().getConnection();
-        PreparedStatement st = conn.prepareStatement("SELECT u.user_id, u.first_name, u.last_name, u.profile_pic FROM friendship f JOIN userAccount u ON f.user_request = u.user_id WHERE f.user_accept = ? AND f.status = 'pending'");
+        PreparedStatement st = conn.prepareStatement("SELECT u.user_id, u.first_name, u.last_name, u.profile_pic FROM friendship f JOIN userAccount u ON f.sender = u.user_id WHERE f.receiver = ? AND f.status = 'pending'");
         st.setInt(1, userId);
         ResultSet rs = st.executeQuery();
         while (rs.next()) {
@@ -78,7 +78,7 @@ public class FriendDAO {
     public String checkFriendStatus(int currUser, int responUser) throws Exception {
         Connection conn = sqlConnect.getInstance().getConnection();
         String status = "Nothing";
-        PreparedStatement ps = conn.prepareStatement("SELECT * FROM friendship WHERE (user_request = ? AND user_accept=?) OR (user_accept = ? AND user_request = ?)");
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM friendship WHERE (sender = ? AND receiver=?) OR (sender = ? AND receiver = ?)");
         ps.setInt(1, currUser);
         ps.setInt(2, responUser);
         ps.setInt(3, currUser);
@@ -88,7 +88,7 @@ public class FriendDAO {
             while (rs.next()) {
                 String currentStatus = rs.getString("status");
                 if (currentStatus.equals("pending")) {
-                    if (rs.getInt("user_accept") == currUser && rs.getInt("user_request") == responUser) {
+                    if (rs.getInt("receiver") == currUser && rs.getInt("sender") == responUser) {
                         status = "reverse_pending";
                         return status;
                     } else {
@@ -117,5 +117,11 @@ public class FriendDAO {
             friendList.add(new User(rs.getInt(1), rs.getString(2), rs.getString(3), null, null, rs.getString(4), rs.getString(5), rs.getBoolean(6)));
         }
         return friendList;
+    }
+    
+    public static void main(String[] args) throws Exception {
+        FriendDAO dao = new FriendDAO();
+        ArrayList<User> list = dao.findFriend(1);
+        System.out.println(list.size());
     }
 }

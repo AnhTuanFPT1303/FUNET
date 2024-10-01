@@ -18,8 +18,7 @@ import util.sqlConnect;
 public class postDAO {
 
     public void addPost(Post p) {
-        String query = "INSERT INTO post (user_id, body, image_path, post_time  ) VALUES (?, ?, ?, CURRENT_TIMESTAMP)";
-
+        String query = "INSERT INTO post (user_id, body, image_path) VALUES (?, ?, ?)";
         try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, p.getUser_id());
             stmt.setString(2, p.getBody());
@@ -33,7 +32,7 @@ public class postDAO {
     }
 
     public void addComment(Comment c) {
-        String query = "INSERT INTO comment (post_id, user_id, comment_text ) VALUES (?, ?, ?)";
+        String query = "INSERT INTO comment (post_id, user_id, comment_text) VALUES (?, ?, ?)";
         try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, c.getPost_id());
             stmt.setInt(2, c.getUser_id());
@@ -98,8 +97,7 @@ public class postDAO {
 
     public boolean hasUserLikedPost(int userId, int postId) throws SQLException {
         String query = "SELECT COUNT(*) FROM post_like WHERE user_id = ? AND post_id = ?";
-        try (Connection conn = sqlConnect.getInstance().getConnection(); 
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, userId);
             stmt.setInt(2, postId);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -131,10 +129,7 @@ public class postDAO {
     public static List<Post> getAllPosts(int sessionUserId) {
         List<Post> posts = new ArrayList<>();
         try {
-            ResultSet rs = null;
-            Connection conn = null;
-            PreparedStatement  stmt = null;
-            conn = sqlConnect.getInstance().getConnection();
+            Connection conn = sqlConnect.getInstance().getConnection();
 
             String query = "SELECT DISTINCT p.post_id, p.body, p.post_time, p.user_id, p.image_path, p.like_count, u.first_name, u.last_name, u.profile_pic "
                     + "FROM post p "
@@ -142,35 +137,36 @@ public class postDAO {
                     + "WHERE p.user_id = ? "
                     + "OR p.user_id IN ( "
                     + "    SELECT CASE "
-                    + "        WHEN f.user_request = ? THEN f.user_accept "
-                    + "        ELSE f.user_request "
+                    + "        WHEN f.sender = ? THEN f.receiver "
+                    + "        ELSE f.sender "
                     + "    END "
                     + "    FROM friendship f "
                     + "    WHERE f.status = 'accepted' "
-                    + "    AND (? IN (f.user_request, f.user_accept)) "
+                    + "    AND (? IN (f.sender, f.receiver)) "
                     + ") "
                     + "ORDER BY p.post_time DESC";
 
-            stmt = conn.prepareStatement(query);
-            stmt.setInt(1, sessionUserId);
-            stmt.setInt(2, sessionUserId);
-            stmt.setInt(3, sessionUserId);
+            try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setInt(1, sessionUserId);
+                stmt.setInt(2, sessionUserId);
+                stmt.setInt(3, sessionUserId);
 
-            rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                int post_id = rs.getInt("post_id");
-                int user_id = rs.getInt("user_id");
-                String body = rs.getString("body");
-                Timestamp post_time = rs.getTimestamp("post_time");
-                String first_name = rs.getString("first_name");
-                String last_name = rs.getString("last_name");
-                String image_path = rs.getString("image_path");
-                int like_count = rs.getInt("like_count");
-                String profile_pic = rs.getString("profile_pic");
-                Post post = new Post(post_id, user_id, body, post_time, first_name, last_name, image_path, profile_pic, like_count);
-                post.setComments(getComments(post.getPost_id()));
-                posts.add(post);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    while (rs.next()) {
+                        int post_id = rs.getInt("post_id");
+                        int user_id = rs.getInt("user_id");
+                        String body = rs.getString("body");
+                        Timestamp post_time = rs.getTimestamp("post_time");
+                        String first_name = rs.getString("first_name");
+                        String last_name = rs.getString("last_name");
+                        String image_path = rs.getString("image_path");
+                        int like_count = rs.getInt("like_count");
+                        String profile_pic = rs.getString("profile_pic");
+                        Post post = new Post(post_id, user_id, body, post_time, first_name, last_name, image_path, profile_pic, like_count);
+                        post.setComments(getComments(post.getPost_id()));
+                        posts.add(post);
+                    }
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -217,14 +213,13 @@ public class postDAO {
         List<Post> posts = new ArrayList<>();
         try {
             ResultSet rs = null;
-            Connection conn = null;
+            Connection conn = null; 
             PreparedStatement stmt = null;
             conn = sqlConnect.getInstance().getConnection();
             stmt = conn.prepareStatement("SELECT p.post_id, p.body, p.post_time, p.user_id, p.like_count, p.image_path, u.first_name, u.last_name "
                     + "FROM post p JOIN userAccount u ON p.user_id = u.user_id "
                     + "WHERE p.user_id =? "
-                    + "ORDER BY p.post_time DESC"
-                    + "offset 20 rows fetch next 20 rows only");
+                    + "ORDER BY p.post_time DESC");
             stmt.setInt(1, userId);
             rs = stmt.executeQuery();
             while (rs.next()) {
@@ -259,5 +254,10 @@ public class postDAO {
             e.printStackTrace();
         }
 
+    }
+
+    public static void main(String[] args) {
+        List<Post> posts;
+        posts = getMyPosts(2);
     }
 }

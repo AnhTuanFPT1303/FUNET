@@ -8,7 +8,6 @@ import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
 import model.Message;
 import services.ChatService;
-import dao.MessageDao;
 import jakarta.websocket.DecodeException;
 
 @ServerEndpoint(value = "/chat/{user_id}")
@@ -18,7 +17,6 @@ public class ChatWebsocket {
     private int user_id;
 
     ChatService chatService = ChatService.getInstance();
-    MessageDao messageDao = MessageDao.getInstance();
     MessageDecoder messageDecoder = new MessageDecoder();
 
     @OnOpen

@@ -26,9 +26,9 @@ public class MessageDao {
 
     public List<Message> findAllMessagesBySenderAndReceiver(int sender, int receiver) throws Exception {
         Connection conn = sqlConnect.getInstance().getConnection();
-        String query = "SELECT from_user, message, to_user FROM message "
-                + "WHERE (from_user = ? AND to_user = ?) "
-                + "OR (from_user = ? AND to_user = ?) "
+        String query = "SELECT sender, message, receiver FROM message "
+                + "WHERE (sender = ? AND receiver = ?) "
+                + "OR (sender = ? AND receiver = ?) "
                 + "ORDER BY chat_time ASC";
         PreparedStatement st = conn.prepareStatement(query);
         st.setInt(1, sender);
@@ -38,7 +38,7 @@ public class MessageDao {
         ResultSet rs = st.executeQuery();
         List<Message> listMessages = new ArrayList<>();
         while (rs.next()) {
-            Message msg = new Message(rs.getInt("from_user"), rs.getInt("to_user"), rs.getString("message"));
+            Message msg = new Message(rs.getInt("sender"), rs.getInt("receiver"), rs.getString("message"));
             listMessages.add(msg);
         }
         return listMessages;

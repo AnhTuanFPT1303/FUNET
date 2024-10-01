@@ -21,7 +21,7 @@ CREATE TABLE userAccount (
   user_id INT IDENTITY(1,1) PRIMARY KEY,
   first_name NVARCHAR(50) NOT NULL,
   last_name NVARCHAR(50) NOT NULL,
-  password VARCHAR(30) NOT NULL,
+  password VARCHAR(30) NULL,
   email VARCHAR(70) NOT NULL UNIQUE,
   profile_pic VARCHAR(max) NOT NULL,
   role VARCHAR(20) NOT NULL, 
@@ -34,8 +34,8 @@ CREATE TABLE friendship (
 	sender INT,
 	receiver INT,
 	status nvarchar(10) NOT NULL,
-	CONSTRAINT fk_user_request FOREIGN KEY (sender) REFERENCES userAccount (user_id) ON DELETE NO ACTION ON UPDATE NO ACTION,
-	CONSTRAINT fk_user_accept FOREIGN KEY (receiver) REFERENCES userAccount (user_id) ON DELETE NO ACTION ON UPDATE NO ACTION
+	CONSTRAINT fk_sender FOREIGN KEY (sender) REFERENCES userAccount (user_id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+	CONSTRAINT fk_receiver FOREIGN KEY (receiver) REFERENCES userAccount (user_id) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
 GO
@@ -75,7 +75,7 @@ CREATE TABLE conversation (
 	conversation_id INT PRIMARY KEY, 
 	conversation_name NVARCHAR(50),
 	conversation_avater nvarchar(50) NOT NULL
-)
+);
 
 GO
 CREATE TABLE message (
@@ -86,9 +86,9 @@ CREATE TABLE message (
 	message_text NVARCHAR(400) NOT NULL,
 	message_type VARCHAR(40) NOT NULL,
 	sent_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	CONSTRAINT fk_sender FOREIGN KEY (sender) REFERENCES userAccount (user_id) ON DELETE NO ACTION ON UPDATE NO ACTION,
-	CONSTRAINT fk_receiver FOREIGN KEY (receiver) REFERENCES userAccount (user_id) ON DELETE NO ACTION ON UPDATE NO ACTION,
-	CONSTRAINT fk_conversation_id FOREIGN KEY (conversation_id) REFERENCES conversation (conversation_id) ON DELETE NO ACTION ON UPDATE NO ACTION
+	FOREIGN KEY (sender) REFERENCES userAccount (user_id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+	FOREIGN KEY (receiver) REFERENCES userAccount (user_id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+	FOREIGN KEY (conversation_id) REFERENCES conversation (conversation_id) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
 GO 
@@ -128,24 +128,17 @@ AS
 
 GO
 CREATE PROCEDURE getAllFriends
-    @user_id INT
+    @userId INT
 AS
 BEGIN
-    SELECT
-        u2.first_name,
-        u2.last_name,
-        u2.profile_pic,
-        f.status
-    FROM userAccount u1
-    JOIN
-        friendship f ON (u1.user_id = f.sender OR u1.user_id = f.receiver)
-    JOIN 
-        userAccount u2 ON (u2.user_id = f.sender OR u2.user_id = f.receiver) AND u2.user_id != u1.user_id
-    WHERE 
-        u1.user_id = @user_id
-        AND f.status = 'accepted';
+    SELECT u.user_id, u.first_name, u.last_name, u.profile_pic, u.role, u.is_banned, f.status
+    FROM userAccount u
+    INNER JOIN friendship f ON 
+        (f.sender = u.user_id AND f.receiver = @userId)
+        OR (f.receiver = u.user_id AND f.sender = @userId)
+    WHERE f.status = 'accepted';
 END;
-
+	
 insert into userAccount values ('Nguyen', 'Tuan' , '123', 'anhtuan123@gmail.com', 'default_avt.jpg', 'student', 'false')
 insert into userAccount values ('Ha', 'Phan', '123', 'haphan123@gmail.com', 'default_avt.jpg', 'staft', 'false')
 insert into userAccount values ('Thanh', 'Tung', '123', 'thanhtung123@gmail.com', 'default_avt.jpg', 'student', 'true')
@@ -153,3 +146,5 @@ insert into userAccount values ('Thanh', 'Tung', '123', 'thanhtung123@gmail.com'
 
 Go
 Select * from userAccount
+
+EXEC getAllFriends 1;

@@ -72,12 +72,19 @@ public class GoogleValidate extends HttpServlet {
             session.setAttribute("first_name", user.getFirst_name());
             response.sendRedirect("home");
         } else {
-            // Email doesn't exist, redirect to LoginSubmit to set password
+            // Email doesn't exist, generate null password and login in
             HttpSession session = request.getSession(true);
-            session.setAttribute("userEmail", user.getEmail());
-            session.setAttribute("last_name", user.getLast_name());     
+            user.setPassword(null);
+            user.setProfile_pic("default_avt.jpg");
+            user.setRole("student");
+            user.setStatus(false);
+            dao.register(user);
+            session.setMaxInactiveInterval(1800);
+            session.setAttribute("user", user);
+            session.setAttribute("user_id", user.getUser_id());
+            session.setAttribute("last_name", user.getLast_name());
             session.setAttribute("first_name", user.getFirst_name());
-            response.sendRedirect("login-submit");
+            response.sendRedirect("home");
         }
     }
 

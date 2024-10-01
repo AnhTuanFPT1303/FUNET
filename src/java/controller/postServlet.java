@@ -115,11 +115,10 @@ public class postServlet extends HttpServlet {
         if (session != null && session.getAttribute("user") != null) {
             User user = (User) session.getAttribute("user");
             String body = request.getParameter("postContent");
-
             Part file = request.getPart("image");
             String image_path = file.getSubmittedFileName();
 //            String uploadPath = "D:/fpt/prj301/project/FUNET_FINAL/FUNET/Downloads/FUNET/web/assets/post_image/" + image_path;
-            String uploadPath = getServletContext().getRealPath("/assets/profile_avt/") + image_path;
+            String uploadPath = "E:/FUNET/FUNET/web/assets/post_image/" + image_path;
             //E:\FUNET\FUNET\web\assets
             try {
                 FileOutputStream fos = new FileOutputStream(uploadPath);
@@ -141,7 +140,7 @@ public class postServlet extends HttpServlet {
                 postDAO PostDao = new postDAO();
                 try {
                     PostDao.addPost(post);
-                    TimeUnit.SECONDS.sleep(4);
+                    TimeUnit.SECONDS.sleep(2);
                     response.sendRedirect("home");
                 } catch (Exception e) {
                     e.printStackTrace();

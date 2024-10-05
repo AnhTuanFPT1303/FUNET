@@ -12,6 +12,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.User;
 
 /**
@@ -75,19 +77,23 @@ public class GoogleValidate extends HttpServlet {
             session.setAttribute("last_name", existingUser.getLast_name());
             session.setAttribute("first_name", existingUser.getFirst_name());
         } else {
-            // New user: insert into the DB and set session attributes
-            user.setPassword(null); // No password for Google login
-            user.setProfile_pic("default_avt.jpg");
-            user.setRole("student");
-            user.setStatus(false);
-
-            int newUserId = dao.register(user);
-            user.setUser_id(newUserId); // Set the newly created ID
-
-            session.setAttribute("user", user);
-            session.setAttribute("user_id", newUserId);
-            session.setAttribute("last_name", user.getLast_name());
-            session.setAttribute("first_name", user.getFirst_name());
+            try {
+                // New user: insert into the DB and set session attributes
+                user.setPassword(null); // No password for Google login
+                user.setProfile_pic("default_avt.jpg");
+                user.setRole("student");
+                user.setStatus(false);
+                
+                int newUserId = dao.register(user);
+                user.setUser_id(newUserId); // Set the newly created ID
+                
+                session.setAttribute("user", user);
+                session.setAttribute("user_id", newUserId);
+                session.setAttribute("last_name", user.getLast_name());
+                session.setAttribute("first_name", user.getFirst_name());
+            } catch (Exception ex) {
+                Logger.getLogger(GoogleValidate.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
         // Redirect to home after successful login

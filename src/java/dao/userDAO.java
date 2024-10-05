@@ -1,53 +1,73 @@
 package dao;
 
+import Security.SHA512WithSalt;
 import util.sqlConnect;
 import java.sql.*;
 import model.User;
 import java.util.ArrayList;
+import java.util.Base64;
 
 public class userDAO {
 
     public boolean login(String email, String password) {
-        boolean result = false;
-        try {
-            Connection conn = sqlConnect.getInstance().getConnection();
-            PreparedStatement st = conn.prepareStatement("Select * from userAccount where email=? AND password=?");
-            st.setString(1, email);
-            st.setString(2, password);
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
+    boolean result = false;
+    try {
+        Connection conn = sqlConnect.getInstance().getConnection();
+        PreparedStatement st = conn.prepareStatement("SELECT * FROM userAccount WHERE email=?");
+        st.setString(1, email);
+        ResultSet rs = st.executeQuery();
+        
+        if (rs.next()) {
+            // Lấy chuỗi kết hợp (lưu cả salt và sha512 hash vào password)
+            String combinedHash = rs.getString("password");
+            
+            // Tách salt và hashedPassword
+            String[] parts = combinedHash.split(":"); // Sử dụng dấu phân cách
+            byte[] salt = Base64.getDecoder().decode(parts[0]); // Giải mã salt
+            String storedHash = parts[1]; // hashedPassword
+            
+            // Băm mật khẩu đã nhập với salt
+            String hashedInputPassword = SHA512WithSalt.hashPassWordWithSHA512(password, salt);
+            
+            // So sánh mật khẩu đã băm
+            if (hashedInputPassword.equals(storedHash)) {
                 result = true;
             }
-        } catch (Exception e) {
-            System.out.println("Connect Failed");
         }
-        return result;
+    } catch (Exception e) {
+        System.out.println("Connect Failed: " + e.getMessage());
     }
+    return result;
+}
 
-    public int register(User user) throws Exception {
-        int generatedUserId = 0;
-        String sql = "INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            ps.setString(1, user.getFirst_name());
-            ps.setString(2, user.getLast_name());
-            ps.setString(3, user.getPassword()); // Password should be null for Google login
-            ps.setString(4, user.getEmail());
-            ps.setString(5, user.getProfile_pic());
-            ps.setString(6, user.getRole());
-            ps.setBoolean(7, user.getStatus());
 
-            ps.executeUpdate();
 
-            ResultSet rs = ps.getGeneratedKeys();
-            if (rs.next()) {
-                generatedUserId = rs.getInt(1); // Get the generated user_id
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return generatedUserId;
+    public String register(User user) {
+    try {
+        Connection conn = sqlConnect.getInstance().getConnection();
+        
+        byte[] salt = SHA512WithSalt.createSalt();
+        String hashedPassword = SHA512WithSalt.hashPassWordWithSHA512(user.getPassword(), salt);
+        
+        // Kết hợp salt và hashedPassword
+        String combinedHash = Base64.getEncoder().encodeToString(salt) + ":" + hashedPassword;
+        
+        CallableStatement st = conn.prepareCall("INSERT INTO userAccount VALUES (?,?,?,?,?,?,?)");
+        st.setString(1, user.getFirst_name());
+        st.setString(2, user.getLast_name());
+        st.setString(3, combinedHash); // Lưu chuỗi kết hợp
+        st.setString(4, user.getEmail());
+        st.setString(5, user.getProfile_pic());
+        st.setString(6, user.getRole());
+        st.setBoolean(7, user.getStatus());
+        st.execute();
+        return "Registration Successful.";
+    } catch (SQLException e) {
+        return "Duplicate Email." + e.getMessage();
+    } catch (Exception e) {
+        return "Unknown Exception" + e.getMessage();
     }
+}
 
     public User getUserByEmail(String email) {
         User user = null;

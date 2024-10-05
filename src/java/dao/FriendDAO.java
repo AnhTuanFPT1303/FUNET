@@ -121,7 +121,7 @@ public class FriendDAO {
     
     public static void main(String[] args) throws Exception {
         FriendDAO dao = new FriendDAO();
-        ArrayList<User> list = dao.findFriend(1);
-        System.out.println(list.size());
+        ArrayList<String> list = dao.getAllFriendRequest(2);
+        System.out.println(list.get(0));
     }
 }

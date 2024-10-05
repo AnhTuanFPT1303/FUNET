@@ -61,31 +61,37 @@ public class GoogleValidate extends HttpServlet {
         userDAO dao = new userDAO();
         String code = request.getParameter("code");
         GoogleLogin ggLogin = new GoogleLogin();
-        User user = ggLogin.getUserInfo(ggLogin.getToken(code));
-        if (dao.checkEmail(user.getEmail())) {
-            // Email exists, log the user in
-            HttpSession session = request.getSession(true);
-            session.setMaxInactiveInterval(1800);
-            session.setAttribute("user", user);
-            session.setAttribute("user_id", user.getUser_id());
-            session.setAttribute("last_name", user.getLast_name());
-            session.setAttribute("first_name", user.getFirst_name());
-            response.sendRedirect("home");
+        User user = ggLogin.getUserInfo(ggLogin.getToken(code)); // Get user data from Google
+
+        User existingUser = dao.getUserByEmail(user.getEmail()); // Check if user exists in the DB by email
+
+        HttpSession session = request.getSession(true);
+        session.setMaxInactiveInterval(1800); // Set session timeout (30 minutes)
+
+        if (existingUser != null) {
+            // Existing user: use the existing user's details
+            session.setAttribute("user", existingUser);
+            session.setAttribute("user_id", existingUser.getUser_id());
+            session.setAttribute("last_name", existingUser.getLast_name());
+            session.setAttribute("first_name", existingUser.getFirst_name());
         } else {
-            // Email doesn't exist, generate null password and login in
-            HttpSession session = request.getSession(true);
-            user.setPassword(null);
+            // New user: insert into the DB and set session attributes
+            user.setPassword(null); // No password for Google login
             user.setProfile_pic("default_avt.jpg");
             user.setRole("student");
             user.setStatus(false);
-            dao.register(user);
-            session.setMaxInactiveInterval(1800);
+
+            int newUserId = dao.register(user);
+            user.setUser_id(newUserId); // Set the newly created ID
+
             session.setAttribute("user", user);
-            session.setAttribute("user_id", user.getUser_id());
+            session.setAttribute("user_id", newUserId);
             session.setAttribute("last_name", user.getLast_name());
             session.setAttribute("first_name", user.getFirst_name());
-            response.sendRedirect("home");
         }
+
+        // Redirect to home after successful login
+        response.sendRedirect("home");
     }
 
     /**

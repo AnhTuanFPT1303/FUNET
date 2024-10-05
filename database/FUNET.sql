@@ -141,7 +141,7 @@ END;
 	
 insert into userAccount values ('Nguyen', 'Tuan' , '123', 'anhtuan123@gmail.com', 'default_avt.jpg', 'student', 'false')
 insert into userAccount values ('Ha', 'Phan', '123', 'haphan123@gmail.com', 'default_avt.jpg', 'staft', 'false')
-insert into userAccount values ('Thanh', 'Tung', '123', 'thanhtung123@gmail.com', 'default_avt.jpg', 'student', 'true')
+insert into userAccount values ('Thanh', 'Tung', '123', 'thanhtung123@gmail.com', 'default_avt.jpg', 'student', 'false')
 
 
 Go

@@ -121,7 +121,7 @@ public class userpageServlet extends HttpServlet {
         post.setComments(comments);
     }
     
-        req.getRequestDispatcher("/WEB-INF/userpage.jsp").forward(req, resp);
+        req.getRequestDispatcher("profile.jsp").forward(req, resp);
     }
     
     

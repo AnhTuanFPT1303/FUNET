@@ -24,47 +24,58 @@ public class userDAO {
         return result;
     }
 
-    public String register(User user) {
-        try {
-            Connection conn = sqlConnect.getInstance().getConnection();
-            CallableStatement st = conn.prepareCall("INSERT INTO userAccount Values (?,?,?,?,?,?,?)"); //Call register procedure in SQL Server
-            st.setString(1, user.getFirst_name());
-            st.setString(2, user.getLast_name());
-            st.setString(3, user.getPassword());
-            st.setString(4, user.getEmail());
-            st.setString(5, user.getProfile_pic());
-            st.setString(6, user.getRole());
-            st.setBoolean(7, user.getStatus());
-            st.execute();
-            return "Registration Successful.";
+    public int register(User user) throws Exception {
+        int generatedUserId = 0;
+        String sql = "INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, user.getFirst_name());
+            ps.setString(2, user.getLast_name());
+            ps.setString(3, user.getPassword()); // Password should be null for Google login
+            ps.setString(4, user.getEmail());
+            ps.setString(5, user.getProfile_pic());
+            ps.setString(6, user.getRole());
+            ps.setBoolean(7, user.getStatus());
+
+            ps.executeUpdate();
+
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                generatedUserId = rs.getInt(1); // Get the generated user_id
+            }
         } catch (SQLException e) {
-            return "Duplicate Email.";
-        } catch (Exception e) {
-            return "Unknown Exception";
+            e.printStackTrace();
         }
+        return generatedUserId;
     }
 
-    public User getUserByEmail(String email) throws SQLException {
-        User u = new User();
-        try {
-            Connection conn = sqlConnect.getInstance().getConnection();
-            PreparedStatement st = conn.prepareStatement("SELECT * FROM userAccount WHERE email = ?");
-            st.setString(1, email);
-            ResultSet rs = st.executeQuery();
+    public User getUserByEmail(String email) {
+        User user = null;
+        String sql = "SELECT * FROM userAccount WHERE email = ?";
+
+        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                u.setUser_id(rs.getInt(1));
-                u.setFirst_name(rs.getString(2));
-                u.setLast_name(rs.getString(3));
-                u.setPassword(rs.getString(4));
-                u.setEmail(rs.getString(5));
-                u.setProfile_pic(rs.getString(6));
+                user = new User();
+                user.setUser_id(rs.getInt("user_id"));
+                user.setFirst_name(rs.getString("first_name"));
+                user.setLast_name(rs.getString("last_name"));
+                user.setPassword(rs.getString("password"));
+                user.setEmail(rs.getString("email"));
+                user.setProfile_pic(rs.getString("profile_pic"));
+                user.setRole(rs.getString("role"));
+                user.setStatus(rs.getBoolean("is_banned"));
             }
-
+        } catch (SQLException e) {
+            e.printStackTrace();
         } catch (Exception e) {
-            System.out.println("Action Failed");
+            e.printStackTrace();
         }
-        return u;
+
+        return user;
     }
 
     public User getUserById(int user_id) throws SQLException {

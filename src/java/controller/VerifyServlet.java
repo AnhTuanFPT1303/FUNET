@@ -101,7 +101,6 @@ public class VerifyServlet extends HttpServlet {
                 user.setProfile_pic("default_avt.jpg");
                 user.setRole("student");
                 user.setStatus(false);
-                String result = userDao.register(user);
 
                 // Clean up session
                 session.removeAttribute("pendingEmail");
@@ -110,7 +109,6 @@ public class VerifyServlet extends HttpServlet {
 
                 // Regenerate session ID to prevent session fixation
                 request.changeSessionId();
-                request.setAttribute("msg", result);
                 request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
             }
         } else {

@@ -95,19 +95,14 @@ public class loginServlet extends HttpServlet {
             boolean verify = userDao.login(email, passWord);
 
             if (verify) {
-                try {
-                    User user = userDao.getUserByEmail(email);
-                    HttpSession session = request.getSession(true);
-                    session.setMaxInactiveInterval(1800);
-                    session.setAttribute("user", user);
-                    session.setAttribute("user_id", user.getUser_id());
-                    session.setAttribute("last_name", user.getLast_name());
-                    session.setAttribute("first_name", user.getFirst_name());
-                    response.sendRedirect("home");
-                } catch (SQLException e) {
-                    request.setAttribute("msg", "Login Failed.");
-                    request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
-                }
+                User user = userDao.getUserByEmail(email);
+                HttpSession session = request.getSession(true);
+                session.setMaxInactiveInterval(1800);
+                session.setAttribute("user", user);
+                session.setAttribute("user_id", user.getUser_id());
+                session.setAttribute("last_name", user.getLast_name());
+                session.setAttribute("first_name", user.getFirst_name());
+                response.sendRedirect("home");
             } else {
                 request.setAttribute("msg", "Wrong username or password.");
                 request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);

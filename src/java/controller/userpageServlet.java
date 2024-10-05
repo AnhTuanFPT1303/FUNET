@@ -21,13 +21,78 @@ import model.Comment;
 import model.Post;
 import model.User;
 
-
 @MultipartConfig
 public class userpageServlet extends HttpServlet {
 
     @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        User currentUser = (User) session.getAttribute("user");
+        String userIdParam = request.getParameter("userId");
+        int userId;
+
+        if (userIdParam != null && !userIdParam.isEmpty()) {
+            try {
+                userId = Integer.parseInt(userIdParam);
+            } catch (NumberFormatException e) {
+                request.setAttribute("errorMessage", "Invalid user ID provided");
+                request.getRequestDispatcher("error.jsp").forward(request, response);
+                return;
+            }
+        } else {
+            userId = currentUser.getUser_id();
+        }
+
+        userDAO userDAO = new userDAO();
+        User user;
+        try {
+            user = userDAO.getUserById(userId);
+            if (user == null) {
+                request.setAttribute("errorMessage", "User not found");
+                request.getRequestDispatcher("error.jsp").forward(request, response);
+                return;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(userpageServlet.class.getName()).log(Level.SEVERE, "Error fetching user", ex);
+            request.setAttribute("errorMessage", "Error fetching user data");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
+
+        postDAO postDAO = new postDAO();
+        List<Post> posts;
+        try {
+            posts = postDAO.getMyPosts(user.getUser_id());
+            for (Post post : posts) {
+                List<Comment> comments = postDAO.getComments(post.getPost_id());
+                post.setComments(comments);
+            }
+        } catch (Exception e) {
+            Logger.getLogger(userpageServlet.class.getName()).log(Level.SEVERE, "Error fetching posts", e);
+            request.setAttribute("errorMessage", "Error fetching posts");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
+
+        try {
+            FriendDAO friendDAO = new FriendDAO();
+            List<User> friends = friendDAO.findFriend(user.getUser_id());
+            int friendCount = friendDAO.friendCount(user.getUser_id());
+            request.setAttribute("friends", friends);
+            request.setAttribute("friendCount", friendCount);
+        } catch (Exception e) {
+            Logger.getLogger(userpageServlet.class.getName()).log(Level.SEVERE, "Error fetching friends", e);
+            // We'll continue even if friends can't be fetched
+        }
+
+        request.setAttribute("user", user);
+        request.setAttribute("posts", posts);
+        request.getRequestDispatcher("/WEB-INF/profile.jsp").forward(request, response);
+    }
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession(false);  
+        HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("user") != null) {
             User user = (User) session.getAttribute("user");
             String body = request.getParameter("postContent");
@@ -56,73 +121,17 @@ public class userpageServlet extends HttpServlet {
                 postDAO PostDao = new postDAO();
                 try {
                     PostDao.addPost(post);
-                    response.sendRedirect("userpageServlet");
+                    response.sendRedirect("profile");
                 } catch (Exception e) {
                     e.printStackTrace();
                     request.setAttribute("errorMessage", "Error saving post");
-                    response.sendRedirect("userpageServlet");
+                    response.sendRedirect("profile");
                 }
-            }
-            else {
-                response.sendRedirect("userpageServlet");
+            } else {
+                response.sendRedirect("profile");
             }
         } else {
-            response.sendRedirect("userpageServlet");  
+            response.sendRedirect("profile");
         }
     }
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession(false);
-        User currentUser = (User) session.getAttribute("user");
-        String userIdParam = req.getParameter("userId");
-        int userId = currentUser.getUser_id();
-
-        if (userIdParam != null && !userIdParam.isEmpty()) {
-            try {
-                userId = Integer.parseInt(userIdParam);
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-            }
-        }
-
-        userDAO userDAO = new userDAO();
-        User user = new User();
-        try {
-            user = userDAO.getUserById(userId); // Get user details by userId
-        } catch (SQLException ex) {
-            Logger.getLogger(userpageServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if (user == null) {
-            resp.sendRedirect("login.jsp");
-            return;
-        }
-        
-        postDAO postDAO = new postDAO();
-        List<Post> posts = null;
-        try {
-            posts = postDAO.getMyPosts(user.getUser_id()); // Get posts of the specified user
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        req.setAttribute("user", user); // Set the user object as an attribute
-        req.setAttribute("posts", posts); // Set the posts list as an attribute
-                    try {
-            FriendDAO friendDAO = new FriendDAO();
-            List<User> friends = friendDAO.findFriend(currentUser.getUser_id());
-            req.setAttribute("friends", friends);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-                    
-    for (Post post : posts) {
-        List<Comment> comments = postDAO.getComments(post.getPost_id());
-        post.setComments(comments);
-    }
-    
-        req.getRequestDispatcher("profile.jsp").forward(req, resp);
-    }
-    
-    
 }

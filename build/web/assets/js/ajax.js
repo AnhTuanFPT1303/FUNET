@@ -1,6 +1,6 @@
 $.ajax({
     type: 'POST',
-    url: 'userpageServlet',
+    url: 'profile',
     data: {action: 'delete', postId: postId},
     success: function() {
         location.reload();

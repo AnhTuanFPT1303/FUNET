@@ -12,9 +12,10 @@ DROP TABLE IF EXISTS post;
 DROP TABLE IF EXISTS conversation_member;
 DROP TABLE IF EXISTS userAccount;
 DROP TABLE IF EXISTS conversation;
-drop procedure if exists checkDuplicateEmail
-drop procedure if exists registerUser
+DROP TABLE IF EXISTS categories;
+DROP TABLE IF EXISTS game;
 drop procedure if exists getAllFriends
+
 
 GO
 CREATE TABLE userAccount (
@@ -34,8 +35,8 @@ CREATE TABLE friendship (
 	sender INT,
 	receiver INT,
 	status nvarchar(10) NOT NULL,
-	CONSTRAINT fk_sender FOREIGN KEY (sender) REFERENCES userAccount (user_id) ON DELETE NO ACTION ON UPDATE NO ACTION,
-	CONSTRAINT fk_receiver FOREIGN KEY (receiver) REFERENCES userAccount (user_id) ON DELETE NO ACTION ON UPDATE NO ACTION
+	FOREIGN KEY (sender) REFERENCES userAccount (user_id),
+	FOREIGN KEY (receiver) REFERENCES userAccount (user_id)
 );
 
 GO
@@ -46,7 +47,7 @@ CREATE TABLE post (
   image_path NVARCHAR(max),
   post_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   like_count INT not null default 0,
-  CONSTRAINT fk_post_user FOREIGN KEY (user_id) REFERENCES userAccount (user_id) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY (user_id) REFERENCES userAccount (user_id)
 );
 
 GO
@@ -55,8 +56,8 @@ CREATE TABLE post_like (
     user_id INT NOT NULL,
     post_id INT NOT NULL,
     like_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	CONSTRAINT fk_like_user FOREIGN KEY (user_id) REFERENCES userAccount (user_id),
-    CONSTRAINT fk_like_post FOREIGN KEY (post_id) REFERENCES post(post_id)
+	FOREIGN KEY (user_id) REFERENCES userAccount (user_id),
+    FOREIGN KEY (post_id) REFERENCES post(post_id)
 );
 
 GO
@@ -66,8 +67,8 @@ CREATE TABLE comment (
     user_id INT NOT NULL,
     comment_text NVARCHAR(MAX) NOT NULL,
 	comment_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_comment_post FOREIGN KEY (post_id) REFERENCES post (post_id) ON DELETE CASCADE,
-    CONSTRAINT fk_comment_user FOREIGN KEY (user_id) REFERENCES userAccount (user_id)
+    FOREIGN KEY (post_id) REFERENCES post (post_id),
+    FOREIGN KEY (user_id) REFERENCES userAccount (user_id)
 );
 
 GO
@@ -86,9 +87,9 @@ CREATE TABLE message (
 	message_text NVARCHAR(400) NOT NULL,
 	message_type VARCHAR(40) NOT NULL,
 	sent_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	FOREIGN KEY (sender) REFERENCES userAccount (user_id) ON DELETE NO ACTION ON UPDATE NO ACTION,
-	FOREIGN KEY (receiver) REFERENCES userAccount (user_id) ON DELETE NO ACTION ON UPDATE NO ACTION,
-	FOREIGN KEY (conversation_id) REFERENCES conversation (conversation_id) ON DELETE NO ACTION ON UPDATE NO ACTION
+	FOREIGN KEY (sender) REFERENCES userAccount (user_id),
+	FOREIGN KEY (receiver) REFERENCES userAccount (user_id),
+	FOREIGN KEY (conversation_id) REFERENCES conversation (conversation_id)
 );
 
 GO 
@@ -96,35 +97,49 @@ CREATE TABLE conversation_member (
 	is_admin BIT NOT NULL,
 	user_id INT,
 	conversation_id INT,
-	CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES userAccount(user_id),
-	CONSTRAINT fk_convesation FOREIGN KEY (conversation_id) REFERENCES conversation (conversation_id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+	FOREIGN KEY (user_id) REFERENCES userAccount(user_id),
+	FOREIGN KEY (conversation_id) REFERENCES conversation (conversation_id),
 	PRIMARY KEY (user_id, conversation_id)
-)
+);
 
 GO
-CREATE PROCEDURE registerUser
-    @first_name varchar(20),
-    @last_name varchar(20),
-    @password varchar(20),
-    @email varchar(50)
-AS
-	BEGIN TRANSACTION	
-    
-	IF EXISTS (
-        SELECT 1
-        FROM userAccount
-        WHERE email = @email
-    )
-    BEGIN
-        ROLLBACK TRANSACTION;
-		THROW 5000, 'Duplicated Email.', 1;
-        RETURN;
-    END
-    
-    INSERT INTO userAccount (first_name, last_name, password, email) 
-    VALUES (@first_name, @last_name, @password, @email)
-    
-    COMMIT TRANSACTION;
+CREATE TABLE product (
+    product_id INT IDENTITY(1,1) PRIMARY KEY,
+    user_id INT NOT NULL,
+    product_name VARCHAR(255) NOT NULL,
+    product_description VARCHAR(255) NOT NULL,
+    product_tag VARchAR(255) NOT NULL,
+    publish_date DATE NOT NULL,
+    price INT NOT NULL,
+    CONSTRAINT fk_product_user_id FOREIGN KEY (user_id) REFERENCES userAccount(user_id)
+);
+
+GO
+CREATE TABLE learningmaterial (
+    learningmaterial_id INT IDENTITY(1,1) PRIMARY KEY,
+    user_id INT NOT NULL,
+    learningmaterial_name VARCHAR(255) NOT NULL,
+    learningmaterial_description VARCHAR(255) NOT NULL,
+    subject_code VARCHAR(7) NOT NULL,
+    publish_date DATE NOT NULL,
+    review TEXT NOT NULL,
+    CONSTRAINT fk_learningmaterial_user_id FOREIGN KEY (user_id) REFERENCES userAccount(user_id)
+);
+
+GO
+CREATE TABLE categories (
+    tag_id INT PRIMARY KEY IDENTITY(1,1),
+    tag_name NVARCHAR(50) NOT NULL
+);
+
+GO
+CREATE TABLE game (
+    game_id INT PRIMARY KEY,
+    game_name NVARCHAR(50) NOT NULL,
+    game_link NVARCHAR(200), --link embed game
+    tag_id INT,
+    FOREIGN KEY (tag_id) REFERENCES categories(tag_id)
+);
 
 GO
 CREATE PROCEDURE getAllFriends
@@ -138,13 +153,3 @@ BEGIN
         OR (f.receiver = u.user_id AND f.sender = @userId)
     WHERE f.status = 'accepted';
 END;
-	
-insert into userAccount values ('Nguyen', 'Tuan' , '123', 'anhtuan123@gmail.com', 'default_avt.jpg', 'student', 'false')
-insert into userAccount values ('Ha', 'Phan', '123', 'haphan123@gmail.com', 'default_avt.jpg', 'staft', 'false')
-insert into userAccount values ('Thanh', 'Tung', '123', 'thanhtung123@gmail.com', 'default_avt.jpg', 'student', 'false')
-
-
-Go
-Select * from userAccount
-
-EXEC getAllFriends 1;

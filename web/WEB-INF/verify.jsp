@@ -16,7 +16,7 @@
     <body>
         <div class="container">
             <h2>Enter the code from your email</h2>
-            <p>Let us know that this email address belongs to you. Enter the code from the email sent to ${sessionScope.user['user.email']}.</p>
+            <p>Let us know that this email address belongs to you. Enter the code we sent to the email</p>
             <form method="post" action="/FUNET/verify">
                 <input type="text" id="code" name="otp-code" placeholder="FUNET-">
                 <div class="button-group">
@@ -26,4 +26,5 @@
             </form>
         </div>
     </body>
+    <script src="assets/js/verify.js"></script>
 </html>

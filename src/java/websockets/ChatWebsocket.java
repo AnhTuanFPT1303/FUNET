@@ -1,5 +1,6 @@
 package websockets;
 
+import dao.MessageDao;
 import jakarta.websocket.OnClose;
 import jakarta.websocket.OnMessage;
 import jakarta.websocket.OnOpen;
@@ -24,12 +25,14 @@ public class ChatWebsocket {
         this.user_id = user_id;
         this.session = session;
         chatService.register(this);
+        
     }
 
     @OnMessage
     public void onMessage(String messageJson, Session session) throws DecodeException, Exception {
         Message message = messageDecoder.decode(messageJson);
         chatService.sendMessageToOneUser(message);
+        MessageDao.getInstance().saveMessage(message);
     }
 
     @OnClose

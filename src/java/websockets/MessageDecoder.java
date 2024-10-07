@@ -11,10 +11,12 @@ public class MessageDecoder implements Decoder.Text<Message> {
     @Override
     public Message decode(String s) throws DecodeException {
         JSONObject jsonObject = new JSONObject(s);
-        int fromUser = jsonObject.getInt("fromUser");
-        int toUser = jsonObject.getInt("toUser");
-        String content = jsonObject.getString("content");
-        return new Message(fromUser, toUser, content);
+        int sender = jsonObject.getInt("sender");
+        int receiver = jsonObject.getInt("receiver");
+        String message = jsonObject.getString("message");
+        String type = jsonObject.getString("type");
+        int groupId = jsonObject.getInt("groupId");
+        return new Message(sender, receiver, message, type, groupId);
     }
 
     @Override

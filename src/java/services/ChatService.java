@@ -38,9 +38,9 @@ public class ChatService {
         if (message == null) {
             throw new IllegalArgumentException("Message cannot be null");
         }
-
+        // Broadcast the message to both the receiver and the sender
         chatWebsockets.stream()
-                .filter(chatWebsocket -> chatWebsocket.getUserId() == message.getToUser())
+                .filter(chatWebsocket -> chatWebsocket.getUserId() == message.getReceiver())
                 .forEach(chatWebsocket -> {
                     try {
                         if (chatWebsocket.getSession().isOpen()) {
@@ -49,10 +49,8 @@ public class ChatService {
                         } else {
                             System.err.println("WebSocket session is closed for user: " + chatWebsocket.getUserId());
                         }
-                    } catch (IOException e) {
+                    } catch (IOException | EncodeException e) {
                         e.printStackTrace();
-                    } catch (EncodeException ex) {
-                        Logger.getLogger(ChatService.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 });
     }

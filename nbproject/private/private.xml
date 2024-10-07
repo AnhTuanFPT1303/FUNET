@@ -3,42 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/FUNET/FUNET/web/WEB-INF/search.jsp</file>
-            <file>file:/E:/FUNET/FUNET/web/assets/css/welcome.css</file>
-            <file>file:/E:/FUNET/FUNET/web/WEB-INF/friendRequest.jsp</file>
-            <file>file:/E:/FUNET/FUNET/src/java/util/SmtpProtocol.java</file>
-            <file>file:/E:/FUNET/FUNET/src/java/controller/GoogleValidate.java</file>
-            <file>file:/E:/FUNET/FUNET/web/WEB-INF/verify.jsp</file>
-            <file>file:/E:/FUNET/FUNET/src/java/controller/VerifyServlet.java</file>
-            <file>file:/E:/FUNET/FUNET/src/java/util/sqlConnect.java</file>
-            <file>file:/E:/FUNET/FUNET/src/java/controller/likeServlet.java</file>
-            <file>file:/E:/FUNET/FUNET/src/java/dao/FriendDAO.java</file>
-            <file>file:/E:/FUNET/FUNET/web/profile.jsp</file>
-            <file>file:/E:/FUNET/FUNET/web/assets/js/login-register.js</file>
-            <file>file:/E:/FUNET/FUNET/web/assets/css/search.css</file>
-            <file>file:/E:/FUNET/FUNET/src/java/controller/GoogleLogin.java</file>
-            <file>file:/E:/FUNET/FUNET/web/WEB-INF/forgotPassword.jsp</file>
-            <file>file:/E:/FUNET/FUNET/src/java/controller/signupServlet.java</file>
-            <file>file:/E:/FUNET/FUNET/src/java/controller/friendRequestServlet.java</file>
-            <file>file:/E:/FUNET/FUNET/src/java/dao/userDAO.java</file>
-            <file>file:/E:/FUNET/FUNET/src/java/controller/MessageServlet.java</file>
-            <file>file:/E:/FUNET/FUNET/web/WEB-INF/userpage.jsp</file>
             <file>file:/E:/FUNET/FUNET/src/java/dao/MessageDao.java</file>
-            <file>file:/E:/FUNET/FUNET/web/assets/css/home.css</file>
-            <file>file:/E:/FUNET/FUNET/web/assets/css/bootstrap.css</file>
-            <file>file:/E:/FUNET/FUNET/web/assets/js/websocketChat.js</file>
-            <file>file:/E:/FUNET/FUNET/web/assets/css/style.css</file>
-            <file>file:/E:/FUNET/FUNET/web/WEB-INF/newPassword.jsp</file>
-            <file>file:/E:/FUNET/FUNET/web/WEB-INF/home.jsp</file>
-            <file>file:/E:/FUNET/FUNET/src/java/controller/loginServlet.java</file>
-            <file>file:/E:/FUNET/FUNET/src/java/dao/postDAO.java</file>
-            <file>file:/E:/FUNET/FUNET/web/assets/profile_avt/default_avt.jpg</file>
-            <file>file:/E:/FUNET/FUNET/src/java/filter/SessionCheckFilter.java</file>
-            <file>file:/E:/FUNET/FUNET/web/assets/css/userpage.css</file>
+            <file>file:/E:/FUNET/FUNET/web/WEB-INF/friendRequest.jsp</file>
             <file>file:/E:/FUNET/FUNET/web/WEB-INF/web.xml</file>
-            <file>file:/E:/FUNET/FUNET/web/WEB-INF/chatbox.jsp</file>
-            <file>file:/E:/FUNET/FUNET/web/assets/js/Validation.js</file>
-            <file>file:/E:/FUNET/FUNET/web/assets/css/test.css</file>
+            <file>file:/E:/FUNET/FUNET/web/assets/js/chatbox.js</file>
+            <file>file:/E:/FUNET/FUNET/web/WEB-INF/profile.jsp</file>
             <file>file:/E:/FUNET/FUNET/web/WEB-INF/login.jsp</file>
         </group>
     </open-files>

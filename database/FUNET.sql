@@ -12,6 +12,8 @@ DROP TABLE IF EXISTS post;
 DROP TABLE IF EXISTS conversation_member;
 DROP TABLE IF EXISTS userAccount;
 DROP TABLE IF EXISTS conversation;
+DROP TABLE IF EXISTS product
+DROP TABLE IF EXISTS learningmaterial
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS game;
 drop procedure if exists getAllFriends
@@ -83,7 +85,7 @@ CREATE TABLE message (
 	message_id INT IDENTITY(1,1) PRIMARY KEY,
 	sender INT NOT NULL,
 	receiver INT,
-	conversation_id INT NOT NULL,
+	conversation_id INT NULL,
 	message_text NVARCHAR(400) NOT NULL,
 	message_type VARCHAR(40) NOT NULL,
 	sent_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -153,3 +155,5 @@ BEGIN
         OR (f.receiver = u.user_id AND f.sender = @userId)
     WHERE f.status = 'accepted';
 END;
+
+SELECT sender, message_text, receiver FROM message WHERE (sender = 1 AND receiver = 0) OR (sender = 0 AND receiver = 1) ORDER BY sent_date ASC;

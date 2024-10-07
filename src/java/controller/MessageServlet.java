@@ -12,6 +12,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.Message;
 import java.util.List;
 
@@ -47,7 +48,7 @@ public class MessageServlet extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -58,10 +59,11 @@ public class MessageServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int userId = Integer.parseInt(request.getParameter("userId"));
+        int sender = Integer.parseInt(request.getParameter("sender"));
+        int receiver = Integer.parseInt(request.getParameter("receiver"));
 
         try {
-            List<Message> messages = MessageDao.getInstance().findAllMessagesBySenderAndReceiver((int) request.getSession().getAttribute("user_id"), userId);
+            List<Message> messages = MessageDao.getInstance().findAllMessagesBySenderAndReceiver(sender, receiver);
 
             // Convert messages to JSON
             String json = new Gson().toJson(messages);
@@ -71,7 +73,9 @@ public class MessageServlet extends HttpServlet {
             response.setCharacterEncoding("UTF-8");
 
             // Send JSON response back
-            response.getWriter().write(json);
+            PrintWriter printWriter = response.getWriter();
+            printWriter.print(json);
+            printWriter.flush();
         } catch (Exception e) {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -90,21 +94,7 @@ public class MessageServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int sender = Integer.parseInt(request.getParameter("sender"));
-        int receiver = Integer.parseInt(request.getParameter("receiver"));
-        String messageText = request.getParameter("message");
 
-        Message message = new Message(sender, receiver, messageText);
-
-        try {
-            MessageDao.getInstance().saveMessage(message);
-            // Optionally, you can return a success response to the client
-            response.getWriter().write("Message saved successfully");
-        } catch (Exception e) {
-            // Handle exceptions appropriately
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write("Failed to save message: " + e.getMessage());
-        }
     }
 
     /**

@@ -525,7 +525,7 @@ body {
                         
             <div class="col-4">
                 <div class="friendList">
-
+s
                 </div>
             </div>
         </div></div>

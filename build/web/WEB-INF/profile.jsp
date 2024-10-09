@@ -17,6 +17,31 @@
     </head>
 
     <body>
+        <div class="popop-background"></div>
+        <div class="thim-div">
+            <div class="hadr-thim-bar">
+                <span id="thim-button" class="fas fa-caret-right"></span>
+                <p>Background</p>
+                <div class="bg-color">
+                    <div id="bg-c-1" class="bg-color-1"></div>
+                    <div id="bg-c-2" class="bg-color-2"></div>
+                    <div id="bg-c-3" class="bg-color-3"></div>
+                    <div id="bg-c-4" class="bg-color-4"></div>
+                    <div id="bg-c-5" class="bg-color-5"></div>
+                    <div id="bg-c-6" class="bg-color-6"></div>
+                </div>
+                <br>
+                <p>Text Color</p>
+                <div class="bg-color">
+                    <div id="txt-c-1" class="bg-color-1"></div>
+                    <div id="txt-c-2" class="bg-color-2"></div>
+                    <div id="txt-c-3" class="bg-color-3"></div>
+                    <div id="txt-c-4" class="bg-color-4"></div>
+                    <div id="txt-c-5" class="bg-color-5"></div>
+                    <div id="txt-c-6" class="bg-color-6"></div>
+                </div>
+            </div>
+        </div>
         <section class="cover-image-section">
             <header class="cover-hader-site">
                 <img src="assets/profile_avt/${user.profile_pic}">
@@ -213,7 +238,7 @@
                             </div>
                         </div>
                     </div>
-                    <!--POST LOAD HERE-->
+                    <!--                                POST LOAD HERE                         -->
                     <c:forEach items="${posts}" var="post">
                         <div class="box-design post-div" data-post-id="${post.post_id}" data-liked="${post.likedByCurrentUser}">
                             <div class="post-information">
@@ -236,58 +261,57 @@
                                 </div>
                                 <div class="user-info">
                                     <h2><a href=""#>${post.first_name} ${post.last_name}</a></h2>
-                                    <p><a href="#"><fmt:formatDate value="${post.post_time}" pattern="dd-MM" /></a></p>
+                                    <div class="privacy-info"> 
+                                        <p><a href="#"><fmt:formatDate value="${post.post_time}" pattern="dd-MM" /></a></p>
+                                        <i id="public-btn-i" class="fas fa-user-friends"></i>
+                                    </div>
+                                    <span>
+                                        <div class="Select-audience">
+                                            <div class="header-popap">
+                                                <p class="h-pop">Select audience</p>
+                                                <span id="popup-close-btn" class="fas fa-times"></span>
+                                            </div>
+
+                                            <div class="content-popaap">
+                                                <ul>
+                                                    <li id="public-btn">
+                                                        <div class="icon-div">
+                                                            <i class="fas fa-globe-europe"></i>
+                                                        </div>
+                                                        <div class="text-aria">
+                                                            <h2>Public</h2>
+                                                            <p>Anyone on or off Facebook</p>
+                                                            <i id="public-li-icon" class="far fa-circle"></i>
+                                                        </div>
+                                                    </li>
+
+                                                    <li class="activ-li-div" id="friends-btn">
+                                                        <div class="icon-div">
+                                                            <i class="fas fa-user-friends frind-icon"></i>
+                                                        </div>
+                                                        <div class="text-aria">
+                                                            <h2>Friends</h2>
+                                                            <p>Your friends on Facebook</p>
+                                                            <i id="friends-li-icon"
+                                                               class="far fa-dot-circle activ-li-icon"></i>
+                                                        </div>
+                                                    </li>
+
+                                                    <li id="lock-btn">
+                                                        <div class="icon-div">
+                                                            <i class="fas fa-lock"></i>
+                                                        </div>
+                                                        <div class="text-aria">
+                                                            <h2 class="onlu-me">Only Me</h2>
+                                                            <i id="lock-li-icon" class="far fa-circle"></i>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </span>
                                 </div>
                                 <span class="thre-dto-btn fas fa-ellipsis-h"></span>
-                                <%-- Privacy setting
-                                <span>
-                                    <i id="public-btn-i" class="fas fa-user-friends"></i>
-
-                                    <div class="Select-audience">
-                                        <div class="header-popap">
-                                            <p class="h-pop">Select audience</p>
-                                            <span id="popup-close-btn" class="fas fa-times"></span>
-                                        </div>
-
-                                        <div class="content-popaap">
-                                            <ul>
-                                                <li id="public-btn">
-                                                    <div class="icon-div">
-                                                        <i class="fas fa-globe-europe"></i>
-                                                    </div>
-                                                    <div class="text-aria">
-                                                        <h2>Public</h2>
-                                                        <p>Anyone on or off Facebook</p>
-                                                        <i id="public-li-icon" class="far fa-circle"></i>
-                                                    </div>
-                                                </li>
-
-                                                <li class="activ-li-div" id="friends-btn">
-                                                    <div class="icon-div">
-                                                        <i class="fas fa-user-friends frind-icon"></i>
-                                                    </div>
-                                                    <div class="text-aria">
-                                                        <h2>Friends</h2>
-                                                        <p>Your friends on Facebook</p>
-                                                        <i id="friends-li-icon"
-                                                           class="far fa-dot-circle activ-li-icon"></i>
-                                                    </div>
-                                                </li>
-
-                                                <li id="lock-btn">
-                                                    <div class="icon-div">
-                                                        <i class="fas fa-lock"></i>
-                                                    </div>
-                                                    <div class="text-aria">
-                                                        <h2 class="onlu-me">Only Me</h2>
-                                                        <i id="lock-li-icon" class="far fa-circle"></i>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </span>
-                                --%>
                             </div>
                             <p class="post-text-show">${post.body}</p>
                             <c:if test="${not empty post.image_path}">
@@ -356,5 +380,6 @@
                 </section>
             </div>
         </section>
+        <script src="assets/js/profile.js"></script>
     </body>
 </html>

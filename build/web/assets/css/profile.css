@@ -20,10 +20,10 @@ body {
     display: none;
 }
 
-
 .Select-audience {
     position: absolute;
     left: 20%;
+    height: 270px;
     top: 50%;
     transform: translate(-50%, -50%);
     width: 420px;
@@ -67,7 +67,7 @@ body {
     width: 98%;
     margin: auto;
     height: 210px;
-    overflow-y: scroll;
+    overflow-y: hidden;
     background-color: #fff5;
 }
 .content-popaap ul {
@@ -757,6 +757,7 @@ body {
     padding: 10px;
 }
 
+
 .user-info h2 {
     font-size: 14px;
     margin-left: 5px;
@@ -793,27 +794,35 @@ body {
     color: #333;
 }
 
-.post-three-dot {
+.privacy-info {
+    display:flex;    
+}
+
+.privacy-info i{
+    font-size: 9px;  
+    margin-left: 2%;
+    margin-top: 3px;
+}
+
+.user-info {
     position: relative;
 }
-.post-three-dot .thre-dto-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 10px;
-    width: 25px;
+.thre-dto-btn {
+    margin-top: 20%;
+    width: 24px;
     height: 25px;
     border-radius: 10px;
     background-color: #fff;
-    font-size: 14px;
+    font-size: 16px;
     color: #333;
     padding: 5px 5px;
     box-sizing: border-box;
     overflow: hidden;
     cursor: pointer;
 }
-.post-three-dot .thre-dto-btn:hover {
-    background-color: #E4E6E9;
+
+.thre-dto-btn:hover {
+	background-color: #E4E6E9;
 }
 
 .post-div {

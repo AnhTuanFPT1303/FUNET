@@ -22,7 +22,6 @@ import model.User;
  */
 public class GoogleValidate extends HttpServlet {
 
-    private userDAO dao = userDAO.getInstance();    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -61,6 +60,7 @@ public class GoogleValidate extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        userDAO dao = new userDAO();
         String code = request.getParameter("code");
         GoogleLogin ggLogin = new GoogleLogin();
         User user = ggLogin.getUserInfo(ggLogin.getToken(code)); // Get user data from Google

@@ -24,8 +24,6 @@ import model.User;
 @MultipartConfig
 public class userpageServlet extends HttpServlet {
 
-    private userDAO userDao = userDAO.getInstance();    
-    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
@@ -45,9 +43,10 @@ public class userpageServlet extends HttpServlet {
             userId = currentUser.getUser_id();
         }
 
+        userDAO userDAO = new userDAO();
         User user;
         try {
-            user = userDao.getUserById(userId);
+            user = userDAO.getUserById(userId);
             if (user == null) {
                 request.setAttribute("errorMessage", "User not found");
                 request.getRequestDispatcher("error.jsp").forward(request, response);

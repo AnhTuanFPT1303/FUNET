@@ -24,7 +24,6 @@ import util.SmtpProtocol;
  */
 public class VerifyServlet extends HttpServlet {
 
-    private userDAO userDao = userDAO.getInstance();    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -94,6 +93,7 @@ public class VerifyServlet extends HttpServlet {
                     request.getRequestDispatcher("WEB-INF/newPassword.jsp").forward(request, response);
                 } else {
                     Map<String, String> pendingUserInfo = (Map<String, String>) session.getAttribute("pendingUserInfo");
+                    userDAO userDao = new userDAO();
                     User user = new User();
                     user.setEmail(email);
                     user.setFirst_name(pendingUserInfo.get("firstName"));

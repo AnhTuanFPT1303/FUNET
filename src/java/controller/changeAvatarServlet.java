@@ -25,8 +25,6 @@ import model.User;
 @MultipartConfig
 public class changeAvatarServlet extends HttpServlet {
 
-    private userDAO userDao = userDAO.getInstance();    
-    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -104,8 +102,10 @@ public class changeAvatarServlet extends HttpServlet {
 
         if (!profile_pic.isEmpty()) {
             user.setProfile_pic(profile_pic);
+
+            userDAO UserDAO = new userDAO();
             try {
-                userDao.changeAvatar(user);
+                UserDAO.changeAvatar(user);
                 session.setAttribute("user", user);
             } catch (Exception e) {
                 e.printStackTrace();

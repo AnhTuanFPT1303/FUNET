@@ -1,24 +1,22 @@
 package websockets;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.websocket.DecodeException;
 import jakarta.websocket.Decoder;
 import jakarta.websocket.EndpointConfig;
-import java.io.IOException;
-import model.dtos.MessageDTO;
+import model.Message;
 import org.json.JSONObject;
 
-public class MessageDecoder implements Decoder.Text<MessageDTO> {
-
-    private ObjectMapper objectMapper = new ObjectMapper();
+public class MessageDecoder implements Decoder.Text<Message> {
     
     @Override
-    public MessageDTO decode(final String arg0) throws DecodeException {
-        try {
-            return objectMapper.readValue(arg0, MessageDTO.class);
-        } catch (IOException e) {
-            throw new DecodeException(arg0, "Unab   le to decode text to Message", e);
-        }
+    public Message decode(String s) throws DecodeException {
+        JSONObject jsonObject = new JSONObject(s);
+        int sender = jsonObject.getInt("sender");
+        int receiver = jsonObject.getInt("receiver");
+        String message = jsonObject.getString("message");
+        String type = jsonObject.getString("type");
+        int groupId = jsonObject.getInt("groupId");
+        return new Message(sender, receiver, message, type, groupId);
     }
 
     @Override

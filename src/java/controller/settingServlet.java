@@ -11,9 +11,10 @@ import model.User;
 
 public class settingServlet extends HttpServlet {
 
-    private userDAO userDao = userDAO.getInstance();    
+    private userDAO userDao;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        userDao = new userDAO();
         String action = request.getParameter("action");
 
         HttpSession session = request.getSession(false);

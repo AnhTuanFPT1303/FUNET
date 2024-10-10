@@ -1,23 +1,22 @@
 package websockets;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.websocket.EncodeException;
 import jakarta.websocket.Encoder;
 import jakarta.websocket.EndpointConfig;
-import model.dtos.MessageDTO;
+import model.Message;
+import org.json.JSONObject;
 
-public class MessageEncoder implements Encoder.Text<MessageDTO> {
+public class MessageEncoder implements Encoder.Text<Message> {
 
-    private ObjectMapper objectMapper = new ObjectMapper();
-    
     @Override
-    public String encode(MessageDTO message) throws EncodeException {
-        try {
-            return objectMapper.writeValueAsString(message);
-        } catch (JsonProcessingException e) {
-            throw new EncodeException(message, "Unable to encode message", e);
-        }
+    public String encode(Message message) throws EncodeException {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("sender", message.getSender());
+        jsonObject.put("receiver", message.getReceiver());
+        jsonObject.put("message", message.getMessage());
+        jsonObject.put("type", message.getType());
+        jsonObject.put("groupId", message.getGroupId());
+        return jsonObject.toString();
     }
 
     @Override

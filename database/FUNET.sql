@@ -95,7 +95,7 @@ CREATE TABLE message (
 );
 
 GO 
-CREATE TABLE conversation_member (
+CREATE TABLE conversations_users (
 	is_admin BIT NOT NULL,
 	user_id INT,
 	conversation_id INT,
@@ -148,7 +148,7 @@ CREATE PROCEDURE getAllFriends
     @userId INT
 AS
 BEGIN
-    SELECT u.user_id, u.first_name, u.last_name, u.profile_pic, u.role, u.is_banned, f.status
+    SELECT u.user_id, u.first_name, u.last_name, u.profile_pic, f.status
     FROM userAccount u
     INNER JOIN friendship f ON 
         (f.sender = u.user_id AND f.receiver = @userId)

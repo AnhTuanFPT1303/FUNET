@@ -134,14 +134,8 @@ public class FriendDAO {
         cstmt.setInt(1, currUser);
         ResultSet rs = cstmt.executeQuery();
         while (rs.next()) {
-            friendList.add(new User(rs.getInt(1), rs.getString(2), rs.getString(3), null, null, rs.getString(4), rs.getString(5), rs.getBoolean(6)));
+            friendList.add(new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4)));
         }
         return friendList;
-    }
-
-    public static void main(String[] args) throws Exception {
-        FriendDAO dao = new FriendDAO();
-        ArrayList<String> list = dao.getAllFriendRequest(2);
-        System.out.println(list.get(0));
     }
 }

@@ -10,6 +10,8 @@ import jakarta.websocket.server.ServerEndpoint;
 import model.Message;
 import services.ChatService;
 import jakarta.websocket.DecodeException;
+import model.dtos.MessageDTO;
+import services.MessageService;
 
 @ServerEndpoint(value = "/chat/{user_id}")
 public class ChatWebsocket {
@@ -18,7 +20,7 @@ public class ChatWebsocket {
     private int user_id;
 
     ChatService chatService = ChatService.getInstance();
-    MessageDecoder messageDecoder = new MessageDecoder();
+    MessageService messageService = MessageService.getInstance();
 
     @OnOpen
     public void onOpen(@PathParam("user_id") int user_id, Session session) {
@@ -29,10 +31,9 @@ public class ChatWebsocket {
     }
 
     @OnMessage
-    public void onMessage(String messageJson, Session session) throws DecodeException, Exception {
-        Message message = messageDecoder.decode(messageJson);
+    public void onMessage(MessageDTO message, Session session) throws DecodeException, Exception {
         chatService.sendMessageToOneUser(message);
-        MessageDao.getInstance().saveMessage(message);
+        messageService.saveMessage(message);
     }
 
     @OnClose

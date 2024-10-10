@@ -4,8 +4,22 @@ import util.sqlConnect;
 import java.sql.*;
 import model.User;
 import java.util.ArrayList;
+import java.util.List;
 
 public class userDAO {
+
+    private static userDAO instance = null;
+
+    private userDAO() {
+
+    }
+
+    public synchronized static userDAO getInstance() {
+        if (instance == null) {
+            instance = new userDAO();
+        }
+        return instance;
+    }
 
     public boolean login(String email, String password) {
         boolean result = false;
@@ -234,8 +248,85 @@ public class userDAO {
         }
     }
 
-    public static void main(String[] args) {
-        userDAO dao = new userDAO();
-        dao.changePassword("1234", "nguyenhuuanhtuan123@gmail.com");
+    public List<User> findFriendsByKeyWord(int userId, String keyWord) throws SQLException, Exception {
+        String sql = "SELECT u.user_id, u.profile_pic, u.first_name, u.last_name"
+                + "FROM userAccount u "
+                + "WHERE u.user_id != ? AND (u.first_name LIKE ? OR u.last_name LIKE ?)";
+
+        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, userId);
+            ps.setString(2, "%" + keyWord + "%");
+            ps.setString(3, "%" + keyWord + "%");
+
+            ResultSet rs = ps.executeQuery();
+            List<User> users = new ArrayList<>();
+            while (rs.next()) {
+                User user = new User();
+                user.setUser_id(rs.getInt("user_id"));
+                user.setProfile_pic(rs.getString("profile_pic"));
+                user.setFirst_name("first_name");
+                user.setLast_name("last_name");
+                users.add(user);
+            }
+            return users;
+        }
+    }
+
+    public List<User> findUsersByConversationId(int conversationId) throws SQLException, Exception {
+        String sql = "SELECT u.user_id, u.profile_pic, u.last_name, u.first_name, cu.is_admin "
+                + "FROM userAccount u "
+                + "JOIN conversations_users cu ON u.user_id = cu.user_id "
+                + "WHERE cu.conversation_id = ?";
+
+        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, conversationId);
+
+            ResultSet rs = ps.executeQuery();
+            List<User> users = new ArrayList<>();
+            while (rs.next()) {
+                User user = new User();
+                user.setUser_id(rs.getInt("user_id"));
+                user.setProfile_pic(rs.getString("profile_pic"));
+                user.setFirst_name("first_name");
+                user.setLast_name("last_name");
+                user.setAdmin(rs.getBoolean("is_admin"));
+                users.add(user);
+            }
+            return users;
+        }
+    }
+
+    public List<User> findFriendsNotInConversation(int userId, String keyword, int conversationId) throws SQLException, Exception {
+        String sql = "SELECT u2.user_id, u2.profile_pic, u2.last_name, u2.first_name"
+                + "FROM userAccount u1 "
+                + "JOIN friendship f ON u1.user_id = f.receiver "
+                + "JOIN userAccount u2 ON u2.user_id = f.sender "
+                + "WHERE u1.user_id = ? AND f.status = 1 AND (u2.first_name LIKE ? OR u2.last_name LIKE ?) "
+                + "AND u2.user_id NOT IN ( "
+                + "    SELECT u.user_id FROM userAccount u "
+                + "    JOIN conversations_users cu ON u.user_id = cu.user_id "
+                + "    WHERE cu.conversation_id = ? )";
+
+        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, userId);
+            ps.setString(2, "%" + keyword + "%");
+            ps.setString(3, "%" + keyword + "%");
+            ps.setInt(4, conversationId);
+
+            ResultSet rs = ps.executeQuery();
+            List<User> users = new ArrayList<>();
+            while (rs.next()) {
+                User user = new User();
+                user.setUser_id(rs.getInt("user_id"));
+                user.setProfile_pic(rs.getString("profile_pic"));
+                user.setFirst_name("first_name");
+                user.setLast_name("last_name");
+                users.add(user);
+            }
+            return users;
+        }
     }
 }

@@ -15,12 +15,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Message;
 import java.util.List;
+import model.dtos.MessageDTO;
+import services.MessageService;
 
 /**
  *
  * @author HELLO
  */
-public class MessageServlet extends HttpServlet {
+public class ChatRestController extends HttpServlet {
+
+    private MessageService messageService = MessageService.getInstance();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,16 +43,16 @@ public class MessageServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet MessageServlet</title>");
+            out.println("<title>Servlet ChatRestController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet MessageServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ChatRestController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
     }
 
-     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -63,7 +67,7 @@ public class MessageServlet extends HttpServlet {
         int receiver = Integer.parseInt(request.getParameter("receiver"));
 
         try {
-            List<Message> messages = MessageDao.getInstance().findAllMessagesBySenderAndReceiver(sender, receiver);
+            List<MessageDTO> messages = messageService.getAllMessagesBySenderAndReceiver(sender, receiver);
 
             // Convert messages to JSON
             String json = new Gson().toJson(messages);
@@ -83,6 +87,7 @@ public class MessageServlet extends HttpServlet {
         }
     }
 
+
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -94,7 +99,7 @@ public class MessageServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        processRequest(request, response);
     }
 
     /**

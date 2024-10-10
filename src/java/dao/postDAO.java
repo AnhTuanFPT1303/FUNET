@@ -255,9 +255,4 @@ public class postDAO {
         }
 
     }
-
-    public static void main(String[] args) {
-        List<Post> posts;
-        posts = getMyPosts(2);
-    }
 }

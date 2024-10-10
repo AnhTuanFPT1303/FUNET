@@ -18,6 +18,7 @@ import model.User;
  */
 public class loginServlet extends HttpServlet {
 
+    private userDAO userDao = userDAO.getInstance();    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -91,7 +92,6 @@ public class loginServlet extends HttpServlet {
             request.setAttribute("msg", "Re-enter Email & password.");
             request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
         } else {
-            userDAO userDao = new userDAO();
             boolean verify = userDao.login(email, passWord);
 
             if (verify) {

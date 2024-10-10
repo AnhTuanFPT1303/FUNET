@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
 import java.util.ArrayList;
+import java.sql.SQLException;
 
 import model.Message;
 import util.sqlConnect;
@@ -47,21 +48,79 @@ public class MessageDao {
         return listMessages;
     }
 
+    public List<Message> findAllMessagesByConversationId(int id) throws Exception {
+        List<Message> listMessages = new ArrayList<>();
+
+        // Define the SQL query
+        String sql = "SELECT m.sender, m.message_text, m.message_type, m.receiver "
+                + "FROM message m JOIN userAccount u ON u.user_id = m.sender "
+                + "WHERE m.conversation_id = ? "
+                + "ORDER BY m.sent_date ASC";
+        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+
+            // Process the result set
+            while (rs.next()) {
+                int sender = rs.getInt("sender");
+                String messageText = rs.getString("message_text");
+                String messageType = rs.getString("message_type");
+                int receiver = rs.getInt("receiver");
+                Message message = new Message(sender, receiver, messageText, messageType);
+                listMessages.add(message);
+            }
+        } catch (SQLException e) {
+            throw new Exception("Error retrieving messages", e);
+        }
+
+        return listMessages;
+    }
+
+    public Object findAllMessagesByConvesationId(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    
     public void saveMessage(Message message) throws Exception {
+        Connection conn = sqlConnect.getInstance().getConnection();
         int sender = message.getSender();
         int receiver = message.getReceiver();
         String msg = message.getMessage();
-        Connection conn = sqlConnect.getInstance().getConnection();
-        PreparedStatement st = conn.prepareStatement("insert into message values(?,?,NULL,?,?,CURRENT_TIMESTAMP)");
-        st.setInt(1, sender);
-        st.setInt(2, receiver);
-        st.setString(3, msg);
-        st.setString(4, "text");
-        st.executeUpdate();
+        String type = message.getType();
+        int conversations_id = message.getGroupId();
+        String query;
+
+        // Remove spaces for non-text types
+        if (!type.equals("text")) {
+            msg = msg.replaceAll(" ", "");
+        }
+
+        PreparedStatement stmt = null;
+
+        // If it's a one-on-one message (sender and receiver)
+        if (receiver != 0) {
+            query = "INSERT INTO messages(sender, receiver, message, message_type) VALUES(?,?,?,?)";
+            stmt = conn.prepareStatement(query);
+            stmt.setInt(1, sender);        
+            stmt.setInt(2, receiver);     
+            stmt.setString(3, msg);        
+            stmt.setString(4, type);      
+        } // If it's a group message (sender and group)
+        else {
+            query = "INSERT INTO messages(sender, message, message_type, conversations_id) VALUES(?,?,?,?)";
+            stmt = conn.prepareStatement(query);
+            stmt.setInt(1, sender);       
+            stmt.setString(2, msg);         
+            stmt.setString(3, type);        
+            stmt.setInt(4, conversations_id); 
+        }
+
+        // Execute the insert statement
+        stmt.executeUpdate();
+
+        // Close resources
+        stmt.close();
+        conn.close();
     }
 
-    public static void main(String[] args) throws Exception {
-        List<Message> msg = MessageDao.getInstance().findAllMessagesBySenderAndReceiver(1, 2);
-        System.out.println(msg.get(0).getMessage());
-    }
 }

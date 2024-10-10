@@ -221,63 +221,80 @@
                 </section>
                 <section class="post-info">
                     <div class="box-design">
-                        <div class="post-upload-T">
-                            <div class="profil-ing-div">
-                                <a href="#">
-                                    <img src="assets/profile_avt/${user.profile_pic}">
-                                </a>
+                        <form action="/FUNET/home" method="post" enctype="multipart/form-data" onsubmit="document.getElementById('myBtn').disabled = true;" id="commentForm">
+                            <div class="post-upload-T">
+                                <div class="profil-ing-div">
+                                    <a href="#">
+                                        <img src="assets/profile_avt/${user.profile_pic}">
+                                    </a>
+                                </div>
+                                <div class="">
+
+                                    <input type="text" class="form-control" id="body" name="postContent" placeholder="What ya thinking" maxlength="300" oninput="adjustFontSize()">
+                                    <input type="hidden" name="sourceUrl" value="profile">
+
+
+                                </div>
                             </div>
-                            <div class="text-post">
-                                <span>Share your mind</span>
+                            <div class="photo-upload">
+                                <div class="post-upl">
+
+
+                                    <label for="photo-upload">
+                                        <i class="fas fa-cloud-upload-alt"></i> Photo/Video
+                                    </label>
+                                    <input id="photo-upload" type="file" name="image" accept=".jpeg, .png, .jpg" style="display: none;" onchange="updateFileName(this)">
+
+
+
+                                </div>
+                                <div class="post-upl">
+                                    <p><i class="fas fa-flag"></i> Life Event</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="photo-upload">
-                            <div class="post-upl">
-                                <p><i class="fas fa-images"></i> Photo/Video</p>
-                            </div>
-                            <div class="post-upl">
-                                <p><i class="fas fa-flag"></i> Life Event</p>
-                            </div>
-                        </div>
+
+                        </form>
                     </div>
                     <!--                                POST LOAD HERE                         -->
                     <c:forEach items="${posts}" var="post">
                         <div class="box-design post" data-post-id="${post.post_id}" data-liked="${post.likedByCurrentUser}">
                             <div class="post-information">
-                                <%--
-                                <c:if test="${sessionScope.user['user_id'] == user.user_id}">
-                                    <!-- Delete form -->
-                                    <div class="delete-button">
-                                        <form action="deleteServlet" method="post">
-                                            <input type="hidden" name="_method" value="delete">
-                                            <input type="hidden" name="postId" value="${post.post_id}">
-                                            <button type="submit" class="btn btn-danger delete-button">Delete</button>
-                                        </form>
-                                    </div>
-                                </c:if>
-                                --%>
+
+
+
                                 <div class="profil-ing-div post-profile-img">
                                     <a href="#" id="profile-link">
                                         <img src="assets/profile_avt/${user.profile_pic}">
                                     </a>
                                 </div>
                                 <div class="user-info">
-                                    
+
                                     <h2><a href=""#>${post.first_name} ${post.last_name}</a></h2>
-                                    
+
                                     <div class="privacy-info"> 
                                         <p><a href="#"><fmt:formatDate value="${post.post_time}" pattern="dd-MM" /></a></p>
                                         <i id="public-btn-i" class="fas fa-user-friends"></i>
                                     </div>
-                                        
-                                        <c:if test="${post.isShared}">
-                                
-                                <div class="original-post-info d-flex align-items-center">
-                                    <img src="assets/profile_avt/${post.originalPosterAvatar}" class="img-fluid rounded-circle avatar me-2" style="width: 30px; height: 30px;object-fit: cover;">
-                                    <small>${post.originalPosterName}</small>
-                                </div>
-                            </c:if>
-                                        
+
+                                    <c:if test="${post.isShared}">
+
+                                        <div class="original-post-info d-flex align-items-center">
+                                            <img src="assets/profile_avt/${post.originalPosterAvatar}" class="img-fluid rounded-circle avatar me-2" style="width: 30px; height: 30px;object-fit: cover;">
+                                            <small>${post.originalPosterName}</small>
+                                        </div>
+                                    </c:if>
+
+                                    <c:if test="${sessionScope.user['user_id'] == user.user_id}">
+                                        <!-- Delete form -->
+
+                                        <form action="deleteServlet" method="post">
+                                            <input type="hidden" name="_method" value="delete">
+                                            <input type="hidden" name="postId" value="${post.post_id}">
+                                            <button type="submit" class="btn btn-danger delete-button">Delete</button>
+                                        </form>
+
+                                    </c:if>
+
                                     <span>
                                         <div class="Select-audience">
                                             <div class="header-popap">
@@ -329,7 +346,7 @@
                             <p class="post-text-show">${post.body}</p>
                             <c:if test="${not empty post.image_path}">
                                 <div class=div-post-images>
-                                    <img class="post-images" src="assets/post_image/${post.image_path}">
+                                    <img class="post-images" src="assets/post_image/${post.image_path}" style="max-width: 60%">
                                 </div>
                             </c:if>
                             <div class="post-reaction">
@@ -347,7 +364,7 @@
                                     <div>
                                         <p>
                                             <!--Comment count show here-->
-                                         <%--   <a href="#">1 Comments</a> --%>
+                                            <%--   <a href="#">1 Comments</a> --%>
                                             <!--Share count show here-->
                                             <a href="#" class="share-link">${post.shareCount} Shares</a>
                                         </p>
@@ -370,11 +387,11 @@
                                 </div>
                                 <div class="lcs-btn">
                                     <form action="sharePostServlet" method="post" style="display: inline;">
-                                            <input type="hidden" name="postId" value="${post.post_id}">
-                                            <input type="hidden" name="sourceUrl" value="profile">
-                                            <p><button type="submit" class="btn btn-link fas fa-share">Share</button></P>
-                                        </form>
-                                    
+                                        <input type="hidden" name="postId" value="${post.post_id}">
+                                        <input type="hidden" name="sourceUrl" value="profile">
+                                        <p><button type="submit" class="btn btn-link fas fa-share">Share</button></P>
+                                    </form>
+
                                 </div>
                             </div>
                             <div class="comment-site">
@@ -426,19 +443,21 @@
         <script src="assets/js/likeButton.js" defer></script>
 
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const commentForm = document.getElementById('commentForm');
-                const commentInput = document.getElementById('body');
+                                        document.addEventListener('DOMContentLoaded', function () {
+                                            const commentForm = document.getElementById('commentForm');
+                                            const commentInput = document.getElementById('body');
 
-                commentInput.addEventListener('keydown', function (event) {
-                    if (event.key === 'Enter' && !event.shiftKey) {
-                        event.preventDefault();
-                        if (commentInput.value.trim() !== '') {
-                            commentForm.submit();
-                        }
-                    }
-                });
-            });
+                                            commentInput.addEventListener('keydown', function (event) {
+                                                if (event.key === 'Enter' && !event.shiftKey) {
+                                                    event.preventDefault();
+                                                    if (commentInput.value.trim() !== '') {
+                                                        commentForm.submit();
+                                                    }
+                                                }
+                                            });
+                                        });
         </script>
+
+
     </body>
 </html>

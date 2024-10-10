@@ -594,6 +594,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                         <img src="assets/profile_avt/${user.profile_pic}" class="img-fluid rounded-circle avatar" style="margin-right: 10px;">
                         <div class="inputArea">
                             <input type="text" placeholder="What ya thinking..." id="posting">
+                            <input type="hidden" name="sourceUrl" value="home">
                         </div>
                         <hr style="border: 1px solid black; width: 100%;">
                         <div class="btn-document">

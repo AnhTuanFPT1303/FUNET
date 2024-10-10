@@ -240,7 +240,7 @@
                     </div>
                     <!--                                POST LOAD HERE                         -->
                     <c:forEach items="${posts}" var="post">
-                        <div class="box-design post-div" data-post-id="${post.post_id}" data-liked="${post.likedByCurrentUser}">
+                        <div class="box-design post" data-post-id="${post.post_id}" data-liked="${post.likedByCurrentUser}">
                             <div class="post-information">
                                 <%--
                                 <c:if test="${sessionScope.user['user_id'] == user.user_id}">
@@ -260,11 +260,13 @@
                                     </a>
                                 </div>
                                 <div class="user-info">
+
                                     <h2><a href=""#>${post.first_name} ${post.last_name}</a></h2>
                                     <div class="privacy-info"> 
                                         <p><a href="#"><fmt:formatDate value="${post.post_time}" pattern="dd-MM" /></a></p>
                                         <i id="public-btn-i" class="fas fa-user-friends"></i>
                                     </div>
+
                                     <span>
                                         <div class="Select-audience">
                                             <div class="header-popap">
@@ -327,7 +329,8 @@
                                         </div>
                                         <div>
                                             <!--Like count show here-->
-                                            <p class="like-count"><span>11</span></p>
+                                            <p class="like-count"><span>${post.like_count}</span></p>
+
                                         </div>
                                     </div>
                                     <div>
@@ -343,10 +346,12 @@
                             </div>
 
                             <div class="activate">
-                                <div class="lcs-btn lcs-btn_i">
+                                <div class="lcs-btn lcs-btn_i post-rating ${post.likedByCurrentUser ? 'post-rating-selected' : ''}">
                                     <p>
-                                        <i id="post-icon-btn_i" class="far fa-thumbs-up"></i>
-                                        <span id="post-icon-text_i">Like</span>
+                                        <span class="material-icons" style="color: ${post.likedByCurrentUser ? '#1877f2' : '#65676b'};">
+                                            thumb_up
+                                        </span>
+                                        <span class="post-icon-text_i">${post.likedByCurrentUser ? 'Liked' : 'Like'}</span>
                                     </p>
                                 </div>
                                 <div class="lcs-btn">
@@ -381,5 +386,7 @@
             </div>
         </section>
         <script src="assets/js/profile.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script> 
+        <script src="assets/js/likeButton.js" defer></script>
     </body>
 </html>

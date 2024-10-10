@@ -1,5 +1,11 @@
+<%-- 
+    Document   : home
+    Created on : Jun 10, 2024, 3:20:34 PM
+    Author     : bim26
+--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List, model.Post, dao.postDAO, model.User" %>
+<%@ page import="model.Message, dao.MessageDao" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 
@@ -9,19 +15,19 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Social Network</title>
-        <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/css/bootstrap.min.css" rel="stylesheet">    
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <script src="https://kit.fontawesome.com/7f80ec1f7e.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
-        <link rel="stylesheet" type="text/css" href="assets/css/profile.css">
-        <style>
+        <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 
+        <style>
             /*
-            Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-            Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
             */
 
             /* 
@@ -114,8 +120,8 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                width: 50px;
-                height: 50px;
+                width: 40px;
+                height: 40px;
                 background-color: rgb(211, 211, 211);
                 border-radius: 50%;
                 transition: background-color 0.3s ease;
@@ -245,6 +251,7 @@
                 border-radius: 15px;
                 padding: 10px;
                 box-sizing: border-box;
+                margin-top: 30px;
             }
 
             .input {
@@ -292,6 +299,7 @@
                 background-color: #e0e0e0;
                 border-radius: 20px;
 
+
             }
             .overlay {
                 position: fixed;
@@ -299,25 +307,25 @@
                 left: 0;
                 width: 100%;
                 height: 100%;
-                background: rgba(0, 0, 0, 0.5); /* Màu nền mờ */
-                z-index: 10; /* Đặt lên trên các phần tử khác */
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 10;
                 display: flex;
                 justify-content: center;
                 align-items: center;
             }
 
             .form-container {
-                background: white; /* Màu nền cho form */
+                background: white;
                 padding: 20px;
                 border-radius: 10px;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-                z-index: 20; /* Đặt lên trên overlay */
-                max-width: 400px; /* Chiều rộng tối đa của form */
-                width: 100%; /* Chiều rộng 100% */
-                position: absolute; /* Để đặt nó ở giữa */
-                left: 50%; /* Căn giữa theo chiều ngang */
-                top: 50%; /* Căn giữa theo chiều dọc */
-                transform: translate(-50%, -50%); /* Đưa form vào giữa */
+                z-index: 20;
+                max-width: 600px;
+                width: 100%;
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
             }
             .post {
                 height: auto;
@@ -392,9 +400,107 @@
                 }
 
             }
+            .form-container {
+                width: 554px;
+                min-height: 415px;
+                margin: 0 auto;
+                border: 1px solid #e5e5e5;
+                border-radius: 10px;
+                padding: 10px;
+                background-color: #ffffff;
+                font-family: Arial, sans-serif;
+                display: flex;
+                flex-direction: column;
+            }
 
+            .form-title {
+                text-align: center;
+                font-size: 18px;
+                font-weight: bold;
+                margin: 0;
+                height: 15px;
+            }
 
+            .form-header {
+                display: flex;
 
+                margin: 5px 0 10px 40px;
+            }
+
+            .avatar {
+                width: 20px;
+                height: 20px;
+                object-fit: cover;
+                border-radius: 50%;
+            }
+
+            .ava-name {
+                margin-left: 5px;
+                font-size: 14px;
+            }
+
+            .hr-line {
+                border: 0.5px solid black;
+                width: 100%;
+                margin:0;
+               
+            }
+
+            .textarea-container {
+                margin: 0;
+                width: 462px;
+            }
+
+            .form-control {
+                width: 100%;
+                height: 125px;
+                padding: 10px;
+                border-radius: 5px;
+                border: none;
+                resize: none;
+                margin-left:15px;
+                margin-bottom:10px;
+                font-size: 25px;
+                overflow: hidden;
+            }
+            .form-content {
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            .upload-section {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 10px;
+                width: 100%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .upload-div {
+                cursor: pointer;
+                font-size: 14px;
+                color: #007bff;
+                display: flex;
+                align-items: center;
+            }
+
+            .submit-button {
+                width: 100%;
+                padding: 10px;
+                background-color: #007bff;
+                border: none;
+                border-radius: 5px;
+                color: #ffffff;
+                cursor: pointer;
+                margin-top: 40px;
+                align-self: flex-end;
+            }
+
+            .submit-button:disabled {
+                background-color: #e0e0e0;
+            }
         </style>
     </head>
     <body>
@@ -437,8 +543,10 @@
     <div class="user-menu" id="user-menu">
         <div class="user-info">
             <button class="user-info-button">
-                <img src="assets/profile_avt/${user.profile_pic}" class="img-fluid rounded-circle avatar">
-                <span class="mb-0 ms-2 ava-name">${sessionScope.user['first_name']} ${sessionScope.user['last_name']}</span>
+                <a href="profile?userId=${sessionScope.user['user_id']}" class="d-flex align-items-center text-decoration-none text-dark">
+                    <img src="assets/profile_avt/${sessionScope.user['profile_pic']}" class="img-fluid rounded-circle avatar" style="object-fit: cover;">
+                    <p class="mb-0 ms-2 ava-name">${sessionScope.user['first_name']} ${sessionScope.user['last_name']}</p>
+                </a>
             </button>
         </div>
 
@@ -478,13 +586,7 @@
                     <hr style="border: 1px solid black; width: 100%;"><!-- comment -->
 
                     <p>Your ShortCut</p>
-
-
                 </div>
-
-
-
-
             </div>
             <div class="col-4">
                 <div class="post">
@@ -495,7 +597,7 @@
                         </div>
                         <hr style="border: 1px solid black; width: 100%;">
                         <div class="btn-document">
-                            <div class="item" id="photoVideoBtn">Photo/Video</div>
+                            <div class="item" id="photoVideoBtn" >Photo/Video</div>
                             <div class="item" id="fileBtn">File</div>
                         </div>
                     </section>
@@ -504,256 +606,240 @@
                 <div class="overlay" id="overlay" style="display: none;"></div>
 
                 <div class="form-container" id="formContainer" style="display: none;">
-                    <form action="/FUNET/home" method="post" class="mb-4 post-method" enctype="multipart/form-data" id="postForm">
-                        <div class="mb-3">
-                            <textarea class="form-control" id="body" name="postContent" rows="2" placeholder="What ya thinking" maxlength="300"></textarea>
+                    <form action="/FUNET/home" method="post" enctype="multipart/form-data" onsubmit="document.getElementById('myBtn').disabled = true;">
+                        <div class="form-content">
+                            <p class="form-title">Create post</p>
+                            <hr class="hr-line">
+                            <div class="form-header">
+                                <img src="assets/profile_avt/${sessionScope.user['profile_pic']}" class="avatar">
+                                <p class="mb-0 ava-name">${sessionScope.user['first_name']} ${sessionScope.user['last_name']}</p>
+                            </div>
+                            <div class="textarea-container"　id="formContainer">
+                                <textarea class="form-control" id="body" name="postContent" placeholder="What ya thinking" maxlength="300" oninput="adjustFontSize()"></textarea>
+                            </div>
+                            <hr class="hr-line">
+                            <div class="upload-section">
+                                <div class="item">
+                                    <label for="photo-upload">
+                                        <i class="fas fa-cloud-upload-alt"></i> Photo/Video
+                                    </label>
+                                    <input id="photo-upload" type="file" name="image" accept=".jpeg, .png, .jpg" style="display: none;" onchange="updateFileName(this)">
+                                </div>
+                                <div class="item">
+                                    <label for="file-upload">
+                                        <i class="fas fa-file-alt"></i> File
+                                    </label>
+                                    <input id="file-upload" type="file" name="file" accept=".txt, .pdf, .docx" style="display: none;" onchange="updateFileName(this)">
+                                </div>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="file-upload" class="custom-file-upload">
-                                <i class="fas fa-cloud-upload-alt"></i> Choose Image
-                            </label>
-                            <input id="file-upload" type="file" name="image" accept=".jpeg, .png, .jpg" style="display:none;" onchange="updateFileName(this)">
-                            <span id="file-name"></span>
-                        </div>
-                        <button id="myBtn" type="submit" class="btn btn-primary" style="padding: 5px 25px;">Post</button>
+                        <button id="myBtn" type="submit" class="submit-button">Post</button>
                     </form>
                 </div>
+
                 <div>
-                    <c:forEach items="${posts}" var="post">
-                        <div class="box-design post-div" data-post-id="${post.post_id}" data-liked="${post.likedByCurrentUser}">
-                            <div class="post-information">
-                                <%--
-                                <c:if test="${sessionScope.user['user_id'] == user.user_id}">
-                                    <!-- Delete form -->
-                                    <div class="delete-button">
-                                        <form action="deleteServlet" method="post">
-                                            <input type="hidden" name="_method" value="delete">
-                                            <input type="hidden" name="postId" value="${post.post_id}">
-                                            <button type="submit" class="btn btn-danger delete-button">Delete</button>
-                                        </form>
-                                    </div>
-                                </c:if>
-                                --%>
-                                <div class="profil-ing-div post-profile-img">
-                                    <a href="#" id="profile-link">
-                                        <img src="assets/profile_avt/${user.profile_pic}">
-                                    </a>
-                                </div>
-                                <div class="user-info">
-                                    <h2><a href=""#>${post.first_name} ${post.last_name}</a></h2>
-                                    <p><a href="#"><fmt:formatDate value="${post.post_time}" pattern="dd-MM" /></a></p>
-                                </div>
-                                <span class="thre-dto-btn fas fa-ellipsis-h"></span>
-                                <%-- Privacy setting
-                                <span>
-                                    <i id="public-btn-i" class="fas fa-user-friends"></i>
-
-                                    <div class="Select-audience">
-                                        <div class="header-popap">
-                                            <p class="h-pop">Select audience</p>
-                                            <span id="popup-close-btn" class="fas fa-times"></span>
-                                        </div>
-
-                                        <div class="content-popaap">
-                                            <ul>
-                                                <li id="public-btn">
-                                                    <div class="icon-div">
-                                                        <i class="fas fa-globe-europe"></i>
-                                                    </div>
-                                                    <div class="text-aria">
-                                                        <h2>Public</h2>
-                                                        <p>Anyone on or off Facebook</p>
-                                                        <i id="public-li-icon" class="far fa-circle"></i>
-                                                    </div>
-                                                </li>
-
-                                                <li class="activ-li-div" id="friends-btn">
-                                                    <div class="icon-div">
-                                                        <i class="fas fa-user-friends frind-icon"></i>
-                                                    </div>
-                                                    <div class="text-aria">
-                                                        <h2>Friends</h2>
-                                                        <p>Your friends on Facebook</p>
-                                                        <i id="friends-li-icon"
-                                                           class="far fa-dot-circle activ-li-icon"></i>
-                                                    </div>
-                                                </li>
-
-                                                <li id="lock-btn">
-                                                    <div class="icon-div">
-                                                        <i class="fas fa-lock"></i>
-                                                    </div>
-                                                    <div class="text-aria">
-                                                        <h2 class="onlu-me">Only Me</h2>
-                                                        <i id="lock-li-icon" class="far fa-circle"></i>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </span>
-                                --%>
+                    <c:forEach var="post" items="${posts}">
+                        <div class="post mb-4" style="overflow-wrap: break-word" data-post-id="${post.post_id}" data-liked="${post.likedByCurrentUser}">
+                            <div class="post-header">
+                                <img src="assets/profile_avt/${post.profile_pic}" class="img-fluid rounded-circle avatar me-2" style="width: 40px; height: 40px;object-fit: cover;">
+                                <small>${post.first_name} ${post.last_name} -- <fmt:formatDate value="${post.post_time}" pattern="yyyy-MM-dd HH:mm:ss" /></small>
                             </div>
-                            <p class="post-text-show">${post.body}</p>
-                            <c:if test="${not empty post.image_path}">
-                                <div class=div-post-images>
-                                    <img class="post-images" src="assets/post_image/${post.image_path}">
+                            <c:if test="${post.isShared}">
+                                
+                                <div class="original-post-info d-flex align-items-center">
+                                    <img src="assets/profile_avt/${post.originalPosterAvatar}" class="img-fluid rounded-circle avatar me-2" style="width: 30px; height: 30px;object-fit: cover;">
+                                    <small>${post.originalPosterName}</small>
                                 </div>
                             </c:if>
-                            <div class="post-reaction">
-                                <div class="reaction">
-                                    <div class="reaction-count">
-                                        <div class="icon-show mid like-icon-bg">
-                                            <i class="fas fa-thumbs-up"></i>
-                                        </div>
-                                        <div>
-                                            <!--Like count show here-->
-                                            <p class="like-count"><span>11</span></p>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <p>
-                                            <!--Comment count show here-->
-                                            <a href="#">1 Comments</a>
-                                            <!--Share count show here-->
-                                            <a href="#">1 Share</a>
-                                        </p>
-                                    </div>
+                            <p>${post.body}</p> 
+                            <c:if test="${not empty post.image_path}">
+                                <div>
+                                    <img src="assets/post_image/${post.image_path}" style="max-width : 60%">
                                 </div>
+                            </c:if>
 
+
+                            <div class="post-ratings-container">
+                                <div class="post-rating ${post.likedByCurrentUser ? 'post-rating-selected' : ''}">
+                                    <button type="button" style="background: none; border: none; cursor: pointer; padding: 0;">
+                                        <span class="material-icons" style="color: ${post.likedByCurrentUser ? '#1877f2' : '#65676b'};">
+                                            thumb_up
+                                        </span>
+                                    </button>
+                                    <span class="post-rating-count">${post.like_count}</span>
+                                </div>
+                               <%-- <c:if test="${!post.isShared}"> --%>
+                                    <div class="post-share">
+                                        <form action="sharePostServlet" method="post" style="display: inline;">
+                                            <input type="hidden" name="postId" value="${post.post_id}">
+                                            <button type="submit" class="btn btn-link">Share</button>
+                                        </form>
+                                        <span class="post-share-count">${post.shareCount}</span>
+                                    </div>
+                                        <%--   </c:if> --%>
                             </div>
 
-                            <div class="activate">
-                                <div class="lcs-btn lcs-btn_i">
-                                    <p>
-                                        <i id="post-icon-btn_i" class="far fa-thumbs-up"></i>
-                                        <span id="post-icon-text_i">Like</span>
-                                    </p>
-                                </div>
-                                <div class="lcs-btn">
-                                    <p><i class="far fa-comment-alt"></i> Comment</p>
-                                </div>
-                                <div class="lcs-btn">
-                                    <p><i class="fas fa-share"></i> Share</p>
-                                </div>
-                            </div>
-                            <div class="comment-site">
-                                <div class="profil-ing-div">
-                                    <a href="#">
-                                        <img src="assets/profile_avt/${sessionScope.user['profile_pic']}">
-                                    </a>
-                                </div>
-                                <div class="comment-input">
-                                    <input type="text" placeholder="Write a comment…">
-                                    <div class="comment-icon-div">
-                                        <div>
-                                            <i class="far fa-grin-alt"></i>
+                            <div class="post-comments">
+                                <c:forEach var="comment" items="${post.comments}">
+                                    <div class="comment mb-2" style="margin-left: 20px;">
+                                        <div class="comment-header">
+                                            <img src="assets/profile_avt/${comment.profile_pic}" class="img-fluid rounded-circle avatar me-2" style="width: 30px; height: 30px; object-fit: cover;">
+                                            <small><strong>${comment.first_name} ${comment.last_name}</strong></small>
                                         </div>
-                                        <div>
-                                            <i class="fas fa-camera"></i>
+                                        <div class="comment-body">
+                                            <p style="margin-bottom: 0;">${comment.comment_text}</p>
                                         </div>
                                     </div>
-                                </div>
+                                </c:forEach>
                             </div>
 
+
+                            <form action="/FUNET/commentServlet" method="post" class="mb-4 post-method">
+                                <div class="mb-3">
+                                    <textarea class="form-control" id="body" name="commentContent" maxlength="300" rows="2" placeholder="Reply"></textarea>
+                                </div>
+                                <input type="hidden" name="post_id" value="${post.post_id}">
+                                <button type="submit" class="btn btn-primary" style="padding: 5px 25px; margin-top: 5px">Comment</button>
+                            </form>
+
+
+                            <%----%>
                         </div>
+                        <br>
                     </c:forEach>
                 </div>
             </div>
 
             <div class="col-4">
                 <div class="friendList">
-
+                    s
                 </div>
             </div>
-        </div>
-    </div>
+        </div></div>
+
+
+
+
+
+
+
 </div>
 </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/likeButton.js" defer></script>
+
+
 <script>
-                                document.getElementById('messenger-btn').addEventListener('click', function () {
-                                    toggleMenu('messenger-menu', 'messenger-btn');
-                                });
+                                        document.getElementById('messenger-btn').addEventListener('click', function () {
+                                            toggleMenu('messenger-menu', 'messenger-btn');
+                                        });
 
-                                document.getElementById('notification-btn').addEventListener('click', function () {
-                                    toggleMenu('notification-menu', 'notification-btn');
-                                });
+                                        document.getElementById('notification-btn').addEventListener('click', function () {
+                                            toggleMenu('notification-menu', 'notification-btn');
+                                        });
 
-                                document.getElementById('user-btn').addEventListener('click', function () {
-                                    toggleMenu('user-menu', 'user-btn');
-                                });
+                                        document.getElementById('user-btn').addEventListener('click', function () {
+                                            toggleMenu('user-menu', 'user-btn');
+                                        });
 
-                                document.addEventListener('click', function (event) {
-                                    const messengerMenu = document.getElementById('messenger-menu');
-                                    const notificationMenu = document.getElementById('notification-menu');
-                                    const userMenu = document.getElementById('user-menu');
-                                    const messengerBtn = document.getElementById('messenger-btn');
-                                    const notificationBtn = document.getElementById('notification-btn');
-                                    const userBtn = document.getElementById('user-btn');
+                                        document.addEventListener('click', function (event) {
+                                            const messengerMenu = document.getElementById('messenger-menu');
+                                            const notificationMenu = document.getElementById('notification-menu');
+                                            const userMenu = document.getElementById('user-menu');
+                                            const messengerBtn = document.getElementById('messenger-btn');
+                                            const notificationBtn = document.getElementById('notification-btn');
+                                            const userBtn = document.getElementById('user-btn');
 
-                                    if (!messengerMenu.contains(event.target) && !messengerBtn.contains(event.target)) {
-                                        messengerMenu.style.display = 'none';
-                                        messengerBtn.classList.remove('active-button');
-                                    }
-                                    if (!notificationMenu.contains(event.target) && !notificationBtn.contains(event.target)) {
-                                        notificationMenu.style.display = 'none';
-                                        notificationBtn.classList.remove('active-button');
-                                    }
-                                    if (!userMenu.contains(event.target) && !userBtn.contains(event.target)) {
-                                        userMenu.style.display = 'none';
-                                        userBtn.classList.remove('active-button');
-                                    }
-                                });
+                                            if (!messengerMenu.contains(event.target) && !messengerBtn.contains(event.target)) {
+                                                messengerMenu.style.display = 'none';
+                                                messengerBtn.classList.remove('active-button');
+                                            }
+                                            if (!notificationMenu.contains(event.target) && !notificationBtn.contains(event.target)) {
+                                                notificationMenu.style.display = 'none';
+                                                notificationBtn.classList.remove('active-button');
+                                            }
+                                            if (!userMenu.contains(event.target) && !userBtn.contains(event.target)) {
+                                                userMenu.style.display = 'none';
+                                                userBtn.classList.remove('active-button');
+                                            }
+                                        });
 
-                                function toggleMenu(menuId, btnId) {
-                                    const menu = document.getElementById(menuId);
-                                    const button = document.getElementById(btnId);
-                                    const otherMenuIds = ['messenger-menu', 'notification-menu', 'user-menu'].filter(id => id !== menuId);
-                                    const otherButtons = ['messenger-btn', 'notification-btn', 'user-btn'].filter(id => id !== btnId);
+                                        function toggleMenu(menuId, btnId) {
+                                            const menu = document.getElementById(menuId);
+                                            const button = document.getElementById(btnId);
+                                            const otherMenuIds = ['messenger-menu', 'notification-menu', 'user-menu'].filter(id => id !== menuId);
+                                            const otherButtons = ['messenger-btn', 'notification-btn', 'user-btn'].filter(id => id !== btnId);
 
-                                    if (menu.style.display === 'none' || menu.style.display === '') {
-                                        menu.style.display = 'block';
-                                        button.classList.add('active-button');
-                                        otherMenuIds.forEach(id => document.getElementById(id).style.display = 'none');
-                                        otherButtons.forEach(id => document.getElementById(id).classList.remove('active-button'));
-                                    } else {
-                                        menu.style.display = 'none';
-                                        button.classList.remove('active-button');
-                                    }
-                                }
-                                document.addEventListener('DOMContentLoaded', function () {
-                                    const overlay = document.getElementById('overlay');
-                                    const formContainer = document.getElementById('formContainer');
-                                    const postingInput = document.getElementById('posting');
-                                    const photoVideoBtn = document.getElementById('photoVideoBtn');
-                                    const fileBtn = document.getElementById('fileBtn');
-                                    const postForm = document.getElementById('postForm');
+                                            if (menu.style.display === 'none' || menu.style.display === '') {
+                                                menu.style.display = 'block';
+                                                button.classList.add('active-button');
+                                                otherMenuIds.forEach(id => document.getElementById(id).style.display = 'none');
+                                                otherButtons.forEach(id => document.getElementById(id).classList.remove('active-button'));
+                                            } else {
+                                                menu.style.display = 'none';
+                                                button.classList.remove('active-button');
+                                            }
+                                        }
+                                        document.addEventListener('DOMContentLoaded', function () {
+                                            const overlay = document.getElementById('overlay');
+                                            const formContainer = document.getElementById('formContainer');
+                                            const postingInput = document.getElementById('posting');
+                                            const photoVideoBtn = document.getElementById('photoVideoBtn');
+                                            const fileBtn = document.getElementById('fileBtn');
+                                            const postForm = document.getElementById('postForm');
 
-                                    // Hàm hiển thị form
-                                    function showForm() {
-                                        overlay.style.display = 'flex'; // Hiển thị overlay
-                                        formContainer.style.display = 'block'; // Hiển thị form
-                                    }
 
-                                    // Thêm sự kiện click cho input và button
-                                    postingInput.addEventListener('click', showForm);
-                                    photoVideoBtn.addEventListener('click', showForm);
-                                    fileBtn.addEventListener('click', showForm);
+                                            function showForm() {
+                                                overlay.style.display = 'flex';
+                                                formContainer.style.display = 'block';
+                                            }
 
-                                    // Sự kiện submit cho form
-                                    postForm.addEventListener('submit', function (event) {
-                                        event.preventDefault(); // Ngăn chặn hành động gửi form mặc định
-                                        overlay.style.display = 'none'; // Ẩn overlay
-                                        formContainer.style.display = 'none'; // Ẩn form
-                                        // Có thể thêm mã gửi form ở đây nếu cần
-                                        alert('Form đã được gửi'); // Thông báo cho người dùng
-                                    });
-                                });
+
+                                            postingInput.addEventListener('click', showForm);
+                                            photoVideoBtn.addEventListener('click', showForm);
+                                            fileBtn.addEventListener('click', showForm);
+
+
+                                            postForm.addEventListener('submit', function (event) {
+                                                event.preventDefault();
+                                                overlay.style.display = 'none';
+                                                formContainer.style.display = 'none';
+                                                alert('Form đã được gửi');
+                                            });
+                                        });
+                                       
+
+
+                                        document.addEventListener('DOMContentLoaded', function () {
+                                            const textarea = document.getElementById('body');
+                                            const formContainer = document.getElementById('formContainer');
+                                            const baseFormHeight = 415;
+                                            const initialTextareaHeight = 125;
+                                            textarea.addEventListener('input', function () {
+                                                adjustFontSizeAndFormHeight();
+                                            });
+                                            function adjustFontSizeAndFormHeight() {
+                                                const maxLines = 3;
+                                                const initialFontSize = 25;
+                                                const reducedFontSize = 15;
+                                                textarea.style.fontSize = initialFontSize + 'px';
+                                                textarea.style.height = 'auto';
+
+                                                const lineHeight = parseInt(window.getComputedStyle(textarea).lineHeight);
+                                                const lines = Math.floor(textarea.scrollHeight / lineHeight);
+                                                if (lines > maxLines) {
+                                                    textarea.style.fontSize = reducedFontSize + 'px';
+                                                }
+                                                textarea.style.height = textarea.scrollHeight + 'px';
+                                                const textareaExtraHeight = textarea.scrollHeight - initialTextareaHeight;
+                                                formContainer.style.height = (baseFormHeight + textareaExtraHeight) + 'px';
+                                            }
+                                        });
 
 </script>
+
 </body>
 </html>

@@ -51,6 +51,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                 top: 0;
                 z-index: 1000;
                 box-sizing: border-box;
+                position:sticky;
+                index:1000;
             }
 
             .center-buttons {
@@ -59,6 +61,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                 justify-content: center;
                 align-items: center;
                 flex-grow: 1;
+                margin-left: 10%;
 
             }
 
@@ -82,9 +85,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 
 
             .logo {
-                margin-right: 45px;
+
                 font-size: 24px;
                 font-weight: bold;
+
             }
             .search-bar {
                 margin-bottom: 5px;
@@ -94,10 +98,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                 padding: 8px;
                 border: none;
                 border-radius: 15px;
-                height: 30px;
-                width: 400px;
+                height: 35px;
+                width: 250px;
                 transition: width 0.3s ease;
                 outline: 1px solid rgb(133, 130, 130);
+                font-size:15px;
             }
             .center-button:hover {
                 background-color: #CFC6C6;
@@ -109,6 +114,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                 align-items: center;
                 width: 500px;
                 padding-left:330px;
+                justify-content:flex-end;
             }
 
             .icon {
@@ -131,14 +137,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
             }
             .dropdown-menu {
                 display: none;
-                position: absolute;
-                top: 52px;
+                position: fixed;
+
                 right: 20px;
                 width: 360px;
-                height: 700px;
+                height: 500px;
                 background-color: white;
                 color: black;
-                border-radius: 7px;
+                border-radius: 15px;
                 padding: 10px;
                 z-index: 1000;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -187,7 +193,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 
             .user-menu {
                 display: none;
-                position: absolute;
+                position: fixed;
                 top: 50px;
                 right: 20px;
                 width: 360px;
@@ -218,16 +224,17 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
             .container{
                 max-width: 100%;
             }
+            .col-4{
+                display: grid;
+                position: initial;
+                justify-content: end;
+            }
             .RightItem, .UserAvatar{
-                margin-top: 20px;
-                height: 70px;
-                max-width: 350px;
+
+                width: 350px;
+
             }
-            .RightItem {
-                margin-top: 15px;
-                height: 60px;
-                max-width: 350px;
-            }
+
             .UserAvatar:hover{
                 background-color: #e4e6e8;
                 border-radius: 7px;
@@ -246,7 +253,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                 gap:20px;
             }
             .post {
-                height: auto;
+                height: fit-content;
                 background-color: #fff;
                 border-radius: 15px;
                 padding: 10px;
@@ -379,7 +386,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
             }
 
 
-            @media screen and (max-width: 768px) {
+            @media screen and (max-width: 1250px) {
+                .center-buttons{
+                    display:none;
+                }
                 .ava-name{
                     display: none;
                 }
@@ -400,6 +410,30 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                 }
 
             }
+            @media screen and (max-width: 1050px) {
+                .search-bar input {
+                    width:200px;
+
+                }
+
+
+            }
+            @media screen and (max-width: 850px) {
+                .search-bar {
+                    display:none;
+                }
+                .logo{
+                    display:none;
+                }
+                .RightItem{
+                    margin:0;
+                    justify-content: center;
+                }
+            }
+
+
+
+
             .form-container {
                 width: 554px;
                 min-height: 415px;
@@ -426,13 +460,30 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 
                 margin: 5px 0 10px 40px;
             }
-
-            .avatar {
-                width: 20px;
-                height: 20px;
-                object-fit: cover;
-                border-radius: 50%;
+            .head {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
             }
+
+            .form-title {
+                flex-grow: 1;
+                text-align: center;
+                margin: 0;
+            }
+
+            .close-button {
+                width: 30px;
+                height:30px
+                    ;
+                border-radius: 50%;
+                text-align: center;
+            }
+            .close-button:hover{
+                background-color: #cccfd4;
+            }
+
 
             .ava-name {
                 margin-left: 5px;
@@ -443,12 +494,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                 border: 0.5px solid black;
                 width: 100%;
                 margin:0;
-               
+
             }
 
             .textarea-container {
                 margin: 0;
                 width: 462px;
+
             }
 
             .form-control {
@@ -469,6 +521,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                 flex-direction: column;
                 gap: 10px;
             }
+
             .upload-section {
                 display: flex;
                 justify-content: space-between;
@@ -494,7 +547,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                 border-radius: 5px;
                 color: #ffffff;
                 cursor: pointer;
-                margin-top: 40px;
+                margin:0;
                 align-self: flex-end;
             }
 
@@ -505,12 +558,17 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     </head>
     <body>
         <div class="flex-container navbar">
-            <div class="logo" style="">Logo</div>
-            <div class="search-bar">
-                <input type="text" placeholder="Search..." id="search-input">
-            </div>
+            <a href="home" style ="text-decoration:none">   <div class="logo" style="">Logo</div>
+            </a>
+            <form class="" method="get" action="/FUNET/searchServlet" id="searchForm">
+                <div class="search-bar">
+                    <input class="form-control" name="search-name" type="search" placeholder="Searching in FUNET" aria-label="Search" id="search-input">
+
+                </div>
+            </form>
             <div class="center-buttons">
-                <button class="center-button" id="home-btn">
+
+                <button class="center-button" id="home-btn" href="home">
                     <box-icon type='solid' name='home'></box-icon>
                 </button>
                 <button class="center-button" id="video-btn">
@@ -542,14 +600,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     </div>
     <div class="user-menu" id="user-menu">
         <div class="user-info">
-            <button class="user-info-button">
-                <a href="profile?userId=${sessionScope.user['user_id']}" class="d-flex align-items-center text-decoration-none text-dark">
+            <a href="profile?userId=${sessionScope.user['user_id']}" class="d-flex align-items-center text-decoration-none text-dark">
+                <button class="user-info-button">
                     <img src="assets/profile_avt/${sessionScope.user['profile_pic']}" class="img-fluid rounded-circle avatar" style="object-fit: cover;">
                     <p class="mb-0 ms-2 ava-name">${sessionScope.user['first_name']} ${sessionScope.user['last_name']}</p>
-                </a>
-            </button>
+                </button>
+            </a>
         </div>
-
         <div class="menu-item">
             <box-icon name='cog' type='solid'>Settings</box-icon>Settings
         </div>
@@ -570,11 +627,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
         </form>
     </div>
     <div class="container"><div class="row">
-            <div class="col-4">
-                <div class="UserAvatar">
-                    <img src="assets/profile_avt/${user.profile_pic}" class="img-fluid rounded-circle avatar">
-                    <span class="mb-0 ms-2 ava-name">${sessionScope.user['first_name']} ${sessionScope.user['last_name']}</span>        
-                </div>
+            <div class="col-4 position:fixed;">
+                <a href="profile?userId=${sessionScope.user['user_id']}" style="text-decoration:none">
+                    <div class="UserAvatar">
+                        <img src="assets/profile_avt/${user.profile_pic}" class="img-fluid rounded-circle avatar">
+                        <span class="mb-0 ms-2 ava-name">${sessionScope.user['first_name']} ${sessionScope.user['last_name']}</span>        
+                    </div></a>
+
                 <div class="RightItem">
                     <div><i class='fas fa-user-friends' > </i>    Friends</div>
                     <div> <box-icon name='group' type='solid' ></box-icon>    Groups  </div>
@@ -591,7 +650,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
             <div class="col-4">
                 <div class="post">
                     <section class="input">
-                        <img src="assets/profile_avt/${user.profile_pic}" class="img-fluid rounded-circle avatar" style="margin-right: 10px;">
+                        <a href="profile?userId=${sessionScope.user['user_id']}" style="text-decoration:none"  ><img src="assets/profile_avt/${user.profile_pic}"  class="img-fluid rounded-circle avatar" style="margin-right: 10px;"></a> 
                         <div class="inputArea">
                             <input type="text" placeholder="What ya thinking..." id="posting">
                         </div>
@@ -608,10 +667,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                 <div class="form-container" id="formContainer" style="display: none;">
                     <form action="/FUNET/home" method="post" enctype="multipart/form-data" onsubmit="document.getElementById('myBtn').disabled = true;">
                         <div class="form-content">
-                            <p class="form-title">Create post</p>
+                            <div class="head"><p class="form-title">Create post</p>
+                                <button type="button" class="close-button" aria-label="Close">X</button>
+                            </div>
+
                             <hr class="hr-line">
-                            <div class="form-header">
-                                <img src="assets/profile_avt/${sessionScope.user['profile_pic']}" class="avatar">
+                            <div class="form-header">                        <a href="profile?userId=${sessionScope.user['user_id']}" style="text-decoration:none"  ><img src="assets/profile_avt/${sessionScope.user['profile_pic']}" class="avatar"></a> 
+
+
                                 <p class="mb-0 ava-name">${sessionScope.user['first_name']} ${sessionScope.user['last_name']}</p>
                             </div>
                             <div class="textarea-container"　id="formContainer">
@@ -637,87 +700,88 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                     </form>
                 </div>
 
-                <div>
-                    <c:forEach var="post" items="${posts}">
-                        <div class="post mb-4" style="overflow-wrap: break-word" data-post-id="${post.post_id}" data-liked="${post.likedByCurrentUser}">
-                            <div class="post-header">
-                                <img src="assets/profile_avt/${post.profile_pic}" class="img-fluid rounded-circle avatar me-2" style="width: 40px; height: 40px;object-fit: cover;">
-                                <small>${post.first_name} ${post.last_name} -- <fmt:formatDate value="${post.post_time}" pattern="yyyy-MM-dd HH:mm:ss" /></small>
-                            </div>
-                            <c:if test="${post.isShared}">
-                                
-                                <div class="original-post-info d-flex align-items-center">
-                                    <img src="assets/profile_avt/${post.originalPosterAvatar}" class="img-fluid rounded-circle avatar me-2" style="width: 30px; height: 30px;object-fit: cover;">
-                                    <small>${post.originalPosterName}</small>
-                                </div>
-                            </c:if>
-                            <p>${post.body}</p> 
-                            <c:if test="${not empty post.image_path}">
-                                <div>
-                                    <img src="assets/post_image/${post.image_path}" style="max-width : 60%">
-                                </div>
-                            </c:if>
-
-
-                            <div class="post-ratings-container">
-                                <div class="post-rating ${post.likedByCurrentUser ? 'post-rating-selected' : ''}">
-                                    <button type="button" style="background: none; border: none; cursor: pointer; padding: 0;">
-                                        <span class="material-icons" style="color: ${post.likedByCurrentUser ? '#1877f2' : '#65676b'};">
-                                            thumb_up
-                                        </span>
-                                    </button>
-                                    <span class="post-rating-count">${post.like_count}</span>
-                                </div>
-                               <%-- <c:if test="${!post.isShared}"> --%>
-                                    <div class="post-share">
-                                        <form action="sharePostServlet" method="post" style="display: inline;">
-                                            <input type="hidden" name="postId" value="${post.post_id}">
-                                            <input type="hidden" name="sourceUrl" value="home">
-                                            <button type="submit" class="btn btn-link">Share</button>
-                                        </form>
-                                        <span class="post-share-count">${post.shareCount}</span>
-                                    </div>
-                                        <%--   </c:if> --%>
-                            </div>
-
-                            <div class="post-comments">
-                                <c:forEach var="comment" items="${post.comments}">
-                                    <div class="comment mb-2" style="margin-left: 20px;">
-                                        <div class="comment-header">
-                                            <img src="assets/profile_avt/${comment.profile_pic}" class="img-fluid rounded-circle avatar me-2" style="width: 30px; height: 30px; object-fit: cover;">
-                                            <small><strong>${comment.first_name} ${comment.last_name}</strong></small>
-                                        </div>
-                                        <div class="comment-body">
-                                            <p style="margin-bottom: 0;">${comment.comment_text}</p>
-                                        </div>
-                                    </div>
-                                </c:forEach>
-                            </div>
-
-
-                            <form action="/FUNET/commentServlet" method="post" class="mb-4 post-method">
-                                <div class="mb-3">
-                                    <textarea class="form-control" id="body" name="commentContent" maxlength="300" rows="2" placeholder="Reply"></textarea>
-                                </div>
-                                <input type="hidden" name="sourceUrl" value="home">
-                                <input type="hidden" name="post_id" value="${post.post_id}">
-                                <button type="submit" class="btn btn-primary" style="padding: 5px 25px; margin-top: 5px">Comment</button>
-                            </form>
-
-
-                            <%----%>
+            </div>
+            <div>
+                <c:forEach var="post" items="${posts}">
+                    <div class="post mb-4" style="overflow-wrap: break-word" data-post-id="${post.post_id}" data-liked="${post.likedByCurrentUser}">
+                        <div class="post-header">
+                            <img src="assets/profile_avt/${post.profile_pic}" class="img-fluid rounded-circle avatar me-2" style="width: 40px; height: 40px;object-fit: cover;">
+                            <small>${post.first_name} ${post.last_name} -- <fmt:formatDate value="${post.post_time}" pattern="yyyy-MM-dd HH:mm:ss" /></small>
                         </div>
-                        <br>
-                    </c:forEach>
-                </div>
-            </div>
+                        <c:if test="${post.isShared}">
 
-            <div class="col-4">
-                <div class="friendList">
-                    s
-                </div>
+                            <div class="original-post-info d-flex align-items-center">
+                                <img src="assets/profile_avt/${post.originalPosterAvatar}" class="img-fluid rounded-circle avatar me-2" style="width: 30px; height: 30px;object-fit: cover;">
+                                <small>${post.originalPosterName}</small>
+                            </div>
+                        </c:if>
+                        <p>${post.body}</p> 
+                        <c:if test="${not empty post.image_path}">
+                            <div>
+                                <img src="assets/post_image/${post.image_path}" style="max-width : 60%">
+                            </div>
+                        </c:if>
+
+
+                        <div class="post-ratings-container">
+                            <div class="post-rating ${post.likedByCurrentUser ? 'post-rating-selected' : ''}">
+                                <button type="button" style="background: none; border: none; cursor: pointer; padding: 0;">
+                                    <span class="material-icons" style="color: ${post.likedByCurrentUser ? '#1877f2' : '#65676b'};">
+                                        thumb_up
+                                    </span>
+                                </button>
+                                <span class="post-rating-count">${post.like_count}</span>
+                            </div>
+                            <%-- <c:if test="${!post.isShared}"> --%>
+                            <div class="post-share">
+                                <form action="sharePostServlet" method="post" style="display: inline;">
+                                    <input type="hidden" name="postId" value="${post.post_id}">
+                                    <input type="hidden" name="sourceUrl" value="home">
+                                    <button type="submit" class="btn btn-link">Share</button>
+                                </form>
+                                <span class="post-share-count">${post.shareCount}</span>
+                            </div>
+                            <%--   </c:if> --%>
+                        </div>
+
+                        <div class="post-comments">
+                            <c:forEach var="comment" items="${post.comments}">
+                                <div class="comment mb-2" style="margin-left: 20px;">
+                                    <div class="comment-header">
+                                        <img src="assets/profile_avt/${comment.profile_pic}" class="img-fluid rounded-circle avatar me-2" style="width: 30px; height: 30px; object-fit: cover;">
+                                        <small><strong>${comment.first_name} ${comment.last_name}</strong></small>
+                                    </div>
+                                    <div class="comment-body">
+                                        <p style="margin-bottom: 0;">${comment.comment_text}</p>
+                                    </div>
+                                </div>
+                            </c:forEach>
+                        </div>
+
+
+                        <form action="/FUNET/commentServlet" method="post" class="mb-4 post-method">
+                            <div class="mb-3">
+                                <textarea class="form-control" id="body" name="commentContent" maxlength="300" rows="2" placeholder="Reply"></textarea>
+                            </div>
+                            <input type="hidden" name="sourceUrl" value="home">
+                            <input type="hidden" name="post_id" value="${post.post_id}">
+                            <button type="submit" class="btn btn-primary" style="padding: 5px 25px; margin-top: 5px">Comment</button>
+                        </form>
+
+
+                        <%----%>
+                    </div>
+                    <br>
+                </c:forEach>
             </div>
-        </div></div>
+        </div>
+
+        <div class="col-4">
+            <div class="friendList">
+
+            </div>
+        </div>
+    </div></div>
 
 
 
@@ -735,6 +799,18 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 
 
 <script>
+                                        document.addEventListener('DOMContentLoaded', function () {
+                                            const searchInput = document.getElementById('search-input');
+                                            const searchForm = document.getElementById('searchForm');
+
+                                            searchInput.addEventListener('keypress', function (event) {
+                                                if (event.key === 'Enter') {
+                                                    event.preventDefault();
+                                                    searchForm.submit();
+                                                }
+                                            });
+                                        });
+
                                         document.getElementById('messenger-btn').addEventListener('click', function () {
                                             toggleMenu('messenger-menu', 'messenger-btn');
                                         });
@@ -791,28 +867,35 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                                             const postingInput = document.getElementById('posting');
                                             const photoVideoBtn = document.getElementById('photoVideoBtn');
                                             const fileBtn = document.getElementById('fileBtn');
-                                            const postForm = document.getElementById('postForm');
-
+                                            const closeButton = document.querySelector('.close-button');
 
                                             function showForm() {
                                                 overlay.style.display = 'flex';
                                                 formContainer.style.display = 'block';
                                             }
 
+                                            function hideForm() {
+                                                overlay.style.display = 'none';
+                                                formContainer.style.display = 'none';
+                                            }
 
                                             postingInput.addEventListener('click', showForm);
                                             photoVideoBtn.addEventListener('click', showForm);
                                             fileBtn.addEventListener('click', showForm);
 
-
+                                            closeButton.addEventListener('click', hideForm);
+                                            overlay.addEventListener('click', function (event) {
+                                                if (event.target === overlay) {
+                                                    hideForm();
+                                                }
+                                            });
                                             postForm.addEventListener('submit', function (event) {
                                                 event.preventDefault();
-                                                overlay.style.display = 'none';
-                                                formContainer.style.display = 'none';
-                                                alert('Form đã được gửi');
+                                                hideForm();
+
                                             });
                                         });
-                                       
+
 
 
                                         document.addEventListener('DOMContentLoaded', function () {

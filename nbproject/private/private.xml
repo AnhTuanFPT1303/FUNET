@@ -3,28 +3,38 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/FUNET/FUNET/src/java/model/Post.java</file>
-            <file>file:/E:/FUNET/FUNET/web/WEB-INF/friendRequest.jsp</file>
+            <file>file:/E:/FUNET/FUNET/src/java/services/ConversationService.java</file>
             <file>file:/E:/FUNET/FUNET/src/java/model/Message.java</file>
-            <file>file:/E:/FUNET/FUNET/src/java/services/ChatService.java</file>
-            <file>file:/E:/FUNET/FUNET/web/WEB-INF/verify.jsp</file>
-            <file>file:/E:/FUNET/FUNET/web/WEB-INF/home.jsp</file>
-            <file>file:/E:/FUNET/FUNET/web/assets/js/chatbox.js</file>
-            <file>file:/E:/FUNET/FUNET/web/assets/js/jquery-3.7.1.min.js</file>
-            <file>file:/E:/FUNET/FUNET/src/java/util/sqlConnect.java</file>
-            <file>file:/E:/FUNET/FUNET/web/assets/js/bootstrap.min.js</file>
-            <file>file:/E:/FUNET/FUNET/web/assets/js/login-register.js</file>
-            <file>file:/E:/FUNET/FUNET/web/assets/js/ajaxInviteFriend.js</file>
-            <file>file:/E:/FUNET/FUNET/web/WEB-INF/web.xml</file>
+            <file>file:/E:/FUNET/FUNET/src/java/dtos/FileDTO.java</file>
+            <file>file:/E:/FUNET/FUNET/src/java/controller/GoogleValidate.java</file>
+            <file>file:/E:/FUNET/FUNET/src/java/controller/ChatRestController.java</file>
+            <file>file:/E:/FUNET/FUNET/src/java/services/MessageService.java</file>
+            <file>file:/E:/FUNET/FUNET/src/java/controller/ConversationController.java</file>
+            <file>file:/E:/FUNET/FUNET/src/java/controller/VerifyServlet.java</file>
+            <file>file:/E:/FUNET/FUNET/src/java/websockets/MessageEncoder.java</file>
+            <file>file:/E:/FUNET/FUNET/src/java/controller/GoogleLogin.java</file>
+            <file>file:/E:/FUNET/FUNET/src/java/controller/UserRestController.java</file>
             <file>file:/E:/FUNET/FUNET/src/java/controller/ChatController.java</file>
-            <file>file:/E:/FUNET/FUNET/web/assets/css/profile.css</file>
+            <file>file:/E:/FUNET/FUNET/web/WEB-INF/forgotPassword.jsp</file>
+            <file>file:/E:/FUNET/FUNET/src/java/controller/signupServlet.java</file>
             <file>file:/E:/FUNET/FUNET/web/assets/js/chat.js</file>
-            <file>file:/E:/FUNET/FUNET/web/WEB-INF/profile.jsp</file>
+            <file>file:/E:/FUNET/FUNET/src/java/dao/MessageDao.java</file>
+            <file>file:/E:/FUNET/FUNET/src/java/services/FileService.java</file>
+            <file>file:/E:/FUNET/FUNET/src/java/websockets/MessageDecoder.java</file>
+            <file>file:/E:/FUNET/FUNET/src/java/controller/forgotPassword.java</file>
+            <file>file:/E:/FUNET/FUNET/src/java/services/ChatService.java</file>
+            <file>file:/E:/FUNET/FUNET/web/assets/js/chatbox.js</file>
+            <file>file:/E:/FUNET/FUNET/src/java/controller/changeAvatarServlet.java</file>
+            <file>file:/E:/FUNET/FUNET/src/java/controller/loginServlet.java</file>
+            <file>file:/E:/FUNET/FUNET/src/java/controller/ConversationRestController.java</file>
+            <file>file:/E:/FUNET/FUNET/src/java/controller/userpageServlet.java</file>
+            <file>file:/E:/FUNET/FUNET/web/WEB-INF/recover.jsp</file>
+            <file>file:/E:/FUNET/FUNET/src/java/websockets/ChatWebsocket.java</file>
+            <file>file:/E:/FUNET/FUNET/src/java/model/User.java</file>
+            <file>file:/E:/FUNET/FUNET/src/java/dtos/ConversationDTO.java</file>
+            <file>file:/E:/FUNET/FUNET/web/WEB-INF/web.xml</file>
+            <file>file:/E:/FUNET/FUNET/src/java/controller/settingServlet.java</file>
             <file>file:/E:/FUNET/FUNET/web/WEB-INF/chatbox.jsp</file>
-            <file>file:/E:/FUNET/FUNET/web/assets/css/test.css</file>
-            <file>file:/E:/FUNET/FUNET/web/assets/js/Validation.js</file>
-            <file>file:/E:/FUNET/FUNET/web/WEB-INF/login.jsp</file>
-            <file>file:/E:/FUNET/FUNET/src/java/controller/MessageServlet.java</file>
         </group>
     </open-files>
 </project-private>

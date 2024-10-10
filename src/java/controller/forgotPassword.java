@@ -20,6 +20,8 @@ import util.SmtpProtocol;
  */
 public class forgotPassword extends HttpServlet {
 
+    private userDAO dao = userDAO.getInstance();    
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -77,7 +79,6 @@ public class forgotPassword extends HttpServlet {
             HttpSession session = request.getSession(false);
             String email = (String) session.getAttribute("pendingEmail");
             String newPassword = request.getParameter("newPassword");
-            userDAO dao = new userDAO();
             dao.changePassword(newPassword, email);
             request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
         } else {

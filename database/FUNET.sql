@@ -9,7 +9,7 @@ DROP TABLE IF EXISTS message;
 DROP TABLE IF EXISTS comment;
 DROP TABLE IF EXISTS post_like;
 DROP TABLE IF EXISTS post;
-DROP TABLE IF EXISTS conversation_member;
+DROP TABLE IF EXISTS conversation_user;
 DROP TABLE IF EXISTS userAccount;
 DROP TABLE IF EXISTS conversation;
 DROP TABLE IF EXISTS product
@@ -77,7 +77,7 @@ GO
 CREATE TABLE conversation (
 	conversation_id INT PRIMARY KEY, 
 	conversation_name NVARCHAR(50),
-	conversation_avater nvarchar(50) NOT NULL
+	conversation_avatar nvarchar(50) NOT NULL
 );
 
 GO
@@ -95,7 +95,7 @@ CREATE TABLE message (
 );
 
 GO 
-CREATE TABLE conversation_member (
+CREATE TABLE conversation_users (
 	is_admin BIT NOT NULL,
 	user_id INT,
 	conversation_id INT,

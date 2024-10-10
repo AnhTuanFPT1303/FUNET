@@ -18,7 +18,7 @@
             <h2>Enter the code from your email</h2>
             <p>Let us know that this email address belongs to you. Enter the code we sent to the email</p>
             <form method="post" action="/FUNET/verify">
-                <input type="text" id="code" name="otp-code" placeholder="FUNET-">
+                <input type="text" id="code" name="otp-code" onkeyup="checkOtp()" placeholder="FUNET-">
                 <div class="button-group">
                     <button id="send-email-again" name="action" value="resend">Send Email Again</button>                
                     <button id="continue" name="action" value="validate">Continue</button>

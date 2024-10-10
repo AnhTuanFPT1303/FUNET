@@ -1,0 +1,179 @@
+body {
+    background-image: linear-gradient(to bottom, #f8f9fa, #fff);
+    background-color: #f8f9fa;
+}
+
+.custom-navbar {
+    background-color: #ffffff; /* Màu nền của navbar */
+    padding: 10px 20px; /* Padding cho navbar */
+    position: fixed; /* Để navbar cố định */
+    top: 0;
+    width: 100%; /* Chiếm toàn bộ chiều rộng */
+    z-index: 1000; /* Đảm bảo navbar ở trên cùng */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Bóng đổ */
+}
+
+.custom-navbar .nav-link {
+    color: #333; /* Màu chữ cho các liên kết */
+    margin: 0 15px; /* Khoảng cách giữa các liên kết */
+    font-weight: bold; /* Đậm chữ */
+}
+
+.custom-navbar .nav-link:hover {
+    color: #007bff; /* Màu khi hover */
+}
+
+.custom-navbar .form-control {
+    margin-left: auto; /* Đẩy form sang bên phải */
+    max-width: 300px; /* Độ rộng tối đa cho input */
+    border-radius: 30px; /* Bo tròn cho input */
+}
+
+.custom-navbar .log-out {
+    margin-left: 20px; /* Khoảng cách cho nút log out */
+    border: 0; /* Không border cho nút log out */
+}
+
+.sidebar {
+    border-right: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    height: 100%;
+}
+
+.profile-section {
+    text-align: center;
+    background-color: #f7f7f7;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-section .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.profile-section a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+}
+
+.profile-section p {
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.chat-box {
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+}
+
+.main-class {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+}
+
+.product-card {
+    border: 2px solid black;
+    padding: 10px;
+    text-align: center;
+    background-color: #fff;
+}
+
+.product-card h5 {
+    margin-bottom: 10px;
+}
+
+.product-card img {
+    max-width: 100%;
+    height: auto;
+}
+
+.post-header {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #337ab7;
+}
+
+.btn-outline-primary {
+    width: 100%;
+}
+
+.post-ratings-container {
+    display: flex;
+    justify-content: left;
+    padding: 12px 0;
+}
+
+.post-rating {
+    display: flex;
+    align-items: center;
+    cursor: default;
+}
+
+.post-rating-selected > .post-rating-button,
+.post-rating-selected > .post-rating-count {
+    color: #009578;
+}
+
+.post-rating-button {
+    color: #555555;
+    font-size: 18px;
+    margin-right: 5px;
+}
+
+.post-rating-count {
+    font-size: 14px;
+    margin-left: 5px;
+}
+
+.post-rating:not(.post-rating-selected) > .post-rating-button:hover {
+    color: #009578;
+}
+
+.nav-icons {
+    position: absolute;
+    left: 57%;
+    transform: translateX(-50%);
+}
+
+.friend-icon,
+.mess-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 200px;
+}
+
+.mess-icon i {
+    font-size: 25px;
+}
+
+.friend-icon svg {
+    width: 30px;
+    height: 30px;
+}
+
+.footer {
+    text-center: text-lg-start text-white;
+    background-color: #1c2331;
+}
+
+@media screen and (max-width: 768px) {
+    .ava-name {
+        display: none;
+    }
+    .friend-list {
+        display: none;
+    }
+    .chat-box {
+        display: none;
+    }
+    .all-post {
+        margin-top: 5%;
+    }
+}
+

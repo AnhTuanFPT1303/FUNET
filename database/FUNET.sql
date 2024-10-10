@@ -157,3 +157,20 @@ BEGIN
 END;
 
 SELECT sender, message_text, receiver FROM message WHERE (sender = 1 AND receiver = 0) OR (sender = 0 AND receiver = 1) ORDER BY sent_date ASC;
+
+
+GO
+ALTER TABLE post
+ADD is_shared BIT NOT NULL DEFAULT 0,
+    original_post_id INT NULL,
+    share_count INT NOT NULL DEFAULT 0;
+
+GO
+CREATE TABLE post_share (
+    share_id INT IDENTITY(1,1) PRIMARY KEY,
+    user_id INT NOT NULL,
+    post_id INT NOT NULL,
+    share_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_share_user FOREIGN KEY (user_id) REFERENCES userAccount (user_id),
+    CONSTRAINT fk_share_post FOREIGN KEY (post_id) REFERENCES post (post_id)
+);

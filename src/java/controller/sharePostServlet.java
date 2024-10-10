@@ -71,28 +71,34 @@ public class sharePostServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-        if (session != null && session.getAttribute("user") != null) {
-            User currentUser = (User) session.getAttribute("user");
-            int postId = Integer.parseInt(request.getParameter("postId"));
-            int userId = currentUser.getUser_id();
-            postDAO dao = new postDAO();
+    if (session != null && session.getAttribute("user") != null) {
+        User currentUser = (User) session.getAttribute("user");
+        int postId = Integer.parseInt(request.getParameter("postId"));
+        int userId = currentUser.getUser_id();
+        String sourceUrl = request.getParameter("sourceUrl"); 
+        postDAO dao = new postDAO();
+        
+        try {
+            dao.sharePost(userId, postId);
             
-            try {
-                dao.sharePost(userId, postId);
+            if (sourceUrl != null && sourceUrl.contains("profile")) {
+                response.sendRedirect("profile?id=" + userId); 
+            } else {
                 response.sendRedirect("home");
-            } catch (SQLException e) {
-                e.printStackTrace();
-                if (e.getMessage().contains("Cannot share a shared post")) {
-                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                    response.getWriter().write("Cannot share a shared post");
-                } else {
-                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                    response.getWriter().write("Error sharing post");
-                }
             }
-        } else {
-            response.sendRedirect("login");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            if (e.getMessage().contains("Cannot share a shared post")) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write("Cannot share a shared post");
+            } else {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                response.getWriter().write("Error sharing post");
+            }
         }
+    } else {
+        response.sendRedirect("login");
+    }
     }
 
     /** 

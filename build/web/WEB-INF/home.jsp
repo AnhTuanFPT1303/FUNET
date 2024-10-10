@@ -672,6 +672,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                                     <div class="post-share">
                                         <form action="sharePostServlet" method="post" style="display: inline;">
                                             <input type="hidden" name="postId" value="${post.post_id}">
+                                            <input type="hidden" name="sourceUrl" value="home">
                                             <button type="submit" class="btn btn-link">Share</button>
                                         </form>
                                         <span class="post-share-count">${post.shareCount}</span>
@@ -698,6 +699,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                                 <div class="mb-3">
                                     <textarea class="form-control" id="body" name="commentContent" maxlength="300" rows="2" placeholder="Reply"></textarea>
                                 </div>
+                                <input type="hidden" name="sourceUrl" value="home">
                                 <input type="hidden" name="post_id" value="${post.post_id}">
                                 <button type="submit" class="btn btn-primary" style="padding: 5px 25px; margin-top: 5px">Comment</button>
                             </form>

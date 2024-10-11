@@ -700,7 +700,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                     </form>
                 </div>
 
-            </div>
+            
             <div>
                 <c:forEach var="post" items="${posts}">
                     <div class="post mb-4" style="overflow-wrap: break-word" data-post-id="${post.post_id}" data-liked="${post.likedByCurrentUser}">
@@ -781,7 +781,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 
             </div>
         </div>
-    </div></div>
+    </div>
 
 
 
@@ -789,9 +789,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 
 
 
-</div>
-</div>
-</div>
+
+
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="assets/js/bootstrap.bundle.min.js"></script>

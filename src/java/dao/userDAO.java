@@ -1,28 +1,66 @@
 package dao;
 
+import Security.SHA512WithSalt;
 import util.sqlConnect;
 import java.sql.*;
 import model.User;
 import java.util.ArrayList;
+import java.util.Base64;
 
 public class userDAO {
 
+    public static void testRegister(String firstName, String lastName, String email, String password, String profilePic, String role) throws Exception {
+        userDAO uDAO = new userDAO(); // Giả định UserDAO có phương thức register
+
+        // Bước 1: Mã hóa mật khẩu với salt
+        byte[] salt = SHA512WithSalt.createSalt(); // Tạo salt
+        String hashedPassword = SHA512WithSalt.hashPassWordWithSHA512(password, salt); // Băm mật khẩu với SHA-512
+        String combinedHash = Base64.getEncoder().encodeToString(salt) + ":" + hashedPassword; // Kết hợp salt và mật khẩu đã băm
+
+        // Bước 2: Tạo đối tượng User mới
+        User newUser = new User(firstName, lastName, combinedHash, email, profilePic, role, false); // false ở đây là is_banned
+
+        // Bước 3: Gọi phương thức register để thêm người dùng vào cơ sở dữ liệu
+        int userId = uDAO.register(newUser);  // Phương thức register trả về userId nếu thành công
+
+        // Bước 4: Kiểm tra kết quả đăng ký
+        if (userId > 0) {
+            System.out.println("Đăng ký thành công cho email: " + email + " với userId: " + userId);
+        } else {
+            System.out.println("Đăng ký thất bại cho email: " + email);
+        }
+    }
+    
     public boolean login(String email, String password) {
-        boolean result = false;
-        try {
-            Connection conn = sqlConnect.getInstance().getConnection();
-            PreparedStatement st = conn.prepareStatement("Select * from userAccount where email=? AND password=?");
-            st.setString(1, email);
-            st.setString(2, password);
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
+    boolean result = false;
+    try {
+        Connection conn = sqlConnect.getInstance().getConnection();
+        PreparedStatement st = conn.prepareStatement("SELECT * FROM userAccount WHERE email=?");
+        st.setString(1, email);
+        ResultSet rs = st.executeQuery();
+        
+        if (rs.next()) {
+            // Lấy chuỗi kết hợp (lưu cả salt và sha512 hash vào password)
+            String combinedHash = rs.getString("password");
+            
+            // Tách salt và hashedPassword
+            String[] parts = combinedHash.split(":"); // Sử dụng dấu phân cách
+            byte[] salt = Base64.getDecoder().decode(parts[0]); // Giải mã salt
+            String storedHash = parts[1]; // hashedPassword
+            
+            // Băm mật khẩu đã nhập với salt
+            String hashedInputPassword = SHA512WithSalt.hashPassWordWithSHA512(password, salt);
+            
+            // So sánh mật khẩu đã băm
+            if (hashedInputPassword.equals(storedHash)) {
                 result = true;
             }
-        } catch (Exception e) {
-            System.out.println("Connect Failed");
         }
-        return result;
+    } catch (Exception e) {
+        System.out.println("Connect Failed: " + e.getMessage());
     }
+    return result;
+}
 
     public int register(User user) throws Exception {
         int generatedUserId = 0;
@@ -167,6 +205,7 @@ public class userDAO {
             while (rs.next()) {
                 User u = new User();
                 u.setUser_id(rs.getInt("user_id"));
+                u.setPassword(rs.getString("password"));
                 u.setFirst_name(rs.getString("first_name"));
                 u.setLast_name(rs.getString("last_name"));
                 u.setEmail(rs.getString("email"));
@@ -234,8 +273,14 @@ public class userDAO {
         }
     }
 
-    public static void main(String[] args) {
-        userDAO dao = new userDAO();
-        dao.changePassword("1234", "nguyenhuuanhtuan123@gmail.com");
+    public static void main(String[] args) throws Exception {
+        String email = "vuaga1111@gmail.com";
+        String firstName = "Vu";
+        String lastName = "Aga";
+        String password = "123";  // Mật khẩu gốc
+        String profilePic = "defaultProfilePic.jpg";
+        String role = "user";
+
+        testRegister(firstName, lastName, email, password, profilePic, role);
     }
 }

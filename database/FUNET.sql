@@ -1,4 +1,4 @@
-CREATE DATABASE FUNET;
+﻿CREATE DATABASE FUNET;
 
 GO
 USE FUNET;
@@ -21,7 +21,7 @@ CREATE TABLE userAccount (
   user_id INT IDENTITY(1,1) PRIMARY KEY,
   first_name NVARCHAR(50) NOT NULL,
   last_name NVARCHAR(50) NOT NULL,
-  password VARCHAR(30) NULL,
+  password NVARCHAR(MAX) NULL,
   email VARCHAR(70) NOT NULL UNIQUE,
   profile_pic VARCHAR(max) NOT NULL,
   role VARCHAR(20) NOT NULL, 
@@ -138,13 +138,74 @@ BEGIN
         OR (f.receiver = u.user_id AND f.sender = @userId)
     WHERE f.status = 'accepted';
 END;
-	
+
 insert into userAccount values ('Nguyen', 'Tuan' , '123', 'anhtuan123@gmail.com', 'default_avt.jpg', 'student', 'false')
 insert into userAccount values ('Ha', 'Phan', '123', 'haphan123@gmail.com', 'default_avt.jpg', 'staft', 'false')
 insert into userAccount values ('Thanh', 'Tung', '123', 'thanhtung123@gmail.com', 'default_avt.jpg', 'student', 'false')
+insert into userAccount values ('vua', 'ga', '123', 'vuaga1260@gmail.com', 'default_avt.jpg', 'student', 'false')
+
 
 
 Go
 Select * from userAccount
 
 EXEC getAllFriends 1;
+
+CREATE TABLE product (
+    product_id INT IDENTITY(1,1) PRIMARY KEY,
+    user_id INT NOT NULL,
+    product_name NVARCHAR(255) NOT NULL,
+    product_description NVARCHAR(500), -- Điều chỉnh độ dài nếu cần
+	product_img text NOT NULL,
+    product_tag NVARCHAR(255) NOT NULL,
+    publish_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    price DECIMAL(10, 2) NOT NULL, -- Điều chỉnh kiểu dữ liệu để biểu diễn giá
+    CONSTRAINT fk_product_user_id FOREIGN KEY (user_id) REFERENCES userAccount(user_id)
+);
+GO
+
+CREATE TABLE learningmaterial (
+    learningmaterial_id INT IDENTITY(1,1) PRIMARY KEY,
+    user_id INT NOT NULL,
+    learningmaterial_name NVARCHAR(255) NOT NULL,
+    learningmaterial_description NVARCHAR(500), -- Tăng độ dài mô tả nếu cần
+    learningmaterial_img NVARCHAR(MAX) NOT NULL, -- Change to NVARCHAR(MAX)
+    learningmaterial_context NVARCHAR(MAX) NOT NULL, -- Change to NVARCHAR(MAX)
+    subject_code NVARCHAR(7) NOT NULL,
+    publish_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, -- Thêm giá trị mặc định
+    review NVARCHAR(MAX), -- Thay đổi kiểu dữ liệu cho phù hợp
+    CONSTRAINT fk_learningmaterial_user_id FOREIGN KEY (user_id) REFERENCES userAccount(user_id)
+);
+GO
+
+INSERT INTO learningmaterial (user_id, learningmaterial_name, learningmaterial_description, learningmaterial_img, learningmaterial_context, subject_code, review)
+VALUES 
+(1, 'Introduction to Programming', 'A comprehensive guide to programming concepts for beginners.', 'assets/product/item.png', 'assets/leaningMaterial/SWR302_LAB.docx', 'CS101', 'Great resource for beginners.'),
+(3, 'Data Structures and Algorithms', 'Understand the key data structures and algorithms used in computer science.', 'assets/product/item.png', 'assets/leaningMaterial/SWR302_LAB.docx', 'CS404', 'Excellent for interview preparation.'),
+(2, 'Machine Learning Basics', 'An introduction to the concepts of machine learning and its applications.', 'assets/product/item.png', 'assets/leaningMaterial/SWR302_LAB.docx', 'CS505', 'Great starting point for ML enthusiasts.');
+
+GO
+
+SELECT * FROM learningmaterial
+
+ALTER TABLE friendship DROP CONSTRAINT fk_sender;
+ALTER TABLE friendship DROP CONSTRAINT fk_receiver;
+
+ALTER TABLE post DROP CONSTRAINT fk_post_user;
+
+ALTER TABLE post_like DROP CONSTRAINT fk_like_user;
+ALTER TABLE post_like DROP CONSTRAINT fk_like_post;
+
+ALTER TABLE comment DROP CONSTRAINT fk_comment_user;
+ALTER TABLE comment DROP CONSTRAINT fk_comment_post;
+
+ALTER TABLE message DROP CONSTRAINT fk_sender;
+ALTER TABLE message DROP CONSTRAINT fk_receiver;
+ALTER TABLE message DROP CONSTRAINT fk_conversation;
+
+ALTER TABLE conversation_member DROP CONSTRAINT fk_user_id;
+ALTER TABLE conversation_member DROP CONSTRAINT fk_convesation;
+
+ALTER TABLE product DROP CONSTRAINT fk_product_user_id;
+
+ALTER TABLE learningmaterial DROP CONSTRAINT fk_learningmaterial_user_id;

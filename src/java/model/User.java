@@ -34,6 +34,17 @@ public class User {
         this.is_banned = is_banned;
     }
 
+    public User(String first_name, String last_name, String password, String email, String profile_pic, String role, boolean is_banned) {
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.password = password;
+        this.email = email;
+        this.profile_pic = profile_pic;
+        this.role = role;
+        this.is_banned = is_banned;
+    }
+
+    
     
 
     public int getUser_id() {
@@ -100,4 +111,10 @@ public class User {
         this.is_banned = is_banned;
     }
 
+    @Override
+    public String toString() {
+        return "User{" + "user_id=" + user_id + ", first_name=" + first_name + ", last_name=" + last_name + ", password=" + password + ", email=" + email + ", profile_pic=" + profile_pic + ", role=" + role + ", is_banned=" + is_banned + '}';
+    }
+
+    
 }

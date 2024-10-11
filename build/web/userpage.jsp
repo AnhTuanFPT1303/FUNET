@@ -52,7 +52,7 @@
                     <c:if test="${sessionScope.user['user_id'] == user.user_id}">
                         <div class="settings-section mb-3 text-center">
                             <h2>Settings</h2>
-                            <form action="settingServlet" method="get">
+                            <form action="setting" method="get">
                                 <button type="submit" name="action" value="changeInformation" class="btn btn-secondary mb-2">Change Information</button>
                             </form>
                         </div>

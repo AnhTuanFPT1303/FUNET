@@ -17,7 +17,7 @@
                 <div class="alert alert-success">${notification}</div>
             </c:if>
 
-            <form action="settingServlet" method="post">
+            <form action="setting" method="post">
                 <div class="card mb-3">
                     <h5 class="card-header">Change Name</h5>
                     <div class="card-body">
@@ -34,7 +34,7 @@
                 </div>
             </form>
 
-            <form action="settingServlet" method="post">
+            <form action="setting" method="post">
                 <div class="card mb-3">
                     <h5 class="card-header">Change Password</h5>
                     <div class="card-body">

@@ -103,7 +103,7 @@ public class VerifyServlet extends HttpServlet {
                     user.setRole("student");
                     user.setStatus(false);
                     try {
-                        userDao.register(user);
+                        userDao.hashPw(user.getFirst_name(), user.getLast_name(), user.getEmail(), user.getPassword(), user.getProfile_pic(), user.getRole());
                     } catch (Exception ex) {
                         Logger.getLogger(VerifyServlet.class.getName()).log(Level.SEVERE, null, ex);
                     }

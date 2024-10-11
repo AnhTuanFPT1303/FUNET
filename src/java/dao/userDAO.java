@@ -329,4 +329,8 @@ public class userDAO {
             return users;
         }
     }
+    
+    public static void main(String[] args) {
+        userDAO.getInstance().login("nguyenhuuanhtuan123@gmail.com", "123");
+    }
 }

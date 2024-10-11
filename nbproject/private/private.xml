@@ -18,6 +18,7 @@
             <file>file:/E:/FUNET/FUNET/web/WEB-INF/forgotPassword.jsp</file>
             <file>file:/E:/FUNET/FUNET/src/java/controller/signupServlet.java</file>
             <file>file:/E:/FUNET/FUNET/web/assets/js/chat.js</file>
+            <file>file:/E:/FUNET/FUNET/src/java/dao/userDAO.java</file>
             <file>file:/E:/FUNET/FUNET/src/java/dao/MessageDao.java</file>
             <file>file:/E:/FUNET/FUNET/src/java/services/FileService.java</file>
             <file>file:/E:/FUNET/FUNET/src/java/websockets/MessageDecoder.java</file>
@@ -32,9 +33,9 @@
             <file>file:/E:/FUNET/FUNET/src/java/websockets/ChatWebsocket.java</file>
             <file>file:/E:/FUNET/FUNET/src/java/model/User.java</file>
             <file>file:/E:/FUNET/FUNET/src/java/dtos/ConversationDTO.java</file>
-            <file>file:/E:/FUNET/FUNET/web/WEB-INF/web.xml</file>
             <file>file:/E:/FUNET/FUNET/src/java/controller/settingServlet.java</file>
             <file>file:/E:/FUNET/FUNET/web/WEB-INF/chatbox.jsp</file>
+            <file>file:/E:/FUNET/FUNET/web/WEB-INF/login.jsp</file>
         </group>
     </open-files>
 </project-private>

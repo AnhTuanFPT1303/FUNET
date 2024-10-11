@@ -98,7 +98,7 @@ public class deleteServlet extends HttpServlet {
             e.printStackTrace();
         }
         request.setAttribute("posts", posts);
-        request.getRequestDispatcher("/WEB-INF/userpage.jsp").forward(request, response);
+        response.sendRedirect("profile");
     }
 
     /**

@@ -142,7 +142,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>settingServlet</servlet-name>
-        <url-pattern>/settingServlet</url-pattern>
+        <url-pattern>/setting</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ChatController</servlet-name>

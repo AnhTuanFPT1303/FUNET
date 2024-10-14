@@ -42,7 +42,7 @@
             <div class="row all-post">
                 <nav class="col-2 py-3 bg-light sticky-sidebar">
                     <div class="profile-section mb-3 text-center">
-                        <a href="userpageServlet?userId=${sessionScope.user['user_id']}" class="d-flex align-items-center text-decoration-none text-dark">
+                        <a href="profile?userId=${sessionScope.user['user_id']}" class="d-flex align-items-center text-decoration-none text-dark">
                             <img src="assets/profile_avt/${sessionScope.user['profile_pic']}" class="img-fluid rounded-circle avatar" style="object-fit: cover;">
                             <p class="mb-0 ms-2 ava-name">${sessionScope.user['first_name']} ${sessionScope.user['last_name']}</p>
                         </a>
@@ -60,7 +60,7 @@
                 </nav>
                 <main class="col-8">
                     <h1 class="mt-3 text-primary home-logo">Welcome to ${user.first_name} ${user.last_name} blog!</h1>
-                    <form action="/FUNET/userpageServlet" method="post" class="mb-4 post-method" enctype="multipart/form-data" onsubmit="document.getElementById('myBtn').disabled = true;">
+                    <form action="/FUNET/profile" method="post" class="mb-4 post-method" enctype="multipart/form-data" onsubmit="document.getElementById('myBtn').disabled = true;">
                         <div class="mb-3">
                             <textarea class="form-control" id="body" name="postContent" rows="2" placeholder="What ya thinking" maxlength="300"></textarea>
                         </div>

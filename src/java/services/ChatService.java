@@ -1,18 +1,20 @@
 package services;
 
+import dao.userDAO;
 import jakarta.websocket.EncodeException;
 import java.io.IOException;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArraySet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import websockets.ChatWebsocket;
-import model.Message;
-import websockets.MessageEncoder;
+import model.User;
+import dtos.MessageDTO;
 
 public class ChatService {
 
+    private userDAO userDao = userDAO.getInstance();
     private static ChatService chatService = null;
     protected static final Set<ChatWebsocket> chatWebsockets = new CopyOnWriteArraySet<>();
 
@@ -34,27 +36,60 @@ public class ChatService {
         return chatWebsockets.remove(chatWebsocket);
     }
 
-    public void sendMessageToOneUser(Message message) {
-        if (message == null) {
-            throw new IllegalArgumentException("Message cannot be null");
+    public boolean isUserOnline(int user_id) {
+        for (ChatWebsocket chatWebsocket : chatWebsockets) {
+            if (chatWebsocket.getUserId() == user_id) {
+                return true;
+            }
         }
+        return false;
+    }
 
-        chatWebsockets.stream()
-                .filter(chatWebsocket -> chatWebsocket.getUserId() == message.getToUser())
-                .forEach(chatWebsocket -> {
-                    try {
-                        if (chatWebsocket.getSession().isOpen()) {
-                            MessageEncoder messageEncoder = new MessageEncoder();
-                            chatWebsocket.getSession().getBasicRemote().sendText(messageEncoder.encode(message));
-                        } else {
-                            System.err.println("WebSocket session is closed for user: " + chatWebsocket.getUserId());
+    public void sendMessageToAllUsers(MessageDTO message) {
+        message.setOnlineList(getIdList());
+        chatWebsockets.stream().forEach(chatWebsocket -> {
+            try {
+                chatWebsocket.getSession().getBasicRemote().sendObject(message);
+            } catch (IOException | EncodeException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public void sendMessageToOneUser(MessageDTO message) throws Exception {
+        if (message.getReceiver() != 0) {
+            // Send message to a single user
+            chatWebsockets.stream()
+                    .filter(chatWebsocket -> chatWebsocket.getUserId() == message.getReceiver())
+                    .forEach(chatWebsocket -> {
+                        try {
+                            chatWebsocket.getSession().getBasicRemote().sendObject(message);
+                        } catch (IOException | EncodeException e) {
+                            e.printStackTrace();
                         }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (EncodeException ex) {
-                        Logger.getLogger(ChatService.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                });
+                    });
+        } else {
+            // Send message to a group of users
+            List<User> usersGroup = userDao.findUsersByConversationId(message.getGroupId());
+
+            // Collect all user IDs in the group
+            List<Integer> userIdGroup = usersGroup.stream()
+                    .map(User::getUser_id)
+                    .collect(Collectors.toList());
+
+            // Send the message to all users in the group, excluding the sender
+            chatWebsockets.stream()
+                    .filter(chatWebsocket -> userIdGroup.contains(chatWebsocket.getUserId())
+                    && chatWebsocket.getUserId() != message.getSender()) // Filter out the sender
+                    .forEach(chatWebsocket -> {
+                        try {
+                            chatWebsocket.getSession().getBasicRemote().sendObject(message);
+                        } catch (IOException | EncodeException e) {
+                            System.err.println("Error sending message to user: " + chatWebsocket.getUserId());
+                            e.printStackTrace();
+                        }
+                    });
+        }
     }
 
     protected Set<Integer> getIdList() {

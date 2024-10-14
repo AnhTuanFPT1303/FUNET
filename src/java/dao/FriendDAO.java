@@ -15,6 +15,26 @@ import model.User;
  */
 public class FriendDAO {
 
+    public int friendCount(int userId) throws Exception {
+        int friendNum = 0;
+        String query = "SELECT COUNT(*) AS friend_count FROM friendship WHERE (sender = ? OR receiver = ?) AND status = 'accepted'";
+        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, userId);
+            stmt.setInt(2, userId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    friendNum = rs.getInt("friend_count");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("An error occurred while counting friends: " + e.getMessage());
+        }
+
+        return friendNum;
+    }
+
     public boolean sendFriendRequest(int userRequest, int userAccept) {
         try {
             Connection conn = sqlConnect.getInstance().getConnection();
@@ -114,14 +134,8 @@ public class FriendDAO {
         cstmt.setInt(1, currUser);
         ResultSet rs = cstmt.executeQuery();
         while (rs.next()) {
-            friendList.add(new User(rs.getInt(1), rs.getString(2), rs.getString(3), null, null, rs.getString(4), rs.getString(5), rs.getBoolean(6)));
+            friendList.add(new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4)));
         }
         return friendList;
-    }
-    
-    public static void main(String[] args) throws Exception {
-        FriendDAO dao = new FriendDAO();
-        ArrayList<String> list = dao.getAllFriendRequest(2);
-        System.out.println(list.get(0));
     }
 }

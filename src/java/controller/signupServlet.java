@@ -22,6 +22,7 @@ import util.SmtpProtocol;
  */
 public class signupServlet extends HttpServlet {
 
+    private userDAO dao = userDAO.getInstance();    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -84,10 +85,9 @@ public class signupServlet extends HttpServlet {
             request.setAttribute("msg", "No empty fields allowed.");
             request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
         } else {
-            userDAO dao = new userDAO();
             if (!dao.checkEmail(email)) {
                 SmtpProtocol smtpProtocol = new SmtpProtocol();
-                int verifyCode = smtpProtocol.sendMail(email);
+                String verifyCode = Integer.toString(smtpProtocol.sendMail(email));
                 HttpSession session = request.getSession();
                 session.setAttribute("pendingEmail", email);
                 session.setAttribute("pendingUserInfo", Map.of(

@@ -67,8 +67,6 @@ public class ChatController extends HttpServlet {
             List<User> friends = friendDAO.findFriend(currentUser.getUser_id());
 
             request.setAttribute("friends", friends);
-            request.setAttribute("user", currentUser);
-
             request.getRequestDispatcher("WEB-INF/chatbox.jsp").forward(request, response);
         } catch (Exception ex) {
             Logger.getLogger(ChatController.class.getName()).log(Level.SEVERE, null, ex);

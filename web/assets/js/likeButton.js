@@ -1,17 +1,10 @@
-/* 
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/JavaScript.js to edit this template
- */
-
-
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.post-rating').forEach(function(element) {
         element.addEventListener('click', function(e) {
             e.preventDefault();
             var postId = this.closest('.post').dataset.postId;
             var likeButton = this.querySelector('.material-icons');
-            var likeCountElement = this.querySelector('.post-rating-count');
-
+            var likeCountElement = this.closest('.post').querySelector('.like-count span');
             fetch('likeServlet', {
                 method: 'POST',
                 headers: {

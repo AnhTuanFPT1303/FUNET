@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 package controller;
+
 import dao.FriendDAO;
 import dao.postDAO;
 import model.Post;
@@ -82,12 +83,12 @@ public class postServlet extends HttpServlet {
             }
             request.setAttribute("posts", posts);
             try {
-            FriendDAO friendDAO = new FriendDAO();
-            List<User> friends = friendDAO.findFriend(currentUser.getUser_id());
-            request.setAttribute("friends", friends);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                FriendDAO friendDAO = new FriendDAO();
+                List<User> friends = friendDAO.findFriend(currentUser.getUser_id());
+                request.setAttribute("friends", friends);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             request.getRequestDispatcher("WEB-INF/home.jsp").forward(request, response);
         } else {
             response.sendRedirect("login");
@@ -104,23 +105,20 @@ public class postServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession(false);  
+        HttpSession session = request.getSession(false);
 
-
-    
-        
-    // ------------------------------------------------------------------------------------------------- 
-
-    
+        // ------------------------------------------------------------------------------------------------- 
         if (session != null && session.getAttribute("user") != null) {
             User user = (User) session.getAttribute("user");
             String body = request.getParameter("postContent");
             Part file = request.getPart("image");
+            String sourceUrl = request.getParameter("sourceUrl");
             String image_path = file.getSubmittedFileName();
 //            String uploadPath = "D:/fpt/prj301/project/FUNET_FINAL/FUNET/Downloads/FUNET/web/assets/post_image/" + image_path;
-            String uploadPath = "E:/FUNET/FUNET/web/assets/post_image/" + image_path;
+            String uploadPath = getServletContext().getRealPath("/assets/post_image/") + image_path;
             //E:\FUNET\FUNET\web\assets
             try {
+
                 FileOutputStream fos = new FileOutputStream(uploadPath);
                 InputStream is = file.getInputStream();
 
@@ -140,19 +138,23 @@ public class postServlet extends HttpServlet {
                 postDAO PostDao = new postDAO();
                 try {
                     PostDao.addPost(post);
+
                     TimeUnit.SECONDS.sleep(2);
-                    response.sendRedirect("home");
+                    if (sourceUrl != null && sourceUrl.contains("profile")) {
+                        response.sendRedirect("profile");
+                    } else {
+                        response.sendRedirect("home");
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     request.setAttribute("errorMessage", "Error saving post");
                     response.sendRedirect("home");
                 }
-            }
-            else {
+            } else {
                 response.sendRedirect("home");
             }
         } else {
-            response.sendRedirect("home");  
+            response.sendRedirect("home");
         }
     }
 

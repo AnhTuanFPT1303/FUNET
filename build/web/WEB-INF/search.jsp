@@ -44,7 +44,7 @@
             <div class="row all-post">
                 <nav class="col-2 py-3 bg-light">
                     <div class="profile-section mb-3 d-flex align-items-center">
-                        <a href="userpageServlet" class="d-flex align-items-center text-decoration-none text-dark">
+                        <a href="profile" class="d-flex align-items-center text-decoration-none text-dark">
                             <img src="assets/profile_avt/${user.profile_pic}" class="img-fluid rounded-circle avatar">
                             <p class="mb-0 ms-2 ava-name">${sessionScope.user['first_name']} ${sessionScope.user['last_name']}</p>
                         </a>
@@ -61,10 +61,10 @@
                         <c:set var="userSearched" value="${userResult.key}" />
                         <c:set var="userStatus" value="${userResult.value}" />
                         <div class="post mb-4 d-flex align-items-center" style="overflow-wrap: break-word">
-                            <a href="userpageServlet?userId=${userSearched.user_id}">
+                            <a href="profile?userId=${userSearched.user_id}">
                                 <img src="assets/profile_avt/${userSearched.profile_pic}" class="img-fluid rounded-circle avatar me-2" style="width: 30px; height: 30px;">
                             </a>
-                            <a href="userpageServlet?userId=${userSearched.user_id}" style="margin-left: 5px">${userSearched.first_name} ${userSearched.last_name}</a>
+                            <a href="profile?userId=${userSearched.user_id}" style="margin-left: 5px">${userSearched.first_name} ${userSearched.last_name}</a>
                             <c:choose>
                                 <c:when test="${userStatus == 'pending'}">
                                     <button class="btn btn-secondary btn-sm" style="margin-left: auto;" disabled>Invited</button>

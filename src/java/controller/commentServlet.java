@@ -92,31 +92,33 @@ public class commentServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-        if (session != null && session.getAttribute("user") != null) {
-            int post_id = Integer.parseInt(request.getParameter("post_id"));
-            String commentContent = request.getParameter("commentContent");
-            postDAO postDAO = new postDAO();
-            User user = (User) session.getAttribute("user");
-            Comment comment = new Comment();
-            if (commentContent != null && !commentContent.trim().isEmpty()) {
-                comment.setPost_id(post_id);
-                comment.setUser_id(user.getUser_id());
-                comment.setComment_text(commentContent);
-            }
-            try {
-                postDAO.addComment(comment);
-                String referer = request.getHeader("Referer");
-                if (referer != null && referer.contains("userpageServlet")) {
-                    response.sendRedirect("userpageServlet");
-                } else {
-                    response.sendRedirect("home");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            response.sendRedirect("login"); // Redirect to login if not logged in
+    if (session != null && session.getAttribute("user") != null) {
+        int post_id = Integer.parseInt(request.getParameter("post_id"));
+        String commentContent = request.getParameter("commentContent");
+        String sourceUrl = request.getParameter("sourceUrl"); 
+        postDAO postDAO = new postDAO();
+        User user = (User) session.getAttribute("user");
+        Comment comment = new Comment();
+        if (commentContent != null && !commentContent.trim().isEmpty()) {
+            comment.setPost_id(post_id);
+            comment.setUser_id(user.getUser_id());
+            comment.setComment_text(commentContent);
         }
+        try {
+            postDAO.addComment(comment);
+            
+            if (sourceUrl != null && sourceUrl.contains("profile")) {
+                response.sendRedirect("profile");
+            } else {
+                response.sendRedirect("home");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect("error.jsp"); 
+        }
+    } else {
+        response.sendRedirect("login");
+    }
     }
 
     /**

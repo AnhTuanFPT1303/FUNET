@@ -4,22 +4,27 @@
  */
 package controller;
 
-import com.google.gson.Gson;
-import dao.MessageDao;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import dao.userDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.Message;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.User;
+import services.ChatService;
 
 /**
  *
  * @author HELLO
  */
-public class MessageServlet extends HttpServlet {
+public class UserRestController extends HttpServlet {
+
+    private ChatService chatService = ChatService.getInstance();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +43,10 @@ public class MessageServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet MessageServlet</title>");
+            out.println("<title>Servlet UserRestController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet MessageServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UserRestController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,26 +62,38 @@ public class MessageServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int userId = Integer.parseInt(request.getParameter("userId"));
-
-        try {
-            List<Message> messages = MessageDao.getInstance().findAllMessagesBySenderAndReceiver((int) request.getSession().getAttribute("user_id"), userId);
-
-            // Convert messages to JSON
-            String json = new Gson().toJson(messages);
-
-            // Set response content type
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-
-            // Send JSON response back
-            response.getWriter().write(json);
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write("Failed to load messages.");
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String user_id = request.getParameter("user_id");
+        String keyWord = request.getParameter("keyword");
+        String conversationId = request.getParameter("conversationId");
+        List<User> listUsers = null;
+        if (conversationId != null && !conversationId.isEmpty()) {
+            int id = Integer.parseInt(conversationId);
+            //listUsers = userService.getFriendsNotInConversation(user_id, keyWord, id);
+        } else if (keyWord.isEmpty()) {
+            try {
+                listUsers = userDAO.getInstance().getUserFriends(Integer.parseInt(user_id));
+            } catch (Exception ex) {
+                Logger.getLogger(UserRestController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                listUsers = userDAO.getInstance().findFriendsByKeyWord(Integer.parseInt(user_id), keyWord);
+            } catch (Exception ex) {
+                Logger.getLogger(UserRestController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+        
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(listUsers);
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        PrintWriter printWriter = response.getWriter();
+        printWriter.print(json);
+        printWriter.flush();
     }
 
     /**
@@ -90,21 +107,7 @@ public class MessageServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int sender = Integer.parseInt(request.getParameter("sender"));
-        int receiver = Integer.parseInt(request.getParameter("receiver"));
-        String messageText = request.getParameter("message");
-
-        Message message = new Message(sender, receiver, messageText);
-
-        try {
-            MessageDao.getInstance().saveMessage(message);
-            // Optionally, you can return a success response to the client
-            response.getWriter().write("Message saved successfully");
-        } catch (Exception e) {
-            // Handle exceptions appropriately
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write("Failed to save message: " + e.getMessage());
-        }
+        processRequest(request, response);
     }
 
     /**

@@ -14,6 +14,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import model.User;
 import jakarta.servlet.http.HttpSession;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import util.SmtpProtocol;
 
 /**
@@ -22,6 +24,7 @@ import util.SmtpProtocol;
  */
 public class VerifyServlet extends HttpServlet {
 
+    private userDAO userDao = userDAO.getInstance();    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -76,44 +79,42 @@ public class VerifyServlet extends HttpServlet {
             throws ServletException, IOException {
         String act = request.getParameter("action");
         HttpSession session = request.getSession(false);
-        Integer otp = (Integer) session.getAttribute("otpCode");
+        String otp = (String) session.getAttribute("otpCode");
         String email = (String) session.getAttribute("pendingEmail");
 
         if ("resend".equals(act)) {
             SmtpProtocol smtpProtocol = new SmtpProtocol();
-            otp = smtpProtocol.sendMail(email);
+            otp = Integer.toString(smtpProtocol.sendMail(email));
             session.setAttribute("otpCode", otp);
             request.getRequestDispatcher("WEB-INF/verify.jsp").forward(request, response);
-        }
-
-        int inputOtp = Integer.parseInt(request.getParameter("otp-code"));
-        if (otp == inputOtp) {
-            if (act.equals("newPass")) {
-                request.getRequestDispatcher("WEB-INF/newPassword.jsp").forward(request, response);
-            } else {
-                Map<String, String> pendingUserInfo = (Map<String, String>) session.getAttribute("pendingUserInfo");
-                userDAO userDao = new userDAO();
-                User user = new User();
-                user.setEmail(email);
-                user.setFirst_name(pendingUserInfo.get("firstName"));
-                user.setLast_name(pendingUserInfo.get("lastName"));
-                user.setPassword(pendingUserInfo.get("password"));
-                user.setProfile_pic("default_avt.jpg");
-                user.setRole("student");
-                user.setStatus(false);
-
-                // Clean up session
-                session.removeAttribute("pendingEmail");
-                session.removeAttribute("pendingUserInfo");
-                session.removeAttribute("otpCode");
-
-                // Regenerate session ID to prevent session fixation
-                request.changeSessionId();
-                request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
-            }
         } else {
-            request.setAttribute("msg", "Invalid OTP. Please try again.");
-            request.getRequestDispatcher("WEB-INF/verify.jsp").forward(request, response);
+            String inputOtp = (String) request.getParameter("otp-code");
+            if (otp.equals(inputOtp)) {
+                if (act.equals("newPass")) {
+                    request.getRequestDispatcher("WEB-INF/newPassword.jsp").forward(request, response);
+                } else {
+                    Map<String, String> pendingUserInfo = (Map<String, String>) session.getAttribute("pendingUserInfo");
+                    User user = new User();
+                    user.setEmail(email);
+                    user.setFirst_name(pendingUserInfo.get("firstName"));
+                    user.setLast_name(pendingUserInfo.get("lastName"));
+                    user.setPassword(pendingUserInfo.get("password"));
+                    user.setProfile_pic("default_avt.jpg");
+                    user.setRole("student");
+                    user.setStatus(false);
+                    try {
+                        userDao.hashPw(user.getFirst_name(), user.getLast_name(), user.getEmail(), user.getPassword(), user.getProfile_pic(), user.getRole());
+                    } catch (Exception ex) {
+                        Logger.getLogger(VerifyServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    // Clean up session
+                    session.invalidate();
+                    request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
+                }
+            } else {
+                request.setAttribute("msg", "Invalid OTP. Please try again.");
+                request.getRequestDispatcher("WEB-INF/verify.jsp").forward(request, response);
+            }
         }
     }
 

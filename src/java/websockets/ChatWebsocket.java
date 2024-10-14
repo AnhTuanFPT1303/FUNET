@@ -1,5 +1,6 @@
 package websockets;
 
+import dao.MessageDao;
 import jakarta.websocket.OnClose;
 import jakarta.websocket.OnMessage;
 import jakarta.websocket.OnOpen;
@@ -9,27 +10,31 @@ import jakarta.websocket.server.ServerEndpoint;
 import model.Message;
 import services.ChatService;
 import jakarta.websocket.DecodeException;
+import dtos.MessageDTO;
+import services.MessageService;
 
-@ServerEndpoint(value = "/chat/{user_id}")
+@ServerEndpoint(value = "/chat/{user_id}", encoders = MessageEncoder.class, decoders = MessageDecoder.class)
 public class ChatWebsocket {
 
     private Session session;
     private int user_id;
 
     ChatService chatService = ChatService.getInstance();
-    MessageDecoder messageDecoder = new MessageDecoder();
+    MessageService messageService = MessageService.getInstance();
 
     @OnOpen
     public void onOpen(@PathParam("user_id") int user_id, Session session) {
-        this.user_id = user_id;
-        this.session = session;
-        chatService.register(this);
+        if (chatService.register(this)) {
+            this.user_id = user_id;
+            this.session = session;
+        }
+
     }
 
     @OnMessage
-    public void onMessage(String messageJson, Session session) throws DecodeException, Exception {
-        Message message = messageDecoder.decode(messageJson);
+    public void onMessage(MessageDTO message, Session session) throws DecodeException, Exception {
         chatService.sendMessageToOneUser(message);
+        messageService.saveMessage(message);
     }
 
     @OnClose

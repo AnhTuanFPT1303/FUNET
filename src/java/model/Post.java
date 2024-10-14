@@ -23,6 +23,30 @@ public class Post {
     private int like_count;
     private boolean likedByCurrentUser;
     private List<Comment> comments;
+    private boolean isShared;
+    private int originalPostId;
+    private String originalPosterName;
+    private int shareCount;
+    private String originalPosterAvatar;
+
+    public Post(int post_id, int user_id, String body, Timestamp post_time, String first_name, String last_name, String image_path, String profile_pic, int like_count, boolean isShared, int originalPostId, String originalPosterName, int shareCount, String originalPosterAvatar) {
+        this.post_id = post_id;
+        this.user_id = user_id;
+        this.body = body;
+        this.post_time = post_time;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.image_path = image_path;
+        this.profile_pic = profile_pic;
+        this.like_count = like_count;
+        this.isShared = isShared;
+        this.originalPostId = originalPostId;
+        this.originalPosterName = originalPosterName;
+        this.shareCount = shareCount;
+        this.originalPosterAvatar = originalPosterAvatar;
+    }
+    
+    
 
     public Post(int post_id, int user_id, String body, Timestamp post_time, String first_name, String last_name, String image_path, String profile_pic, int like_count, boolean likedByCurrentUser, List<Comment> comments) {
         this.post_id = post_id;
@@ -58,6 +82,46 @@ public class Post {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public boolean isIsShared() {
+        return isShared;
+    }
+
+    public void setIsShared(boolean isShared) {
+        this.isShared = isShared;
+    }
+
+    public int getOriginalPostId() {
+        return originalPostId;
+    }
+
+    public void setOriginalPostId(int originalPostId) {
+        this.originalPostId = originalPostId;
+    }
+
+    public String getOriginalPosterName() {
+        return originalPosterName;
+    }
+
+    public void setOriginalPosterName(String originalPosterName) {
+        this.originalPosterName = originalPosterName;
+    }
+
+    public int getShareCount() {
+        return shareCount;
+    }
+
+    public void setShareCount(int shareCount) {
+        this.shareCount = shareCount;
+    }
+
+    public String getOriginalPosterAvatar() {
+        return originalPosterAvatar;
+    }
+
+    public void setOriginalPosterAvatar(String originalPosterAvatar) {
+        this.originalPosterAvatar = originalPosterAvatar;
     }
     
     

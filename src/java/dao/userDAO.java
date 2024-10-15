@@ -6,6 +6,7 @@ import model.User;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class userDAO {
 
     private static userDAO instance = null;
@@ -328,8 +329,37 @@ public class userDAO {
             }
             return users;
         }
+
     }
-    
+
+    public void userIntroduce(User u) {
+        String query = "INSERT INTO userAccount (user_id, user_intro) VALUES (?, ?)";
+        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, u.getUser_id());
+            stmt.setString(2, u.getUser_introduce());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getUserIntroduce(int sessionUserId) {
+        String query = "SELECT user_intro FROM userAccount WHERE user_id = ?";
+        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)){
+            stmt.setInt(1, sessionUserId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if(rs.next()){
+                    return rs.getString("user_intro");
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return "Sin chao`";
+    }
+
     public static void main(String[] args) {
         userDAO.getInstance().login("nguyenhuuanhtuan123@gmail.com", "123");
     }

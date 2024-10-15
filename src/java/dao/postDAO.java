@@ -125,7 +125,9 @@ public class postDAO {
         }
         return 0;
     }
-
+    
+    
+    
     public static List<Post> getAllPosts(int sessionUserId) {
         List<Post> posts = new ArrayList<>();
         try {
@@ -186,6 +188,7 @@ public class postDAO {
         }
         return posts;
     }
+    
 
     public static List<Comment> getComments(int postId) {
         List<Comment> comments = new ArrayList<>();

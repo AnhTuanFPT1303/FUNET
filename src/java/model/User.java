@@ -19,10 +19,29 @@ public class User {
     private String role;
     private boolean is_banned;
     private boolean isAdmin;
-    
+    private String user_introduce;
     
     public User() {
     }
+
+    public User(int user_id, String first_name, String last_name, String password, String email, String profile_pic, String role, boolean is_banned, boolean isAdmin, String user_introduce) {
+        this.user_id = user_id;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.password = password;
+        this.email = email;
+        this.profile_pic = profile_pic;
+        this.role = role;
+        this.is_banned = is_banned;
+        this.isAdmin = isAdmin;
+        this.user_introduce = user_introduce;
+    }
+
+    public User(String user_introduce) {
+        this.user_introduce = user_introduce;
+    }
+    
+    
 
     public User(int user_id, String first_name, String last_name, String profile_pic) {
         this.user_id = user_id;
@@ -42,6 +61,12 @@ public class User {
         this.is_banned = is_banned;
         this.isAdmin = isAdmin;
     }
+
+    public User(int user_id, String user_introduce) {
+        this.user_id = user_id;
+        this.user_introduce = user_introduce;
+    }
+    
 
     public int getUser_id() {
         return user_id;
@@ -121,6 +146,14 @@ public class User {
 
     public void setAdmin(boolean isAdmin) {
         this.isAdmin = isAdmin;
+    }
+
+    public String getUser_introduce() {
+        return user_introduce;
+    }
+
+    public void setUser_introduce(String user_introduce) {
+        this.user_introduce = user_introduce;
     }
     
 }

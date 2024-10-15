@@ -121,7 +121,7 @@ public class postServlet extends HttpServlet {
 
                 FileOutputStream fos = new FileOutputStream(uploadPath);
                 InputStream is = file.getInputStream();
-
+                
                 byte[] data = new byte[is.available()];
                 is.read(data);
                 fos.write(data);

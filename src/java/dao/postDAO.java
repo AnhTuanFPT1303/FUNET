@@ -272,19 +272,7 @@ public class postDAO {
     return posts;
 }
 
-    public void deletePost(int postId) {
-        String deletePostQuery = "DELETE FROM post WHERE post_id = ?";
-
-        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(deletePostQuery)) {
-            stmt.setInt(1, postId);
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
+    
 
     public void sharePost(int userId, int postId) throws SQLException {
         String checkOriginalPost = "SELECT is_shared FROM post WHERE post_id = ?";
@@ -327,6 +315,79 @@ public class postDAO {
         } catch (Exception e) {
             e.printStackTrace();
             throw new SQLException("Error sharing post", e);
+        }
+    }
+    
+     public void updatePost(Post p) {
+        String updatePostQuery = "UPDATE post SET body = ?, image_path = ? WHERE post_id = ?";
+        String updateSharedPostsQuery = "UPDATE post SET body = ?, image_path = ? WHERE original_post_id = ? AND is_shared = 1";
+        
+        try (Connection conn = sqlConnect.getInstance().getConnection()) {
+            conn.setAutoCommit(false);
+            try {
+                try (PreparedStatement stmt = conn.prepareStatement(updatePostQuery)) {
+                    stmt.setString(1, p.getBody());
+                    stmt.setString(2, p.getImage_path());
+                    stmt.setInt(3, p.getPost_id());
+                    stmt.executeUpdate();
+                }
+                try (PreparedStatement stmt = conn.prepareStatement(updateSharedPostsQuery)) {
+                    stmt.setString(1, p.getBody());
+                    stmt.setString(2, p.getImage_path());
+                    stmt.setInt(3, p.getPost_id());
+                    stmt.executeUpdate();
+                }
+                
+                conn.commit();
+            } catch (SQLException e) {
+                conn.rollback();
+                throw e;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+     
+     public void deletePost(int postId) {
+        String deletePostQuery = "DELETE FROM post WHERE post_id = ? OR (original_post_id = ? AND is_shared = 1)";
+        String deleteCommentsQuery = "DELETE FROM comment WHERE post_id = ? OR post_id IN (SELECT post_id FROM post WHERE original_post_id = ? AND is_shared = 1)";
+        String deleteLikesQuery = "DELETE FROM post_like WHERE post_id = ? OR post_id IN (SELECT post_id FROM post WHERE original_post_id = ? AND is_shared = 1)";
+        String deleteSharesQuery = "DELETE FROM post_share WHERE post_id = ? OR post_id IN (SELECT post_id FROM post WHERE original_post_id = ? AND is_shared = 1)";
+
+        try (Connection conn = sqlConnect.getInstance().getConnection()) {
+            conn.setAutoCommit(false);
+            try {
+                try (PreparedStatement stmt = conn.prepareStatement(deleteCommentsQuery)) {
+                    stmt.setInt(1, postId);
+                    stmt.setInt(2, postId);
+                    stmt.executeUpdate();
+                }
+                try (PreparedStatement stmt = conn.prepareStatement(deleteLikesQuery)) {
+                    stmt.setInt(1, postId);
+                    stmt.setInt(2, postId);
+                    stmt.executeUpdate();
+                }
+                try (PreparedStatement stmt = conn.prepareStatement(deleteSharesQuery)) {
+                    stmt.setInt(1, postId);
+                    stmt.setInt(2, postId);
+                    stmt.executeUpdate();
+                }
+                try (PreparedStatement stmt = conn.prepareStatement(deletePostQuery)) {
+                    stmt.setInt(1, postId);
+                    stmt.setInt(2, postId);
+                    stmt.executeUpdate();
+                }
+                conn.commit();
+            } catch (SQLException e) {
+                conn.rollback();
+                throw e;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

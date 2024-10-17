@@ -292,6 +292,14 @@
                                             <input type="hidden" name="postId" value="${post.post_id}">
                                             <button type="submit" class="btn btn-danger delete-button">Delete</button>
                                         </form>
+                                            
+                                             <!-- Update form -->
+
+                                        <form action="updatePostServlet" method="post">
+                                            <input type="hidden" name="_method" value="delete">
+                                            <input type="hidden" name="postId" value="${post.post_id}">
+                                            <button type="submit" class="btn btn-danger delete-button">Update</button>
+                                        </form>
 
                                     </c:if>
 

@@ -83,7 +83,7 @@ public class userpageServlet extends HttpServlet {
             request.setAttribute("friendCount", friendCount);
         } catch (Exception e) {
             Logger.getLogger(userpageServlet.class.getName()).log(Level.SEVERE, "Error fetching friends", e);
-            // We'll continue even if friends can't be fetched
+
         }
 
         request.setAttribute("user", user);

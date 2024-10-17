@@ -292,14 +292,24 @@
                                             <input type="hidden" name="postId" value="${post.post_id}">
                                             <button type="submit" class="btn btn-danger delete-button">Delete</button>
                                         </form>
-                                            
-                                             <!-- Update form -->
 
-                                        <form action="updatePostServlet" method="post">
-                                            <input type="hidden" name="_method" value="delete">
+                                        <!-- Update form -->
+
+                                        <form action="updatePostServlet" method="post" class="update-form" enctype="multipart/form-data" style="display: none;">
                                             <input type="hidden" name="postId" value="${post.post_id}">
-                                            <button type="submit" class="btn btn-danger delete-button">Update</button>
+                                            <textarea name="newBody" class="form-control">${post.body}</textarea>
+                                            <button type="submit" class="btn btn-primary">Update</button>
+                                            <div class="item">
+                                                <label for="photo-upload">
+                                                    <i class="fas fa-cloud-upload-alt"></i> Photo/Video
+                                                </label>
+                                                <input id="photo-upload" type="file" name="image" accept=".jpeg, .png, .jpg" style="display: none;" onchange="updateFileName(this)">
+                                            </div>
+                                            <button type="button" class="btn btn-secondary cancel-update">Cancel</button>
                                         </form>
+
+                                        <!-- Update button -->
+                                        <button class="btn btn-primary show-update-form">Update</button>
 
                                     </c:if>
 
@@ -451,19 +461,45 @@
         <script src="assets/js/likeButton.js" defer></script>
 
         <script>
-                                        document.addEventListener('DOMContentLoaded', function () {
-                                            const commentForm = document.getElementById('commentForm');
-                                            const commentInput = document.getElementById('body');
+                                                    document.addEventListener('DOMContentLoaded', function () {
+                                                        const commentForm = document.getElementById('commentForm');
+                                                        const commentInput = document.getElementById('body');
 
-                                            commentInput.addEventListener('keydown', function (event) {
-                                                if (event.key === 'Enter' && !event.shiftKey) {
-                                                    event.preventDefault();
-                                                    if (commentInput.value.trim() !== '') {
-                                                        commentForm.submit();
-                                                    }
-                                                }
-                                            });
-                                        });
+                                                        commentInput.addEventListener('keydown', function (event) {
+                                                            if (event.key === 'Enter' && !event.shiftKey) {
+                                                                event.preventDefault();
+                                                                if (commentInput.value.trim() !== '') {
+                                                                    commentForm.submit();
+                                                                }
+                                                            }
+                                                        });
+                                                    });
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const posts = document.querySelectorAll('.post');
+
+                posts.forEach(post => {
+                    const showUpdateFormBtn = post.querySelector('.show-update-form');
+                    const updateForm = post.querySelector('.update-form');
+                    const cancelUpdateBtn = post.querySelector('.cancel-update');
+
+                    if (showUpdateFormBtn) {
+                        showUpdateFormBtn.addEventListener('click', () => {
+                            updateForm.style.display = 'block';
+                            showUpdateFormBtn.style.display = 'none';
+                        });
+                    }
+
+                    if (cancelUpdateBtn) {
+                        cancelUpdateBtn.addEventListener('click', () => {
+                            updateForm.style.display = 'none';
+                            showUpdateFormBtn.style.display = 'block';
+                        });
+                    }
+                });
+            });
         </script>
 
 

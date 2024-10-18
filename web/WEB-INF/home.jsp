@@ -553,42 +553,44 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
         </style>
     </head>
     <body>
-        <div class="flex-container navbar">
-            <a href="home" style ="text-decoration:none">   <div class="logo" style="margin-bottom: 10%">Logo</div>
-            </a>
-            <form class="" method="get" action="/FUNET/searchServlet" id="searchForm">
-                <div class="search-bar">
-                    <input class="form-control" name="search-name" type="search" placeholder="Searching in FUNET" aria-label="Search" id="search-input">
+        <header class="bg-white shadow-md py-4 px-6 flex justify-between items-center fixed w-full z-10">
+            <div class="flex-container navbar">
+                <a href="home" style ="text-decoration:none">   <div class="logo" style="margin-bottom: 10%">Logo</div>
+                </a>
+                <form class="" method="get" action="/FUNET/searchServlet" id="searchForm">
+                    <div class="search-bar">
+                        <input class="form-control" name="search-name" type="search" placeholder="Searching in FUNET" aria-label="Search" id="search-input">
+
+                    </div>
+                </form>
+                <div class="center-buttons">
+
+                    <button class="center-button" id="home-btn" href="home">
+                        <box-icon type='solid' name='home'></box-icon>
+                    </button>
+                    <button class="center-button" id="video-btn">
+                        <box-icon name='videos' type='solid'></box-icon>
+                    </button>
+                    <button class="center-button" id="market-btn">
+                        <box-icon name='store-alt' type='solid'></box-icon>
+                    </button>
+                    <a href="/FUNET/friendRequestServlet" class="friend-icon me-3">
+                        <button class="center-button" id="friend-btn">
+                            <box-icon name='group' type='solid'></box-icon>
+                        </button>                       
+                    </a>
 
                 </div>
-            </form>
-            <div class="center-buttons">
+                <div class="right-icons">
+                    <a href="/FUNET/chat" class="mess-icon me-3" style='margin-left:5px'>
+                        <span class="icon icon-circle" id="messenger-btn"><box-icon name='messenger' type='logo' ></box-icon></span>
+                    </a>
+                    <span class="icon icon-circle" id="notification-btn"><box-icon name='bell' type='solid' ></box-icon></span>
+                    <span class="icon icon-circle" id="user-btn">&#128100;</span>
+                </div>
 
-                <button class="center-button" id="home-btn" href="home">
-                    <box-icon type='solid' name='home'></box-icon>
-                </button>
-                <button class="center-button" id="video-btn">
-                    <box-icon name='videos' type='solid'></box-icon>
-                </button>
-                <button class="center-button" id="market-btn">
-                    <box-icon name='store-alt' type='solid'></box-icon>
-                </button>
-                <a href="/FUNET/friendRequestServlet" class="friend-icon me-3">
-                    <button class="center-button" id="friend-btn">
-                        <box-icon name='group' type='solid'></box-icon>
-                    </button>                       
-                </a>
-                
             </div>
-            <div class="right-icons">
-                <a href="/FUNET/chat" class="mess-icon me-3" style='margin-left:5px'>
-                    <span class="icon icon-circle" id="messenger-btn"><box-icon name='messenger' type='logo' ></box-icon></span>
-                </a>
-                <span class="icon icon-circle" id="notification-btn"><box-icon name='bell' type='solid' ></box-icon></span>
-                <span class="icon icon-circle" id="user-btn">&#128100;</span>
-            </div>
-
-        </div>
+        </header>
 
         <div class="dropdown-menu" id="notification-menu">
             <p>Notification content goes here...</p>
@@ -640,9 +642,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                     <div><box-icon name='videos' type='solid'></box-icon> Video </div>
                     <div><box-icon name='store-alt' type='solid'></box-icon> Market</div>
                     <div><box-icon type='solid' name='book'></box-icon> Learning Materials</div>
-                    <div><i class='fas fa-gamepad' style='font-size:20px'></i> Game</div>
+                    <a href="game"> <div><i class='fas fa-gamepad' style='font-size:20px'></i> Game</div></a>
                     <hr style="border: 1px solid black; width: 100%;"><!-- comment -->
-
+                    <a href="dashBoard">dashboard</a>
                     <p>Your ShortCut</p>
                 </div>
             </div>
@@ -729,7 +731,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                                             thumb_up
                                         </span>
                                     </button>
-                                        <span class="like-count"><span class="post-rating-count">${post.like_count}</span></span>
+                                    <span class="like-count"><span class="post-rating-count">${post.like_count}</span></span>
                                 </div>
                                 <%-- <c:if test="${!post.isShared}"> --%>
                                 <div class="post-share">

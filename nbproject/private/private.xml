@@ -3,7 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/ADMIN/OneDrive/Desktop/funet3/FUNET2/src/java/controller/likeServlet.java</file>
+            <file>file:/F:/New%20folder/FUNET3/src/java/controller/MessageServlet.java</file>
+            <file>file:/F:/New%20folder/FUNET3/web/WEB-INF/home.jsp</file>
+            <file>file:/F:/New%20folder/FUNET3/web/WEB-INF/market.jsp</file>
+            <file>file:/F:/New%20folder/FUNET3/web/WEB-INF/LearningMaterial.jsp</file>
+            <file>file:/F:/New%20folder/FUNET3/src/java/Security/SHA512WithSalt.java</file>
         </group>
     </open-files>
 </project-private>

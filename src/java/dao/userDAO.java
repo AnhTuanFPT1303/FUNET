@@ -333,17 +333,17 @@ public class userDAO {
     }
 
     public void userIntroduce(User u) {
-        String query = "INSERT INTO userAccount (user_id, user_intro) VALUES (?, ?)";
-        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setInt(1, u.getUser_id());
-            stmt.setString(2, u.getUser_introduce());
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    String query = "UPDATE userAccount SET user_introduce = ? WHERE user_id = ?";
+    try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+        stmt.setString(1, u.getUser_introduce());
+        stmt.setInt(2, u.getUser_id());
+        stmt.executeUpdate();
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+}
 
     public String getUserIntroduce(int sessionUserId) {
         String query = "SELECT user_intro FROM userAccount WHERE user_id = ?";

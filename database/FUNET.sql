@@ -335,4 +335,13 @@ CREATE TABLE post_share (
     CONSTRAINT fk_share_user FOREIGN KEY (user_id) REFERENCES userAccount (user_id),
     CONSTRAINT fk_share_post FOREIGN KEY (post_id) REFERENCES post (post_id)
 );
+SELECT * FROM post
+SELECT * FROM userAccount
+UPDATE post
+SET image_path = 'swimlane.drawio.png'
+WHERE post_id = 19;
+
+UPDATE userAccount
+SET user_intro = 'swimlane.drawio.png'
+WHERE user_id = 1;
 >>>>>>> origin/Ha3_Uc

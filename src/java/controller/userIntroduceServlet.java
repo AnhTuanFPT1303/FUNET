@@ -79,15 +79,11 @@ public class userIntroduceServlet extends HttpServlet {
         if (session != null && session.getAttribute("user") != null) {
             User user = (User) session.getAttribute("user");
             String intro = request.getParameter("userIntro");
-            if (!intro.trim().equals("")) {
-                User u = new User();
-                u.setUser_id(user.getUser_id());
-                u.setUser_introduce(intro);
+            if (intro != null && !intro.trim().isEmpty()) {
+                user.setUser_introduce(intro);
                 try {
-                    userDAO.getInstance().userIntroduce(u);
-                    TimeUnit.SECONDS.sleep(2);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(userIntroduceServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    userDAO.getInstance().userIntroduce(user);
+                    response.sendRedirect("profile");
                 } catch (Exception e) {
                     e.printStackTrace();
                     request.setAttribute("errorMessage", "Error");

@@ -202,6 +202,8 @@ public class Post {
         this.profile_pic = profile_pic;
         this.like_count = like_count;
     }
+    
+    
 
     
     public String getProfile_pic() {

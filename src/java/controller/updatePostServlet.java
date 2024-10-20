@@ -26,6 +26,8 @@ import model.User;
  */
 @MultipartConfig
 public class updatePostServlet extends HttpServlet {
+    
+    private static final long serialVersionUID = 1L;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -81,12 +83,11 @@ public class updatePostServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("user") != null) {
-            User user = (User) session.getAttribute("user");
             String newBody = request.getParameter("newBody");
-            Part file = request.getPart("image");
-            String newImage_path = file.getSubmittedFileName();
+            Part file = request.getPart("newImage");                                                                                    
+            String image_path = getSubmittedFileName(file);
             int postId = Integer.parseInt(request.getParameter("postId"));
-            String uploadPath = getServletContext().getRealPath("/assets/post_image/") + newImage_path;
+            String uploadPath = getServletContext().getRealPath("/assets/post_image/") + image_path;
             try {
                 FileOutputStream fos = new FileOutputStream(uploadPath);
                 InputStream is = file.getInputStream();
@@ -98,12 +99,11 @@ public class updatePostServlet extends HttpServlet {
                 e.printStackTrace();
             }
 
-            if (!newBody.trim().equals("") || !newImage_path.equals("")) {
+            if (!newBody.trim().isEmpty() || (image_path != null && !image_path.isEmpty())) {
                 Post post = new Post();
                 post.setPost_id(postId);
-                post.setUser_id(user.getUser_id());
                 post.setBody(newBody);
-                post.setImage_path(newImage_path);
+                post.setImage_path(image_path);
                 postDAO PostDao = new postDAO();
                 try {
                     PostDao.updatePost(post);
@@ -120,6 +120,14 @@ public class updatePostServlet extends HttpServlet {
         } else {
             response.sendRedirect("home");
         }
+    }
+    private String getSubmittedFileName(Part part) {
+        for (String cd : part.getHeader("content-disposition").split(";")) {
+            if (cd.trim().startsWith("filename")) {
+                return cd.substring(cd.indexOf('=') + 1).trim().replace("\"", "");
+            }
+        }
+        return null;
     }
 
     /**

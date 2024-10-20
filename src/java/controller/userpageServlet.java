@@ -90,7 +90,6 @@ public class userpageServlet extends HttpServlet {
         request.setAttribute("posts", posts);
         request.getRequestDispatcher("/WEB-INF/profile.jsp").forward(request, response);
     }
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
@@ -100,12 +99,10 @@ public class userpageServlet extends HttpServlet {
 
             Part file = request.getPart("image");
             String image_path = file.getSubmittedFileName();
-            String uploadPath = "E:/FUNET/FUNET/web/assets/profile_avt/" + image_path;
-            //E:\FUNET\FUNET\web\assets
+            String uploadPath = getServletContext().getRealPath("/assets/post_image/") + image_path;
             try {
                 FileOutputStream fos = new FileOutputStream(uploadPath);
                 InputStream is = file.getInputStream();
-
                 byte[] data = new byte[is.available()];
                 is.read(data);
                 fos.write(data);

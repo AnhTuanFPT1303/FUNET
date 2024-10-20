@@ -116,8 +116,15 @@
             <div class="post-section-in">
                 <section class="info-section">
                     <div class="about-info">
-                        <h4>Intro</h4>
-                        <p>Xin chào</p>
+                        <form action="userIntroduceServlet" method="post">
+                            <input name="userIntro" placeholder="Introduce yourself...">
+                            <button type="submit">Save Introduction</button>
+                        </form>
+
+                        <div class="user-introduction">
+                            <h2>Introduction</h2>
+                            <p>${user.user_introduce}</p>
+                        </div>
                         <!--
                                 <div class="bio-btn-click">
                                         <input class="input-box" type="text" value="MD Mehedi Hasan">
@@ -175,7 +182,7 @@
                                 <button class="edit-bio btn">Edit Hobbies</button>
                         -->
 
-                        <button class="edit-bio btn">Edit Featured</button>
+                        <!-- <button class="edit-bio btn">Edit Featured</button> -->
                     </div>
 
                     <div class="box-design images-site">
@@ -303,14 +310,15 @@
                                                 <label for="photo-upload">
                                                     <i class="fas fa-cloud-upload-alt"></i> Photo/Video
                                                 </label>
-                                                <input id="photo-upload" type="file" name="image" accept=".jpeg, .png, .jpg" style="display: none;" onchange="updateFileName(this)">
+                                                <input id="photo-upload" type="file" name="newImage" accept=".jpeg, .png, .jpg" style="display: none;" onchange="updateFileName(this)">
                                             </div>
                                             <button type="button" class="btn btn-secondary cancel-update">Cancel</button>
                                         </form>
 
                                         <!-- Update button -->
-                                        <button class="btn btn-primary show-update-form">Update</button>
-
+                                        <c:if test="${!post.isShared}">
+                                            <button class="btn btn-primary show-update-form">Update</button>
+                                        </c:if>
                                     </c:if>
 
                                     <span>

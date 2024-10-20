@@ -116,14 +116,16 @@
             <div class="post-section-in">
                 <section class="info-section">
                     <div class="about-info">
-                        <form action="userIntroduceServlet" method="post">
-                            <input name="userIntro" placeholder="Introduce yourself..." value="${user.user_introduce}">
-                            <button type="submit">Save Introduction</button>
-                        </form>
-
                         <div class="user-introduction">
                             <h2>Introduction</h2>
-                            <p>${user.user_introduce}</p>
+                            <p id="user-intro-text">${user.user_introduce}</p>
+                            <button id="edit-intro-btn" class="btn btn-primary">Edit Introduction</button>
+
+                            <form id="edit-intro-form" action="userIntroduceServlet" method="post" style="display: none;">
+                                <input type="text" name="userIntro" class="form-control" placeholder="Introduce yourself..." value="${user.user_introduce}">
+                                <button type="submit" class="btn btn-success">Save</button>
+                                <button type="button" id="cancel-edit-btn" class="btn btn-secondary">Cancel</button>
+                            </form>
                         </div>
                         <!--
                                 <div class="bio-btn-click">
@@ -291,35 +293,18 @@
                                         </div>
                                     </c:if>
 
-                                    <c:if test="${sessionScope.user['user_id'] == user.user_id}">
-                                        <!-- Delete form -->
-
-                                        <form action="deleteServlet" method="post">
-                                            <input type="hidden" name="_method" value="delete">
-                                            <input type="hidden" name="postId" value="${post.post_id}">
-                                            <button type="submit" class="btn btn-danger delete-button">Delete</button>
-                                        </form>
-
-                                        <!-- Update form -->
-
-                                        <form action="updatePostServlet" method="post" class="update-form" enctype="multipart/form-data" style="display: none;">
-                                            <input type="hidden" name="postId" value="${post.post_id}">
-                                            <textarea name="newBody" class="form-control">${post.body}</textarea>
-                                            <button type="submit" class="btn btn-primary">Update</button>
-                                            <div class="item">
-                                                <label for="photo-upload">
-                                                    <i class="fas fa-cloud-upload-alt"></i> Photo/Video
-                                                </label>
-                                                <input id="photo-upload" type="file" name="newImage" accept=".jpeg, .png, .jpg" style="display: none;" onchange="updateFileName(this)">
-                                            </div>
-                                            <button type="button" class="btn btn-secondary cancel-update">Cancel</button>
-                                        </form>
-
-                                        <!-- Update button -->
-                                        <c:if test="${!post.isShared}">
-                                            <button class="btn btn-primary show-update-form">Update</button>
-                                        </c:if>
-                                    </c:if>
+                                    <form action="updatePostServlet" method="post" class="update-form" enctype="multipart/form-data" style="display: none;">
+                                        <input type="hidden" name="postId" value="${post.post_id}">
+                                        <textarea name="newBody" class="form-control">${post.body}</textarea>
+                                        <button type="submit" class="btn btn-primary">Update</button>
+                                        <div class="item">
+                                            <label for="photo-upload">
+                                                <i class="fas fa-cloud-upload-alt"></i> Photo/Video
+                                            </label>
+                                            <input id="photo-upload" type="file" name="newImage" accept=".jpeg, .png, .jpg" style="display: none;" onchange="updateFileName(this)">
+                                        </div>
+                                        <button type="button" class="btn btn-secondary cancel-update">Cancel</button>
+                                    </form>
 
                                     <span>
                                         <div class="Select-audience">
@@ -368,6 +353,32 @@
                                     </span>
                                 </div>
                                 <span class="thre-dto-btn fas fa-ellipsis-h"></span>
+                                <c:if test="${sessionScope.user['user_id'] == user.user_id}">
+                                    <div class="dropdown-menu" style="display: none;">
+                                        <form action="updatePostServlet" method="post" class="update-form" enctype="multipart/form-data" style="display: none;">
+                                            <input type="hidden" name="postId" value="${post.post_id}">
+                                            <textarea name="newBody" class="form-control">${post.body}</textarea>
+                                            <button type="submit" class="btn btn-primary">Update</button>
+                                            <div class="item">
+                                                <label for="photo-upload">
+                                                    <i class="fas fa-cloud-upload-alt"></i> Photo/Video
+                                                </label>
+                                                <input id="photo-upload" type="file" name="newImage" accept=".jpeg, .png, .jpg" style="display: none;" onchange="updateFileName(this)">
+                                            </div>
+                                            <button type="button" class="btn btn-secondary cancel-update">Cancel</button>
+                                        </form>
+
+                                        <!-- Update button -->
+                                        <c:if test="${!post.isShared}">
+                                            <button class="btn btn-primary show-update-form">Update</button>
+                                        </c:if>
+                                        <form action="deleteServlet" method="post" class="delete-form">
+                                            <input type="hidden" name="_method" value="delete">
+                                            <input type="hidden" name="postId" value="${post.post_id}">
+                                            <button type="submit" class="btn btn-link">Delete</button>
+                                        </form>
+                                    </div>
+                                </c:if>
                             </div>
                             <p class="post-text-show">${post.body}</p>
                             <c:if test="${not empty post.image_path}">
@@ -509,7 +520,61 @@
                 });
             });
         </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const editBtn = document.getElementById('edit-intro-btn');
+                const editForm = document.getElementById('edit-intro-form');
+                const cancelBtn = document.getElementById('cancel-edit-btn');
+                const introText = document.getElementById('user-intro-text');
 
+                editBtn.addEventListener('click', function () {
+                    editForm.style.display = 'block';
+                    introText.style.display = 'none';
+                    editBtn.style.display = 'none';
+                });
 
+                cancelBtn.addEventListener('click', function () {
+                    editForm.style.display = 'none';
+                    introText.style.display = 'block';
+                    editBtn.style.display = 'block';
+                });
+            });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+            const posts = document.querySelectorAll('.post');
+                    posts.forEach(post => {
+                    const threeDotBtn = post.querySelector('.thre-dto-btn');
+                            const dropdownMenu = post.querySelector('.dropdown-menu');
+                            const showUpdateFormBtn = post.querySelector('.show-update-form');
+                            const updateForm = post.querySelector('.update-form');
+                            const cancelUpdateBtn = post.querySelector('.cancel-update');
+                            threeDotBtn.addEventListener('click', () => {
+                            dropdownMenu.style.display = dropdownMenu.style.display === 'none' ? 'block' : 'none';
+                            });
+                            if (showUpdateFormBtn) {
+                    showUpdateFormBtn.addEventListener('click', () => {
+                    updateForm.style.display = 'block';
+                            showUpdateFormBtn.style.display = 'none';
+                            dropdownMenu.style.display = 'none';
+                });
+            }
+
+                    if (cancelUpdateBtn) {
+                    cancelUpdateBtn.addEventListener('click', () => {
+                    updateForm.style.display = 'none';
+                            showUpdateFormBtn.style.display = 'block';
+                    });
+                }
+            });
+                    document.addEventListener('click', function (event) {
+                    if (!event.target.closest('.post')) {
+                    document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.style.display = 'none';
+                    });
+                }
+            });
+        });
+        </script
     </body>
 </html>

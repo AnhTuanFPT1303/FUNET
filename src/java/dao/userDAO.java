@@ -5,6 +5,8 @@ import java.sql.*;
 import model.User;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class userDAO {
@@ -332,32 +334,32 @@ public class userDAO {
 
     }
 
-    public void userIntroduce(User u) {
+    public void updateUserIntroduction(int userId, String introduction) {
     String query = "UPDATE userAccount SET user_introduce = ? WHERE user_id = ?";
     try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
-        stmt.setString(1, u.getUser_introduce());
-        stmt.setInt(2, u.getUser_id());
+        stmt.setString(1, introduction);
+        stmt.setInt(2, userId);
         stmt.executeUpdate();
     } catch (SQLException e) {
         e.printStackTrace();
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
+    }   catch (Exception ex) {
+            ex.printStackTrace();
+        }
 }
 
     public String getUserIntroduce(int sessionUserId) {
-        String query = "SELECT user_intro FROM userAccount WHERE user_id = ?";
+        String query = "SELECT user_introduce FROM userAccount WHERE user_id = ?";
         try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)){
             stmt.setInt(1, sessionUserId);
             try (ResultSet rs = stmt.executeQuery()) {
                 if(rs.next()){
-                    return rs.getString("user_intro");
+                    return rs.getString("user_introduce");
                 }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return "Sin chao`";
+        return "Xin chao`";
     }
 
     public static void main(String[] args) {

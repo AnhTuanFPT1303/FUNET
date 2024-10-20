@@ -53,6 +53,8 @@ public class userpageServlet extends HttpServlet {
                 request.getRequestDispatcher("error.jsp").forward(request, response);
                 return;
             }
+            String introduction = userDao.getUserIntroduce(user.getUser_id());
+            user.setUser_introduce(introduction);
         } catch (SQLException ex) {
             Logger.getLogger(userpageServlet.class.getName()).log(Level.SEVERE, "Error fetching user", ex);
             request.setAttribute("errorMessage", "Error fetching user data");

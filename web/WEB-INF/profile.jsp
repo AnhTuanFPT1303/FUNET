@@ -117,7 +117,7 @@
                 <section class="info-section">
                     <div class="about-info">
                         <form action="userIntroduceServlet" method="post">
-                            <input name="userIntro" placeholder="Introduce yourself...">
+                            <input name="userIntro" placeholder="Introduce yourself..." value="${user.user_introduce}">
                             <button type="submit">Save Introduction</button>
                         </form>
 

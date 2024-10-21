@@ -314,40 +314,41 @@
                                             </div>
 
                                             <div class="content-popaap">
-                                                <ul>
-                                                    <li id="public-btn">
-                                                        <div class="icon-div">
-                                                            <i class="fas fa-globe-europe"></i>
-                                                        </div>
-                                                        <div class="text-aria">
-                                                            <h2>Public</h2>
-                                                            <p>Anyone on or off Facebook</p>
-                                                            <i id="public-li-icon" class="far fa-circle"></i>
-                                                        </div>
-                                                    </li>
-
-                                                    <li class="activ-li-div" id="friends-btn">
-                                                        <div class="icon-div">
-                                                            <i class="fas fa-user-friends frind-icon"></i>
-                                                        </div>
-                                                        <div class="text-aria">
-                                                            <h2>Friends</h2>
-                                                            <p>Your friends on Facebook</p>
-                                                            <i id="friends-li-icon"
-                                                               class="far fa-dot-circle activ-li-icon"></i>
-                                                        </div>
-                                                    </li>
-
-                                                    <li id="lock-btn">
-                                                        <div class="icon-div">
-                                                            <i class="fas fa-lock"></i>
-                                                        </div>
-                                                        <div class="text-aria">
-                                                            <h2 class="onlu-me">Only Me</h2>
-                                                            <i id="lock-li-icon" class="far fa-circle"></i>
-                                                        </div>
-                                                    </li>
-                                                </ul>
+                                                <form id="updatePrivacyForm" action="updatePrivateServlet" method="post">
+                                                    <input type="hidden" name="postId" value="${post.post_id}">
+                                                    <input type="hidden" name="privacyMode" id="privacyMode">
+                                                    <ul>
+                                                        <li id="public-btn" onclick="updatePrivacy('public')">
+                                                            <div class="icon-div">
+                                                                <i class="fas fa-globe-europe"></i>
+                                                            </div>
+                                                            <div class="text-aria">
+                                                                <h2>Public</h2>
+                                                                <p>Anyone on or off FUNET</p>
+                                                                <i id="public-li-icon" class="far fa-circle"></i>
+                                                            </div>
+                                                        </li>
+                                                        <li class="activ-li-div" id="friends-btn" onclick="updatePrivacy('friend')">
+                                                            <div class="icon-div">
+                                                                <i class="fas fa-user-friends frind-icon"></i>
+                                                            </div>
+                                                            <div class="text-aria">
+                                                                <h2>Friends</h2>
+                                                                <p>Your friends on FUNET</p>
+                                                                <i id="friends-li-icon" class="far fa-dot-circle activ-li-icon"></i>
+                                                            </div>
+                                                        </li>
+                                                        <li id="lock-btn" onclick="updatePrivacy('private')">
+                                                            <div class="icon-div">
+                                                                <i class="fas fa-lock"></i>
+                                                            </div>
+                                                            <div class="text-aria">
+                                                                <h2 class="onlu-me">Only Me</h2>
+                                                                <i id="lock-li-icon" class="far fa-circle"></i>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </form>
                                             </div>
                                         </div>
                                     </span>
@@ -480,19 +481,26 @@
         <script src="assets/js/likeButton.js" defer></script>
 
         <script>
-                                                    document.addEventListener('DOMContentLoaded', function () {
-                                                        const commentForm = document.getElementById('commentForm');
-                                                        const commentInput = document.getElementById('body');
+                                                    function updatePrivacy(mode) {
+                                                        document.getElementById('privacyMode').value = mode;
+                                                        document.getElementById('updatePrivacyForm').submit();
+                                                    }
+        </script>
 
-                                                        commentInput.addEventListener('keydown', function (event) {
-                                                            if (event.key === 'Enter' && !event.shiftKey) {
-                                                                event.preventDefault();
-                                                                if (commentInput.value.trim() !== '') {
-                                                                    commentForm.submit();
-                                                                }
-                                                            }
-                                                        });
-                                                    });
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const commentForm = document.getElementById('commentForm');
+                const commentInput = document.getElementById('body');
+
+                commentInput.addEventListener('keydown', function (event) {
+                    if (event.key === 'Enter' && !event.shiftKey) {
+                        event.preventDefault();
+                        if (commentInput.value.trim() !== '') {
+                            commentForm.submit();
+                        }
+                    }
+                });
+            });
         </script>
 
         <script>
@@ -542,39 +550,39 @@
         </script>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-            const posts = document.querySelectorAll('.post');
-                    posts.forEach(post => {
+                const posts = document.querySelectorAll('.post');
+                posts.forEach(post => {
                     const threeDotBtn = post.querySelector('.thre-dto-btn');
-                            const dropdownMenu = post.querySelector('.dropdown-menu');
-                            const showUpdateFormBtn = post.querySelector('.show-update-form');
-                            const updateForm = post.querySelector('.update-form');
-                            const cancelUpdateBtn = post.querySelector('.cancel-update');
-                            threeDotBtn.addEventListener('click', () => {
-                            dropdownMenu.style.display = dropdownMenu.style.display === 'none' ? 'block' : 'none';
-                            });
-                            if (showUpdateFormBtn) {
-                    showUpdateFormBtn.addEventListener('click', () => {
-                    updateForm.style.display = 'block';
+                    const dropdownMenu = post.querySelector('.dropdown-menu');
+                    const showUpdateFormBtn = post.querySelector('.show-update-form');
+                    const updateForm = post.querySelector('.update-form');
+                    const cancelUpdateBtn = post.querySelector('.cancel-update');
+                    threeDotBtn.addEventListener('click', () => {
+                        dropdownMenu.style.display = dropdownMenu.style.display === 'none' ? 'block' : 'none';
+                    });
+                    if (showUpdateFormBtn) {
+                        showUpdateFormBtn.addEventListener('click', () => {
+                            updateForm.style.display = 'block';
                             showUpdateFormBtn.style.display = 'none';
                             dropdownMenu.style.display = 'none';
-                });
-            }
+                        });
+                    }
 
                     if (cancelUpdateBtn) {
-                    cancelUpdateBtn.addEventListener('click', () => {
-                    updateForm.style.display = 'none';
+                        cancelUpdateBtn.addEventListener('click', () => {
+                            updateForm.style.display = 'none';
                             showUpdateFormBtn.style.display = 'block';
-                    });
-                }
-            });
-                    document.addEventListener('click', function (event) {
+                        });
+                    }
+                });
+                document.addEventListener('click', function (event) {
                     if (!event.target.closest('.post')) {
-                    document.querySelectorAll('.dropdown-menu').forEach(menu => {
-                    menu.style.display = 'none';
-                    });
-                }
+                        document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                            menu.style.display = 'none';
+                        });
+                    }
+                });
             });
-        });
-        </script
+        </script>
     </body>
 </html>

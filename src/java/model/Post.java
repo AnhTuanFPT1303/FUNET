@@ -28,6 +28,25 @@ public class Post {
     private String originalPosterName;
     private int shareCount;
     private String originalPosterAvatar;
+    private String privacy_mode;
+    
+    public Post(int post_id, int user_id, String body, Timestamp post_time, String first_name, String last_name, String image_path, String profile_pic, int like_count, boolean isShared, int originalPostId, String originalPosterName, int shareCount, String originalPosterAvatar, String privacy_mode) {
+        this.post_id = post_id;
+        this.user_id = user_id;
+        this.body = body;
+        this.post_time = post_time;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.image_path = image_path;
+        this.profile_pic = profile_pic;
+        this.like_count = like_count;
+        this.isShared = isShared;
+        this.originalPostId = originalPostId;
+        this.originalPosterName = originalPosterName;
+        this.shareCount = shareCount;
+        this.originalPosterAvatar = originalPosterAvatar;
+        this.privacy_mode = privacy_mode;
+    }
 
     public Post(int post_id, int user_id, String body, Timestamp post_time, String first_name, String last_name, String image_path, String profile_pic, int like_count, boolean isShared, int originalPostId, String originalPosterName, int shareCount, String originalPosterAvatar) {
         this.post_id = post_id;
@@ -76,6 +95,16 @@ public class Post {
         this.likedByCurrentUser = likedByCurrentUser;
         this.comments = comments;
     }
+
+    public String getPrivacy_mode() {
+        return privacy_mode;
+    }
+
+    public void setPrivacy_mode(String privacy_mode) {
+        this.privacy_mode = privacy_mode;
+    }
+    
+    
 
     public List<Comment> getComments() {
         return comments;

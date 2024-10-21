@@ -189,6 +189,7 @@ CREATE TABLE userAccount (
   email VARCHAR(70) NOT NULL UNIQUE,
   profile_pic VARCHAR(max) NOT NULL,
   role VARCHAR(20) NOT NULL, 
+  user_introduce NVARCHAR(50),
   is_banned BIT NOT NULL
 );
 
@@ -210,9 +211,12 @@ CREATE TABLE post (
   image_path NVARCHAR(max),
   post_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   like_count INT not null default 0,
+  is_shared BIT NOT NULL DEFAULT 0,
+  original_post_id INT NULL,
+  share_count INT NOT NULL DEFAULT 0,
+  privacy_mode NVARCHAR(10) NOT NULL DEFAULT 'friend',
   FOREIGN KEY (user_id) REFERENCES userAccount (user_id)
 );
-
 GO
 CREATE TABLE post_like (
 	like_id INT NOT NULL IDENTITY(1,1) PRIMARY KEY, 
@@ -319,13 +323,6 @@ END;
 
 SELECT sender, message_text, receiver FROM message WHERE (sender = 1 AND receiver = 0) OR (sender = 0 AND receiver = 1) ORDER BY sent_date ASC;
 
-
-GO
-ALTER TABLE post
-ADD is_shared BIT NOT NULL DEFAULT 0,
-    original_post_id INT NULL,
-    share_count INT NOT NULL DEFAULT 0;
-
 GO
 CREATE TABLE post_share (
     share_id INT IDENTITY(1,1) PRIMARY KEY,
@@ -335,13 +332,15 @@ CREATE TABLE post_share (
     CONSTRAINT fk_share_user FOREIGN KEY (user_id) REFERENCES userAccount (user_id),
     CONSTRAINT fk_share_post FOREIGN KEY (post_id) REFERENCES post (post_id)
 );
+
+
+
+
 SELECT * FROM post
 SELECT * FROM userAccount
-UPDATE post
-SET image_path = 'swimlane.drawio.png'
-WHERE post_id = 19;
 
-UPDATE userAccount
-SET user_intro = 'swimlane.drawio.png'
-WHERE user_id = 1;
+UPDATE post
+SET privacy_mode = 'public'
+WHERE post_id = 122;
+
 >>>>>>> origin/Ha3_Uc

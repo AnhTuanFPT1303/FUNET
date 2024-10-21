@@ -11,6 +11,8 @@ package dao;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Comment;
 import model.Post;
 import util.sqlConnect;
@@ -18,11 +20,12 @@ import util.sqlConnect;
 public class postDAO {
 
     public void addPost(Post p) {
-        String query = "INSERT INTO post (user_id, body, image_path) VALUES (?, ?, ?)";
+        String query = "INSERT INTO post (user_id, body, image_path, privacy_mode) VALUES (?, ?, ?, ?)";
         try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, p.getUser_id());
             stmt.setString(2, p.getBody());
             stmt.setString(3, p.getImage_path());
+            stmt.setString(4, p.getPrivacy_mode());
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -30,6 +33,22 @@ public class postDAO {
             e.printStackTrace();
         }
     }
+
+    public void updatePostPrivacy(int postId, String privacyMode) {
+    String query = "UPDATE post SET privacy_mode = ? WHERE post_id = ?";
+    try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+        stmt.setString(1, privacyMode);
+        stmt.setInt(2, postId);
+        stmt.executeUpdate();
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+    
+
+
 
     public void addComment(Comment c) {
         String query = "INSERT INTO comment (post_id, user_id, comment_text) VALUES (?, ?, ?)";
@@ -130,9 +149,8 @@ public class postDAO {
         List<Post> posts = new ArrayList<>();
         try {
             Connection conn = sqlConnect.getInstance().getConnection();
-
             String query = "SELECT DISTINCT p.post_id, p.body, p.post_time, p.user_id, p.image_path, p.like_count, u.first_name, u.last_name, u.profile_pic, "
-                    + "p.is_shared, p.original_post_id, "
+                    + "p.is_shared, p.original_post_id, p.privacy_mode, "
                     + "CASE WHEN p.is_shared = 1 THEN CONCAT(op.first_name, ' ', op.last_name) ELSE NULL END AS original_poster_name, "
                     + "CASE WHEN p.is_shared = 1 THEN op.profile_pic ELSE NULL END AS original_poster_avatar, "
                     + "(SELECT COUNT(*) FROM post_share WHERE post_id = p.post_id) AS share_count "
@@ -140,8 +158,8 @@ public class postDAO {
                     + "JOIN userAccount u ON p.user_id = u.user_id "
                     + "LEFT JOIN post op_post ON p.original_post_id = op_post.post_id "
                     + "LEFT JOIN userAccount op ON op_post.user_id = op.user_id "
-                    + "WHERE p.user_id = ? "
-                    + "OR p.user_id IN ( "
+                    + "WHERE (p.user_id = ? AND p.privacy_mode != 'private') "
+                    + "OR (p.user_id IN ( "
                     + "    SELECT CASE "
                     + "        WHEN f.sender = ? THEN f.receiver "
                     + "        ELSE f.sender "
@@ -149,7 +167,8 @@ public class postDAO {
                     + "    FROM friendship f "
                     + "    WHERE f.status = 'accepted' "
                     + "    AND (? IN (f.sender, f.receiver)) "
-                    + ") "
+                    + ") AND p.privacy_mode = 'friend') "
+                    + "OR p.privacy_mode = 'public' "
                     + "ORDER BY p.post_time DESC";
 
             try (PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -173,7 +192,8 @@ public class postDAO {
                         String originalPosterName = rs.getString("original_poster_name");
                         int shareCount = rs.getInt("share_count");
                         String originalPosterAvatar = rs.getString("original_poster_avatar");
-                        Post post = new Post(post_id, user_id, body, post_time, first_name, last_name, image_path, profile_pic, like_count, isShared, originalPostId, originalPosterName, shareCount, originalPosterAvatar);
+                        String privacy_mode = rs.getString("privacy_mode");
+                        Post post = new Post(post_id, user_id, body, post_time, first_name, last_name, image_path, profile_pic, like_count, isShared, originalPostId, originalPosterName, shareCount, originalPosterAvatar, privacy_mode);
                         post.setComments(getComments(post.getPost_id()));
                         posts.add(post);
                     }

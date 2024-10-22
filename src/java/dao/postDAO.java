@@ -20,12 +20,11 @@ import util.sqlConnect;
 public class postDAO {
 
     public void addPost(Post p) {
-        String query = "INSERT INTO post (user_id, body, image_path, privacy_mode) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO post (user_id, body, image_path) VALUES (?, ?, ?)";
         try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, p.getUser_id());
             stmt.setString(2, p.getBody());
             stmt.setString(3, p.getImage_path());
-            stmt.setString(4, p.getPrivacy_mode());
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -35,20 +34,17 @@ public class postDAO {
     }
 
     public void updatePostPrivacy(int postId, String privacyMode) {
-    String query = "UPDATE post SET privacy_mode = ? WHERE post_id = ?";
-    try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
-        stmt.setString(1, privacyMode);
-        stmt.setInt(2, postId);
-        stmt.executeUpdate();
-    } catch (SQLException e) {
-        e.printStackTrace();
-    } catch (Exception e) {
-        e.printStackTrace();
+        String query = "UPDATE post SET privacy_mode = ? WHERE post_id = ?";
+        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, privacyMode);
+            stmt.setInt(2, postId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-}
-    
-
-
 
     public void addComment(Comment c) {
         String query = "INSERT INTO comment (post_id, user_id, comment_text) VALUES (?, ?, ?)";
@@ -415,6 +411,24 @@ public class postDAO {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void deleteComment(int commentId) {
+        String deleteCommentQuery = "DELETE FROM comment WHERE comment_id = ?";
+         try (Connection conn = sqlConnect.getInstance().getConnection()) {
+            conn.setAutoCommit(false);
+            try (PreparedStatement stmt = conn.prepareStatement(deleteCommentQuery)) {
+                stmt.setInt(1, commentId);
+                stmt.executeUpdate();
+            } catch (SQLException e) {
+                conn.rollback();
+                throw e;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

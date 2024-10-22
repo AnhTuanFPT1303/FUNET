@@ -4,6 +4,7 @@
  */
 package controller;
 
+import com.google.gson.Gson;
 import dao.postDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,7 +14,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import model.Comment;
 import model.Post;
 import model.User;
@@ -91,11 +94,10 @@ public class commentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
+       HttpSession session = request.getSession(false);
     if (session != null && session.getAttribute("user") != null) {
         int post_id = Integer.parseInt(request.getParameter("post_id"));
         String commentContent = request.getParameter("commentContent");
-        String sourceUrl = request.getParameter("sourceUrl"); 
         postDAO postDAO = new postDAO();
         User user = (User) session.getAttribute("user");
         Comment comment = new Comment();
@@ -106,15 +108,24 @@ public class commentServlet extends HttpServlet {
         }
         try {
             postDAO.addComment(comment);
-            
-            if (sourceUrl != null && sourceUrl.contains("profile")) {
-                response.sendRedirect("profile");
-            } else {
-                response.sendRedirect("home");
-            }
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            PrintWriter out = response.getWriter();
+            Map<String, Object> jsonResponse = new HashMap<>();
+            jsonResponse.put("success", true);
+            jsonResponse.put("comment", comment);
+            out.print(new Gson().toJson(jsonResponse));
+            out.flush();
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("error.jsp"); 
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            PrintWriter out = response.getWriter();
+            Map<String, Object> jsonResponse = new HashMap<>();
+            jsonResponse.put("success", false);
+            jsonResponse.put("error", e.getMessage());
+            out.print(new Gson().toJson(jsonResponse));
+            out.flush();
         }
     } else {
         response.sendRedirect("login");

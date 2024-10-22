@@ -578,7 +578,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                         <box-icon name='group' type='solid'></box-icon>
                     </button>                       
                 </a>
-                
+
             </div>
             <div class="right-icons">
                 <a href="/FUNET/chat" class="mess-icon me-3" style='margin-left:5px'>
@@ -729,7 +729,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                                             thumb_up
                                         </span>
                                     </button>
-                                        <span class="like-count"><span class="post-rating-count">${post.like_count}</span></span>
+                                    <span class="like-count"><span class="post-rating-count">${post.like_count}</span></span>
                                 </div>
                                 <%-- <c:if test="${!post.isShared}"> --%>
                                 <div class="post-share">
@@ -749,9 +749,22 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                                         <div class="comment-header">
                                             <img src="assets/profile_avt/${comment.profile_pic}" class="img-fluid rounded-circle avatar me-2" style="width: 30px; height: 30px; object-fit: cover;">
                                             <small><strong>${comment.first_name} ${comment.last_name}</strong></small>
+                                            <c:if test="${sessionScope.user['user_id'] == comment.user_id}">
+                                                <button class="edit-comment-btn" data-comment-id="${comment.comment_id}">Edit</button>
+                                                <form action="/FUNET/deleteCommentServlet" method="post" class="delete-comment-form" style="display: inline;">
+                                                    <input type="hidden" name="commentId" value="${comment.comment_id}">
+                                                    <button type="submit" class="delete-comment-btn">Delete</button>
+                                                </form>
+                                            </c:if>
                                         </div>
                                         <div class="comment-body">
-                                            <p style="margin-bottom: 0;">${comment.comment_text}</p>
+                                            <p style="margin-bottom: 0;" class="comment-text">${comment.comment_text}</p>
+                                            <form action="/FUNET/updateCommentServlet" method="post" class="edit-comment-form" style="display: none;">
+                                                <input type="hidden" name="commentId" value="${comment.comment_id}">
+                                                <textarea name="newCommentText" class="form-control">${comment.comment_text}</textarea>
+                                                <button type="submit" class="btn btn-primary">Save</button>
+                                                <button type="button" class="btn btn-secondary cancel-edit-comment">Cancel</button>
+                                            </form>
                                         </div>
                                     </div>
                                 </c:forEach>
@@ -803,147 +816,158 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="assets/js/bootstrap.bundle.min.js"></script>
         <script src="assets/js/likeButton.js" defer></script>
-
-
+        <script src="assets/js/comment.js" defer></script>
+        <!-- delete update comment -->
         <script>
                                         document.addEventListener('DOMContentLoaded', function () {
-                                            const searchInput = document.getElementById('search-input');
-                                            const searchForm = document.getElementById('searchForm');
-
-                                            searchInput.addEventListener('keypress', function (event) {
-                                                if (event.key === 'Enter') {
-                                                    event.preventDefault();
-                                                    searchForm.submit();
-                                                }
+                                            document.querySelectorAll('.edit-comment-btn').forEach(button => {
+                                                button.addEventListener('click', function () {
+                                                    const commentId = this.getAttribute('data-comment-id');
+                                                    const commentText = this.closest('.comment').querySelector('.comment-text');
+                                                    const editForm = this.closest('.comment').querySelector('.edit-comment-form');
+                                                    commentText.style.display = 'none';
+                                                    editForm.style.display = 'block';
+                                                });
                                             });
-                                        });
 
-                                        document.getElementById('messenger-btn').addEventListener('click', function () {
-                                            toggleMenu('messenger-menu', 'messenger-btn');
-                                        });
-
-                                        document.getElementById('notification-btn').addEventListener('click', function () {
-                                            toggleMenu('notification-menu', 'notification-btn');
-                                        });
-
-                                        document.getElementById('user-btn').addEventListener('click', function () {
-                                            toggleMenu('user-menu', 'user-btn');
-                                        });
-
-                                        document.addEventListener('click', function (event) {
-                                            const messengerMenu = document.getElementById('messenger-menu');
-                                            const notificationMenu = document.getElementById('notification-menu');
-                                            const userMenu = document.getElementById('user-menu');
-                                            const messengerBtn = document.getElementById('messenger-btn');
-                                            const notificationBtn = document.getElementById('notification-btn');
-                                            const userBtn = document.getElementById('user-btn');
-
-                                            if (!messengerMenu.contains(event.target) && !messengerBtn.contains(event.target)) {
-                                                messengerMenu.style.display = 'none';
-                                                messengerBtn.classList.remove('active-button');
-                                            }
-                                            if (!notificationMenu.contains(event.target) && !notificationBtn.contains(event.target)) {
-                                                notificationMenu.style.display = 'none';
-                                                notificationBtn.classList.remove('active-button');
-                                            }
-                                            if (!userMenu.contains(event.target) && !userBtn.contains(event.target)) {
-                                                userMenu.style.display = 'none';
-                                                userBtn.classList.remove('active-button');
-                                            }
-                                        });
-
-                                        function toggleMenu(menuId, btnId) {
-                                            const menu = document.getElementById(menuId);
-                                            const button = document.getElementById(btnId);
-                                            const otherMenuIds = ['messenger-menu', 'notification-menu', 'user-menu'].filter(id => id !== menuId);
-                                            const otherButtons = ['messenger-btn', 'notification-btn', 'user-btn'].filter(id => id !== btnId);
-
-                                            if (menu.style.display === 'none' || menu.style.display === '') {
-                                                menu.style.display = 'block';
-                                                button.classList.add('active-button');
-                                                otherMenuIds.forEach(id => document.getElementById(id).style.display = 'none');
-                                                otherButtons.forEach(id => document.getElementById(id).classList.remove('active-button'));
-                                            } else {
-                                                menu.style.display = 'none';
-                                                button.classList.remove('active-button');
-                                            }
-                                        }
-                                        document.addEventListener('DOMContentLoaded', function () {
-                                            const overlay = document.getElementById('overlay');
-                                            const formContainer = document.getElementById('formContainer');
-                                            const postingInput = document.getElementById('posting');
-                                            const photoVideoBtn = document.getElementById('photoVideoBtn');
-                                            const fileBtn = document.getElementById('fileBtn');
-                                            const closeButton = document.querySelector('.close-button');
-
-                                            function showForm() {
-                                                overlay.style.display = 'flex';
-                                                formContainer.style.display = 'block';
-                                            }
-
-                                            function hideForm() {
-                                                overlay.style.display = 'none';
-                                                formContainer.style.display = 'none';
-                                            }
-
-                                            postingInput.addEventListener('click', showForm);
-                                            photoVideoBtn.addEventListener('click', showForm);
-                                            fileBtn.addEventListener('click', showForm);
-
-                                            closeButton.addEventListener('click', hideForm);
-                                            overlay.addEventListener('click', function (event) {
-                                                if (event.target === overlay) {
-                                                    hideForm();
-                                                }
-                                            });
-                                            postForm.addEventListener('submit', function (event) {
-                                                event.preventDefault();
-                                                hideForm();
-
-                                            });
-                                        });
-
-
-
-                                        document.addEventListener('DOMContentLoaded', function () {
-                                            const textarea = document.getElementById('body');
-                                            const formContainer = document.getElementById('formContainer');
-                                            const baseFormHeight = 415;
-                                            const initialTextareaHeight = 125;
-                                            textarea.addEventListener('input', function () {
-                                                adjustFontSizeAndFormHeight();
-                                            });
-                                            function adjustFontSizeAndFormHeight() {
-                                                const maxLines = 3;
-                                                const initialFontSize = 25;
-                                                const reducedFontSize = 15;
-                                                textarea.style.fontSize = initialFontSize + 'px';
-                                                textarea.style.height = 'auto';
-
-                                                const lineHeight = parseInt(window.getComputedStyle(textarea).lineHeight);
-                                                const lines = Math.floor(textarea.scrollHeight / lineHeight);
-                                                if (lines > maxLines) {
-                                                    textarea.style.fontSize = reducedFontSize + 'px';
-                                                }
-                                                textarea.style.height = textarea.scrollHeight + 'px';
-                                                const textareaExtraHeight = textarea.scrollHeight - initialTextareaHeight;
-                                                formContainer.style.height = (baseFormHeight + textareaExtraHeight) + 'px';
-                                            }
-                                        });
-                                        document.addEventListener('DOMContentLoaded', function () {
-                                            const commentForm = document.getElementById('commentForm');
-                                            const commentInput = document.getElementById('body');
-
-                                            commentInput.addEventListener('keydown', function (event) {
-                                                if (event.key === 'Enter' && !event.shiftKey) {
-                                                    event.preventDefault();
-                                                    if (commentInput.value.trim() !== '') {
-                                                        commentForm.submit();
-                                                    }
-                                                }
+                                            document.querySelectorAll('.cancel-edit-comment').forEach(button => {
+                                                button.addEventListener('click', function () {
+                                                    const commentText = this.closest('.comment').querySelector('.comment-text');
+                                                    const editForm = this.closest('.comment').querySelector('.edit-comment-form');
+                                                    commentText.style.display = 'block';
+                                                    editForm.style.display = 'none';
+                                                });
                                             });
                                         });
         </script>
+        <!-- --------- -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const searchInput = document.getElementById('search-input');
+                const searchForm = document.getElementById('searchForm');
 
+                searchInput.addEventListener('keypress', function (event) {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        searchForm.submit();
+                    }
+                });
+            });
+
+            document.getElementById('messenger-btn').addEventListener('click', function () {
+                toggleMenu('messenger-menu', 'messenger-btn');
+            });
+
+            document.getElementById('notification-btn').addEventListener('click', function () {
+                toggleMenu('notification-menu', 'notification-btn');
+            });
+
+            document.getElementById('user-btn').addEventListener('click', function () {
+                toggleMenu('user-menu', 'user-btn');
+            });
+
+            document.addEventListener('click', function (event) {
+                const messengerMenu = document.getElementById('messenger-menu');
+                const notificationMenu = document.getElementById('notification-menu');
+                const userMenu = document.getElementById('user-menu');
+                const messengerBtn = document.getElementById('messenger-btn');
+                const notificationBtn = document.getElementById('notification-btn');
+                const userBtn = document.getElementById('user-btn');
+
+                if (!messengerMenu.contains(event.target) && !messengerBtn.contains(event.target)) {
+                    messengerMenu.style.display = 'none';
+                    messengerBtn.classList.remove('active-button');
+                }
+                if (!notificationMenu.contains(event.target) && !notificationBtn.contains(event.target)) {
+                    notificationMenu.style.display = 'none';
+                    notificationBtn.classList.remove('active-button');
+                }
+                if (!userMenu.contains(event.target) && !userBtn.contains(event.target)) {
+                    userMenu.style.display = 'none';
+                    userBtn.classList.remove('active-button');
+                }
+            });
+
+            function toggleMenu(menuId, btnId) {
+                const menu = document.getElementById(menuId);
+                const button = document.getElementById(btnId);
+                const otherMenuIds = ['messenger-menu', 'notification-menu', 'user-menu'].filter(id => id !== menuId);
+                const otherButtons = ['messenger-btn', 'notification-btn', 'user-btn'].filter(id => id !== btnId);
+
+                if (menu.style.display === 'none' || menu.style.display === '') {
+                    menu.style.display = 'block';
+                    button.classList.add('active-button');
+                    otherMenuIds.forEach(id => document.getElementById(id).style.display = 'none');
+                    otherButtons.forEach(id => document.getElementById(id).classList.remove('active-button'));
+                } else {
+                    menu.style.display = 'none';
+                    button.classList.remove('active-button');
+                }
+            }
+            document.addEventListener('DOMContentLoaded', function () {
+                const overlay = document.getElementById('overlay');
+                const formContainer = document.getElementById('formContainer');
+                const postingInput = document.getElementById('posting');
+                const photoVideoBtn = document.getElementById('photoVideoBtn');
+                const fileBtn = document.getElementById('fileBtn');
+                const closeButton = document.querySelector('.close-button');
+
+                function showForm() {
+                    overlay.style.display = 'flex';
+                    formContainer.style.display = 'block';
+                }
+
+                function hideForm() {
+                    overlay.style.display = 'none';
+                    formContainer.style.display = 'none';
+                }
+
+                postingInput.addEventListener('click', showForm);
+                photoVideoBtn.addEventListener('click', showForm);
+                fileBtn.addEventListener('click', showForm);
+
+                closeButton.addEventListener('click', hideForm);
+                overlay.addEventListener('click', function (event) {
+                    if (event.target === overlay) {
+                        hideForm();
+                    }
+                });
+                postForm.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    hideForm();
+
+                });
+            });
+
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const textarea = document.getElementById('body');
+                const formContainer = document.getElementById('formContainer');
+                const baseFormHeight = 415;
+                const initialTextareaHeight = 125;
+                textarea.addEventListener('input', function () {
+                    adjustFontSizeAndFormHeight();
+                });
+                function adjustFontSizeAndFormHeight() {
+                    const maxLines = 3;
+                    const initialFontSize = 25;
+                    const reducedFontSize = 15;
+                    textarea.style.fontSize = initialFontSize + 'px';
+                    textarea.style.height = 'auto';
+
+                    const lineHeight = parseInt(window.getComputedStyle(textarea).lineHeight);
+                    const lines = Math.floor(textarea.scrollHeight / lineHeight);
+                    if (lines > maxLines) {
+                        textarea.style.fontSize = reducedFontSize + 'px';
+                    }
+                    textarea.style.height = textarea.scrollHeight + 'px';
+                    const textareaExtraHeight = textarea.scrollHeight - initialTextareaHeight;
+                    formContainer.style.height = (baseFormHeight + textareaExtraHeight) + 'px';
+                }
+            });
+        </script>
+        
+        
+        
 </body>
 </html>

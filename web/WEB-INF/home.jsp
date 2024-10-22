@@ -642,7 +642,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                     <div><box-icon name='videos' type='solid'></box-icon> Video </div>
                     <div><box-icon name='store-alt' type='solid'></box-icon> Market</div>
                     <div><box-icon type='solid' name='book'></box-icon> Learning Materials</div>
-                    <a href="game"> <div><i class='fas fa-gamepad' style='font-size:20px'></i> Game</div></a>
+                    <a href="game" style="text-decoration: none;"> <div><i class='fas fa-gamepad' style='font-size:20px'></i> Game</div></a>
                     <hr style="border: 1px solid black; width: 100%;"><!-- comment -->
                     <a href="dashBoard">dashboard</a>
                     <p>Your ShortCut</p>

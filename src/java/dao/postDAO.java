@@ -352,7 +352,7 @@ public class postDAO {
 
     public List<UserActivityLog> getUserActivities(int userId) {
         List<UserActivityLog> activities = new ArrayList<>();
-        String sql = "SELECT * FROM UserActivityLog WHERE user_id = ? ORDER BY timestamp DESC";
+        String sql = "SELECT * FROM UserActivityLog ul JOIN userAccount u ON ul.user_id=u.user_id WHERE u.user_id = ? ORDER BY timestamp DESC";
         try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, userId);
@@ -405,7 +405,7 @@ public class postDAO {
 
     public static void main(String[] args) {
         postDAO dao=new postDAO();
-        List<UserActivityLog> a= dao.geAlltUserActivities();
+        List<UserActivityLog> a= dao.getUserActivities(1);
         for (UserActivityLog a1 : a) {
             System.out.println(a1);
         }

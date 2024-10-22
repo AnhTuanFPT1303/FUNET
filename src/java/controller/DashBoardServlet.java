@@ -6,6 +6,7 @@ package controller;
 
 import dao.MonthDAO;
 import dao.postDAO;
+import dao.userDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -16,7 +17,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Month;
+import model.User;
 import model.UserActivityLog;
 
 /**
@@ -31,9 +35,9 @@ public class DashBoardServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("user") != null) {
-
-            MonthDAO dao = new MonthDAO();
-            List<Month> results = dao.Get7Month();
+            userDAO userdao=new userDAO();
+            MonthDAO monthdao = new MonthDAO();
+            List<Month> results = monthdao.Get7Month();
             request.setAttribute("label0", results.get(0).getName());
             request.setAttribute("label1", results.get(1).getName());
             request.setAttribute("label2", results.get(2).getName());
@@ -48,8 +52,14 @@ public class DashBoardServlet extends HttpServlet {
             request.setAttribute("data4",results.get(4).getCount());
             request.setAttribute("data5",results.get(5).getCount());
             request.setAttribute("data6",results.get(6).getCount());
-            // request.setAttribute("",);
-            //request.setAttribute("activities",activities);
+            try {
+                // request.setAttribute("",);
+                //request.setAttribute("activities",activities);
+                ArrayList<User> users=userdao.getAllUsers();
+                request.setAttribute("users",users);
+            } catch (Exception ex) {
+                Logger.getLogger(DashBoardServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
             request.getRequestDispatcher("/WEB-INF/DashBoard.jsp").forward(request, response);
         }
     }

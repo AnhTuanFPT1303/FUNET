@@ -318,13 +318,14 @@
                         <span>Thông Báo</span>
                     </button>
 
-                    <hr class="my-5">
+                 <hr class="my-5">
 
                     <p class="text-sm text-gray-500 mb-2">Game của bạn</p>
-                    <button class="sidebar-btn flex items-center space-x-2 transition-transform transform hover:scale-105 hover:bg-blue-100 rounded-lg p-2">
+                     <button class="sidebar-btn flex items-center space-x-2 transition-transform transform hover:scale-105 hover:bg-blue-100 rounded-lg p-2">
                         <i class="far fa-bookmark w-6 h-6 flex-shrink-0"></i>    
                         <span>Lưu game</span>
-                    </button>
+                    </button> 
+                 
 
                     <hr class="my-4">
 

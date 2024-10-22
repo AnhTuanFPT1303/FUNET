@@ -29,7 +29,9 @@ public class UpdateDiaryServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
     postDAO dao = new postDAO();
-    List<UserActivityLog> activities = dao.geAlltUserActivities();
+    Integer userId =Integer.valueOf(request.getParameter("userId"));
+    List<UserActivityLog> activities = dao.getUserActivities(userId)  ;
+    
     response.setContentType("text/html");
     response.setCharacterEncoding("UTF-8");
     PrintWriter out = response.getWriter();

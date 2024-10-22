@@ -11,7 +11,7 @@ public class userDAO {
 
     private static userDAO instance = null;
 
-    private userDAO() {
+    public userDAO() {
 
     }
 
@@ -185,6 +185,7 @@ public class userDAO {
                 u.setFirst_name(rs.getString("first_name"));
                 u.setLast_name(rs.getString("last_name"));
                 u.setEmail(rs.getString("email"));
+                u.setRole(rs.getString("role"));
                 u.setProfile_pic(rs.getString("profile_pic"));
                 users.add(u);
             }

@@ -118,13 +118,21 @@
                                     <th>User Id</th>
                                     <th>Role</th>
                                     <th>Name</th>
-                                    <th>Activity Type</th>
-                                    <th>Details</th>
-                                    <th>Time</th>
+
                                 </tr>
                             </thead>
+
                             <tbody>
-                                <!-- Activities will be inserted here  -->
+                            <tbody>
+                                <c:forEach var="user" items="${users}">
+                                    <tr>
+                                        <td>${user.user_id}</td>
+                                        <td>${user.role}</td>
+                                        <td><a href="log?id=${user.user_id}"> ${user.first_name} ${user.last_name} </a></td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+
                             </tbody>
                         </table>
                     </div>
@@ -150,27 +158,27 @@
 
         </script>
         <script type="text/javascript">
-        // Khai báo biến cho các label (tên tháng)
-        let label0 = "${label0}";
-        let label1 = "${label1}";
-        let label2 = "${label2}";
-        let label3 = "${label3}";
-        let label4 = "${label4}";
-        let label5 = "${label5}";
-        let label6 = "${label6}";
+            // Khai báo biến cho các label (tên tháng)
+            let label0 = "${label0}";
+            let label1 = "${label1}";
+            let label2 = "${label2}";
+            let label3 = "${label3}";
+            let label4 = "${label4}";
+            let label5 = "${label5}";
+            let label6 = "${label6}";
 
-        // Khai báo biến cho các data (số liệu tương ứng với từng tháng)
-        let data0 = ${data0};
-        let data1 = ${data1};
-        let data2 = ${data2};
-        let data3 = ${data3};
-        let data4 = ${data4};
-        let data5 = ${data5};
-        let data6 = ${data6};
+            // Khai báo biến cho các data (số liệu tương ứng với từng tháng)
+            let data0 = ${data0};
+            let data1 = ${data1};
+            let data2 = ${data2};
+            let data3 = ${data3};
+            let data4 = ${data4};
+            let data5 = ${data5};
+            let data6 = ${data6};
 
 
 
-      
-    </script>
+
+        </script>
     </body>
 </html>

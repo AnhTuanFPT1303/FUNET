@@ -139,7 +139,7 @@ document.querySelector('[data-page="analytics"]').addEventListener('click', init
 
 
 // cập nhật user log theo giây
-function updateActivities() {
+/*function updateActivities() {
     fetch('updateDiary')
             .then(response => {
                 if (!response.ok) {
@@ -152,10 +152,10 @@ function updateActivities() {
                 tableBody.innerHTML = html; 
             })
             .catch(error => console.error('Error:', error));
-}
+} */
 
 // cập nhật mỗi 0.3 giây
-setInterval(updateActivities, 300);
+//setInterval(updateActivities, 300);
 
 // cập nhật
-updateActivities();
+//updateActivities();

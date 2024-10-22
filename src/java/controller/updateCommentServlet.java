@@ -13,18 +13,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.concurrent.TimeUnit;
 import model.Comment;
-import model.Post;
-import model.User;
 
 /**
  *
  * @author OS
  */
-public class deleteCommentServlet extends HttpServlet {
+public class updateCommentServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -41,10 +37,10 @@ public class deleteCommentServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet deleteCommentServlet</title>");  
+            out.println("<title>Servlet updateCommentServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet deleteCommentServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet updateCommentServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -75,14 +71,30 @@ public class deleteCommentServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-        int comment_id = Integer.parseInt(request.getParameter("commentId"));
-        postDAO postDAO = new postDAO();
-        try {
-            postDAO.deleteComment(comment_id);
-        } catch (Exception ex) {
-            Logger.getLogger(userpageServlet.class.getName()).log(Level.SEVERE, null, ex);
+        if (session != null && session.getAttribute("user") != null){
+            String newComment = request.getParameter("newCommentText");
+            int commentId = Integer.parseInt(request.getParameter("commentId"));
+            if(!newComment.trim().isEmpty()){
+                
+                Comment comment = new Comment();
+                comment.setComment_id(commentId);
+                comment.setComment_text(newComment);
+                postDAO PostDao = new postDAO();
+                try {
+                    PostDao.updateComment(comment);
+                    TimeUnit.SECONDS.sleep(2);
+                    response.sendRedirect("home");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    request.setAttribute("errorMessage", "Error saving post");
+                    response.sendRedirect("home");
+                }
+            } else {
+                response.sendRedirect("home");
+            }
+        } else {
+            response.sendRedirect("home");
         }
-        response.sendRedirect("home");
     }
 
     /** 

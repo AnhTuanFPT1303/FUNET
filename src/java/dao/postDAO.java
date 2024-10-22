@@ -373,6 +373,27 @@ public class postDAO {
         }
     }
 
+    public void updateComment(Comment c) {
+        String updateCommentQuery = "UPDATE comment SET comment_text = ? WHERE comment_id = ?";
+        try (Connection conn = sqlConnect.getInstance().getConnection()) {
+            conn.setAutoCommit(false);
+            try (PreparedStatement stmt = conn.prepareStatement(updateCommentQuery)) {
+                stmt.setString(1, c.getComment_text());
+                stmt.setInt(2, c.getComment_id());
+                stmt.executeUpdate();
+                conn.commit();
+            } catch (SQLException ex) {
+                conn.rollback();
+                Logger.getLogger(postDAO.class.getName()).log(Level.SEVERE, null, ex);
+                throw ex;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(postDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(postDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public void deletePost(int postId) {
         String deletePostQuery = "DELETE FROM post WHERE post_id = ? OR (original_post_id = ? AND is_shared = 1)";
         String deleteCommentsQuery = "DELETE FROM comment WHERE post_id = ? OR post_id IN (SELECT post_id FROM post WHERE original_post_id = ? AND is_shared = 1)";
@@ -416,19 +437,20 @@ public class postDAO {
 
     public void deleteComment(int commentId) {
         String deleteCommentQuery = "DELETE FROM comment WHERE comment_id = ?";
-         try (Connection conn = sqlConnect.getInstance().getConnection()) {
+        try (Connection conn = sqlConnect.getInstance().getConnection()) {
             conn.setAutoCommit(false);
             try (PreparedStatement stmt = conn.prepareStatement(deleteCommentQuery)) {
                 stmt.setInt(1, commentId);
                 stmt.executeUpdate();
+                conn.commit();
             } catch (SQLException e) {
                 conn.rollback();
                 throw e;
-            } catch (Exception e) {
-                e.printStackTrace();
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Logger.getLogger(postDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

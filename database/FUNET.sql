@@ -335,10 +335,9 @@ CREATE TABLE post_share (
 
 
 
-
+SELECT * FROM comment
 SELECT * FROM post
 SELECT * FROM userAccount
-
 UPDATE post
 SET privacy_mode = 'public'
 WHERE post_id = 122;

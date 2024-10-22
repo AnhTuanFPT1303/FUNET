@@ -1,0 +1,25 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this template
+*/
+/* 
+    Created on : Oct 23, 2024, 12:01:13 AM
+    Author     : gabri
+*/
+.body{
+    
+}
+.search-form-controller{
+    border-radius: 15px;
+    border:none;
+    outline: 1px solid rgb(133,130,130);
+    padding-left: 5%;
+    height:100%;
+}
+.search-learning-material-container{
+    height:35px;
+}
+.main-class{
+        margin-top: 2%;
+
+}

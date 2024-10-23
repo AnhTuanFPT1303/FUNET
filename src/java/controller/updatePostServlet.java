@@ -20,8 +20,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,12 +35,25 @@ import model.User;
  *
  * @author OS
  */
-@MultipartConfig
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 50, // 50MB
+        maxRequestSize = 1024 * 1024 * 100 // 100MB
+)
 public class updatePostServlet extends HttpServlet {
 
     private static final Logger LOGGER = Logger.getLogger(updatePostServlet.class.getName());
 
     private static final long serialVersionUID = 1L;
+
+    private static final Set<String> ALLOWED_IMAGE_TYPES = new HashSet<>(Arrays.asList(
+            "image/jpeg", "image/png", "image/gif", "image/bmp", "image/webp"
+    ));
+
+    private static final Set<String> ALLOWED_VIDEO_TYPES = new HashSet<>(Arrays.asList(
+            "video/mp4", "video/mpeg", "video/quicktime", "video/x-msvideo", "video/webm"
+    ));
+
     Cloudinary cloud;
 
     public void init() throws ServletException {
@@ -125,10 +141,10 @@ public class updatePostServlet extends HttpServlet {
                 String newBody = request.getParameter("newBody");
                 Part filePart = request.getPart("newImage");
                 int postId = Integer.parseInt(request.getParameter("postId"));
+                String resourceType = null;
                 if (filePart == null) {
                     LOGGER.warning("No file part found in request");
 
-                    return;
                 }
 
                 postDAO PostDao = new postDAO();
@@ -146,28 +162,41 @@ public class updatePostServlet extends HttpServlet {
                 }
 
                 if (filePart != null && filePart.getSize() > 0) {
+                    String contentType = filePart.getContentType();
+                    LOGGER.info("File upload detected with content type: " + contentType);
+                    if (!ALLOWED_IMAGE_TYPES.contains(contentType) && !ALLOWED_VIDEO_TYPES.contains(contentType)) {
+                        LOGGER.warning("Unsupported file type attempted: " + contentType);
+                        request.setAttribute("error", "Unsupported file type");
+                        response.sendRedirect("profile");
+                        return;
+                    }
+                    resourceType = ALLOWED_IMAGE_TYPES.contains(contentType) ? "image" : "video";
                     try {
                         LOGGER.info("Starting file upload process");
                         File tempFile = File.createTempFile("upload_", filePart.getSubmittedFileName());
 
                         try (InputStream inputStream = filePart.getInputStream(); FileOutputStream outputStream = new FileOutputStream(tempFile)) {
-                            byte[] buffer = new byte[1024];
+                            byte[] buffer = new byte[8192];
                             int bytesRead;
                             while ((bytesRead = inputStream.read(buffer)) != -1) {
                                 outputStream.write(buffer, 0, bytesRead);
                             }
                         }
 
-                        Map uploadResult = cloud.uploader().upload(tempFile, ObjectUtils.emptyMap());
+                        Map uploadResult = cloud.uploader().upload(tempFile, ObjectUtils.asMap(
+                                "resource_type", resourceType
+                        ));
                         String imageUrl = (String) uploadResult.get("url");
                         post.setImage_path(imageUrl);
+                        post.setType(resourceType);
+                        LOGGER.info("File upload with type "+ resourceType);
                         LOGGER.info("File uploaded successfully to Cloudinary");
                         Files.deleteIfExists(tempFile.toPath());
                     } catch (Exception e) {
                         LOGGER.log(Level.SEVERE, "Error uploading file", e);
                         e.printStackTrace();
                         session.setAttribute("errorMessage", "Error uploading image");
-                        response.sendRedirect("profile");
+                        //response.sendRedirect("profile");
                         return;
                     }
                 }
@@ -188,7 +217,7 @@ public class updatePostServlet extends HttpServlet {
                 // response.sendRedirect("profile");
             }
         } else {
-            response.sendRedirect("home");
+            response.sendRedirect("profile");
         }
     }
 

@@ -33,7 +33,6 @@ CREATE TABLE userAccount (
   user_introduce NVARCHAR(50),
   is_banned BIT NOT NULL,
    created_at DATE DEFAULT CAST(GETDATE() AS DATE) NOT NULL
-
 );
 
 GO
@@ -54,7 +53,8 @@ CREATE TABLE post (
   image_path NVARCHAR(max),
   post_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   like_count INT not null default 0,
-  FOREIGN KEY (user_id) REFERENCES userAccount (user_id)
+  FOREIGN KEY (user_id) REFERENCES userAccount (user_id),
+  type NVARCHAR(max)
 );
 
 GO

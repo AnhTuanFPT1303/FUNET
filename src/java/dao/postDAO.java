@@ -19,14 +19,15 @@ import util.sqlConnect;
 public class postDAO {
 
     public void addPost(Post p) {
-        String query = "INSERT INTO post (user_id, body, image_path) VALUES (?, ?, ?)";
+        String query = "INSERT INTO post (user_id, body, image_path,type) VALUES (?, ?, ?,?)";
         try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, p.getUser_id());
             stmt.setString(2, p.getBody());
             stmt.setString(3, p.getImage_path());
+            stmt.setString(4, p.getType());
             stmt.executeUpdate();
-            logActivity(p.getUser_id(),"New Post",p.getBody());
-            
+            logActivity(p.getUser_id(), "New Post", p.getBody());
+
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -134,7 +135,7 @@ public class postDAO {
         try {
             Connection conn = sqlConnect.getInstance().getConnection();
 
-            String query = "SELECT DISTINCT p.post_id, p.body, p.post_time, p.user_id, p.image_path, p.like_count, u.first_name, u.last_name, u.profile_pic, "
+            String query = "SELECT DISTINCT p.post_id, p.body, p.post_time, p.user_id, p.image_path, p.like_count,p.type, u.first_name, u.last_name, u.profile_pic, "
                     + "p.is_shared, p.original_post_id, "
                     + "CASE WHEN p.is_shared = 1 THEN CONCAT(op.first_name, ' ', op.last_name) ELSE NULL END AS original_poster_name, "
                     + "CASE WHEN p.is_shared = 1 THEN op.profile_pic ELSE NULL END AS original_poster_avatar, "
@@ -175,9 +176,12 @@ public class postDAO {
                         int originalPostId = rs.getInt("original_post_id");
                         String originalPosterName = rs.getString("original_poster_name");
                         int shareCount = rs.getInt("share_count");
+
                         String originalPosterAvatar = rs.getString("original_poster_avatar");
                         Post post = new Post(post_id, user_id, body, post_time, first_name, last_name, image_path, profile_pic, like_count, isShared, originalPostId, originalPosterName, shareCount, originalPosterAvatar);
                         post.setComments(getComments(post.getPost_id()));
+                        String type = rs.getString("type");
+                        post.setType(type);
                         posts.add(post);
                     }
                 }
@@ -227,7 +231,7 @@ public class postDAO {
         List<Post> posts = new ArrayList<>();
         try {
             Connection conn = sqlConnect.getInstance().getConnection();
-            String query = "SELECT p.post_id, p.body, p.post_time, p.user_id, p.like_count, p.image_path, "
+            String query = "SELECT p.post_id, p.body, p.post_time, p.user_id, p.like_count,p.type, p.image_path, "
                     + "u.first_name, u.last_name, u.profile_pic, "
                     + "p.is_shared, p.original_post_id, "
                     + "CASE WHEN p.is_shared = 1 THEN CONCAT(op.first_name, ' ', op.last_name) ELSE NULL END AS original_poster_name, "
@@ -260,6 +264,8 @@ public class postDAO {
                         int shareCount = rs.getInt("share_count");
 
                         Post post = new Post(post_id, user_id, body, post_time, first_name, last_name, image_path, profile_pic, like_count, isShared, originalPostId, originalPosterName, shareCount, originalPosterAvatar);
+                        String type = rs.getString("type");
+                        post.setType(type);
                         posts.add(post);
                     }
                 }
@@ -319,8 +325,8 @@ public class postDAO {
     public void updatePost(Post p) {
         String updatePostQuery = "UPDATE post SET body = ? WHERE post_id = ?";
         String updateSharedPostsQuery = "UPDATE post SET body = ? WHERE original_post_id = ? AND is_shared = 1";
-        String updateImageQuery = "UPDATE post SET image_path = ? WHERE post_id = ?";
-        String updateSharedImageQuery = "UPDATE post SET image_path = ? WHERE original_post_id = ? AND is_shared = 1";
+        String updateImageQuery = "UPDATE post SET image_path = ?,type=? WHERE post_id = ?";
+        String updateSharedImageQuery = "UPDATE post SET image_path = ?,type= ? WHERE original_post_id = ? AND is_shared = 1";
 
         try (Connection conn = sqlConnect.getInstance().getConnection()) {
             conn.setAutoCommit(false);
@@ -338,12 +344,14 @@ public class postDAO {
                 if (p.getImage_path() != null && !p.getImage_path().isEmpty()) {
                     try (PreparedStatement stmt = conn.prepareStatement(updateImageQuery)) {
                         stmt.setString(1, p.getImage_path());
-                        stmt.setInt(2, p.getPost_id());
+                        stmt.setString(2, p.getType());
+                        stmt.setInt(3, p.getPost_id());
                         stmt.executeUpdate();
                     }
                     try (PreparedStatement stmt = conn.prepareStatement(updateSharedImageQuery)) {
                         stmt.setString(1, p.getImage_path());
-                        stmt.setInt(2, p.getPost_id());
+                        stmt.setString(2, p.getType());
+                        stmt.setInt(3, p.getPost_id());
                         stmt.executeUpdate();
                     }
                 }
@@ -400,9 +408,8 @@ public class postDAO {
             e.printStackTrace();
         }
     }
-    
-    
-     public Post getPostById(int postId) {
+
+    public Post getPostById(int postId) {
         Post post = null;
         try {
             Connection conn = sqlConnect.getInstance().getConnection();
@@ -438,6 +445,8 @@ public class postDAO {
                         int shareCount = rs.getInt("share_count");
 
                         post = new Post(post_id, user_id, body, post_time, first_name, last_name, image_path, profile_pic, like_count, isShared, originalPostId, originalPosterName, shareCount, originalPosterAvatar);
+                        String type = rs.getString("type");
+                        post.setType(type);
                     }
                 }
             }
@@ -448,8 +457,8 @@ public class postDAO {
         }
         return post;
     }
-     
-      public void logActivity(int userId, String activityType, String activityDetails) {
+
+    public void logActivity(int userId, String activityType, String activityDetails) {
         String sql = "INSERT INTO UserActivityLog (user_id, activity_type, activity_details) VALUES (?, ?, ?)";
         try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -464,8 +473,8 @@ public class postDAO {
             e.printStackTrace();
         }
     }
-      
-       public List<UserActivityLog> getUserActivities(int userId) {
+
+    public List<UserActivityLog> getUserActivities(int userId) {
         List<UserActivityLog> activities = new ArrayList<>();
         String sql = "SELECT * FROM UserActivityLog ul JOIN userAccount u ON ul.user_id=u.user_id WHERE u.user_id = ? ORDER BY timestamp DESC";
         try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -481,7 +490,7 @@ public class postDAO {
                 log.setLastName(rs.getString("last_name"));
                 log.setActivityType(rs.getString("activity_type"));
                 log.setActivityDetails(rs.getString("activity_details"));
-                 log.setTimestamp(rs.getTimestamp("timestamp").toLocalDateTime());
+                log.setTimestamp(rs.getTimestamp("timestamp").toLocalDateTime());
                 activities.add(log);
             }
         } catch (SQLException e) {
@@ -491,12 +500,12 @@ public class postDAO {
         }
         return activities;
     }
-      public List<UserActivityLog> geAlltUserActivities() {
+
+    public List<UserActivityLog> geAlltUserActivities() {
         List<UserActivityLog> activities = new ArrayList<>();
         String sql = "SELECT * FROM UserActivityLog ul JOIN userAccount u ON ul.user_id=u.user_id  ORDER BY timestamp DESC";
         try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-   
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 UserActivityLog log = new UserActivityLog();
@@ -507,7 +516,7 @@ public class postDAO {
                 log.setLastName(rs.getString("last_name"));
                 log.setActivityType(rs.getString("activity_type"));
                 log.setActivityDetails(rs.getString("activity_details"));
-                 log.setTimestamp(rs.getTimestamp("timestamp").toLocalDateTime());
+                log.setTimestamp(rs.getTimestamp("timestamp").toLocalDateTime());
                 activities.add(log);
             }
         } catch (SQLException e) {
@@ -519,11 +528,10 @@ public class postDAO {
     }
 
     public static void main(String[] args) {
-        postDAO dao=new postDAO();
-        List<UserActivityLog> a= dao.geAlltUserActivities();
-        for (UserActivityLog a1 : a) {
-            System.out.println(a1);
+        List<Post> a = postDAO.getMyPosts(13);
+        for (Post s : a) {
+            System.out.println(s);
         }
     }
-    
+
 }

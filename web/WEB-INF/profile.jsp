@@ -195,11 +195,11 @@
 
                         <div class="at9-images">
                             <c:forEach var="post" items="${posts}">
-                                <c:if test="${not empty post.image_path}">
-                                    <div class="images-div">
-                                        <img src="${post.image_path}" alt="User posted image">
-                                    </div>
-                                </c:if>
+                               
+                                        <c:if test="${post.type == 'image'}">
+                                            <img src="${post.image_path}" style="max-width : 100%">
+                                        </c:if>
+                                        
                             </c:forEach>
                         </div>
                     </div>
@@ -381,11 +381,17 @@
                                 </c:if>
                             </div>
                             <p class="post-text-show">${post.body}</p>
-                            <c:if test="${not empty post.image_path}">
-                                <div class=div-post-images>
-                                    <img class="post-images" src="${post.image_path}" style="max-width: 60%">
-                                </div>
-                            </c:if>
+                            <c:choose>
+                                        <c:when test="${post.type == 'image'}">
+                                            <img src="${post.image_path}" style="max-width : 100%">
+                                        </c:when>
+                                        <c:otherwise>
+                                            <video style="max-width: 100%" controls>
+                                                <source src="${post.image_path}" type="video/mp4">
+                                                
+                                            </video>
+                                        </c:otherwise>
+                                    </c:choose>
                             <div class="post-reaction">
                                 <div class="reaction">
                                     <div class="reaction-count post-ratings-container">
@@ -489,7 +495,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="newImage" class="form-label" id="formupdateidimage photo-upload">New Image</label>
-                                    <input type="file" class="form-control" id="newImage" name="newImage" accept=".jpeg, .png, .jpg" onchange="updateFileName(this)">
+                                    <input type="file" class="form-control" id="newImage" name="newImage" accept=".jpeg, .png, .jpg, .mp4" onchange="updateFileName(this)">
                                 </div>
                             </div>
                             <div class="modal-footer">

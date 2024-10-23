@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="jakarta_jstl">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/build/web/assets/library/jakarta_jstl/jakarta.servlet.jsp.jstl-3.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/web/assets/library/jakarta_jstl/jaxb-api-2.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/web/assets/library/jakarta_jstl/jakarta.servlet.jsp.jstl-2.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/web/assets/library/jakarta_jstl/jakarta.servlet.jsp.jstl-api-2.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/web/assets/library/jakarta_jstl/jakarta.servlet.jsp.jstl-api-3.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/web/assets/library/jakarta_jstl/sqljdbc42.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

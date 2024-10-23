@@ -70,7 +70,11 @@ public class UserRestController extends HttpServlet {
         List<User> listUsers = null;
         if (conversationId != null && !conversationId.isEmpty()) {
             int id = Integer.parseInt(conversationId);
-            //listUsers = userService.getFriendsNotInConversation(user_id, keyWord, id);
+            try {
+                listUsers = userDAO.getInstance().getFriendsNotInConversation(Integer.parseInt(user_id), keyWord, id);
+            } catch (Exception ex) {
+                Logger.getLogger(UserRestController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else if (keyWord.isEmpty()) {
             try {
                 listUsers = userDAO.getInstance().getUserFriends(Integer.parseInt(user_id));
@@ -90,7 +94,7 @@ public class UserRestController extends HttpServlet {
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-
+        
         PrintWriter printWriter = response.getWriter();
         printWriter.print(json);
         printWriter.flush();

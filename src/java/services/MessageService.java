@@ -72,7 +72,7 @@ public class MessageService {
 	}
         
         public static void main(String[] args) {
-        MessageDTO msg = new MessageDTO(1, 2, "ok", "text", 0);
+        MessageDTO msg = new MessageDTO(1, 0, "ok", "text", 1);
         MessageService service = new MessageService();
         service.saveMessage(msg);
     }

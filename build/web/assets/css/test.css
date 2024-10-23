@@ -41,9 +41,10 @@ img {
 }
 
 .container {
-    width: 100%;
+    margin: auto 0;
+    padding: 0 0;
+    width: 100vw;
     height: 100vh;
-    display: flex;
     justify-content: center;
     align-items: center;
 }
@@ -131,25 +132,27 @@ img {
     box-shadow: 0rem .2rem .4rem rgba(1, 1, 1, 0.05);
     display: flex;
     flex-wrap: wrap;
-    height: 70rem;
+    height: 100vh;
+    width: 100vw;
     overflow: hidden;
 }
 
 .conversation-container .left-side {
-    width: 30rem;
+    width: 20%;
     background: var(--btnColor);
     padding: 2rem 1.5rem;
     box-sizing: border-box;
-    border-radius: 1rem 0rem 0rem 1rem;
     position: relative;
 }
 
 .conversation-container .right-side {
-    width: 70rem;
+    width: 80%;
     background: var(--conversationBody);
     box-sizing: border-box;
     border-radius: 0rem 1rem 1rem 0rem;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .add-group {
@@ -308,6 +311,10 @@ img {
     box-sizing: border-box;
 }
 
+.list-user ul {
+    padding-left: 0px;
+}
+
 .list-user li:hover, .list-user li.active {
     background: var(--mainColor);
 }
@@ -325,7 +332,7 @@ img {
 	transform: translateY(-50%);
 	z-index: 10;
 	padding: 1rem;
-	background: var(--txtBlack);
+	background: white;
 }
 
 .user-img {
@@ -374,7 +381,7 @@ img {
 
 .right-side .user-contact {
     box-shadow: 0rem .2rem .4rem rgba(1, 1, 1, 0.05);
-    padding: 1.5rem;
+    padding: 0;
     color: var(--txtBlack);
     display: flex;
     flex-wrap: wrap;
@@ -425,7 +432,8 @@ img {
 
 .list-messages-contain {
     padding: 0rem 1.5rem;
-    height: 56rem;
+    height: 65rem;
+    flex-grow: 1;
     overflow-y: auto;
 }
 
@@ -544,7 +552,8 @@ img {
     background: var(--txtColorSecond);
     height: 5.6rem;
     align-items: center;
-    display: flex;
+    display: grid;
+    grid-template-columns: 9fr 0.33fr 0.33fr 0.33fr;
     position: relative;
 }
 
@@ -577,7 +586,6 @@ img {
     .conversation-container .right-side, .conversation-container .left-side {
         width: 45rem;
         display: none;
-        border-radius: 1rem;
     }
 
     .conversation-container .right-side.active, .conversation-container .left-side.active {
@@ -593,6 +601,5 @@ img {
     .conversation-container .right-side, .conversation-container .left-side {
         width: 30rem;
         display: none;
-        border-radius: 1rem;
     }
 }

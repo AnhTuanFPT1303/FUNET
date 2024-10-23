@@ -33,27 +33,30 @@ public class ConversationDAO {
         return instance;
     }
 
-    public void saveConversation(Conversation conversation, List<User> users) throws Exception {
-        if (conversation == null) {
+        public void saveConversation(Conversation conversation, List<User> users) throws Exception {
+        if (users == null) {
             return;
-        }
-
-        Connection conn = sqlConnect.getInstance().getConnection();
-        try {
-            if (conversation.getId() == 0) {
-                createNewConversation(conn, conversation, users);
-            } else {
-                updateConversation(conn, conversation);
+        } else {
+            Connection conn = sqlConnect.getInstance().getConnection();
+            try {
+                if (conversation.getId() == 0) {
+                    createNewConversation(conn, conversation, users);
+                } else {
+                    for (User user : users) {
+                        addUserToConversation(conn, conversation.getId(), user);
+                    }
+                }
+            } finally {
             }
-        } finally {
-            conn.close();
         }
     }
-
+        
     private void createNewConversation(Connection conn, Conversation conversation, List<User> users) throws Exception {
-        String createConversationSQL = "INSERT INTO conversation(conversation_name, conversation_avatar) VALUES(?, CONCAT('group-', CAST(IDENT_CURRENT('conversation') AS CHAR(50))))";
+//      CONCAT('group-', CAST(IDENT_CURRENT('conversation') AS CHAR(50)))
+        String createConversationSQL = "INSERT INTO conversation(conversation_name, conversation_avatar) VALUES(?, ?)";
         PreparedStatement st = conn.prepareStatement(createConversationSQL, PreparedStatement.RETURN_GENERATED_KEYS);
         st.setString(1, conversation.getName());
+        st.setString(2, "group2.jpg");
         st.executeUpdate();
         ResultSet rs = st.getGeneratedKeys();
         if (rs.next()) {
@@ -98,7 +101,6 @@ public class ConversationDAO {
             Conversation conversation = new Conversation(rs.getInt("conversation_id"), rs.getString("conversation_name"), rs.getString("conversation_avatar"));
             conversations.add(conversation);
         }
-        conn.close();
         return conversations;
     }
 
@@ -112,7 +114,6 @@ public class ConversationDAO {
         if (rs.next()) {
             conversation = new Conversation(rs.getInt("conversation_id"), rs.getString("conversation_name"), rs.getString("conversation_avatar"));
         }
-        conn.close();
         return conversation;
     }
 
@@ -128,7 +129,6 @@ public class ConversationDAO {
             st.setInt(3, id);
             st.executeUpdate();
         } finally {
-            conn.close();
         }
     }
 
@@ -139,7 +139,6 @@ public class ConversationDAO {
         st.setInt(1, conversationId);
         st.setInt(2, userId);
         st.executeUpdate();
-        conn.close();
     }
 
     public List<Conversation> findConversationsOfUserByKeyword(int userId, String keyword) throws Exception {
@@ -156,11 +155,13 @@ public class ConversationDAO {
             Conversation conversation = new Conversation(rs.getInt("conversation_id"), rs.getString("conversation_name"), rs.getString("conversation_avatar"));
             conversations.add(conversation);
         }
-        conn.close();
         return conversations;
     }
-    
+
     public static void main(String[] args) throws Exception {
-        ConversationDAO.getInstance().findAllConversationsByUserId(1);
+        List<Conversation> list = ConversationDAO.getInstance().findAllConversationsByUserId(1);
+        for (Conversation conversation : list) {
+            System.out.println(conversation.getId());
+        }
     }
 }

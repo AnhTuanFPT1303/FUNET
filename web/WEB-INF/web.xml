@@ -6,7 +6,7 @@
     </filter>
     <filter-mapping>
         <filter-name>SessionCheckFilter</filter-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
     <servlet>
         <servlet-name>loginServlet</servlet-name>
@@ -186,7 +186,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UserRestController</servlet-name>
-        <url-pattern>/user-rest-controller</url-pattern>
+        <url-pattern>/users-rest-controller</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>sharePostServlet</servlet-name>

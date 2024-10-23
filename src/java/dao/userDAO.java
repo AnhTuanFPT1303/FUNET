@@ -249,7 +249,7 @@ public class userDAO {
     }
 
     public List<User> findFriendsByKeyWord(int userId, String keyWord) throws SQLException, Exception {
-        String sql = "SELECT u.user_id, u.profile_pic, u.first_name, u.last_name"
+        String sql = "SELECT u.user_id, u.profile_pic, u.first_name, u.last_name "
                 + "FROM userAccount u "
                 + "WHERE u.user_id != ? AND (u.first_name LIKE ? OR u.last_name LIKE ?)";
 
@@ -265,8 +265,8 @@ public class userDAO {
                 User user = new User();
                 user.setUser_id(rs.getInt("user_id"));
                 user.setProfile_pic(rs.getString("profile_pic"));
-                user.setFirst_name("first_name");
-                user.setLast_name("last_name");
+                user.setFirst_name(rs.getString("first_name"));
+                user.setLast_name(rs.getString("last_name"));
                 users.add(user);
             }
             return users;
@@ -276,7 +276,7 @@ public class userDAO {
     public List<User> findUsersByConversationId(int conversationId) throws SQLException, Exception {
         String sql = "SELECT u.user_id, u.profile_pic, u.last_name, u.first_name, cu.is_admin "
                 + "FROM userAccount u "
-                + "JOIN conversations_users cu ON u.user_id = cu.user_id "
+                + "JOIN conversation_users cu ON u.user_id = cu.user_id "
                 + "WHERE cu.conversation_id = ?";
 
         try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -298,7 +298,7 @@ public class userDAO {
         }
     }
 
-    public List<User> findFriendsNotInConversation(int userId, String keyword, int conversationId) throws SQLException, Exception {
+    public List<User> getFriendsNotInConversation(int userId, String keyword, int conversationId) throws SQLException, Exception {
         String sql = "SELECT u2.user_id, u2.profile_pic, u2.last_name, u2.first_name"
                 + "FROM userAccount u1 "
                 + "JOIN friendship f ON u1.user_id = f.receiver "
@@ -330,7 +330,8 @@ public class userDAO {
         }
     }
     
-    public static void main(String[] args) {
-        userDAO.getInstance().login("nguyenhuuanhtuan123@gmail.com", "123");
+    public static void main(String[] args) throws Exception {
+        List<User> user = userDAO.getInstance().findFriendsByKeyWord(2, "tu");
+        System.out.println(user.get(0).getUser_id());
     }
 }

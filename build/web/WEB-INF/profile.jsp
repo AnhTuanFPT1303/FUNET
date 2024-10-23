@@ -16,9 +16,34 @@
         <script src="https://kit.fontawesome.com/7f80ec1f7e.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+        
     </head>
 
     <body>
+        <header id="header">
+            <nav class="navbar custom-navbar">
+                <div class="container-fluid d-flex align-items-center">
+                    <a class="navbar-brand text-primary" href="/FUNET/home" style="font-weight: bold">FUNET</a>
+                    <form class="d-flex ms-2 flex-grow-1" method="get" action="/FUNET/searchServlet">
+                        <input class="form-control" name="search-name" type="search" placeholder="Searching in FUNET" aria-label="Search">
+                        <button type="submit" class="search-button">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </form>
+                    <div class="nav-icons d-flex align-items-center">
+                        <a href="/FUNET/friendRequestServlet" class="friend-icon me-3">
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" class="x19dipnz x1lliihq x1tzjh5l x1k90msu x2h7rmj x1qfuztq" style="--color:var(--secondary-icon)"><path d="M.5 12c0 6.351 5.149 11.5 11.5 11.5S23.5 18.351 23.5 12 18.351.5 12 .5.5 5.649.5 12zm2 0c0-.682.072-1.348.209-1.99a2 2 0 0 1 0 3.98A9.539 9.539 0 0 1 2.5 12zm.84-3.912A9.502 9.502 0 0 1 12 2.5a9.502 9.502 0 0 1 8.66 5.588 4.001 4.001 0 0 0 0 7.824 9.514 9.514 0 0 1-1.755 2.613A5.002 5.002 0 0 0 14 14.5h-4a5.002 5.002 0 0 0-4.905 4.025 9.515 9.515 0 0 1-1.755-2.613 4.001 4.001 0 0 0 0-7.824zM12 5a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm-2 4a2 2 0 1 0 4 0 2 2 0 0 0-4 0zm11.291 1.01a9.538 9.538 0 0 1 0 3.98 2 2 0 0 1 0-3.98zM16.99 20.087A9.455 9.455 0 0 1 12 21.5c-1.83 0-3.54-.517-4.99-1.414a1.004 1.004 0 0 1-.01-.148V19.5a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v.438a1 1 0 0 1-.01.148z"></path></svg>
+                        </a>
+                        <a href="/FUNET/chat" class="mess-icon me-3">
+                            <i class="fas fa-comments"></i>
+                        </a> 
+                    </div>
+                    <form method="post" action="/FUNET/logout">
+                        <button type="submit" class="navbar-brand text-primary log-out" style="font-weight: bold">Log out</button>
+                    </form>
+                </div>
+            </nav>
+        </header>
         <div class="popop-background"></div>
         <div class="thim-div">
             <div class="hadr-thim-bar">
@@ -49,10 +74,11 @@
                 <img src="assets/profile_avt/${user.profile_pic}">
                 <div class="cover-image-div">
                     <div class="cover-image-edite-btn">
-                        <button>
+                        <a href="setting"> <button>
                             <i class="fas fa-camera"></i>
-                            Edit Cover Photo
+                            Edit Profile
                         </button>
+                        </a>
                     </div>
                 </div>
             </header>
@@ -78,6 +104,7 @@
                         </span>
                     </p>
                 </div>
+                            <%--
                 <div class="profile-button-site">
                     <div class="btn-site-pro">
                         <span class="edit-profile-btn">
@@ -86,6 +113,7 @@
                         </span>
                     </div>
                 </div>
+                            --%>
             </div>
         </section>
         <section class="full-navbar">
@@ -286,13 +314,13 @@
 
                                     <c:if test="${sessionScope.user['user_id'] == user.user_id}">
                                         <!-- Delete form -->
-
+<%--
                                         <form action="deleteServlet" method="post">
                                             <input type="hidden" name="_method" value="delete">
                                             <input type="hidden" name="postId" value="${post.post_id}">
                                             <button type="submit" class="btn btn-danger delete-button">Delete</button>
                                         </form>
-
+--%>
                                     </c:if>
 
                                     <span>
@@ -346,7 +374,7 @@
                             <p class="post-text-show">${post.body}</p>
                             <c:if test="${not empty post.image_path}">
                                 <div class=div-post-images>
-                                    <img class="post-images" src="assets/post_image/${post.image_path}" style="max-width: 60%">
+                                    <img class="post-images" src="assets/post_image/${post.image_path}" style="max-width: 100%">
                                 </div>
                             </c:if>
                             <div class="post-reaction">
@@ -376,6 +404,7 @@
                             <div class="activate">
                                 <div class="lcs-btn lcs-btn_i post-rating ${post.likedByCurrentUser ? 'post-rating-selected' : ''}">
                                     <p>
+                                        
                                         <span class="material-icons" style="color: ${post.likedByCurrentUser ? '#1877f2' : '#65676b'};">
                                             thumb_up
                                         </span>
@@ -386,10 +415,14 @@
                                     <p><i class="far fa-comment-alt"></i> Comment</p>
                                 </div>
                                 <div class="lcs-btn">
-                                    <form action="sharePostServlet" method="post" style="display: inline;">
+                                    <form action="sharePostServlet" method="post" style="display: flex; margin-left: 30%; margin-top: 7%">
+                                        
                                         <input type="hidden" name="postId" value="${post.post_id}">
                                         <input type="hidden" name="sourceUrl" value="profile">
-                                        <p><button type="submit" class="btn btn-link fas fa-share">Share</button></P>
+                                        <span>
+                                        <button type="submit" class="btn btn-link fas fa-share"></button>
+                                        </span>
+                                        <span> Share </span>
                                     </form>
 
                                 </div>

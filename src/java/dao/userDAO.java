@@ -360,6 +360,19 @@ public class userDAO {
         }
         return "Sin chao`";
     }
+     public boolean updateUserBanStatus(int userId, boolean isBanned) {
+        String sql = "UPDATE userAccount SET is_banned = ? WHERE user_id = ?";
+        try (Connection conn = sqlConnect.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setBoolean(1, isBanned);
+            ps.setInt(2, userId);
+            int rowsUpdated = ps.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     public static void main(String[] args) {
         userDAO.getInstance().login("nguyenhuuanhtuan123@gmail.com", "123");

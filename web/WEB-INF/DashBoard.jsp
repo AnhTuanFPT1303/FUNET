@@ -111,31 +111,26 @@
 
                     <!-- Users Page -->
                     <div id="users-page" class="page">
-                        <h1 class="mt-4">Users Management</h1>
-                        <table class="table mt-4">
-                            <thead>
-                                <tr>
-                                    <th>User Id</th>
-                                    <th>Role</th>
-                                    <th>Name</th>
-
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                            <tbody>
-                                <c:forEach var="user" items="${users}">
-                                    <tr>
-                                        <td>${user.user_id}</td>
-                                        <td>${user.role}</td>
-                                        <td><a href="log?id=${user.user_id}"> ${user.first_name} ${user.last_name} </a></td>
-                                    </tr>
-                                </c:forEach>
-                            </tbody>
-
-                            </tbody>
-                        </table>
-                    </div>
+    <h1 class="mt-4">Users Management</h1>
+    <table class="table mt-4">
+        <thead>
+            <tr>
+                <th>User Id</th>
+                <th>Role</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <c:forEach var="user" items="${users}">
+                <tr>
+                    <td>${user.user_id}</td>
+                    <td>${user.role}</td>
+                    <td><a href="userActivity?id=${user.user_id}">${user.first_name} ${user.last_name}</a></td>
+                </tr>
+            </c:forEach>
+        </tbody>
+    </table>
+</div>
 
                     <!-- Analytics Page -->
                     <div id="analytics-page" class="page">

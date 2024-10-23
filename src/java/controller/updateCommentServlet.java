@@ -70,31 +70,29 @@ public class updateCommentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
-        if (session != null && session.getAttribute("user") != null){
-            String newComment = request.getParameter("newCommentText");
-            int commentId = Integer.parseInt(request.getParameter("commentId"));
-            if(!newComment.trim().isEmpty()){
-                
-                Comment comment = new Comment();
-                comment.setComment_id(commentId);
-                comment.setComment_text(newComment);
-                postDAO PostDao = new postDAO();
-                try {
-                    PostDao.updateComment(comment);
-                    TimeUnit.SECONDS.sleep(2);
-                    response.sendRedirect("home");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    request.setAttribute("errorMessage", "Error saving post");
-                    response.sendRedirect("home");
-                }
-            } else {
-                response.sendRedirect("home");
+        response.setContentType("application/json");
+    HttpSession session = request.getSession(false);
+    if (session != null && session.getAttribute("user") != null){
+        String newComment = request.getParameter("newCommentText");
+        int commentId = Integer.parseInt(request.getParameter("commentId"));
+        if(!newComment.trim().isEmpty()){
+            Comment comment = new Comment();
+            comment.setComment_id(commentId);
+            comment.setComment_text(newComment);
+            postDAO PostDao = new postDAO();
+            try {
+                PostDao.updateComment(comment);
+                response.getWriter().write("{\"success\": true}");
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.getWriter().write("{\"success\": false}");
             }
         } else {
-            response.sendRedirect("home");
+            response.getWriter().write("{\"success\": false}");
         }
+    } else {
+        response.getWriter().write("{\"success\": false}");
+    }
     }
 
     /** 

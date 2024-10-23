@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="73347407-ef53-4575-b163-26bacacf64d6" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Microsoft_JDBC_12_6.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Microsoft_JDBC_12_61.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/jakarta_jstl.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/jakarta_jstl1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/lib.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/library.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/library1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/controller/changeAvatarServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/controller/changeAvatarServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/controller/commentServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/controller/commentServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/controller/postServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/controller/postServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/controller/settingServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/controller/settingServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/controller/userpageServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/controller/userpageServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/dao/postDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/dao/postDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/dao/userDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/dao/userDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/model/Comment.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/model/Comment.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/classes/model/Post.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/classes/model/Post.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/home.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/home.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/profile.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/profile.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/WEB-INF/web.xml" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/WEB-INF/web.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/assets/css/profile.css" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/assets/css/profile.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/web/assets/js/profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/web/assets/js/profile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/FUNET.sql" beforeDir="false" afterPath="$PROJECT_DIR$/database/FUNET.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nbproject/private/private.xml" beforeDir="false" afterPath="$PROJECT_DIR$/nbproject/private/private.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/controller/changeAvatarServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/controller/changeAvatarServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/controller/commentServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/controller/commentServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/controller/settingServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/controller/settingServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/dao/postDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/dao/postDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/model/Comment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/model/Comment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/WEB-INF/home.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/WEB-INF/home.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/WEB-INF/profile.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/WEB-INF/profile.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/assets/js/profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/assets/js/profile.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2nhCyek1bP9Rq3rebslzQLcbZ9Y" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "Ha__4lap",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "E:/fpt/ky5/SWP/project_6",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="FUNET" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="FUNET" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23339.11" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23339.11" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="73347407-ef53-4575-b163-26bacacf64d6" name="Changes" comment="" />
+      <created>1729416176629</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1729416176629</updated>
+      <workItem from="1729416177792" duration="2229000" />
+      <workItem from="1729418445456" duration="1219000" />
+      <workItem from="1729419731540" duration="1059000" />
+      <workItem from="1729513634253" duration="297000" />
+      <workItem from="1729513940599" duration="4260000" />
+      <workItem from="1729519228060" duration="1226000" />
+      <workItem from="1729521068796" duration="870000" />
+      <workItem from="1729521983633" duration="1110000" />
+      <workItem from="1729523100968" duration="299000" />
+      <workItem from="1729523407393" duration="401000" />
+      <workItem from="1729524788112" duration="727000" />
+      <workItem from="1729600673226" duration="544000" />
+      <workItem from="1729601240992" duration="190000" />
+      <workItem from="1729601441155" duration="237000" />
+      <workItem from="1729602248081" duration="454000" />
+      <workItem from="1729603006870" duration="593000" />
+      <workItem from="1729603763378" duration="997000" />
+      <workItem from="1729605252392" duration="299000" />
+      <workItem from="1729606775222" duration="353000" />
+      <workItem from="1729607311864" duration="611000" />
+      <workItem from="1729607947654" duration="2429000" />
+      <workItem from="1729611738537" duration="144000" />
+      <workItem from="1729612535863" duration="367000" />
+      <workItem from="1729684331972" duration="2093000" />
+      <workItem from="1729688522796" duration="52000" />
+      <workItem from="1729688581376" duration="26000" />
+      <workItem from="1729688611424" duration="7000" />
+      <workItem from="1729688623448" duration="40000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

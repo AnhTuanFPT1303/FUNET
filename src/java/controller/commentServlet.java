@@ -9,6 +9,7 @@ import dao.postDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,6 +26,7 @@ import model.User;
  *
  * @author bim26
  */
+@MultipartConfig
 public class commentServlet extends HttpServlet {
 
     /**
@@ -105,6 +107,9 @@ public class commentServlet extends HttpServlet {
             comment.setPost_id(post_id);
             comment.setUser_id(user.getUser_id());
             comment.setComment_text(commentContent);
+            comment.setFirst_name(user.getFirst_name()); 
+            comment.setLast_name(user.getLast_name());   
+            comment.setProfile_pic(user.getProfile_pic());
         }
         try {
             postDAO.addComment(comment);

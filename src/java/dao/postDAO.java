@@ -47,11 +47,12 @@ public class postDAO {
     }
 
     public void addComment(Comment c) {
-        String query = "INSERT INTO comment (post_id, user_id, comment_text) VALUES (?, ?, ?)";
+        String query = "INSERT INTO comment (post_id, user_id, comment_text, comment_image) VALUES (?, ?, ?, ?)";
         try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, c.getPost_id());
             stmt.setInt(2, c.getUser_id());
             stmt.setString(3, c.getComment_text());
+            stmt.setString(4,c.getComment_image());
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -210,7 +211,7 @@ public class postDAO {
             Connection conn = null;
             PreparedStatement stmt = null;
             conn = sqlConnect.getInstance().getConnection();
-            stmt = conn.prepareStatement("SELECT c.comment_id, c.post_id, c.user_id, c.comment_text, u.first_name, u.last_name, u.profile_pic "
+            stmt = conn.prepareStatement("SELECT c.comment_id, c.post_id, c.user_id, c.comment_text, c.comment_image, u.first_name, u.last_name, u.profile_pic "
                     + "FROM comment c "
                     + "JOIN userAccount u ON c.user_id = u.user_id "
                     + "WHERE c.post_id = ? "
@@ -222,10 +223,11 @@ public class postDAO {
                 int post_id = rs.getInt("post_id");
                 int user_id = rs.getInt("user_id");
                 String comment_text = rs.getString("comment_text");
+                String comment_image = rs.getString("comment_image");
                 String first_name = rs.getString("first_name");
                 String last_name = rs.getString("last_name");
                 String profile_pic = rs.getString("profile_pic");
-                Comment comment = new Comment(comment_id, post_id, user_id, first_name, last_name, comment_text, profile_pic);
+                Comment comment = new Comment(comment_id, post_id, user_id, first_name, last_name, comment_text, profile_pic, comment_image);
                 comments.add(comment);
             }
         } catch (SQLException e) {

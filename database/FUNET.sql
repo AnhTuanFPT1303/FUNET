@@ -235,6 +235,7 @@ CREATE TABLE comment (
     comment_text NVARCHAR(MAX) NOT NULL,
 	comment_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (post_id) REFERENCES post (post_id),
+	comment_image NVARCHAR(MAX),
     FOREIGN KEY (user_id) REFERENCES userAccount (user_id)
 );
 
@@ -332,7 +333,6 @@ CREATE TABLE post_share (
     CONSTRAINT fk_share_user FOREIGN KEY (user_id) REFERENCES userAccount (user_id),
     CONSTRAINT fk_share_post FOREIGN KEY (post_id) REFERENCES post (post_id)
 );
-
 
 
 SELECT * FROM comment

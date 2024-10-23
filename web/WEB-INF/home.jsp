@@ -381,6 +381,25 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                 color: #009578;
             }
 
+            .three-dot-btn {
+                border: none;
+                background-color: white;
+                outline: none;
+                cursor: pointer;
+            }
+            .edit-comment-btn{
+                border: none;
+                background-color: white;
+                outline: none;
+                cursor: pointer;
+            }
+            .delete-comment-btn{
+                border: none;
+                background-color: white;
+                outline: none;
+                cursor: pointer;
+            }
+
 
             @media screen and (max-width: 1250px) {
                 .center-buttons{
@@ -742,30 +761,34 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                                 </div>
                                 <%--   </c:if> --%>
                             </div>
-
                             <div class="post-comments">
                                 <c:forEach var="comment" items="${post.comments}">
                                     <div class="comment mb-2" style="margin-left: 20px;">
                                         <div class="comment-header">
                                             <img src="assets/profile_avt/${comment.profile_pic}" class="img-fluid rounded-circle avatar me-2" style="width: 30px; height: 30px; object-fit: cover;">
                                             <small><strong>${comment.first_name} ${comment.last_name}</strong></small>
-                                            <c:if test="${sessionScope.user['user_id'] == comment.user_id}">
-                                                <button class="edit-comment-btn" data-comment-id="${comment.comment_id}">Edit</button>
-                                                <form action="/FUNET/deleteCommentServlet" method="post" class="delete-comment-form" style="display: inline;">
-                                                    <input type="hidden" name="commentId" value="${comment.comment_id}">
-                                                    <button type="submit" class="delete-comment-btn">Delete</button>
-                                                </form>
-                                            </c:if>
                                         </div>
-                                        <div class="comment-body">
+                                        <div class="comment-body" style="display: flex; justify-content: space-between; align-items: center;">
                                             <p style="margin-bottom: 0;" class="comment-text">${comment.comment_text}</p>
-                                            <form action="/FUNET/updateCommentServlet" method="post" class="edit-comment-form" style="display: none;">
-                                                <input type="hidden" name="commentId" value="${comment.comment_id}">
-                                                <textarea name="newCommentText" class="form-control">${comment.comment_text}</textarea>
-                                                <button type="submit" class="btn btn-primary">Save</button>
-                                                <button type="button" class="btn btn-secondary cancel-edit-comment">Cancel</button>
-                                            </form>
+                                            <div class="comment-options">
+                                                <c:if test="${sessionScope.user['user_id'] == comment.user_id}">
+                                                    <button class="three-dot-btn" data-comment-id="${comment.comment_id}">...</button>
+                                                </c:if>
+                                                <div class="comment-actions" style="display: none;">
+                                                    <button class="edit-comment-btn" data-comment-id="${comment.comment_id}">Edit</button>
+                                                    <form action="/FUNET/deleteCommentServlet" method="post" class="delete-comment-form" style="display: inline;">
+                                                        <input type="hidden" name="commentId" value="${comment.comment_id}">
+                                                        <button type="submit" class="delete-comment-btn">Delete</button>
+                                                    </form>
+                                                </div>
+                                            </div>
                                         </div>
+                                        <form action="/FUNET/updateCommentServlet" method="post" class="edit-comment-form" style="display: none;">
+                                            <input type="hidden" name="commentId" value="${comment.comment_id}">
+                                            <textarea name="newCommentText" class="form-control">${comment.comment_text}</textarea>
+                                            <button type="submit" class="btn btn-primary">Save</button>
+                                            <button type="button" class="btn btn-secondary cancel-edit-comment">Cancel</button>
+                                        </form>
                                     </div>
                                 </c:forEach>
                             </div>
@@ -815,11 +838,39 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="assets/js/bootstrap.bundle.min.js"></script>
-        <script src="assets/js/likeButton.js" defer></script>
-        <script src="assets/js/comment.js" defer></script>
-        <!-- delete update comment -->
+        <script src="assets/js/reaction.js" defer></script>
+        <!-- delete update comment + button"..." -->
         <script>
                                         document.addEventListener('DOMContentLoaded', function () {
+                                            document.querySelectorAll('.edit-comment-btn').forEach(button => {
+                                                button.addEventListener('click', function () {
+                                                    const commentId = this.getAttribute('data-comment-id');
+                                                    const commentText = this.closest('.comment').querySelector('.comment-text');
+                                                    const editForm = this.closest('.comment').querySelector('.edit-comment-form');
+                                                    commentText.style.display = 'none';
+                                                    editForm.style.display = 'block';
+                                                });
+                                            });
+
+                                            document.querySelectorAll('.cancel-edit-comment').forEach(button => {
+                                                button.addEventListener('click', function () {
+                                                    const commentText = this.closest('.comment').querySelector('.comment-text');
+                                                    const editForm = this.closest('.comment').querySelector('.edit-comment-form');
+                                                    commentText.style.display = 'block';
+                                                    editForm.style.display = 'none';
+                                                });
+                                            });
+                                        });
+
+                                        document.addEventListener('DOMContentLoaded', function () {
+                                            document.querySelectorAll('.three-dot-btn').forEach(button => {
+                                                button.addEventListener('click', function () {
+                                                    const commentId = this.getAttribute('data-comment-id');
+                                                    const actions = this.closest('.comment-options').querySelector('.comment-actions');
+                                                    actions.style.display = actions.style.display === 'none' ? 'block' : 'none';
+                                                });
+                                            });
+
                                             document.querySelectorAll('.edit-comment-btn').forEach(button => {
                                                 button.addEventListener('click', function () {
                                                     const commentId = this.getAttribute('data-comment-id');
@@ -966,8 +1017,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                 }
             });
         </script>
-        
-        
-        
+
+
+
 </body>
 </html>

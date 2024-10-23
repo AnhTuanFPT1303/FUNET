@@ -4,6 +4,8 @@
  */
 package controller;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import dao.FriendDAO;
 import dao.postDAO;
 import model.Post;
@@ -12,16 +14,23 @@ import java.util.concurrent.TimeUnit;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -31,6 +40,32 @@ import java.util.List;
 public class postServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
+    Cloudinary cloud;
+     public void init() throws ServletException {
+          Properties properties = new Properties();
+          String propFileName = "/WEB-INF/cloudinary.properties.txt";
+          InputStream inputStream = getServletContext().getResourceAsStream(propFileName);
+          if (inputStream == null) {
+                throw new ServletException("Property file '" + propFileName + "' not found in classpath");
+            }
+            try {
+                properties.load(inputStream);
+            } catch (IOException ex) {
+                Logger.getLogger(postServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            String cloudName = properties.getProperty("cloud_name");
+            String apiKey = properties.getProperty("api_key");
+            String apiSecret = properties.getProperty("api_secret");
+        try {
+            cloud = new Cloudinary(ObjectUtils.asMap(
+               "cloud_name", cloudName,
+                "api_key", apiKey,
+                "api_secret", apiSecret
+            ));
+        } catch (Exception e) {
+            throw new ServletException("Failed to initialize Cloudinary", e);
+        }
+    }
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -104,37 +139,52 @@ public class postServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
 
-        // ------------------------------------------------------------------------------------------------- 
         if (session != null && session.getAttribute("user") != null) {
             User user = (User) session.getAttribute("user");
             String body = request.getParameter("postContent");
-            Part file = request.getPart("image");
+            Part filePart = request.getPart("image");
             String sourceUrl = request.getParameter("sourceUrl");
-            String image_path = file.getSubmittedFileName();
-//            String uploadPath = "D:/fpt/prj301/project/FUNET_FINAL/FUNET/Downloads/FUNET/web/assets/post_image/" + image_path;
-            String uploadPath = getServletContext().getRealPath("/assets/post_image/") + image_path;
-            //E:\FUNET\FUNET\web\assets
-            try {
+            String imageUrl = null;
 
-                FileOutputStream fos = new FileOutputStream(uploadPath);
-                InputStream is = file.getInputStream();
+        
+            if (filePart != null && filePart.getSize() > 0) {
+                try {
                 
-                byte[] data = new byte[is.available()];
-                is.read(data);
-                fos.write(data);
-                fos.close();
-            } catch (Exception e) {
-                e.printStackTrace();
+                    File tempFile = File.createTempFile("upload_", filePart.getSubmittedFileName());
+                    
+                
+                    try (InputStream inputStream = filePart.getInputStream();
+                         FileOutputStream outputStream = new FileOutputStream(tempFile)) {
+                        byte[] buffer = new byte[1024];
+                        int bytesRead;
+                        while ((bytesRead = inputStream.read(buffer)) != -1) {
+                            outputStream.write(buffer, 0, bytesRead);
+                        }
+                    }
+
+               
+                    Map uploadResult = cloud.uploader().upload(tempFile, ObjectUtils.emptyMap());
+                    imageUrl = (String) uploadResult.get("url");
+
+                  
+                    Files.deleteIfExists(tempFile.toPath());
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    request.setAttribute("errorMessage", "Error uploading image");
+                    response.sendRedirect("home");
+                    return;
+                }
             }
 
-            if (!body.trim().equals("") || !image_path.equals("")) {
+            if (!body.trim().equals("") || imageUrl != null) {
                 Post post = new Post();
                 post.setUser_id(user.getUser_id());
                 post.setBody(body);
-                post.setImage_path(image_path);
+                post.setImage_path(imageUrl); 
                 postDAO PostDao = new postDAO();
                 try {
                     PostDao.addPost(post);
@@ -157,7 +207,6 @@ public class postServlet extends HttpServlet {
             response.sendRedirect("home");
         }
     }
-
     /**
      * Returns a short description of the servlet.
      *

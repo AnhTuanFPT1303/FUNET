@@ -13,7 +13,7 @@ public class userDAO {
 
     private static userDAO instance = null;
 
-    private userDAO() {
+    public userDAO() {
 
     }
 
@@ -133,6 +133,7 @@ public class userDAO {
                 u.setUser_id(rs.getInt(1));
                 u.setFirst_name(rs.getString(2));
                 u.setLast_name(rs.getString(3));
+                 u.setRole(rs.getString("role"));
                 u.setProfile_pic(rs.getString(4));
                 userList.add(u);
             }
@@ -187,6 +188,7 @@ public class userDAO {
                 u.setFirst_name(rs.getString("first_name"));
                 u.setLast_name(rs.getString("last_name"));
                 u.setEmail(rs.getString("email"));
+                 u.setRole(rs.getString("role"));
                 u.setProfile_pic(rs.getString("profile_pic"));
                 users.add(u);
             }

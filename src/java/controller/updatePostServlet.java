@@ -4,6 +4,8 @@
  */
 package controller;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import dao.postDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,9 +16,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Post;
 import model.User;
 
@@ -26,8 +34,37 @@ import model.User;
  */
 @MultipartConfig
 public class updatePostServlet extends HttpServlet {
-    
+
+    private static final Logger LOGGER = Logger.getLogger(updatePostServlet.class.getName());
+
     private static final long serialVersionUID = 1L;
+    Cloudinary cloud;
+
+    public void init() throws ServletException {
+        Properties properties = new Properties();
+        String propFileName = "/WEB-INF/cloudinary.properties.txt";
+        InputStream inputStream = getServletContext().getResourceAsStream(propFileName);
+        if (inputStream == null) {
+            throw new ServletException("Property file '" + propFileName + "' not found in classpath");
+        }
+        try {
+            properties.load(inputStream);
+        } catch (IOException ex) {
+            Logger.getLogger(postServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        String cloudName = properties.getProperty("cloud_name");
+        String apiKey = properties.getProperty("api_key");
+        String apiSecret = properties.getProperty("api_secret");
+        try {
+            cloud = new Cloudinary(ObjectUtils.asMap(
+                    "cloud_name", cloudName,
+                    "api_key", apiKey,
+                    "api_secret", apiSecret
+            ));
+        } catch (Exception e) {
+            throw new ServletException("Failed to initialize Cloudinary", e);
+        }
+    }
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -83,51 +120,76 @@ public class updatePostServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("user") != null) {
-            String newBody = request.getParameter("newBody");
-            Part file = request.getPart("newImage");                                                                                    
-            String image_path = getSubmittedFileName(file);
-            int postId = Integer.parseInt(request.getParameter("postId"));
-            String uploadPath = getServletContext().getRealPath("/assets/post_image/") + image_path;
+            LOGGER.info("Starting to process post update request");
             try {
-                FileOutputStream fos = new FileOutputStream(uploadPath);
-                InputStream is = file.getInputStream();
-                byte[] data = new byte[is.available()];
-                is.read(data);
-                fos.write(data);
-                fos.close();
+                String newBody = request.getParameter("newBody");
+                Part filePart = request.getPart("newImage");
+                int postId = Integer.parseInt(request.getParameter("postId"));
+                if (filePart == null) {
+                    LOGGER.warning("No file part found in request");
+
+                    return;
+                }
+
+                postDAO PostDao = new postDAO();
+                Post post = PostDao.getPostById(postId);
+                LOGGER.log(Level.INFO, "Updating post with ID: {0}", postId);
+                if (post == null) {
+                    LOGGER.warning("Post not found with ID: " + postId);
+                    session.setAttribute("errorMessage", "Post not found");
+                    response.sendRedirect("profile");
+                    return;
+                }
+
+                if (newBody != null && !newBody.trim().isEmpty()) {
+                    post.setBody(newBody);
+                }
+
+                if (filePart != null && filePart.getSize() > 0) {
+                    try {
+                        LOGGER.info("Starting file upload process");
+                        File tempFile = File.createTempFile("upload_", filePart.getSubmittedFileName());
+
+                        try (InputStream inputStream = filePart.getInputStream(); FileOutputStream outputStream = new FileOutputStream(tempFile)) {
+                            byte[] buffer = new byte[1024];
+                            int bytesRead;
+                            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                                outputStream.write(buffer, 0, bytesRead);
+                            }
+                        }
+
+                        Map uploadResult = cloud.uploader().upload(tempFile, ObjectUtils.emptyMap());
+                        String imageUrl = (String) uploadResult.get("url");
+                        post.setImage_path(imageUrl);
+                        LOGGER.info("File uploaded successfully to Cloudinary");
+                        Files.deleteIfExists(tempFile.toPath());
+                    } catch (Exception e) {
+                        LOGGER.log(Level.SEVERE, "Error uploading file", e);
+                        e.printStackTrace();
+                        session.setAttribute("errorMessage", "Error uploading image");
+                        response.sendRedirect("profile");
+                        return;
+                    }
+                }
+
+                PostDao.updatePost(post);
+                session.setAttribute("successMessage", "Post updated successfully");
+                LOGGER.info("Post updated successfully");
+                response.setContentType("text/plain");
+                response.getWriter().write("success");
+                // response.sendRedirect("profile");
+
             } catch (Exception e) {
                 e.printStackTrace();
-            }
-
-            if (!newBody.trim().isEmpty() || (image_path != null && !image_path.isEmpty())) {
-                Post post = new Post();
-                post.setPost_id(postId);
-                post.setBody(newBody);
-                post.setImage_path(image_path);
-                postDAO PostDao = new postDAO();
-                try {
-                    PostDao.updatePost(post);
-                    TimeUnit.SECONDS.sleep(2);
-                    response.sendRedirect("profile");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    request.setAttribute("errorMessage", "Error saving post");
-                    response.sendRedirect("profile");
-                }
-            } else {
-                response.sendRedirect("profile");
+                LOGGER.log(Level.SEVERE, "Error in doPost method", e);
+                session.setAttribute("errorMessage", "Error updating post: " + e.getMessage());
+                response.setContentType("text/plain");
+                response.getWriter().write("error: Invalid post ID");
+                // response.sendRedirect("profile");
             }
         } else {
             response.sendRedirect("home");
         }
-    }
-    private String getSubmittedFileName(Part part) {
-        for (String cd : part.getHeader("content-disposition").split(";")) {
-            if (cd.trim().startsWith("filename")) {
-                return cd.substring(cd.indexOf('=') + 1).trim().replace("\"", "");
-            }
-        }
-        return null;
     }
 
     /**

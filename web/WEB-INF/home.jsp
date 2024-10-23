@@ -640,8 +640,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                     <div><box-icon name='videos' type='solid'></box-icon> Video </div>
                     <div><box-icon name='store-alt' type='solid'></box-icon> Market</div>
                     <div><box-icon type='solid' name='book'></box-icon> Learning Materials</div>
-                    <div><i class='fas fa-gamepad' style='font-size:20px'></i> Game</div>
+                   <a href="game" style="text-decoration: none;"> <div><i class='fas fa-gamepad' style='font-size:20px'></i> Game</div></a>
                     <hr style="border: 1px solid black; width: 100%;"><!-- comment -->
+                     <a href="dashBoard">dashboard</a>
 
                     <p>Your ShortCut</p>
                 </div>
@@ -685,7 +686,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                                     <label for="photo-upload">
                                         <i class="fas fa-cloud-upload-alt"></i> Photo/Video
                                     </label>
-                                    <input id="photo-upload" type="file" name="image" accept=".jpeg, .png, .jpg" style="display: none;" onchange="updateFileName(this)">
+                                    <input id="photo-upload" type="file" name="image" accept=".jpeg, .png, .jpg, .mp4" style="display: none;" onchange="updateFileName(this)">
                                 </div>
                                 <div class="item">
                                     <label for="file-upload">
@@ -717,7 +718,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                             <p>${post.body}</p> 
                             <c:if test="${not empty post.image_path}">
                                 <div>
-                                    <img src="assets/post_image/${post.image_path}" style="max-width : 100%">
+                                    <img src="${post.image_path}" style="max-width : 100%">
                                 </div>
                             </c:if>
 

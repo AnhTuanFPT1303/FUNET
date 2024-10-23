@@ -197,7 +197,7 @@
                             <c:forEach var="post" items="${posts}">
                                 <c:if test="${not empty post.image_path}">
                                     <div class="images-div">
-                                        <img src="assets/post_image/${post.image_path}" alt="User posted image">
+                                        <img src="${post.image_path}" alt="User posted image">
                                     </div>
                                 </c:if>
                             </c:forEach>
@@ -314,40 +314,41 @@
                                             </div>
 
                                             <div class="content-popaap">
-                                                <ul>
-                                                    <li id="public-btn">
-                                                        <div class="icon-div">
-                                                            <i class="fas fa-globe-europe"></i>
-                                                        </div>
-                                                        <div class="text-aria">
-                                                            <h2>Public</h2>
-                                                            <p>Anyone on or off Facebook</p>
-                                                            <i id="public-li-icon" class="far fa-circle"></i>
-                                                        </div>
-                                                    </li>
-
-                                                    <li class="activ-li-div" id="friends-btn">
-                                                        <div class="icon-div">
-                                                            <i class="fas fa-user-friends frind-icon"></i>
-                                                        </div>
-                                                        <div class="text-aria">
-                                                            <h2>Friends</h2>
-                                                            <p>Your friends on Facebook</p>
-                                                            <i id="friends-li-icon"
-                                                               class="far fa-dot-circle activ-li-icon"></i>
-                                                        </div>
-                                                    </li>
-
-                                                    <li id="lock-btn">
-                                                        <div class="icon-div">
-                                                            <i class="fas fa-lock"></i>
-                                                        </div>
-                                                        <div class="text-aria">
-                                                            <h2 class="onlu-me">Only Me</h2>
-                                                            <i id="lock-li-icon" class="far fa-circle"></i>
-                                                        </div>
-                                                    </li>
-                                                </ul>
+                                                <form id="updatePrivacyForm" action="updatePrivateServlet" method="post">
+                                                    <input type="hidden" name="postId" value="${post.post_id}">
+                                                    <input type="hidden" name="privacyMode" id="privacyMode">
+                                                    <ul>
+                                                        <li id="public-btn" onclick="updatePrivacy('public')">
+                                                            <div class="icon-div">
+                                                                <i class="fas fa-globe-europe"></i>
+                                                            </div>
+                                                            <div class="text-aria">
+                                                                <h2>Public</h2>
+                                                                <p>Anyone on or off FUNET</p>
+                                                                <i id="public-li-icon" class="far fa-circle"></i>
+                                                            </div>
+                                                        </li>
+                                                        <li class="activ-li-div" id="friends-btn" onclick="updatePrivacy('friend')">
+                                                            <div class="icon-div">
+                                                                <i class="fas fa-user-friends frind-icon"></i>
+                                                            </div>
+                                                            <div class="text-aria">
+                                                                <h2>Friends</h2>
+                                                                <p>Your friends on FUNET</p>
+                                                                <i id="friends-li-icon" class="far fa-dot-circle activ-li-icon"></i>
+                                                            </div>
+                                                        </li>
+                                                        <li id="lock-btn" onclick="updatePrivacy('private')">
+                                                            <div class="icon-div">
+                                                                <i class="fas fa-lock"></i>
+                                                            </div>
+                                                            <div class="text-aria">
+                                                                <h2 class="onlu-me">Only Me</h2>
+                                                                <i id="lock-li-icon" class="far fa-circle"></i>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </form>
                                             </div>
                                         </div>
                                     </span>
@@ -367,10 +368,9 @@
                                             </div>
                                             <button type="button" class="btn btn-secondary cancel-update">Cancel</button>
                                         </form>
-
                                         <!-- Update button -->
                                         <c:if test="${!post.isShared}">
-                                            <button class="btn btn-primary show-update-form">Update</button>
+                                            <button class="btn btn-primary show-update-form update-post-btn" data-post-id="${post.post_id}" onclick="UpdatePostClick('${post.post_id}', '${post.body}')">Update</button>
                                         </c:if>
                                         <form action="deleteServlet" method="post" class="delete-form">
                                             <input type="hidden" name="_method" value="delete">
@@ -383,7 +383,7 @@
                             <p class="post-text-show">${post.body}</p>
                             <c:if test="${not empty post.image_path}">
                                 <div class=div-post-images>
-                                    <img class="post-images" src="assets/post_image/${post.image_path}" style="max-width: 60%">
+                                    <img class="post-images" src="${post.image_path}" style="max-width: 60%">
                                 </div>
                             </c:if>
                             <div class="post-reaction">
@@ -472,6 +472,34 @@
                     </c:forEach>
                 </section>
             </div>
+            <!-- Thêm modal để hiển thị form cập nhật bài đăng -->
+            <div class="modal fade" id="updatePostModal" tabindex="-1" aria-labelledby="updatePostModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="updatePostModalLabel">Update Post</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form id="updatePostForm" method="post" enctype="multipart/form-data">
+                            <div class="modal-body">
+                                <input type="hidden" name="postId" id="postIdInput">
+                                <div class="mb-3">
+                                    <label for="newBody" class="form-label" id="formupdateidcontent">New Content</label>
+                                    <textarea class="form-control" id="newBody" name="newBody" rows="2"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="newImage" class="form-label" id="formupdateidimage photo-upload">New Image</label>
+                                    <input type="file" class="form-control" id="newImage" name="newImage" accept=".jpeg, .png, .jpg" onchange="updateFileName(this)">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -480,19 +508,65 @@
         <script src="assets/js/likeButton.js" defer></script>
 
         <script>
-                                                    document.addEventListener('DOMContentLoaded', function () {
-                                                        const commentForm = document.getElementById('commentForm');
-                                                        const commentInput = document.getElementById('body');
+                                        function updatePrivacy(mode) {
+                                            document.getElementById('privacyMode').value = mode;
+                                            document.getElementById('updatePrivacyForm').submit();
 
-                                                        commentInput.addEventListener('keydown', function (event) {
-                                                            if (event.key === 'Enter' && !event.shiftKey) {
-                                                                event.preventDefault();
-                                                                if (commentInput.value.trim() !== '') {
-                                                                    commentForm.submit();
-                                                                }
-                                                            }
-                                                        });
-                                                    });
+                                        }
+
+                                        function UpdatePostClick(id, body) {
+                                            document.getElementById('postIdInput').value = id;
+                                            document.getElementById('newBody').value = body;
+
+                                            $('#updatePostModal').modal('show');
+                                        }
+                                        $('#updatePostForm').on('submit', function (event) {
+                                            event.preventDefault();
+
+                                            var formData = new FormData(this);
+
+                                            $.ajax({
+                                                url: 'updatePostServlet',
+                                                type: 'POST',
+                                                data: formData,
+                                                contentType: false,
+                                                processData: false,
+                                                success: function (response) {
+                                                    if (response.trim() === 'success') {
+
+                                                        $('#updatePostModal').modal('hide');
+                                                        location.reload();
+                                                    } else {
+
+                                                        alert('Error updating post server: ' + response);
+                                                    }
+                                                },
+                                                error: function (xhr, status, error) {
+
+                                                    alert('Error updating post ajax: ' + error);
+                                                }
+                                            });
+                                        });
+
+
+
+
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const commentForm = document.getElementById('commentForm');
+                const commentInput = document.getElementById('body');
+
+                commentInput.addEventListener('keydown', function (event) {
+                    if (event.key === 'Enter' && !event.shiftKey) {
+                        event.preventDefault();
+                        if (commentInput.value.trim() !== '') {
+                            commentForm.submit();
+                        }
+                    }
+                });
+            });
         </script>
 
         <script>
@@ -506,14 +580,14 @@
 
                     if (showUpdateFormBtn) {
                         showUpdateFormBtn.addEventListener('click', () => {
-                            updateForm.style.display = 'block';
+                           // updateForm.style.display = 'block';
                             showUpdateFormBtn.style.display = 'none';
                         });
                     }
 
                     if (cancelUpdateBtn) {
                         cancelUpdateBtn.addEventListener('click', () => {
-                            updateForm.style.display = 'none';
+                           // updateForm.style.display = 'none';
                             showUpdateFormBtn.style.display = 'block';
                         });
                     }
@@ -522,59 +596,39 @@
         </script>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                const editBtn = document.getElementById('edit-intro-btn');
-                const editForm = document.getElementById('edit-intro-form');
-                const cancelBtn = document.getElementById('cancel-edit-btn');
-                const introText = document.getElementById('user-intro-text');
+                const posts = document.querySelectorAll('.post');
+                posts.forEach(post => {
+                    const threeDotBtn = post.querySelector('.thre-dto-btn');
+                    const dropdownMenu = post.querySelector('.dropdown-menu');
+                    const showUpdateFormBtn = post.querySelector('.show-update-form');
+                    const updateForm = post.querySelector('.update-form');
+                    const cancelUpdateBtn = post.querySelector('.cancel-update');
+                    threeDotBtn.addEventListener('click', () => {
+                        dropdownMenu.style.display = dropdownMenu.style.display === 'none' ? 'block' : 'none';
+                    });
+                    if (showUpdateFormBtn) {
+                        showUpdateFormBtn.addEventListener('click', () => {
+                         //   updateForm.style.display = 'block';
+                            showUpdateFormBtn.style.display = 'none';
+                            dropdownMenu.style.display = 'none';
+                        });
+                    }
 
-                editBtn.addEventListener('click', function () {
-                    editForm.style.display = 'block';
-                    introText.style.display = 'none';
-                    editBtn.style.display = 'none';
+                    if (cancelUpdateBtn) {
+                        cancelUpdateBtn.addEventListener('click', () => {
+                           // updateForm.style.display = 'none';
+                            showUpdateFormBtn.style.display = 'block';
+                        });
+                    }
                 });
-
-                cancelBtn.addEventListener('click', function () {
-                    editForm.style.display = 'none';
-                    introText.style.display = 'block';
-                    editBtn.style.display = 'block';
+                document.addEventListener('click', function (event) {
+                    if (!event.target.closest('.post')) {
+                        document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                            menu.style.display = 'none';
+                        });
+                    }
                 });
             });
         </script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-            const posts = document.querySelectorAll('.post');
-                    posts.forEach(post => {
-                    const threeDotBtn = post.querySelector('.thre-dto-btn');
-                            const dropdownMenu = post.querySelector('.dropdown-menu');
-                            const showUpdateFormBtn = post.querySelector('.show-update-form');
-                            const updateForm = post.querySelector('.update-form');
-                            const cancelUpdateBtn = post.querySelector('.cancel-update');
-                            threeDotBtn.addEventListener('click', () => {
-                            dropdownMenu.style.display = dropdownMenu.style.display === 'none' ? 'block' : 'none';
-                            });
-                            if (showUpdateFormBtn) {
-                    showUpdateFormBtn.addEventListener('click', () => {
-                    updateForm.style.display = 'block';
-                            showUpdateFormBtn.style.display = 'none';
-                            dropdownMenu.style.display = 'none';
-                });
-            }
-
-                    if (cancelUpdateBtn) {
-                    cancelUpdateBtn.addEventListener('click', () => {
-                    updateForm.style.display = 'none';
-                            showUpdateFormBtn.style.display = 'block';
-                    });
-                }
-            });
-                    document.addEventListener('click', function (event) {
-                    if (!event.target.closest('.post')) {
-                    document.querySelectorAll('.dropdown-menu').forEach(menu => {
-                    menu.style.display = 'none';
-                    });
-                }
-            });
-        });
-        </script
     </body>
 </html>

@@ -29,6 +29,7 @@ public class Post {
     private int shareCount;
     private String originalPosterAvatar;
     private String privacy_mode;
+    private boolean savedByCurrentUser;
     
     public Post(int post_id, int user_id, String body, Timestamp post_time, String first_name, String last_name, String image_path, String profile_pic, int like_count, boolean isShared, int originalPostId, String originalPosterName, int shareCount, String originalPosterAvatar, String privacy_mode) {
         this.post_id = post_id;
@@ -96,6 +97,14 @@ public class Post {
         this.comments = comments;
     }
 
+    public boolean isSavedByCurrentUser() {
+        return savedByCurrentUser;
+    }
+
+    public void setSavedByCurrentUser(boolean savedByCurrentUser) {
+        this.savedByCurrentUser = savedByCurrentUser;
+    }
+   
     public String getPrivacy_mode() {
         return privacy_mode;
     }

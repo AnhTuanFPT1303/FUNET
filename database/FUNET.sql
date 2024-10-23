@@ -334,12 +334,19 @@ CREATE TABLE post_share (
     CONSTRAINT fk_share_post FOREIGN KEY (post_id) REFERENCES post (post_id)
 );
 
+CREATE TABLE saved_post (
+    user_id INT NOT NULL,
+    post_id INT NOT NULL,
+    PRIMARY KEY (user_id, post_id),
+    CONSTRAINT fk_saved_user FOREIGN KEY (user_id) REFERENCES userAccount(user_id),
+    CONSTRAINT fk_saved_post FOREIGN KEY (post_id) REFERENCES post(post_id)
+);
 
+
+SELECT * FROM saved_post
 SELECT * FROM comment
 SELECT * FROM post
 SELECT * FROM userAccount
-UPDATE post
-SET privacy_mode = 'public'
-WHERE post_id = 122;
+SELECT * FROM post_like
 
 >>>>>>> origin/Ha3_Uc

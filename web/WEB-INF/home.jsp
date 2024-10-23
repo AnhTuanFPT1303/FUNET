@@ -25,15 +25,6 @@
         <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 
         <style>
-            /*
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
-            */
-
-            /* 
-                Created on : Jun 19, 2024, 1:35:13 PM
-                Author     : bim26
-            */
             body {
                 font-family: Arial, sans-serif;
                 margin: 0;
@@ -655,8 +646,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                 <div class="RightItem">
                     <div><i class='fas fa-user-friends' > </i>    Friends</div>
                     <div> <box-icon name='group' type='solid' ></box-icon>    Groups  </div>
-                    <div> <box-icon type='solid' name='bookmark'></box-icon>    Saved  </div>
-                    <div><box-icon name='videos' type='solid'></box-icon> Video </div>
+                    <div>
+                        <a href="savePostServlet">
+                            <box-icon type='solid' name='bookmark'></box-icon> Saved
+                        </a>
+                    </div>                    <div><box-icon name='videos' type='solid'></box-icon> Video </div>
                     <div><box-icon name='store-alt' type='solid'></box-icon> Market</div>
                     <div><box-icon type='solid' name='book'></box-icon> Learning Materials</div>
                     <div><i class='fas fa-gamepad' style='font-size:20px'></i> Game</div>
@@ -725,6 +719,23 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                             <div class="post-header">
                                 <img src="assets/profile_avt/${post.profile_pic}" class="img-fluid rounded-circle avatar me-2" style="width: 40px; height: 40px;object-fit: cover;">
                                 <small>${post.first_name} ${post.last_name} -- <fmt:formatDate value="${post.post_time}" pattern="yyyy-MM-dd HH:mm:ss" /></small>
+
+                            </div>
+                            <div class="comment-options">
+                                <button class="three-dot-btn" data-post-id="${post.post_id}">...</button>
+                                <div class="comment-actions" style="display: none;">
+                                    <form action="/FUNET/savePostServlet" method="post">
+                                        <input type="hidden" name="postId" value="${post.post_id}">
+                                        <c:choose>
+                                            <c:when test="${post.savedByCurrentUser}">
+                                                <button type="submit" class="btn btn-warning">Unsave Post</button>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <button type="submit" class="btn btn-primary">Save Post</button>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </form>
+                                </div>
                             </div>
                             <c:if test="${post.isShared}">
 

@@ -107,6 +107,9 @@ lock_btn.addEventListener("click", function () {
     popop_background.classList.remove("dis_block");
 });
 
+
+
+
 document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.three-dot-btn').forEach(button => {
         button.addEventListener('click', function () {
@@ -135,3 +138,5 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+

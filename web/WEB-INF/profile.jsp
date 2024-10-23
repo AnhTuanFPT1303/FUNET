@@ -49,10 +49,12 @@
                 <img src="assets/profile_avt/${user.profile_pic}">
                 <div class="cover-image-div">
                     <div class="cover-image-edite-btn">
-                        <button>
-                            <i class="fas fa-camera"></i>
-                            Edit Cover Photo
-                        </button>
+                        <a href="setting" style="text-decoration: none">
+                            <button>
+                                <i class="fas fa-camera"></i>
+                                Edit Cover Photo
+                            </button>
+                        </a>
                     </div>
                 </div>
             </header>
@@ -61,7 +63,7 @@
             <div class="profile-section-in">
                 <div class="profile-image-site">
                     <div class="profile-image-div">
-                        <a href="#">
+                        <a href="setting" style="text-decoration: none">
                             <img src="assets/profile_avt/${user.profile_pic}">
                         </a>
                         <span class="fas fa-camera"></span>
@@ -80,10 +82,12 @@
                 </div>
                 <div class="profile-button-site">
                     <div class="btn-site-pro">
-                        <span class="edit-profile-btn">
-                            <i class="fas fa-pen"></i>
-                            Edit Profile
-                        </span>
+                        <a href="setting" style="text-decoration: none">
+                            <span class="edit-profile-btn">
+                                <i class="fas fa-pen"></i>
+                                Edit Profile
+                            </span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -120,7 +124,7 @@
                             <h2>Introduction</h2>
                             <p id="user-intro-text">${user.user_introduce}</p>
                             <c:if test="${sessionScope.user['user_id'] == user.user_id}">
-                            <button id="edit-intro-btn" class="btn btn-primary">Edit Introduction</button>
+                                <button id="edit-intro-btn" class="btn btn-primary">Edit Introduction</button>
                             </c:if>
                             <form id="edit-intro-form" action="userIntroduceServlet" method="post" style="display: none;">
                                 <input type="text" name="userIntro" class="form-control" placeholder="Introduce yourself..." value="${user.user_introduce}">
@@ -221,7 +225,7 @@
                             <c:forEach var="friend" items="${friends}">
                                 <div class="images-div">
                                     <img src="assets/profile_avt/${friend.profile_pic}" alt="${friend.first_name} ${friend.last_name}">
-                                    <p><a href="#" class="user-link friend" data-user-id="${friend.user_id}">${friend.first_name} ${friend.last_name}</a></p>
+                                    <p><a href="profile" class="user-link friend" data-user-id="${friend.user_id}">${friend.first_name} ${friend.last_name}</a></p>
                                 </div>
                             </c:forEach>
                         </div>
@@ -411,25 +415,26 @@
 
                             </div>
 
-                            <div class="activate">
-                                <div class="lcs-btn lcs-btn_i post-rating ${post.likedByCurrentUser ? 'post-rating-selected' : ''}">
-                                    <p>
-                                        <span class="material-icons" style="color: ${post.likedByCurrentUser ? '#1877f2' : '#65676b'};">
-                                            thumb_up
-                                        </span>
-                                        <span class="post-icon-text_i">${post.likedByCurrentUser ? 'Liked' : 'Like'}</span>
-                                    </p>
+                            <div class="activate d-flex justify-content-around mt-2">
+                                <div class="lcs-btn lcs-btn_i post-rating ${post.likedByCurrentUser ? 'post-rating-selected' : ''} d-flex align-items-center">
+                                    <span class="material-icons" style="color: ${post.likedByCurrentUser ? '#1877f2' : '#65676b'};">
+                                        thumb_up
+                                    </span>
+                                    <span class="post-icon-text_i ms-1" style="margin-top: 5px; font-weight: bold">${post.likedByCurrentUser ? 'Liked' : 'Like'}</span>
                                 </div>
-                                <div class="lcs-btn">
-                                    <p><i class="far fa-comment-alt"></i> Comment</p>
+                                <div class="lcs-btn d-flex align-items-center" style="font-weight: bold">
+                                    <i class="far fa-comment-alt"></i>
+                                    <span class="ms-1">Comment</span>
                                 </div>
-                                <div class="lcs-btn">
+                                <div class="lcs-btn d-flex align-items-center">
                                     <form action="sharePostServlet" method="post" style="display: inline;">
                                         <input type="hidden" name="postId" value="${post.post_id}">
                                         <input type="hidden" name="sourceUrl" value="profile">
-                                        <p><button type="submit" class="btn btn-link fas fa-share">Share</button></P>
+                                        <button type="submit" class="btn btn-link p-0 d-flex align-items-center" style="background:white; text-decoration: none">
+                                            <i class="fas fa-share"></i>
+                                            <span class="ms-1">Share</span>
+                                        </button>
                                     </form>
-
                                 </div>
                             </div>
                             <div class="comment-site">
@@ -445,7 +450,7 @@
                                         </div>
                                         <input type="hidden" name="sourceUrl" value="profile">
                                         <input type="hidden" name="post_id" value="${post.post_id}">
-                                    
+
                                         <!-- 
                                     <div class="comment-icon-div">
                                         <div>
@@ -458,8 +463,8 @@
                                              </label>
                                         </div>
                                     </div>
-                                         -->
-                                        </form>
+                                        -->
+                                    </form>
                                 </div>
                             </div>
                             <c:forEach var="comment" items="${post.comments}">
@@ -503,15 +508,20 @@
         <script src="assets/js/bootstrap.min.js"></script> 
         <script src="assets/js/likeButton.js" defer></script>
         <script src="assets/js/comment.js" defer></script>
-        
+
         <script>
-                                                    function updatePrivacy(mode) {
-                                                        document.getElementById('privacyMode').value = mode;
-                                                        document.getElementById('updatePrivacyForm').submit();
+                                                    function updatePrivacy(postId, mode) {
+                                                        document.getElementById('privacyMode-' + postId).value = mode;
+                                                        document.getElementById('updatePrivacyForm-' + postId).submit();
                                                     }
         </script>
 
-        
+        <script>
+            function updatePrivacy(mode) {
+                document.getElementById('privacyMode').value = mode;
+                document.getElementById('updatePrivacyForm').submit();
+            }
+        </script>
 
         <script>
             document.addEventListener('DOMContentLoaded', function () {
@@ -527,7 +537,7 @@
                     }
                 });
             });
-   
+
         </script>
 
         <script>

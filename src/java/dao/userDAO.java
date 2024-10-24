@@ -77,6 +77,10 @@ public class userDAO {
     }
 
     public int register(User user) throws Exception {
+        // tạo giỏ hàng cho người dùng khi register
+        shoppingCartDAO sCartDAO = new shoppingCartDAO();
+        sCartDAO.addShoppingCart(user.getUser_id());
+        
         int generatedUserId = 0;
         String sql = "INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -90,7 +94,7 @@ public class userDAO {
             ps.setBoolean(7, user.getStatus());
 
             ps.executeUpdate();
-
+            
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
                 generatedUserId = rs.getInt(1); // Get the generated user_id
@@ -98,7 +102,9 @@ public class userDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
         return generatedUserId;
+        
     }
 
     public User getUserByEmail(String email) {

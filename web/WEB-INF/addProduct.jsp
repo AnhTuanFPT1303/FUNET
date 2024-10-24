@@ -57,10 +57,12 @@
                         </button>
                     </form>
 
-                    <div class="nav-icons d-flex align-items-center">
-                        <a href="#" class="fa-solid fa-store fa-lg me-3"></a>
+                    <div class="nav-icons d-flex align-items-center justify-content-between">
+                        <a href="/FUNET/lmaterialLink" class="lm-icon fa-solid fa-book fa-lg me-3">
+                        </a>
+                        <a href="/FUNET/marketLink" class="market-icon fa-solid fa-store fa-lg me-3"></a>
                         <a href="/FUNET/friendRequestServlet" class="friend-icon me-3">
-                            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M.5 12c0 6.351 5.149 11.5 11.5 11.5S23.5 18.351 23.5 12 18.351.5 12 .5.5 5.649.5 12zm2 0c0-.682.072-1.348.209-1.99a2 2 0 0 1 0 3.98A9.539 9.539 0 0 1 2.5 12zm.84-3.912A9.502 9.502 0 0 1 12 2.5a9.502 9.502 0 0 1 8.66 5.588 4.001 4.001 0 0 0 0 7.824 9.514 9.514 0 0 1-1.755 2.613A5.002 5.002 0 0 0 14 14.5h-4a5.002 5.002 0 0 0-4.905 4.025 9.515 9.515 0 0 1-1.755-2.613 4.001 4.001 0 0 0 0-7.824zM12 5a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm-2 4a2 2 0 1 0 4 0 2 2 0 0 0-4 0zm11.291 1.01a9.538 9.538 0 0 1 0 3.98 2 2 0 0 1 0-3.98zM16.99 20.087A9.455 9.455 0 0 1 12 21.5c-1.83 0-3.54-.517-4.99-1.414a1.004 1.004 0 0 1-.01-.148V19.5a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v.438a1 1 0 0 1-.01.148z"></path></svg>
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" class="x19dipnz x1lliihq x1tzjh5l x1k90msu x2h7rmj x1qfuztq" style="--color:var(--secondary-icon)"><path d="M.5 12c0 6.351 5.149 11.5 11.5 11.5S23.5 18.351 23.5 12 18.351.5 12 .5.5 5.649.5 12zm2 0c0-.682.072-1.348.209-1.99a2 2 0 0 1 0 3.98A9.539 9.539 0 0 1 2.5 12zm.84-3.912A9.502 9.502 0 0 1 12 2.5a9.502 9.502 0 0 1 8.66 5.588 4.001 4.001 0 0 0 0 7.824 9.514 9.514 0 0 1-1.755 2.613A5.002 5.002 0 0 0 14 14.5h-4a5.002 5.002 0 0 0-4.905 4.025 9.515 9.515 0 0 1-1.755-2.613 4.001 4.001 0 0 0 0-7.824zM12 5a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm-2 4a2 2 0 1 0 4 0 2 2 0 0 0-4 0zm11.291 1.01a9.538 9.538 0 0 1 0 3.98 2 2 0 0 1 0-3.98zM16.99 20.087A9.455 9.455 0 0 1 12 21.5c-1.83 0-3.54-.517-4.99-1.414a1.004 1.004 0 0 1-.01-.148V19.5a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v.438a1 1 0 0 1-.01.148z"></path></svg>
                         </a>
                         <a href="/FUNET/chat" class="mess-icon me-3">
                             <i class="fas fa-comments"></i>
@@ -92,8 +94,8 @@
                     <div class="btn-group-vertical w-100 mb-3">
                         <a href="/FUNET/home" class="btn btn-outline-primary mb-2">Main Page</a>
                         <a href="/FUNET/notificationServlet" class="btn btn-outline-primary mb-2">Notifications</a>
-                        <a href="/FUNET/AddProductServlet" class="btn btn-outline-primary mb-2">Add product to market</a>
-                        <a href="/FUNET/SellingProductServlet" class="btn btn-outline-primary mb-2">Selling products</a>
+                        <a href="/FUNET/AddProductServlet" class="btn btn-outline-primary mb-2">Add Product</a>
+                        <a href="/FUNET/SellingProductServlet" class="btn btn-outline-primary mb-2">Your products on sale</a>
                     </div>
 
                     <div class="accordion" id="accordionCategories">
@@ -116,7 +118,7 @@
                 </nav>
 
                 <main class="main-class col-10">
-                    <h1 class="mb-4 text-center text-primary">Add Product to the Market</h1>
+                    <h1 class="mb-4 text-center text-primary">Add Product to our market</h1>
 
                     <form action="ProductUploadServlet" method="post" enctype="multipart/form-data">
                         <div class="form-group">
@@ -128,23 +130,22 @@
                             <textarea class="form-control" id="productDescription" name="productDescription" required></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="productTag">Product Tag:</label>
+                            <label for="productTag">product tag:</label>
                             <input type="text" class="form-control" id="productTag" name="productTag" required>
                         </div>
                         <div class="form-group">
                             <label for="price">Price:</label>
                             <input type="number" class="form-control" id="price" name="price" step="0.01" required>
-                        </div>
+                        </div> 
                         <div class="form-group">
-                            <label for="productImage">Product Image:</label>
+                            <label for="productImage">Path:</label>
                             <input type="file" class="form-control" id="productImage" name="productImage" accept="image/*" required>
                         </div>
-                        <button type="submit" class="btn btn-primary">Upload Product</button>
+                        <button type="submit" class="btn btn-primary">Upload</button>
                     </form>
 
                     <footer class="bg-light text-center text-lg-start mt-5">
                         <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.1);">
-                            © 2024 Your Website
                         </div>
                     </footer>
                 </main>

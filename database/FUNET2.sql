@@ -209,6 +209,13 @@ VALUES
 (3, 'Advanced Linguistics', 'In-depth study of linguistics and language practices.', 'assets/product/item.png', 'assets/leaningMaterial/LANG201.docx', 'LANG201', 4, 'Excellent for advanced learners.');
 SELECT * FROM learningmaterial
 SELECT * FROM department;
+CREATE TABLE saved_learning_materials (
+    user_id INT NOT NULL,
+    learning_material_id INT NOT NULL,
+    PRIMARY KEY (user_id, learning_material_id),
+    FOREIGN KEY (user_id) REFERENCES userAccount(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (learning_material_id) REFERENCES learningmaterial(learningmaterial_id) ON DELETE CASCADE
+);
 
 ALTER TABLE friendship DROP CONSTRAINT fk_sender;
 ALTER TABLE friendship DROP CONSTRAINT fk_receiver;

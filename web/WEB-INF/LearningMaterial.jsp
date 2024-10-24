@@ -147,14 +147,14 @@
             <div class="row all-post">
                 <nav class="col-2 py-3 sidebar sticky-sidebar position-sticky" style="top: 76px;background: white;box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
                     <h2 class="text-primary">Learning Material</h2>
-                    <form class="d-flex mb-3 search-learning-material-container" method="get" action="/FUNET/searchlearningmaterial">
+                    <form class="d-flex mb-3 search-learning-material-container" method="get" action="/FUNET/searchLearningMaterial">
                         <input class="search-form-controller me-2" name="search-name" type="search" placeholder="Find learning material" aria-label="Search">
                     </form>
                     <div class="accordion" id="accordionCategories">
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingOne">
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#departmentList" aria-expanded="true" aria-controls="departmentList">
-                                    Navigation
+                                    Department
                                 </button>
                             </h2>
                             <div id="departmentList" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionCategories">
@@ -169,7 +169,9 @@
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-primary mt-3" id="toggleFormBtn">Add Learning Material</button>
+                    <button class="btn btn-primary mt-3" id="toggleFormBtn" style="width:100%;">Add Learning Material</button>
+                    <button class="btn btn-secondary mt-3" id="showSavedMaterialsBtn" style="width:100%;">Saved Learning Materials</button>
+
                 </nav>
 
                 <main class="main-class col-10" style="margin-top: 1%; position: relative;">
@@ -189,6 +191,15 @@
                                                     <button type="submit" class="dropdown-item">Delete</button>
                                                 </form>
                                             </li>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="height:fit-content;width: fit-content;">
+                                                <li><a class="dropdown-item" href="#" onclick="showUpdateForm(${material.learningMaterialId}, '${material.learningMaterialName}', '${material.learningMaterialDescription}', '${material.learningMaterial_img}', '${material.learningMaterialContext}', '${material.subjectCode}', ${material.departmentId})">Update</a></li>
+                                                <li>
+                                                    <form action="deleteLearningMaterial" method="post" style="display:inline;">
+                                                        <input type="hidden" name="id" value="${material.learningMaterialId}">
+                                                        <button type="submit" class="dropdown-item">Delete</button>
+                                                    </form>
+                                                </li>
+                                            </ul>
                                         </ul>
                                     </div>
 
@@ -208,7 +219,7 @@
 
                 <div class="container mt-4" id="learningMaterialForm" style="position: relative; width: 75%; background: none;">
                     <h2>Create Learning Material</h2>
-                    <form action="createLearningMaterial" method="post">
+                    <form action="CreateLearningMaterial" method="post">
                         <div class="form-group">
                             <label for="name">Name:</label>
                             <input type="text" class="form-control" id="name" name="name" required>
@@ -237,6 +248,10 @@
                         <div class="form-group">
                             <label for="context">Context File Name:</label>
                             <input type="text" class="form-control" id="context" name="context" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="review">Review:</label>
+                            <input type="text" class="form-control" id="review" name="review" required>
                         </div>
                         <button type="submit" class="btn btn-primary" style="position: relative;right: 50%;left: 50%;">Create</button>
                     </form>
@@ -275,57 +290,62 @@
                             <label for="updateContext">Context File Name:</label>
                             <input type="text" class="form-control" id="updateContext" name="context" required>
                         </div>
+                        <div class="form-group">
+                            <label for="updateReview">Review:</label>
+                            <input type="text" class="form-control" id="updateReview" name="review" required>
+                        </div>
                         <button type="submit" class="btn btn-primary" style="position: relative;right: 50%;left: 50%;">Update</button>
                     </form>
                 </div>
                 <script src="assets/js/bootstrap.min.js"></script>
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
                 <script>
-                        document.addEventListener('DOMContentLoaded', function () {
-                            var departmentList = document.getElementById('departmentList'); 
-                            var toggleButton = document.querySelector('.accordion-button'); 
-                            var toggleFormBtn = document.getElementById('toggleFormBtn');
-                            var learningMaterialForm = document.getElementById('learningMaterialForm');
-                            var updateLearningMaterialForm = document.getElementById('updateLearningMaterialForm');
-                            var mainContent = document.querySelector('.main-class');
+                                                document.addEventListener('DOMContentLoaded', function () {
+                                                    var departmentList = document.getElementById('departmentList');
+                                                    var toggleButton = document.querySelector('.accordion-button');
+                                                    var toggleFormBtn = document.getElementById('toggleFormBtn');
+                                                    var learningMaterialForm = document.getElementById('learningMaterialForm');
+                                                    var updateLearningMaterialForm = document.getElementById('updateLearningMaterialForm');
+                                                    var mainContent = document.querySelector('.main-class');
 
-                           
 
-                            toggleFormBtn.addEventListener('click', function () {
-                                if (learningMaterialForm.style.display === 'none') {
-                                    learningMaterialForm.style.display = 'block';
-                                    updateLearningMaterialForm.style.display = 'none';
-                                    mainContent.style.display = 'none';
-                                } else {
-                                    learningMaterialForm.style.display = 'none';
-                                    mainContent.style.display = 'block';
-                                }
-                            });
 
-                            document.querySelector('form').addEventListener('submit', function () {
-                                learningMaterialForm.style.display = 'none';
-                                updateLearningMaterialForm.style.display = 'none';
-                                mainContent.style.display = 'block';
-                            });
-                        });
+                                                    toggleFormBtn.addEventListener('click', function () {
+                                                        if (learningMaterialForm.style.display === 'none') {
+                                                            learningMaterialForm.style.display = 'block';
+                                                            updateLearningMaterialForm.style.display = 'none';
+                                                            mainContent.style.display = 'none';
+                                                        } else {
+                                                            learningMaterialForm.style.display = 'none';
+                                                            mainContent.style.display = 'block';
+                                                        }
+                                                    });
 
-                        function showUpdateForm(id, name, description, img, context, subjectCode, departmentId) {
-                            var updateForm = document.getElementById('updateLearningMaterialForm');
-                            var mainContent = document.querySelector('.main-class');
-                            var learningMaterialForm = document.getElementById('learningMaterialForm');
+                                                    document.querySelector('form').addEventListener('submit', function () {
+                                                        learningMaterialForm.style.display = 'none';
+                                                        updateLearningMaterialForm.style.display = 'none';
+                                                        mainContent.style.display = 'block';
+                                                    });
+                                                });
 
-                            document.getElementById('updateLearningMaterialId').value = id;
-                            document.getElementById('updateName').value = name;
-                            document.getElementById('updateDescription').value = description;
-                            document.getElementById('updateImg').value = img;
-                            document.getElementById('updateContext').value = context;
-                            document.getElementById('updateSubjectCode').value = subjectCode;
-                            document.getElementById('updateDepartmentId').value = departmentId;
+                                                function showUpdateForm(id, name, description, img, context, subjectCode, departmentId) {
+                                                    var updateForm = document.getElementById('updateLearningMaterialForm');
+                                                    var mainContent = document.querySelector('.main-class');
+                                                    var learningMaterialForm = document.getElementById('learningMaterialForm');
 
-                            updateForm.style.display = 'block';
-                            learningMaterialForm.style.display = 'none';
-                            mainContent.style.display = 'none';
-                        }
+                                                    document.getElementById('updateLearningMaterialId').value = id;
+                                                    document.getElementById('updateName').value = name;
+                                                    document.getElementById('updateDescription').value = description;
+                                                    document.getElementById('updateImg').value = img;
+                                                    document.getElementById('updateContext').value = context;
+                                                    document.getElementById('updateSubjectCode').value = subjectCode;
+                                                    document.getElementById('updateDepartmentId').value = departmentId;
+                                                    document.getElementById('updateReview').value = review;
+
+                                                    updateForm.style.display = 'block';
+                                                    learningMaterialForm.style.display = 'none';
+                                                    mainContent.style.display = 'none';
+                                                }
                 </script>
                 </body>
                 </html>

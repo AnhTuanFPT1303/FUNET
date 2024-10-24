@@ -4,23 +4,20 @@
  */
 
 package controller;
-
 import dao.learningMaterialDao;
+import model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import model.LearningMaterial;
-import model.User;
 
 /**
  *
  * @author gabri
  */
-public class deleteLearningMaterial extends HttpServlet {
+public class saveLearningMaterial extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -37,10 +34,10 @@ public class deleteLearningMaterial extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet deleteLearningMaterial</title>");  
+            out.println("<title>Servlet saveLearningMaterial</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet deleteLearningMaterial at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet saveLearningMaterial at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -67,45 +64,22 @@ public class deleteLearningMaterial extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-   @Override
-protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    HttpSession session = request.getSession(false);
-    if (session != null && session.getAttribute("user") != null) {
-        String idStr = request.getParameter("id");
-        User user = (User) session.getAttribute("user");
+    private final learningMaterialDao learningMaterialDao = new learningMaterialDao();
 
-        if (idStr == null) {
-            response.sendRedirect("lmaterialLink");
-            return;
-        }
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int learningMaterialId = Integer.parseInt(request.getParameter("id"));
+        User currentUser = (User) request.getSession().getAttribute("user");
 
-        int id;
         try {
-            id = Integer.parseInt(idStr);
-        } catch (NumberFormatException e) {
-            response.sendRedirect("lmaterialLink");
-            return;
-        }
-
-        learningMaterialDao learningMaterialDao = new learningMaterialDao();
-        try {
-            LearningMaterial lm = learningMaterialDao.getLearningMaterialById(id);
-            if (lm != null && lm.getUserId() == user.getUser_id()) {
-                learningMaterialDao.deleteLearningMaterial(id);
-                request.setAttribute("successMessage", "Learning Material deleted successfully");
-            } else {
-                request.setAttribute("errorMessage", "You do not have permission to delete this learning material");
-            }
-            response.sendRedirect("lmaterialLink");
+            learningMaterialDao.saveLearningMaterial(currentUser.getUser_id(), learningMaterialId);
+            response.sendRedirect("learningMaterial");
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("errorMessage", "Error deleting learning material");
-            response.sendRedirect("lmaterialLink");
+            response.sendRedirect("error.jsp");
         }
-    } else {
-        response.sendRedirect("WEB-INF/login.jsp");
     }
-}
+
     /** 
      * Returns a short description of the servlet.
      * @return a String containing servlet description

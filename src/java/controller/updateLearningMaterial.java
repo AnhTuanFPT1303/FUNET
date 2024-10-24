@@ -69,51 +69,57 @@ public class updateLearningMaterial extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
    @Override
-   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
-        if (session != null && session.getAttribute("user") != null) {
-            User user = (User) session.getAttribute("user");
-            String idStr = request.getParameter("id");
-            String name = request.getParameter("name");
-            String description = request.getParameter("description");
-            String subjectCode = request.getParameter("subjectCode");
-            String departmentIdStr = request.getParameter("departmentId");
-            String imgFileName = request.getParameter("img");
-            String contextFileName = request.getParameter("context");
+protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    HttpSession session = request.getSession(false);
+    if (session != null && session.getAttribute("user") != null) {
+        User user = (User) session.getAttribute("user");
+        String idStr = request.getParameter("id");
+        String name = request.getParameter("name");
+        String description = request.getParameter("description");
+        String subjectCode = request.getParameter("subjectCode");
+        String departmentIdStr = request.getParameter("departmentId");
+        String imgFileName = request.getParameter("img");
+        String contextFileName = request.getParameter("context");
+        String review = request.getParameter("review");
 
-            if (idStr == null || name == null || description == null || subjectCode == null || departmentIdStr == null || imgFileName == null || contextFileName == null) {
-                response.sendRedirect("WEB-INF/LearningMaterial.jsp");
-                return;
-            }
+        if (idStr == null || name == null || description == null || subjectCode == null || departmentIdStr == null || imgFileName == null || contextFileName == null || review == null) {
+            response.sendRedirect("lmaterialLink");
+            return;
+        }
 
-            int id;
-            int departmentId;
-            try {
-                id = Integer.parseInt(idStr);
-                departmentId = Integer.parseInt(departmentIdStr);
-            } catch (NumberFormatException e) {
-                response.sendRedirect("WEB-INF/LearningMaterial.jsp");
-                return;
-            }
+        int id;
+        int departmentId;
+        try {
+            id = Integer.parseInt(idStr);
+            departmentId = Integer.parseInt(departmentIdStr);
+        } catch (NumberFormatException e) {
+            response.sendRedirect("lmaterialLink");
+            return;
+        }
 
-            String imgPath = "assets/learningMaterial/" + imgFileName;
-            String contextPath = "assets/product/" + contextFileName;
+        learningMaterialDao learningMaterialDao = new learningMaterialDao();
+        try {
+            LearningMaterial lm = learningMaterialDao.getLearningMaterialById(id);
+            if (lm != null && lm.getUserId() == user.getUser_id()) {
+                String imgPath = "assets/learningMaterial/" + imgFileName;
+                String contextPath = "assets/product/" + contextFileName;
 
-            LearningMaterial l = new LearningMaterial(id, user.getUser_id(), name, description, imgPath, contextPath, subjectCode, new Date(), "", departmentId);
-            learningMaterialDao learningMaterialDao = new learningMaterialDao();
-            try {
+                LearningMaterial l = new LearningMaterial(id, user.getUser_id(), name, description, imgPath, contextPath, subjectCode, new Date(), review, departmentId);
                 learningMaterialDao.updateLearningMaterial(l);
                 request.setAttribute("successMessage", "Learning Material updated successfully");
-                response.sendRedirect("WEB-INF/LearningMaterial.jsp");
-            } catch (Exception e) {
-                e.printStackTrace();
-                request.setAttribute("errorMessage", "Error updating learning material");
-                request.getRequestDispatcher("WEB-INF/LearningMaterial.jsp").forward(request, response);
+            } else {
+                request.setAttribute("errorMessage", "You do not have permission to update this learning material");
             }
-        } else {
-            response.sendRedirect("WEB-INF/login.jsp");
+            response.sendRedirect("lmaterialLink");
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "Error updating learning material");
+            response.sendRedirect("lmaterialLink");
         }
+    } else {
+        response.sendRedirect("WEB-INF/login.jsp");
     }
+}
     
 
     /** 

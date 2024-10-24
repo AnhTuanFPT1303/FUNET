@@ -1,9 +1,11 @@
 package dao;
 
+import Security.SHA512WithSalt;
 import util.sqlConnect;
 import java.sql.*;
 import model.User;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,20 +30,60 @@ public class userDAO {
         boolean result = false;
         try {
             Connection conn = sqlConnect.getInstance().getConnection();
-            PreparedStatement st = conn.prepareStatement("Select * from userAccount where email=? AND password=?");
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM userAccount WHERE email=?");
             st.setString(1, email);
-            st.setString(2, password);
             ResultSet rs = st.executeQuery();
+
             if (rs.next()) {
-                result = true;
+                // Lấy chuỗi kết hợp (lưu cả salt và sha512 hash vào password)
+                String combinedHash = rs.getString("password");
+
+                // Tách salt và hashedPassword
+                String[] parts = combinedHash.split(":"); // Sử dụng dấu phân cách
+                byte[] salt = Base64.getDecoder().decode(parts[0]); // Giải mã salt
+                String storedHash = parts[1]; // hashedPassword
+
+                // Băm mật khẩu đã nhập với salt
+                String hashedInputPassword = SHA512WithSalt.hashPassWordWithSHA512(password, salt);
+
+                // So sánh mật khẩu đã băm
+                if (hashedInputPassword.equals(storedHash)) {
+                    result = true;
+                }
             }
         } catch (Exception e) {
-            System.out.println("Connect Failed");
+            System.out.println("Connect Failed: " + e.getMessage());
         }
         return result;
     }
+    
+    public void hashPw(String firstName, String lastName, String email, String password, String profilePic, String role) throws Exception {
+        userDAO uDAO = new userDAO(); // Giả định UserDAO có phương thức register
+
+        // Bước 1: Mã hóa mật khẩu với salt
+        byte[] salt = SHA512WithSalt.createSalt(); // Tạo salt
+        String hashedPassword = SHA512WithSalt.hashPassWordWithSHA512(password, salt); // Băm mật khẩu với SHA-512
+        String combinedHash = Base64.getEncoder().encodeToString(salt) + ":" + hashedPassword; // Kết hợp salt và mật khẩu đã băm
+
+        // Bước 2: Tạo đối tượng User mới
+        User newUser = new User(firstName, lastName, combinedHash, email, profilePic, role, false); // false ở đây là is_banned
+
+        // Bước 3: Gọi phương thức register để thêm người dùng vào cơ sở dữ liệu
+        int userId = uDAO.register(newUser);  // Phương thức register trả về userId nếu thành công
+
+        // Bước 4: Kiểm tra kết quả đăng ký
+        if (userId > 0) {
+            System.out.println("Đăng ký thành công cho email: " + email + " với userId: " + userId);
+        } else {
+            System.out.println("Đăng ký thất bại cho email: " + email);
+        }
+    }
 
     public int register(User user) throws Exception {
+        // tạo giỏ hàng cho người dùng khi register
+        shoppingCartDAO sCartDAO = new shoppingCartDAO();
+        sCartDAO.addShoppingCart(user.getUser_id());
+        
         int generatedUserId = 0;
         String sql = "INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -55,7 +97,7 @@ public class userDAO {
             ps.setBoolean(7, user.getStatus());
 
             ps.executeUpdate();
-
+            
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
                 generatedUserId = rs.getInt(1); // Get the generated user_id
@@ -63,7 +105,9 @@ public class userDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
         return generatedUserId;
+        
     }
 
     public User getUserByEmail(String email) {

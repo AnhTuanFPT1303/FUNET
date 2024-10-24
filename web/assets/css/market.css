@@ -1,13 +1,3 @@
-
-/*
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
-*/
-
-/* 
-    Created on : Jun 19, 2024, 1:35:13 PM
-    Author     : bim26
-*/
 body {
     background-image: linear-gradient(to bottom, #f8f9fa, #fff);
 }
@@ -19,6 +9,9 @@ body {
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.categories{
+    margin-bottom: 5px
 }
 .post {
     background-color: #fff;
@@ -65,9 +58,9 @@ header{
     border: 0;
 }
 .sidebar {
-    border-right: 1px solid #ddd;
-    border-left: 1px solid #ddd;
-    height: 100%;
+    /* border-right: 1px solid #ddd; */
+    /* border-left: 1px solid #ddd; */
+    /* height: 500px; */
 }
 
 .profile-section {
@@ -125,8 +118,8 @@ header{
     padding-left: 0;
 }
 .sticky-sidebar {
-    position: sticky;
-    top: 70px; /* Adjust this value based on your navbar height */
+    /* position: sticky; */
+    /* top: 70px; */ /* Adjust this value based on your navbar height */
     height: calc(100vh - 70px); /* Subtract the top offset from the viewport height */
     overflow-y: auto; /* Allow scrolling within the sidebar if content is too long */
 }
@@ -310,6 +303,15 @@ header{
     left: 57%;
     transform: translateX(-50%);
 }
+.shopping-cart-icon{
+    color: orange;
+    background-color: white;
+    width: 100px;
+    height: 36px;
+    border-radius: 5px;
+    border-color: #0b5ed7;
+}
+
 .lm-icon,
 .market-icon,
 .friend-icon,
@@ -332,6 +334,12 @@ header{
     color: #337ab7; /* blue color for liked posts */
 }
 
+.productList{
+    
+}
+.product-card img{
+    height:340px;
+}
 
 @media screen and (max-width: 768px) {
     .ava-name{

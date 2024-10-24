@@ -27,6 +27,10 @@ public class Message {
     public Message() {
     }
 
+    public Message(int sender, int receiver, String messageText) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     public int getSender() {
         return sender;
     }

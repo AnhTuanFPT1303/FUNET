@@ -24,15 +24,6 @@
         <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
         <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
         <style>
-            /*
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
-            */
-
-            /* 
-                Created on : Jun 19, 2024, 1:35:13 PM
-                Author     : bim26
-            */
             body {
                 font-family: Arial, sans-serif;
                 margin: 0;
@@ -380,6 +371,25 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                 color: #009578;
             }
 
+            .three-dot-btn {
+                border: none;
+                background-color: white;
+                outline: none;
+                cursor: pointer;
+            }
+            .edit-comment-btn{
+                border: none;
+                background-color: white;
+                outline: none;
+                cursor: pointer;
+            }
+            .delete-comment-btn{
+                border: none;
+                background-color: white;
+                outline: none;
+                cursor: pointer;
+            }
+
 
             @media screen and (max-width: 1250px) {
                 .center-buttons{
@@ -635,7 +645,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                 <div class="RightItem">
                     <div><i class='fas fa-user-friends' > </i>    Friends</div>
                     <div> <box-icon name='group' type='solid' ></box-icon>    Groups  </div>
-                    <div> <box-icon type='solid' name='bookmark'></box-icon>    Saved  </div>
+                    <a href="savePostServlet" style="text-decoration: none">
+                    <div>
+                        
+                            <box-icon type='solid' name='bookmark'></box-icon> Saved
+                    </div>
+                    </a>
                     <div><box-icon name='videos' type='solid'></box-icon> Video </div>
                     <div><box-icon name='store-alt' type='solid'></box-icon> Market</div>
                     <div><box-icon type='solid' name='book'></box-icon> Learning Materials</div>
@@ -703,10 +718,31 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                 <div>
                     <c:forEach var="post" items="${posts}">
                         <div class="post mb-4" style="overflow-wrap: break-word" data-post-id="${post.post_id}" data-liked="${post.likedByCurrentUser}">
-                            <div class="post-header">
-                                <img src="assets/profile_avt/${post.profile_pic}" class="img-fluid rounded-circle avatar me-2" style="width: 40px; height: 40px;object-fit: cover; ">
-                                <small>${post.first_name} ${post.last_name} -- <fmt:formatDate value="${post.post_time}" pattern="yyyy-MM-dd HH:mm:ss" /></small>
+                            <div class="post-header d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <img src="assets/profile_avt/${post.profile_pic}" class="img-fluid rounded-circle avatar me-2" style="width: 40px; height: 40px;object-fit: cover;">
+                                    <small>${post.first_name} ${post.last_name} -- <fmt:formatDate value="${post.post_time}" pattern="yyyy-MM-dd HH:mm:ss" /></small>
+                                </div>
+                                <span class="thre-dto-btn fas fa-ellipsis-h"></span>
+                                <div class="dropdown-save" style="display: none;">
+                                    <form action="/FUNET/savePostServlet" method="post">
+                                        <input type="hidden" name="postId" value="${post.post_id}">
+                                        <c:choose>
+                                            <c:when test="${post.savedByCurrentUser}">
+                                                <button type="submit" class="btn-warning">
+                                                    <i class="fas fa-bookmark me-2"></i>Unsave Post
+                                                </button>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <button type="submit" class="btn-primary">
+                                                    <i class="far fa-bookmark me-2"></i>Save Post
+                                                </button>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </form>
+                                </div>
                             </div>
+
                             <c:if test="${post.isShared}">
                                 <div class="original-post-info d-flex align-items-center">
                                     <img src="assets/profile_avt/${post.originalPosterAvatar}" class="img-fluid rounded-circle avatar me-2" style="width: 30px; height: 30px;object-fit: cover;">
@@ -740,16 +776,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                                             thumb_up
                                         </span>
                                     </button>
-                                    <p class="like-count"><span>${post.like_count}</span></p>
-                                </div>
-                                <div class="post-share">
-                                        <form action="sharePostServlet" method="post" style="display: inline;">
-                                            <input type="hidden" name="postId" value="${post.post_id}">
-                                            <input type="hidden" name="sourceUrl" value="home">
-                                            <button type="submit" class="btn btn-link">Share</button>
-                                        </form>
-                                        <span class="post-share-count">${post.shareCount}</span>
-                                    </div>
                                     <span class="like-count"><span class="post-rating-count">${post.like_count}</span></span>
                                 </div>
                                 <%-- <c:if test="${!post.isShared}"> --%>
@@ -763,7 +789,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                                 </div>
                                 <%--   </c:if> --%>
                             </div>
-
                             <div class="post-comments">
                                 <c:forEach var="comment" items="${post.comments}">
                                     <div class="comment mb-2" style="margin-left: 20px;">
@@ -771,9 +796,27 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                                             <img src="assets/profile_avt/${comment.profile_pic}" class="img-fluid rounded-circle avatar me-2" style="width: 30px; height: 30px; object-fit: cover;">
                                             <small><strong>${comment.first_name} ${comment.last_name}</strong></small>
                                         </div>
-                                        <div class="comment-body">
-                                            <p style="margin-bottom: 0;">${comment.comment_text}</p>
+                                        <div class="comment-body" style="display: flex; justify-content: space-between; align-items: center;">
+                                            <p style="margin-bottom: 0;" class="comment-text">${comment.comment_text}</p>
+                                            <div class="comment-options">
+                                                <c:if test="${sessionScope.user['user_id'] == comment.user_id}">
+                                                    <button class="three-dot-btn" data-comment-id="${comment.comment_id}">...</button>
+                                                </c:if>
+                                                <div class="comment-actions" style="display: none;">
+                                                    <button class="edit-comment-btn" data-comment-id="${comment.comment_id}">Edit</button>
+                                                    <form action="/FUNET/deleteCommentServlet" method="post" class="delete-comment-form" style="display: inline;">
+                                                        <input type="hidden" name="commentId" value="${comment.comment_id}">
+                                                        <button type="submit" class="delete-comment-btn">Delete</button>
+                                                    </form>
+                                                </div>
+                                            </div>
                                         </div>
+                                        <form action="/FUNET/updateCommentServlet" method="post" class="edit-comment-form" style="display: none;">
+                                            <input type="hidden" name="commentId" value="${comment.comment_id}">
+                                            <textarea name="newCommentText" class="form-control">${comment.comment_text}</textarea>
+                                            <button type="submit" class="btn btn-primary">Save</button>
+                                            <button type="button" class="btn btn-secondary cancel-edit-comment">Cancel</button>
+                                        </form>
                                     </div>
                                 </c:forEach>
                             </div>
@@ -823,21 +866,79 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="assets/js/bootstrap.bundle.min.js"></script>
-        <script src="assets/js/likeButton.js" defer></script>
-
+        <script src="assets/js/reaction.js" defer></script>
 
         <script>
-                        document.addEventListener('DOMContentLoaded', function () {
-                            const searchInput = document.getElementById('search-input');
-                            const searchForm = document.getElementById('searchForm');
+                                        document.addEventListener('DOMContentLoaded', function () {
+                                            const style = document.createElement('style');
+                                            style.textContent = `
+        .post {
+            position: relative;
+        }
+        
+        .thre-dto-btn {
+            cursor: pointer;
+            padding: 5px 10px;
+            float: right;
+        }
+        
+        .post .dropdown-save {
+            position: absolute;
+            right: 10px;
+            top: 40px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 8px;
+            min-width: 150px;
+            z-index: 1000;
+        }
+        
+        .post .dropdown-save button {
+            width: 100%;
+            padding: 8px 12px;
+            border: none;
+            background: none;
+            text-align: left;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        
+        .post .dropdown-save button:hover {
+            background-color: #f0f2f5;
+        }
+        
+        .post .dropdown-save button.btn-primary {
+            color: #1877f2;
+        }
+        
+        .post .dropdown-save button.btn-warning {
+            color: #ed6c02;
+        }
+    `;
+                                            document.head.appendChild(style);
 
-                            searchInput.addEventListener('keypress', function (event) {
-                                if (event.key === 'Enter') {
-                                    event.preventDefault();
-                                    searchForm.submit();
-                                }
-                            });
-                        });
+                                            const posts = document.querySelectorAll('.post');
+
+                                            posts.forEach(post => {
+                                                const threeDotBtn = post.querySelector('.thre-dto-btn');
+                                                const dropdownMenu = post.querySelector('.dropdown-save');
+
+                                                if (threeDotBtn && dropdownMenu) {
+                                                    threeDotBtn.addEventListener('click', (e) => {
+                                                        e.stopPropagation();
+
+                                                        document.querySelectorAll('.post .dropdown-save').forEach(menu => {
+                                                            if (menu !== dropdownMenu) {
+                                                                menu.style.display = 'none';
+                                                            }
+                                                        });
+
+                                                        dropdownMenu.style.display = dropdownMenu.style.display === 'none' ? 'block' : 'none';
+                                                    });
+                                                }
+                                            });
 
                         document.getElementById('messenger-btn').addEventListener('click', function () {
                             toggleMenu('messenger-menu', 'messenger-btn');
@@ -964,7 +1065,196 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                                 }
                             });
                         });
+                                            document.addEventListener('click', (e) => {
+                                                if (!e.target.closest('.thre-dto-btn')) {
+                                                    document.querySelectorAll('.post .dropdown-save').forEach(menu => {
+                                                        menu.style.display = 'none';
+                                                    });
+                                                }
+                                            });
+                                        });
         </script>
+
+        <!-- delete update comment + button"..." -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                document.querySelectorAll('.edit-comment-btn').forEach(button => {
+                    button.addEventListener('click', function () {
+                        const commentId = this.getAttribute('data-comment-id');
+                        const commentText = this.closest('.comment').querySelector('.comment-text');
+                        const editForm = this.closest('.comment').querySelector('.edit-comment-form');
+                        commentText.style.display = 'none';
+                        editForm.style.display = 'block';
+                    });
+                });
+
+                document.querySelectorAll('.cancel-edit-comment').forEach(button => {
+                    button.addEventListener('click', function () {
+                        const commentText = this.closest('.comment').querySelector('.comment-text');
+                        const editForm = this.closest('.comment').querySelector('.edit-comment-form');
+                        commentText.style.display = 'block';
+                        editForm.style.display = 'none';
+                    });
+                });
+            });
+
+            document.addEventListener('DOMContentLoaded', function () {
+                document.querySelectorAll('.three-dot-btn').forEach(button => {
+                    button.addEventListener('click', function () {
+                        const commentId = this.getAttribute('data-comment-id');
+                        const actions = this.closest('.comment-options').querySelector('.comment-actions');
+                        actions.style.display = actions.style.display === 'none' ? 'block' : 'none';
+                    });
+                });
+
+                document.querySelectorAll('.edit-comment-btn').forEach(button => {
+                    button.addEventListener('click', function () {
+                        const commentId = this.getAttribute('data-comment-id');
+                        const commentText = this.closest('.comment').querySelector('.comment-text');
+                        const editForm = this.closest('.comment').querySelector('.edit-comment-form');
+                        commentText.style.display = 'none';
+                        editForm.style.display = 'block';
+                    });
+                });
+
+                document.querySelectorAll('.cancel-edit-comment').forEach(button => {
+                    button.addEventListener('click', function () {
+                        const commentText = this.closest('.comment').querySelector('.comment-text');
+                        const editForm = this.closest('.comment').querySelector('.edit-comment-form');
+                        commentText.style.display = 'block';
+                        editForm.style.display = 'none';
+                    });
+                });
+            });
+        </script>
+        <!-- --------- -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const searchInput = document.getElementById('search-input');
+                const searchForm = document.getElementById('searchForm');
+
+                searchInput.addEventListener('keypress', function (event) {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        searchForm.submit();
+                    }
+                });
+            });
+
+            document.getElementById('messenger-btn').addEventListener('click', function () {
+                toggleMenu('messenger-menu', 'messenger-btn');
+            });
+
+            document.getElementById('notification-btn').addEventListener('click', function () {
+                toggleMenu('notification-menu', 'notification-btn');
+            });
+
+            document.getElementById('user-btn').addEventListener('click', function () {
+                toggleMenu('user-menu', 'user-btn');
+            });
+
+            document.addEventListener('click', function (event) {
+                const messengerMenu = document.getElementById('messenger-menu');
+                const notificationMenu = document.getElementById('notification-menu');
+                const userMenu = document.getElementById('user-menu');
+                const messengerBtn = document.getElementById('messenger-btn');
+                const notificationBtn = document.getElementById('notification-btn');
+                const userBtn = document.getElementById('user-btn');
+
+                if (!messengerMenu.contains(event.target) && !messengerBtn.contains(event.target)) {
+                    messengerMenu.style.display = 'none';
+                    messengerBtn.classList.remove('active-button');
+                }
+                if (!notificationMenu.contains(event.target) && !notificationBtn.contains(event.target)) {
+                    notificationMenu.style.display = 'none';
+                    notificationBtn.classList.remove('active-button');
+                }
+                if (!userMenu.contains(event.target) && !userBtn.contains(event.target)) {
+                    userMenu.style.display = 'none';
+                    userBtn.classList.remove('active-button');
+                }
+            });
+
+            function toggleMenu(menuId, btnId) {
+                const menu = document.getElementById(menuId);
+                const button = document.getElementById(btnId);
+                const otherMenuIds = ['messenger-menu', 'notification-menu', 'user-menu'].filter(id => id !== menuId);
+                const otherButtons = ['messenger-btn', 'notification-btn', 'user-btn'].filter(id => id !== btnId);
+
+                if (menu.style.display === 'none' || menu.style.display === '') {
+                    menu.style.display = 'block';
+                    button.classList.add('active-button');
+                    otherMenuIds.forEach(id => document.getElementById(id).style.display = 'none');
+                    otherButtons.forEach(id => document.getElementById(id).classList.remove('active-button'));
+                } else {
+                    menu.style.display = 'none';
+                    button.classList.remove('active-button');
+                }
+            }
+            document.addEventListener('DOMContentLoaded', function () {
+                const overlay = document.getElementById('overlay');
+                const formContainer = document.getElementById('formContainer');
+                const postingInput = document.getElementById('posting');
+                const photoVideoBtn = document.getElementById('photoVideoBtn');
+                const fileBtn = document.getElementById('fileBtn');
+                const closeButton = document.querySelector('.close-button');
+
+                function showForm() {
+                    overlay.style.display = 'flex';
+                    formContainer.style.display = 'block';
+                }
+
+                function hideForm() {
+                    overlay.style.display = 'none';
+                    formContainer.style.display = 'none';
+                }
+
+                postingInput.addEventListener('click', showForm);
+                photoVideoBtn.addEventListener('click', showForm);
+                fileBtn.addEventListener('click', showForm);
+
+                closeButton.addEventListener('click', hideForm);
+                overlay.addEventListener('click', function (event) {
+                    if (event.target === overlay) {
+                        hideForm();
+                    }
+                });
+                postForm.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    hideForm();
+
+                });
+            });
+
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const textarea = document.getElementById('body');
+                const formContainer = document.getElementById('formContainer');
+                const baseFormHeight = 415;
+                const initialTextareaHeight = 125;
+                textarea.addEventListener('input', function () {
+                    adjustFontSizeAndFormHeight();
+                });
+                function adjustFontSizeAndFormHeight() {
+                    const maxLines = 3;
+                    const initialFontSize = 25;
+                    const reducedFontSize = 15;
+                    textarea.style.fontSize = initialFontSize + 'px';
+                    textarea.style.height = 'auto';
+
+                    const lineHeight = parseInt(window.getComputedStyle(textarea).lineHeight);
+                    const lines = Math.floor(textarea.scrollHeight / lineHeight);
+                    if (lines > maxLines) {
+                        textarea.style.fontSize = reducedFontSize + 'px';
+                    }
+                    textarea.style.height = textarea.scrollHeight + 'px';
+                    const textareaExtraHeight = textarea.scrollHeight - initialTextareaHeight;
+                    formContainer.style.height = (baseFormHeight + textareaExtraHeight) + 'px';
+                }
+            });
+        </script>
+
+
 
 </body>
 </html>

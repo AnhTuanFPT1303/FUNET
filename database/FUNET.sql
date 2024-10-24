@@ -60,9 +60,9 @@ CREATE TABLE post (
   is_shared BIT NOT NULL DEFAULT 0,
   original_post_id INT NULL,
   share_count INT NOT NULL DEFAULT 0,
+  privacy_mode NVARCHAR(10) NOT NULL DEFAULT 'friend',
   FOREIGN KEY (user_id) REFERENCES userAccount (user_id)
 );
-
 GO
 CREATE TABLE post_share (
     share_id INT IDENTITY(1,1) PRIMARY KEY,
@@ -82,6 +82,7 @@ CREATE TABLE comment (
     comment_text NVARCHAR(MAX) NOT NULL,
 	comment_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (post_id) REFERENCES post (post_id),
+	comment_image NVARCHAR(MAX),
     FOREIGN KEY (user_id) REFERENCES userAccount (user_id)
 );
 
@@ -215,13 +216,6 @@ BEGIN
 END;
 
 SELECT sender, message_text, receiver FROM message WHERE (sender = 1 AND receiver = 0) OR (sender = 0 AND receiver = 1) ORDER BY sent_date ASC;
-
-
-GO
-ALTER TABLE post
-ADD is_shared BIT NOT NULL DEFAULT 0,
-    original_post_id INT NULL,
-    share_count INT NOT NULL DEFAULT 0;
 
 GO
 CREATE TABLE post_share (

@@ -74,10 +74,11 @@
                 <img src="assets/profile_avt/${user.profile_pic}">
                 <div class="cover-image-div">
                     <div class="cover-image-edite-btn">
-                        <a href="setting"> <button>
-                            <i class="fas fa-camera"></i>
-                            Edit Profile
-                        </button>
+                        <a href="setting" style="text-decoration: none">
+                            <button>
+                                <i class="fas fa-camera"></i>
+                                Edit Cover Photo
+                            </button>
                         </a>
                     </div>
                 </div>
@@ -87,7 +88,7 @@
             <div class="profile-section-in">
                 <div class="profile-image-site">
                     <div class="profile-image-div">
-                        <a href="#">
+                        <a href="setting" style="text-decoration: none">
                             <img src="assets/profile_avt/${user.profile_pic}">
                         </a>
                         <span class="fas fa-camera"></span>
@@ -107,10 +108,12 @@
                             <%--
                 <div class="profile-button-site">
                     <div class="btn-site-pro">
-                        <span class="edit-profile-btn">
-                            <i class="fas fa-pen"></i>
-                            Edit Profile
-                        </span>
+                        <a href="setting" style="text-decoration: none">
+                            <span class="edit-profile-btn">
+                                <i class="fas fa-pen"></i>
+                                Edit Profile
+                            </span>
+                        </a>
                     </div>
                 </div>
                             --%>
@@ -147,8 +150,9 @@
                         <div class="user-introduction">
                             <h2>Introduction</h2>
                             <p id="user-intro-text">${user.user_introduce}</p>
-                            <button id="edit-intro-btn" class="btn btn-primary">Edit Introduction</button>
-
+                            <c:if test="${sessionScope.user['user_id'] == user.user_id}">
+                                <button id="edit-intro-btn" class="btn btn-primary">Edit Introduction</button>
+                            </c:if>
                             <form id="edit-intro-form" action="userIntroduceServlet" method="post" style="display: none;">
                                 <input type="text" name="userIntro" class="form-control" placeholder="Introduce yourself..." value="${user.user_introduce}">
                                 <button type="submit" class="btn btn-success">Save</button>
@@ -237,7 +241,6 @@
                         <span>Friends <br>
                             <p>
                                 <span>
-                                    <!-- friend count here -->
                                     ${friendCount}
                                 </span>
                                 Friends
@@ -249,7 +252,7 @@
                             <c:forEach var="friend" items="${friends}">
                                 <div class="images-div">
                                     <img src="assets/profile_avt/${friend.profile_pic}" alt="${friend.first_name} ${friend.last_name}">
-                                    <p><a href="#" class="user-link friend" data-user-id="${friend.user_id}">${friend.first_name} ${friend.last_name}</a></p>
+                                    <p><a href="profile" class="user-link friend" data-user-id="${friend.user_id}">${friend.first_name} ${friend.last_name}</a></p>
                                 </div>
                             </c:forEach>
                         </div>
@@ -277,9 +280,9 @@
                                 <div class="post-upl">
 
 
-                                    <label for="photo-upload">
+                                    <p for="photo-upload">
                                         <i class="fas fa-cloud-upload-alt"></i> Photo/Video
-                                    </label>
+                                    </p>
                                     <input id="photo-upload" type="file" name="image" accept=".jpeg, .png, .jpg" style="display: none;" onchange="updateFileName(this)">
 
 
@@ -454,20 +457,19 @@
                                         <span class="post-icon-text_i">${post.likedByCurrentUser ? 'Liked' : 'Like'}</span>
                                     </p>
                                 </div>
-                                <div class="lcs-btn">
-                                    <p><i class="far fa-comment-alt"></i> Comment</p>
+                                <div class="lcs-btn d-flex align-items-center" style="font-weight: bold">
+                                    <i class="far fa-comment-alt"></i>
+                                    <span class="ms-1">Comment</span>
                                 </div>
-                                <div class="lcs-btn">
-                                    <form action="sharePostServlet" method="post" style="display: flex; margin-left: 30%; margin-top: 7%">
-                                        
+                                <div class="lcs-btn d-flex align-items-center">
+                                    <form action="sharePostServlet" method="post" style="display: inline;">
                                         <input type="hidden" name="postId" value="${post.post_id}">
                                         <input type="hidden" name="sourceUrl" value="profile">
-                                        <span>
-                                        <button type="submit" class="btn btn-link fas fa-share"></button>
-                                        </span>
-                                        <span> Share </span>
+                                        <button type="submit" class="btn btn-link p-0 d-flex align-items-center" style="background:white; text-decoration: none">
+                                            <i class="fas fa-share"></i>
+                                            <span class="ms-1">Share</span>
+                                        </button>
                                     </form>
-
                                 </div>
                             </div>
                             <div class="comment-site">
@@ -477,22 +479,27 @@
                                     </a>
                                 </div>
                                 <div class="comment-input">
-                                    <form action="/FUNET/commentServlet" method="post" class="mb-4 post-method" id="commentForm">
+                                    <form action="/FUNET/commentServlet" method="post" class="mb-4 post-method" id="commentForm" enctype="multipart/form-data">
                                         <div class="mb-3">
-                                            <input class="form-control" id="body" name="commentContent" maxlength="300" rows="2" placeholder="Write a comment…">
+                                            <input type="text" class="form-control" id="body" name="commentContent" maxlength="300" rows="2" placeholder="Write a comment…">
                                         </div>
                                         <input type="hidden" name="sourceUrl" value="profile">
                                         <input type="hidden" name="post_id" value="${post.post_id}">
-                                    </form>
 
+                                        <!-- 
                                     <div class="comment-icon-div">
                                         <div>
                                             <i class="far fa-grin-alt"></i>
                                         </div>
                                         <div>
+                                             <label for="photo-upload">
                                             <i class="fas fa-camera"></i>
+                                            <input id="photo-upload" type="file" name="commentImage" accept=".jpeg, .png, .jpg">
+                                             </label>
                                         </div>
                                     </div>
+                                        -->
+                                    </form>
                                 </div>
                             </div>
                             <c:forEach var="comment" items="${post.comments}">
@@ -501,9 +508,27 @@
                                         <img src="assets/profile_avt/${comment.profile_pic}" class="img-fluid rounded-circle avatar me-2" style="width: 30px; height: 30px; object-fit: cover;">
                                         <small><strong>${comment.first_name} ${comment.last_name}</strong></small>
                                     </div>
-                                    <div class="comment-body">
-                                        <p style="margin-bottom: 0;">${comment.comment_text}</p>
+                                    <div class="comment-body" style="display: flex; justify-content: space-between; align-items: center;">
+                                        <p style="margin-bottom: 0;" class="comment-text">${comment.comment_text}</p>
+                                        <div class="comment-options">
+                                            <c:if test="${sessionScope.user['user_id'] == comment.user_id}">
+                                                <button class="three-dot-btn" data-comment-id="${comment.comment_id}">...</button>
+                                            </c:if>
+                                            <div class="comment-actions" style="display: none;">
+                                                <button class="edit-comment-btn" data-comment-id="${comment.comment_id}">Edit</button>
+                                                <form action="/FUNET/deleteCommentServlet" method="post" class="delete-comment-form" style="display: inline;">
+                                                    <input type="hidden" name="commentId" value="${comment.comment_id}">
+                                                    <button type="submit" class="delete-comment-btn">Delete</button>
+                                                </form>
+                                            </div>
+                                        </div>
                                     </div>
+                                    <form action="/FUNET/updateCommentServlet" method="post" class="edit-comment-form" style="display: none;">
+                                        <input type="hidden" name="commentId" value="${comment.comment_id}">
+                                        <textarea name="newCommentText" class="form-control">${comment.comment_text}</textarea>
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                        <button type="button" class="btn btn-secondary cancel-edit-comment">Cancel</button>
+                                    </form>
                                 </div>
                             </c:forEach>
 
@@ -545,11 +570,14 @@
         <script src="assets/js/profile.js"></script>
         <script src="assets/js/bootstrap.min.js"></script> 
         <script src="assets/js/likeButton.js" defer></script>
+        <script src="assets/js/comment.js" defer></script>
 
         <script>
-                                        function updatePrivacy(mode) {
-                                            document.getElementById('privacyMode').value = mode;
-                                            document.getElementById('updatePrivacyForm').submit();
+                                                    function updatePrivacy(postId, mode) {
+                                                        document.getElementById('privacyMode-' + postId).value = mode;
+                                                        document.getElementById('updatePrivacyForm-' + postId).submit();
+                                                    }
+        </script>
 
                                         }
 
@@ -604,6 +632,49 @@
                             commentForm.submit();
                         }
                     }
+        <script>
+            function updatePrivacy(mode) {
+                document.getElementById('privacyMode').value = mode;
+                document.getElementById('updatePrivacyForm').submit();
+            }
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const commentForm = document.getElementById('commentForm');
+                const commentInput = document.getElementById('body');
+
+                commentInput.addEventListener('keydown', function (event) {
+                    if (event.key === 'Enter' && !event.shiftKey) {
+                        event.preventDefault();
+                        if (commentInput.value.trim() !== '') {
+                            commentForm.submit();
+                        }
+                    }
+                });
+            });
+
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                document.querySelectorAll('.edit-comment-btn').forEach(button => {
+                    button.addEventListener('click', function () {
+                        const commentId = this.getAttribute('data-comment-id');
+                        const commentText = this.closest('.comment').querySelector('.comment-text');
+                        const editForm = this.closest('.comment').querySelector('.edit-comment-form');
+                        commentText.style.display = 'none';
+                        editForm.style.display = 'block';
+                    });
+                });
+
+                document.querySelectorAll('.cancel-edit-comment').forEach(button => {
+                    button.addEventListener('click', function () {
+                        const commentText = this.closest('.comment').querySelector('.comment-text');
+                        const editForm = this.closest('.comment').querySelector('.edit-comment-form');
+                        commentText.style.display = 'block';
+                        editForm.style.display = 'none';
+                    });
                 });
             });
         </script>
@@ -656,6 +727,42 @@
                     if (cancelUpdateBtn) {
                         cancelUpdateBtn.addEventListener('click', () => {
                            // updateForm.style.display = 'none';
+                            showUpdateFormBtn.style.display = 'block';
+                        });
+                    }
+                });
+                document.addEventListener('click', function (event) {
+                    if (!event.target.closest('.post')) {
+                        document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                            menu.style.display = 'none';
+                        });
+                    }
+                });
+            });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const posts = document.querySelectorAll('.post');
+                posts.forEach(post => {
+                    const threeDotBtn = post.querySelector('.thre-dto-btn');
+                    const dropdownMenu = post.querySelector('.dropdown-menu');
+                    const showUpdateFormBtn = post.querySelector('.show-update-form');
+                    const updateForm = post.querySelector('.update-form');
+                    const cancelUpdateBtn = post.querySelector('.cancel-update');
+                    threeDotBtn.addEventListener('click', () => {
+                        dropdownMenu.style.display = dropdownMenu.style.display === 'none' ? 'block' : 'none';
+                    });
+                    if (showUpdateFormBtn) {
+                        showUpdateFormBtn.addEventListener('click', () => {
+                            updateForm.style.display = 'block';
+                            showUpdateFormBtn.style.display = 'none';
+                            dropdownMenu.style.display = 'none';
+                        });
+                    }
+
+                    if (cancelUpdateBtn) {
+                        cancelUpdateBtn.addEventListener('click', () => {
+                            updateForm.style.display = 'none';
                             showUpdateFormBtn.style.display = 'block';
                         });
                     }

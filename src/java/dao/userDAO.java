@@ -119,31 +119,6 @@ public class userDAO {
         return u;
     }
 
-    public static ArrayList<User> getAllUserByName(String name, int current_userId) throws SQLException {
-        ArrayList<User> userList = new ArrayList<>();
-        try {
-            Connection conn = sqlConnect.getInstance().getConnection();
-            PreparedStatement st = conn.prepareStatement("SELECT user_id, first_name, last_name, profile_pic FROM userAccount WHERE (first_name LIKE ? OR last_name LIKE ?) AND NOT user_id = ? ");
-            st.setString(1, "%" + name + "%");
-            st.setString(2, "%" + name + "%");
-            st.setInt(3, current_userId);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                User u = new User();
-                u.setUser_id(rs.getInt(1));
-                u.setFirst_name(rs.getString(2));
-                u.setLast_name(rs.getString(3));
-                 u.setRole(rs.getString("role"));
-                u.setProfile_pic(rs.getString(4));
-                userList.add(u);
-            }
-
-        } catch (Exception e) {
-            System.out.println("Action Failed");
-        }
-        return userList;
-    }
-
     public boolean checkEmail(String email) {
         boolean exists = false;
         try {
@@ -253,7 +228,7 @@ public class userDAO {
         }
     }
 
-    public List<User> findFriendsByKeyWord(int userId, String keyWord) throws SQLException, Exception {
+    public ArrayList<User> findFriendsByKeyWord(int userId, String keyWord) throws SQLException, Exception {
         String sql = "SELECT u.user_id, u.profile_pic, u.first_name, u.last_name "
                 + "FROM userAccount u "
                 + "WHERE u.user_id != ? AND (u.first_name LIKE ? OR u.last_name LIKE ?)";
@@ -265,7 +240,7 @@ public class userDAO {
             ps.setString(3, "%" + keyWord + "%");
 
             ResultSet rs = ps.executeQuery();
-            List<User> users = new ArrayList<>();
+            ArrayList<User> users = new ArrayList<>();
             while (rs.next()) {
                 User user = new User();
                 user.setUser_id(rs.getInt("user_id"));
@@ -362,5 +337,9 @@ public class userDAO {
             ex.printStackTrace();
         }
         return "Xin chao`";
+    }
+    public static void main(String[] args) throws SQLException, Exception {
+        List<User> list = userDAO.getInstance().findFriendsByKeyWord(1, "t");
+        System.out.println(list.get(0).getLast_name());
     }
 }

@@ -22,9 +22,9 @@ public class sqlConnect {
     private String port = "1433";
     private String ip = "127.0.0.1";
     private String dbName = "FUNET";
-    private String deviceName = "DESKTOP-6E10C8A";
+    private String deviceName = "LAPTOP-5D2CNVK4";
     private String driverClass = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    private String sqlUrl = "jdbc:sqlserver://DESKTOP-6E10C8A;databaseName=FUNET;encrypt=false;trustServerCertificate=false";
+    private String sqlUrl = "jdbc:sqlserver://" + deviceName + ";databaseName=FUNET;encrypt=false;trustServerCertificate=false";
 
     private sqlConnect() throws Exception {
         try {

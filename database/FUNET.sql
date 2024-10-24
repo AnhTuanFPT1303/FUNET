@@ -15,8 +15,8 @@ DROP TABLE IF EXISTS learningmaterial
 DROP TABLE IF EXISTS conversation_users
 DROP TABLE IF EXISTS conversation;
 DROP TABLE IF EXISTS userAccount;
-DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS game;
+DROP TABLE IF EXISTS categories;
 drop procedure if exists getAllFriends
 
 

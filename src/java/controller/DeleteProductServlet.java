@@ -18,11 +18,11 @@ public class DeleteProductServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/SellingProductServlet");
             } else {
                 request.setAttribute("error", "Error deleting product.");
-                request.getRequestDispatcher("/selling.jsp").forward(request, response);
+                request.getRequestDispatcher("WEB-INF/selling.jsp").forward(request, response);
             }
         } catch (Exception e) {
             request.setAttribute("error", "An error occurred: " + e.getMessage());
-            request.getRequestDispatcher("/selling.jsp").forward(request, response);
+            request.getRequestDispatcher("WEB-INF/selling.jsp").forward(request, response);
         }
     }
 }

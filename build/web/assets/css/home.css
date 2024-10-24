@@ -310,12 +310,14 @@ header{
     left: 57%;
     transform: translateX(-50%);
 }
+.lm-icon,
+.market-icon,
 .friend-icon,
 .mess-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 200px;
+    margin: 0 150px;
 }
 .mess-icon i {
     font-size: 25px;

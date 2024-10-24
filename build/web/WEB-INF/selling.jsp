@@ -32,11 +32,12 @@
                         </button>
                     </form>
 
-                    <div class="nav-icons d-flex align-items-center">
-                        <a href="#" class="fa-solid fa-store fa-lg me-3">    
+                    <div class="nav-icons d-flex align-items-center justify-content-between">
+                        <a href="/FUNET/lmaterialLink" class="lm-icon fa-solid fa-book fa-lg me-3">
                         </a>
+                        <a href="/FUNET/marketLink" class="market-icon fa-solid fa-store fa-lg me-3"></a>
                         <a href="/FUNET/friendRequestServlet" class="friend-icon me-3">
-                            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M.5 12c0 6.351 5.149 11.5 11.5 11.5S23.5 18.351 23.5 12 18.351.5 12 .5.5 5.649.5 12zm2 0c0-.682.072-1.348.209-1.99a2 2 0 0 1 0 3.98A9.539 9.539 0 0 1 2.5 12zm.84-3.912A9.502 9.502 0 0 1 12 2.5a9.502 9.502 0 0 1 8.66 5.588 4.001 4.001 0 0 0 0 7.824 9.514 9.514 0 0 1-1.755 2.613A5.002 5.002 0 0 0 14 14.5h-4a5.002 5.002 0 0 0-4.905 4.025 9.515 9.515 0 0 1-1.755-2.613 4.001 4.001 0 0 0 0-7.824zM12 5a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm-2 4a2 2 0 1 0 4 0 2 2 0 0 0-4 0zm11.291 1.01a9.538 9.538 0 0 1 0 3.98 2 2 0 0 1 0-3.98zM16.99 20.087A9.455 9.455 0 0 1 12 21.5c-1.83 0-3.54-.517-4.99-1.414a1.004 1.004 0 0 1-.01-.148V19.5a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v.438a1 1 0 0 1-.01.148z"></path></svg>
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" class="x19dipnz x1lliihq x1tzjh5l x1k90msu x2h7rmj x1qfuztq" style="--color:var(--secondary-icon)"><path d="M.5 12c0 6.351 5.149 11.5 11.5 11.5S23.5 18.351 23.5 12 18.351.5 12 .5.5 5.649.5 12zm2 0c0-.682.072-1.348.209-1.99a2 2 0 0 1 0 3.98A9.539 9.539 0 0 1 2.5 12zm.84-3.912A9.502 9.502 0 0 1 12 2.5a9.502 9.502 0 0 1 8.66 5.588 4.001 4.001 0 0 0 0 7.824 9.514 9.514 0 0 1-1.755 2.613A5.002 5.002 0 0 0 14 14.5h-4a5.002 5.002 0 0 0-4.905 4.025 9.515 9.515 0 0 1-1.755-2.613 4.001 4.001 0 0 0 0-7.824zM12 5a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm-2 4a2 2 0 1 0 4 0 2 2 0 0 0-4 0zm11.291 1.01a9.538 9.538 0 0 1 0 3.98 2 2 0 0 1 0-3.98zM16.99 20.087A9.455 9.455 0 0 1 12 21.5c-1.83 0-3.54-.517-4.99-1.414a1.004 1.004 0 0 1-.01-.148V19.5a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v.438a1 1 0 0 1-.01.148z"></path></svg>
                         </a>
                         <a href="/FUNET/chat" class="mess-icon me-3">
                             <i class="fas fa-comments"></i>
@@ -68,8 +69,8 @@
                     <div class="btn-group-vertical w-100 mb-3">
                         <a href="/FUNET/home" class="btn btn-outline-primary mb-2">Main Page</a>
                         <a href="/FUNET/notificationServlet" class="btn btn-outline-primary mb-2">Notifications</a>
-                        <a href="/FUNET/AddProductServlet" class="btn btn-outline-primary mb-2">Add product to market</a>
-                        <a href="/FUNET/SellingProductServlet" class="btn btn-outline-primary mb-2">Selling products</a>
+                        <a href="/FUNET/AddProductServlet" class="btn btn-outline-primary mb-2">Add product to our market</a>
+                        <a href="/FUNET/SellingProductServlet" class="btn btn-outline-primary mb-2">Yours products on sale</a>
                     </div>
 
                     <div class="accordion" id="accordionCategories">
@@ -93,14 +94,14 @@
 
                 <main class="main-class col-10">
 
-                    <h2 class="mt-4 mb-5 text-primary d-flex justify-content-center">Your products</h2>
+                    <h2 class="mt-4 mb-5 text-primary d-flex justify-content-center">Your Product</h2>
                     <div class="row">
                         <c:forEach var="product" items="${productList}">
                             <div class="col-3 mb-3">
                                 <div class="product-card border" style="border: 2px solid black; padding: 10px; text-align: center;">
                                     <h5>${product.productName}</h5>
                                     <img src="${product.product_img}" alt="Item 1" class="img-fluid" style="max-width: 100%; height: auto;">
-                                    <p>Price: ${product.price}</p>
+                                    <!--<p>Price: {product.price}</p> -->
                                     <form method="post" action="/FUNET/DeleteProductServlet">
                                         <input type="hidden" name="product_id" value="${product.productId}" />
                                         <button type="submit" class="btn btn-danger">Delete</button>

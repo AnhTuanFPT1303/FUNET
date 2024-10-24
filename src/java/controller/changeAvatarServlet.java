@@ -112,7 +112,7 @@ public class changeAvatarServlet extends HttpServlet {
                 request.setAttribute("errorMessage", "Error");
             }
         }
-        response.sendRedirect("userpageServlet");
+        response.sendRedirect("profile");
     }
 
     /**

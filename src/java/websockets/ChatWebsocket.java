@@ -12,10 +12,12 @@ import services.ChatService;
 import jakarta.websocket.DecodeException;
 import dtos.MessageDTO;
 import services.MessageService;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @ServerEndpoint(value = "/chat/{user_id}", encoders = MessageEncoder.class, decoders = MessageDecoder.class)
 public class ChatWebsocket {
-
+    private static final Logger LOGGER = Logger.getLogger(ChatWebsocket.class.getName());
     private Session session;
     private int user_id;
 
@@ -33,7 +35,12 @@ public class ChatWebsocket {
 
     @OnMessage
     public void onMessage(MessageDTO message, Session session) throws DecodeException, Exception {
-        chatService.sendMessageToOneUser(message);
+        if (message.getReceiver() != 0) {
+            chatService.sendMessageToOneUser(message);
+        } else {
+            message.setReceiver(0);
+            chatService.sendMessageToGroup(message);
+        }
         messageService.saveMessage(message);
     }
 

@@ -11,9 +11,13 @@ import java.util.stream.Collectors;
 import websockets.ChatWebsocket;
 import model.User;
 import dtos.MessageDTO;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ChatService {
 
+    private static final Logger LOGGER = Logger.getLogger(ChatService.class.getName());
     private userDAO userDao = userDAO.getInstance();
     private static ChatService chatService = null;
     protected static final Set<ChatWebsocket> chatWebsockets = new CopyOnWriteArraySet<>();
@@ -68,32 +72,26 @@ public class ChatService {
                             e.printStackTrace();
                         }
                     });
-        } else {
-            // Send message to a group of users
-            List<User> usersGroup = userDao.findUsersByConversationId(message.getGroupId());
-
-            // Collect all user IDs in the group
-            List<Integer> userIdGroup = usersGroup.stream()
-                    .map(User::getUser_id)
-                    .collect(Collectors.toList());
-
-            // Send the message to all users in the group, excluding the sender
-            chatWebsockets.stream()
-                    .filter(chatWebsocket -> userIdGroup.contains(chatWebsocket.getUserId())
-                    && chatWebsocket.getUserId() != message.getSender()) // Filter out the sender
-                    .forEach(chatWebsocket -> {
-                        try {
-                            chatWebsocket.getSession().getBasicRemote().sendObject(message);
-                        } catch (IOException | EncodeException e) {
-                            System.err.println("Error sending message to user: " + chatWebsocket.getUserId());
-                            e.printStackTrace();
-                        }
-                    });
         }
     }
 
+    public void sendMessageToGroup(MessageDTO message) throws Exception {
+        List<User> usersGroup = userDao.findUsersByConversationId(message.getGroupId());
+        Set<Integer> userIdGroup = usersGroup.stream().map(User::getUser_id).collect(Collectors.toSet());
+        chatWebsockets.stream()
+                .filter(chatWebsocket -> userIdGroup.contains(chatWebsocket.getUserId())
+                && chatWebsocket.getUserId() != message.getSender())
+                .forEach(chatWebsocket -> {
+                    try {
+                        chatWebsocket.getSession().getBasicRemote().sendObject(message);
+                    } catch (IOException | EncodeException e) {
+                        e.printStackTrace();
+                    }
+                });
+    }
+
     protected Set<Integer> getIdList() {
-        Set<Integer> id_list = new HashSet<>();
+        Set<Integer> id_list = new HashSet<>(); 
         chatWebsockets.forEach(chatWebsocket -> {
             id_list.add(chatWebsocket.getUserId());
         });

@@ -8,12 +8,16 @@ DROP TABLE IF EXISTS friendship;
 DROP TABLE IF EXISTS message;
 DROP TABLE IF EXISTS comment;
 DROP TABLE IF EXISTS post_like;
+DROP TABLE IF EXISTS post_share;
 DROP TABLE IF EXISTS post;
 DROP TABLE IF EXISTS conversation_member;
 DROP TABLE IF EXISTS userAccount;
 DROP TABLE IF EXISTS conversation;
 DROP TABLE IF EXISTS product
 DROP TABLE IF EXISTS learningmaterial
+DROP TABLE IF EXISTS conversation_users
+DROP TABLE IF EXISTS conversation;
+DROP TABLE IF EXISTS userAccount;
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS GameCategory;
 DROP TABLE IF EXISTS Game;
@@ -53,17 +57,20 @@ CREATE TABLE post (
   image_path NVARCHAR(max),
   post_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   like_count INT not null default 0,
-  FOREIGN KEY (user_id) REFERENCES userAccount (user_id),
-  type NVARCHAR(max)
+  is_shared BIT NOT NULL DEFAULT 0,
+  original_post_id INT NULL,
+  share_count INT NOT NULL DEFAULT 0,
+  FOREIGN KEY (user_id) REFERENCES userAccount (user_id)
 );
 
 GO
-CREATE TABLE post_like (
-	like_id INT NOT NULL IDENTITY(1,1) PRIMARY KEY, 
+CREATE TABLE post_share (
+    share_id INT IDENTITY(1,1) PRIMARY KEY,
     user_id INT NOT NULL,
     post_id INT NOT NULL,
+    share_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     like_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	FOREIGN KEY (user_id) REFERENCES userAccount (user_id),
+	  FOREIGN KEY (user_id) REFERENCES userAccount (user_id),
     FOREIGN KEY (post_id) REFERENCES post(post_id)
 );
 
@@ -239,7 +246,23 @@ go
 INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned, created_at)
 VALUES ('UserJan', 'LastnameJan', 'password', 'userjan@example.com', 'default_avt.jpg', 'student', 0, '2024-01-15');
 
--- February
+GO
+CREATE TABLE conversation (
+	conversation_id INT IDENTITY(1,1) PRIMARY KEY, 
+	conversation_name NVARCHAR(50),
+	conversation_avatar nvarchar(50) NOT NULL
+);
+
+GO 
+CREATE TABLE conversation_users (
+	is_admin BIT NOT NULL,
+	user_id INT,
+	conversation_id INT,
+	FOREIGN KEY (user_id) REFERENCES userAccount(user_id),
+	FOREIGN KEY (conversation_id) REFERENCES conversation (conversation_id),
+	PRIMARY KEY (user_id, conversation_id)
+);
+
 INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned, created_at)
 VALUES ('UserFeb', 'LastnameFeb', 'password', 'userfeb@example.com', 'default_avt.jpg', 'student', 0, '2024-02-15');
 
@@ -284,6 +307,3 @@ VALUES ('UserOctgh', 'LastnameOct', 'password', 'useroct@examplems.com', 'defaul
 
 SELECT * FROM UserActivityLog
 select * from post
-
-
-

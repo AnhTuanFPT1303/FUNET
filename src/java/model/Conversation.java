@@ -15,8 +15,6 @@ public class Conversation {
     private int id;
     private String name;
     private String avatar;
-    private List<User> users;
-
 
     public Conversation() {
     }

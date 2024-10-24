@@ -25,7 +25,7 @@ public class UserDTO {
     public UserDTO(@JsonProperty("user_id") int userId,
             @JsonProperty("first_name") String firstName,
             @JsonProperty("last_name") String lastName,
-            @JsonProperty("profile)_pic") String profile_pic,
+            @JsonProperty("profile_pic") String profile_pic,
             @JsonProperty("isAdmin") boolean isAdmin) {
         this.userId = userId;
         this.firstName = firstName;

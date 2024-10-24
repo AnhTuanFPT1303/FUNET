@@ -704,11 +704,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                     <c:forEach var="post" items="${posts}">
                         <div class="post mb-4" style="overflow-wrap: break-word" data-post-id="${post.post_id}" data-liked="${post.likedByCurrentUser}">
                             <div class="post-header">
-                                <img src="assets/profile_avt/${post.profile_pic}" class="img-fluid rounded-circle avatar me-2" style="width: 40px; height: 40px;object-fit: cover;">
+                                <img src="assets/profile_avt/${post.profile_pic}" class="img-fluid rounded-circle avatar me-2" style="width: 40px; height: 40px;object-fit: cover; ">
                                 <small>${post.first_name} ${post.last_name} -- <fmt:formatDate value="${post.post_time}" pattern="yyyy-MM-dd HH:mm:ss" /></small>
                             </div>
                             <c:if test="${post.isShared}">
-
                                 <div class="original-post-info d-flex align-items-center">
                                     <img src="assets/profile_avt/${post.originalPosterAvatar}" class="img-fluid rounded-circle avatar me-2" style="width: 30px; height: 30px;object-fit: cover;">
                                     <small>${post.originalPosterName}</small>
@@ -741,6 +740,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                                             thumb_up
                                         </span>
                                     </button>
+                                    <p class="like-count"><span>${post.like_count}</span></p>
+                                </div>
+                                <div class="post-share">
+                                        <form action="sharePostServlet" method="post" style="display: inline;">
+                                            <input type="hidden" name="postId" value="${post.post_id}">
+                                            <input type="hidden" name="sourceUrl" value="home">
+                                            <button type="submit" class="btn btn-link">Share</button>
+                                        </form>
+                                        <span class="post-share-count">${post.shareCount}</span>
+                                    </div>
                                     <span class="like-count"><span class="post-rating-count">${post.like_count}</span></span>
                                 </div>
                                 <%-- <c:if test="${!post.isShared}"> --%>

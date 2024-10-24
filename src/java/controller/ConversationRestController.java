@@ -29,12 +29,7 @@ import services.ConversationService;
  * @author HELLO
  */
 public class ConversationRestController extends HttpServlet {
-
-    private ConversationDAO conversationDAO = ConversationDAO.getInstance();
-    private userDAO userDao = userDAO.getInstance();
-    private ObjectMapper objectMapper = new ObjectMapper();
-    private ConversationService conversationService = ConversationService.getInstance();
-
+    private static final Logger LOGGER = Logger.getLogger(ConversationRestController.class.getName());
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -77,12 +72,18 @@ public class ConversationRestController extends HttpServlet {
         String usersConversationId = request.getParameter("usersConversationId");
         String messagesConversationId = request.getParameter("messagesConversationId");
         String conversationKeyword = request.getParameter("conversationKeyword");
-        String json = "Must have username or conversation id as request param";
+        String json = "";
 
+        LOGGER.info("Parameters received: user_id=" + user_id + 
+                    ", usersConversationId=" + usersConversationId + 
+                    ", messagesConversationId=" + messagesConversationId + 
+                    ", conversationKeyword=" + conversationKeyword);
+        
+        ConversationService conversationService = ConversationService.getInstance();
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             if (conversationKeyword != null && !conversationKeyword.isEmpty() && user_id != null && !user_id.isEmpty()) {
-
+                LOGGER.info("Fetching conversations by keyword for user");
                 List<ConversationDTO> conversationDTOs = conversationService
                         .getConversationsOfUserByKeyword(Integer.parseInt(user_id), conversationKeyword);
                 for (ConversationDTO c : conversationDTOs) {
@@ -92,21 +93,18 @@ public class ConversationRestController extends HttpServlet {
                 }
                 json = objectMapper.writeValueAsString(conversationDTOs);
 
-            } else if (user_id != null && !user_id.isEmpty()) {
-
+            } else if (user_id != null) {
                 List<ConversationDTO> conversationDTOs = conversationService
                         .getAllConversationsById(Integer.parseInt(user_id));
                 for (ConversationDTO conversationDTO : conversationDTOs) {
-                    conversationDTO
-                            .setUsers(conversationService.getAllUsersByConversationId(conversationDTO.getId()));
+                    conversationDTO.setUsers(conversationService.getAllUsersByConversationId(conversationDTO.getId()));
                 }
                 json = objectMapper.writeValueAsString(conversationDTOs);
-
             } else if (usersConversationId != null && !usersConversationId.isEmpty()) {
-
+                LOGGER.info("Fetch go here");
                 int id = Integer.parseInt(usersConversationId);
                 List<UserDTO> userDTOs = conversationService.getAllUsersByConversationId(id);
-
+                LOGGER.info("Number of user: " + userDTOs.size());
                 json = objectMapper.writeValueAsString(userDTOs);
 
             } else if (messagesConversationId != null && !messagesConversationId.isEmpty()) {
@@ -118,7 +116,7 @@ public class ConversationRestController extends HttpServlet {
 
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
 
         response.setContentType("application/json");
@@ -139,13 +137,14 @@ public class ConversationRestController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        ConversationService conversationService = ConversationService.getInstance();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         PrintWriter printWriter = response.getWriter();
         String json = "";
 
         StringBuilder requestBody = new StringBuilder();
-        String line;
+        String line = null;
         try {
             BufferedReader reader = request.getReader();
             while ((line = reader.readLine()) != null) {
@@ -157,14 +156,16 @@ public class ConversationRestController extends HttpServlet {
             printWriter.flush();
             return;
         }
-
+        LOGGER.info(requestBody.toString());
+        
+        ObjectMapper objectMapper = new ObjectMapper();
+        ConversationDTO conversation = objectMapper.readValue(requestBody.toString(), ConversationDTO.class);
         try {
-            Conversation conversation = objectMapper.readValue(requestBody.toString(), Conversation.class);
-            conversationDAO.saveConversation(conversation, null); // Assuming this method works with pure objects
-            json = objectMapper.writeValueAsString(conversation);
+            conversationService.saveConversation(conversation);
         } catch (Exception ex) {
-            json = "{\"error\":\"" + ex.getMessage() + "\"}";
+            Logger.getLogger(ConversationRestController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        json = objectMapper.writeValueAsString(conversation);
 
         printWriter.print(json);
         printWriter.flush();
@@ -175,19 +176,19 @@ public class ConversationRestController extends HttpServlet {
             throws ServletException, IOException {
         String user_id = request.getParameter("user_id");
         String conversationId = request.getParameter("conversationId");
-        String json = "Must have username or conversation id as request param";
+        String json = "Must have userId or conversation id as request param";
         if (conversationId != null && !conversationId.isEmpty()) {
             int id = Integer.parseInt(conversationId);
             if (user_id != null && !user_id.isEmpty()) {
                 try {
-                    conversationDAO.deleteUserFromConversation(id, Integer.parseInt(user_id));
+                    ConversationService.getInstance().deleteUserFromConversation(id, Integer.parseInt(user_id));
                 } catch (Exception ex) {
                     Logger.getLogger(ConversationRestController.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 json = "delete User by Id " + user_id + " From Conversation by Id " + id + " successfully";
             } else {
                 try {
-                    conversationDAO.deleteConversationById(id);
+                    ConversationService.getInstance().deleteConversationById(id);
                 } catch (Exception ex) {
                     Logger.getLogger(ConversationRestController.class.getName()).log(Level.SEVERE, null, ex);
                 }

@@ -646,11 +646,13 @@
                 <div class="RightItem">
                     <div><i class='fas fa-user-friends' > </i>    Friends</div>
                     <div> <box-icon name='group' type='solid' ></box-icon>    Groups  </div>
+                    <a href="savePostServlet" style="text-decoration: none">
                     <div>
-                        <a href="savePostServlet">
+                        
                             <box-icon type='solid' name='bookmark'></box-icon> Saved
-                        </a>
-                    </div>                    <div><box-icon name='videos' type='solid'></box-icon> Video </div>
+                    </div>
+                    </a>
+                    <div><box-icon name='videos' type='solid'></box-icon> Video </div>
                     <div><box-icon name='store-alt' type='solid'></box-icon> Market</div>
                     <div><box-icon type='solid' name='book'></box-icon> Learning Materials</div>
                     <div><i class='fas fa-gamepad' style='font-size:20px'></i> Game</div>
@@ -716,27 +718,31 @@
                 <div>
                     <c:forEach var="post" items="${posts}">
                         <div class="post mb-4" style="overflow-wrap: break-word" data-post-id="${post.post_id}" data-liked="${post.likedByCurrentUser}">
-                            <div class="post-header">
-                                <img src="assets/profile_avt/${post.profile_pic}" class="img-fluid rounded-circle avatar me-2" style="width: 40px; height: 40px;object-fit: cover;">
-                                <small>${post.first_name} ${post.last_name} -- <fmt:formatDate value="${post.post_time}" pattern="yyyy-MM-dd HH:mm:ss" /></small>
-
-                            </div>
-                            <div class="comment-options">
-                                <button class="three-dot-btn" data-post-id="${post.post_id}">...</button>
-                                <div class="comment-actions" style="display: none;">
+                            <div class="post-header d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <img src="assets/profile_avt/${post.profile_pic}" class="img-fluid rounded-circle avatar me-2" style="width: 40px; height: 40px;object-fit: cover;">
+                                    <small>${post.first_name} ${post.last_name} -- <fmt:formatDate value="${post.post_time}" pattern="yyyy-MM-dd HH:mm:ss" /></small>
+                                </div>
+                                <span class="thre-dto-btn fas fa-ellipsis-h"></span>
+                                <div class="dropdown-save" style="display: none;">
                                     <form action="/FUNET/savePostServlet" method="post">
                                         <input type="hidden" name="postId" value="${post.post_id}">
                                         <c:choose>
                                             <c:when test="${post.savedByCurrentUser}">
-                                                <button type="submit" class="btn btn-warning">Unsave Post</button>
+                                                <button type="submit" class="btn-warning">
+                                                    <i class="fas fa-bookmark me-2"></i>Unsave Post
+                                                </button>
                                             </c:when>
                                             <c:otherwise>
-                                                <button type="submit" class="btn btn-primary">Save Post</button>
+                                                <button type="submit" class="btn-primary">
+                                                    <i class="far fa-bookmark me-2"></i>Save Post
+                                                </button>
                                             </c:otherwise>
                                         </c:choose>
                                     </form>
                                 </div>
                             </div>
+
                             <c:if test="${post.isShared}">
 
                                 <div class="original-post-info d-flex align-items-center">
@@ -850,57 +856,140 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="assets/js/bootstrap.bundle.min.js"></script>
         <script src="assets/js/reaction.js" defer></script>
-        <!-- delete update comment + button"..." -->
+
         <script>
                                         document.addEventListener('DOMContentLoaded', function () {
-                                            document.querySelectorAll('.edit-comment-btn').forEach(button => {
-                                                button.addEventListener('click', function () {
-                                                    const commentId = this.getAttribute('data-comment-id');
-                                                    const commentText = this.closest('.comment').querySelector('.comment-text');
-                                                    const editForm = this.closest('.comment').querySelector('.edit-comment-form');
-                                                    commentText.style.display = 'none';
-                                                    editForm.style.display = 'block';
-                                                });
+                                            const style = document.createElement('style');
+                                            style.textContent = `
+        .post {
+            position: relative;
+        }
+        
+        .thre-dto-btn {
+            cursor: pointer;
+            padding: 5px 10px;
+            float: right;
+        }
+        
+        .post .dropdown-save {
+            position: absolute;
+            right: 10px;
+            top: 40px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 8px;
+            min-width: 150px;
+            z-index: 1000;
+        }
+        
+        .post .dropdown-save button {
+            width: 100%;
+            padding: 8px 12px;
+            border: none;
+            background: none;
+            text-align: left;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        
+        .post .dropdown-save button:hover {
+            background-color: #f0f2f5;
+        }
+        
+        .post .dropdown-save button.btn-primary {
+            color: #1877f2;
+        }
+        
+        .post .dropdown-save button.btn-warning {
+            color: #ed6c02;
+        }
+    `;
+                                            document.head.appendChild(style);
+
+                                            const posts = document.querySelectorAll('.post');
+
+                                            posts.forEach(post => {
+                                                const threeDotBtn = post.querySelector('.thre-dto-btn');
+                                                const dropdownMenu = post.querySelector('.dropdown-save');
+
+                                                if (threeDotBtn && dropdownMenu) {
+                                                    threeDotBtn.addEventListener('click', (e) => {
+                                                        e.stopPropagation();
+
+                                                        document.querySelectorAll('.post .dropdown-save').forEach(menu => {
+                                                            if (menu !== dropdownMenu) {
+                                                                menu.style.display = 'none';
+                                                            }
+                                                        });
+
+                                                        dropdownMenu.style.display = dropdownMenu.style.display === 'none' ? 'block' : 'none';
+                                                    });
+                                                }
                                             });
 
-                                            document.querySelectorAll('.cancel-edit-comment').forEach(button => {
-                                                button.addEventListener('click', function () {
-                                                    const commentText = this.closest('.comment').querySelector('.comment-text');
-                                                    const editForm = this.closest('.comment').querySelector('.edit-comment-form');
-                                                    commentText.style.display = 'block';
-                                                    editForm.style.display = 'none';
-                                                });
+                                            document.addEventListener('click', (e) => {
+                                                if (!e.target.closest('.thre-dto-btn')) {
+                                                    document.querySelectorAll('.post .dropdown-save').forEach(menu => {
+                                                        menu.style.display = 'none';
+                                                    });
+                                                }
                                             });
                                         });
+        </script>
 
-                                        document.addEventListener('DOMContentLoaded', function () {
-                                            document.querySelectorAll('.three-dot-btn').forEach(button => {
-                                                button.addEventListener('click', function () {
-                                                    const commentId = this.getAttribute('data-comment-id');
-                                                    const actions = this.closest('.comment-options').querySelector('.comment-actions');
-                                                    actions.style.display = actions.style.display === 'none' ? 'block' : 'none';
-                                                });
-                                            });
+        <!-- delete update comment + button"..." -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                document.querySelectorAll('.edit-comment-btn').forEach(button => {
+                    button.addEventListener('click', function () {
+                        const commentId = this.getAttribute('data-comment-id');
+                        const commentText = this.closest('.comment').querySelector('.comment-text');
+                        const editForm = this.closest('.comment').querySelector('.edit-comment-form');
+                        commentText.style.display = 'none';
+                        editForm.style.display = 'block';
+                    });
+                });
 
-                                            document.querySelectorAll('.edit-comment-btn').forEach(button => {
-                                                button.addEventListener('click', function () {
-                                                    const commentId = this.getAttribute('data-comment-id');
-                                                    const commentText = this.closest('.comment').querySelector('.comment-text');
-                                                    const editForm = this.closest('.comment').querySelector('.edit-comment-form');
-                                                    commentText.style.display = 'none';
-                                                    editForm.style.display = 'block';
-                                                });
-                                            });
+                document.querySelectorAll('.cancel-edit-comment').forEach(button => {
+                    button.addEventListener('click', function () {
+                        const commentText = this.closest('.comment').querySelector('.comment-text');
+                        const editForm = this.closest('.comment').querySelector('.edit-comment-form');
+                        commentText.style.display = 'block';
+                        editForm.style.display = 'none';
+                    });
+                });
+            });
 
-                                            document.querySelectorAll('.cancel-edit-comment').forEach(button => {
-                                                button.addEventListener('click', function () {
-                                                    const commentText = this.closest('.comment').querySelector('.comment-text');
-                                                    const editForm = this.closest('.comment').querySelector('.edit-comment-form');
-                                                    commentText.style.display = 'block';
-                                                    editForm.style.display = 'none';
-                                                });
-                                            });
-                                        });
+            document.addEventListener('DOMContentLoaded', function () {
+                document.querySelectorAll('.three-dot-btn').forEach(button => {
+                    button.addEventListener('click', function () {
+                        const commentId = this.getAttribute('data-comment-id');
+                        const actions = this.closest('.comment-options').querySelector('.comment-actions');
+                        actions.style.display = actions.style.display === 'none' ? 'block' : 'none';
+                    });
+                });
+
+                document.querySelectorAll('.edit-comment-btn').forEach(button => {
+                    button.addEventListener('click', function () {
+                        const commentId = this.getAttribute('data-comment-id');
+                        const commentText = this.closest('.comment').querySelector('.comment-text');
+                        const editForm = this.closest('.comment').querySelector('.edit-comment-form');
+                        commentText.style.display = 'none';
+                        editForm.style.display = 'block';
+                    });
+                });
+
+                document.querySelectorAll('.cancel-edit-comment').forEach(button => {
+                    button.addEventListener('click', function () {
+                        const commentText = this.closest('.comment').querySelector('.comment-text');
+                        const editForm = this.closest('.comment').querySelector('.edit-comment-form');
+                        commentText.style.display = 'block';
+                        editForm.style.display = 'none';
+                    });
+                });
+            });
         </script>
         <!-- --------- -->
         <script>

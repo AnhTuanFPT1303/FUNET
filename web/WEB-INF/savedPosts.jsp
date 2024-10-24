@@ -572,10 +572,6 @@
                                         <button type="submit" class="btn btn-warning" style="margin-left: 1500px">Unsave Post</button>
                                     </form>
                             </div>
-                            <div class="comment-options">
-                                <button class="three-dot-btn" data-post-id="${post.post_id}">...</button>
-                                
-                            </div>
                             <c:if test="${post.isShared}">
 
                                 <div class="original-post-info d-flex align-items-center">
@@ -586,7 +582,18 @@
                             <p>${post.body}</p> 
                             <c:if test="${not empty post.image_path}">
                                 <div>
-                                    <img src="assets/post_image/${post.image_path}" style="max-width : 100%">
+                                    <c:choose>
+                                        <c:when test="${post.type == 'image'}">
+                                            <img src="${post.image_path}" style="max-width : 100%">
+                                        </c:when>
+                                        <c:otherwise>
+                                            <video style="max-width: 100%" controls>
+                                                <source src="${post.image_path}" type="video/mp4">
+                                                
+                                            </video>
+                                        </c:otherwise>
+                                    </c:choose>
+
                                 </div>
                             </c:if>
 

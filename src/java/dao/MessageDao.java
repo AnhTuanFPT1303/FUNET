@@ -116,6 +116,6 @@ public class MessageDao {
     }
     public static void main(String[] args) throws Exception {
         List<Message> msg = MessageDao.getInstance().findAllMessagesBySenderAndReceiver(1, 2);
-        System.out.println(msg.get(0).getGroupId());
+        System.out.println(msg.get(msg.size()-1).getMessage());
     }
 }

@@ -6,13 +6,13 @@ public class FileDTO {
 	private String filename;
 	private String typeFile;
 	private FileOutputStream fileOutputStream;
-	private String sender;
-	private String receiver;
-	private Long groupId;
+	private int sender;
+	private int receiver;
+	private int groupId;
 	private String url;
 
-	public FileDTO(String filename, String typeFile, FileOutputStream fileOutputStream, String sender, String receiver,
-			Long groupId, String url) {
+	public FileDTO(String filename, String typeFile, FileOutputStream fileOutputStream, int sender, int receiver,
+			int groupId, String url) {
 		this.filename = filename;
 		this.typeFile = typeFile;
 		this.fileOutputStream = fileOutputStream;
@@ -22,11 +22,11 @@ public class FileDTO {
 		this.url = url;
 	}
 
-	public Long getGroupId() {
+	public int getGroupId() {
 		return groupId;
 	}
 
-	public void setGroupId(Long groupId) {
+	public void setGroupId(int groupId) {
 		this.groupId = groupId;
 	}
 
@@ -54,19 +54,19 @@ public class FileDTO {
 		this.fileOutputStream = fileOutputStream;
 	}
 
-	public String getSender() {
+	public int getSender() {
 		return sender;
 	}
 
-	public void setSender(String sender) {
+	public void setSender(int sender) {
 		this.sender = sender;
 	}
 
-	public String getReceiver() {
+	public int getReceiver() {
 		return receiver;
 	}
 
-	public void setReceiver(String receiver) {
+	public void setReceiver(int receiver) {
 		this.receiver = receiver;
 	}
 

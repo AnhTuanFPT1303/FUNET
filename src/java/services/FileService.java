@@ -34,19 +34,18 @@ public class FileService {
     // Generate HTML tag based on file type
     public static String toTagHtml(String type, int user_id, String message) {
         String tag = "";
-        String url = rootURL + user_id + "/" + message;
         if (type.startsWith("audio")) {
             tag = "<audio controls>\r\n" + 
-                  "  <source src=\"" + url + "\" type=\"" + type + "\">\r\n" + 
+                  "  <source src=\"" + message + "\" type=\"" + type + "\">\r\n" + 
                   "</audio>";
         } else if (type.startsWith("video")) {
             tag = "<video width=\"400\" controls>\r\n" + 
-                  "  <source src=\"" + url + "\" type=\"" + type + "\">\r\n" + 
+                  "  <source src=\"" + message + "\" type=\"" + type + "\">\r\n" + 
                   "</video>";
         } else if (type.startsWith("image")) {
-            tag = "<img src=\"" + url + "\" alt=\"\">";
+            tag = "<img src=\"" + message + "\" alt=\"\">";
         } else {
-            tag = "<a href=\"" + url + "\">" + message + "</a>";
+            tag = "<a href=\"" + message + "\">" + message + "</a>";
         }
         return tag;
     }

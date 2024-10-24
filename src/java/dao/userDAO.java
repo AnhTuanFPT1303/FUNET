@@ -5,12 +5,15 @@ import java.sql.*;
 import model.User;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 public class userDAO {
 
     private static userDAO instance = null;
 
-    private userDAO() {
+    public userDAO() {
 
     }
 
@@ -130,6 +133,7 @@ public class userDAO {
                 u.setUser_id(rs.getInt(1));
                 u.setFirst_name(rs.getString(2));
                 u.setLast_name(rs.getString(3));
+                 u.setRole(rs.getString("role"));
                 u.setProfile_pic(rs.getString(4));
                 userList.add(u);
             }
@@ -184,6 +188,7 @@ public class userDAO {
                 u.setFirst_name(rs.getString("first_name"));
                 u.setLast_name(rs.getString("last_name"));
                 u.setEmail(rs.getString("email"));
+                 u.setRole(rs.getString("role"));
                 u.setProfile_pic(rs.getString("profile_pic"));
                 users.add(u);
             }
@@ -299,14 +304,14 @@ public class userDAO {
     }
 
     public List<User> getFriendsNotInConversation(int userId, String keyword, int conversationId) throws SQLException, Exception {
-        String sql = "SELECT u2.user_id, u2.profile_pic, u2.last_name, u2.first_name"
+        String sql = "SELECT u2.user_id, u2.profile_pic, u2.last_name, u2.first_name "
                 + "FROM userAccount u1 "
                 + "JOIN friendship f ON u1.user_id = f.receiver "
                 + "JOIN userAccount u2 ON u2.user_id = f.sender "
-                + "WHERE u1.user_id = ? AND f.status = 1 AND (u2.first_name LIKE ? OR u2.last_name LIKE ?) "
+                + "WHERE u1.user_id = ? AND f.status = 'accepted' AND (u2.first_name LIKE ? OR u2.last_name LIKE ?) "
                 + "AND u2.user_id NOT IN ( "
                 + "    SELECT u.user_id FROM userAccount u "
-                + "    JOIN conversations_users cu ON u.user_id = cu.user_id "
+                + "    JOIN conversation_users cu ON u.user_id = cu.user_id "
                 + "    WHERE cu.conversation_id = ? )";
 
         try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -322,16 +327,46 @@ public class userDAO {
                 User user = new User();
                 user.setUser_id(rs.getInt("user_id"));
                 user.setProfile_pic(rs.getString("profile_pic"));
-                user.setFirst_name("first_name");
-                user.setLast_name("last_name");
+                user.setFirst_name(rs.getString("first_name"));
+                user.setLast_name(rs.getString("last_name"));
                 users.add(user);
             }
             return users;
         }
     }
-    
+
+    public void updateUserIntroduction(int userId, String introduction) {
+    String query = "UPDATE userAccount SET user_introduce = ? WHERE user_id = ?";
+    try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+        stmt.setString(1, introduction);
+        stmt.setInt(2, userId);
+        stmt.executeUpdate();
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }   catch (Exception ex) {
+            ex.printStackTrace();
+        }
+}
+
+    public String getUserIntroduce(int sessionUserId) {
+        String query = "SELECT user_introduce FROM userAccount WHERE user_id = ?";
+        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)){
+            stmt.setInt(1, sessionUserId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if(rs.next()){
+                    return rs.getString("user_introduce");
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return "Xin chao`";
+    }
+
     public static void main(String[] args) throws Exception {
-        List<User> user = userDAO.getInstance().findFriendsByKeyWord(2, "tu");
-        System.out.println(user.get(0).getUser_id());
+        List<User> list =userDAO.getInstance().findFriendsByKeyWord(1, "");
+        for (User user : list) {
+            System.out.println(user.getFirst_name());
+        }
     }
 }

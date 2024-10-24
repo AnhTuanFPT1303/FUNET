@@ -24,7 +24,7 @@ public class sqlConnect {
     private String dbName = "FUNET";
     private String deviceName = "LAPTOP-5D2CNVK4";
     private String driverClass = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    private String sqlUrl = "jdbc:sqlserver://LAPTOP-5D2CNVK4;databaseName=FUNET;encrypt=false;trustServerCertificate=false";
+    private String sqlUrl = "jdbc:sqlserver://" + deviceName + ";databaseName=FUNET;encrypt=false;trustServerCertificate=false";
 
     private sqlConnect() throws Exception {
         try {

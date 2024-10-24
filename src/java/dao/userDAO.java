@@ -5,12 +5,15 @@ import java.sql.*;
 import model.User;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 public class userDAO {
 
     private static userDAO instance = null;
 
-    private userDAO() {
+    public userDAO() {
 
     }
 
@@ -130,6 +133,7 @@ public class userDAO {
                 u.setUser_id(rs.getInt(1));
                 u.setFirst_name(rs.getString(2));
                 u.setLast_name(rs.getString(3));
+                 u.setRole(rs.getString("role"));
                 u.setProfile_pic(rs.getString(4));
                 userList.add(u);
             }
@@ -184,6 +188,7 @@ public class userDAO {
                 u.setFirst_name(rs.getString("first_name"));
                 u.setLast_name(rs.getString("last_name"));
                 u.setEmail(rs.getString("email"));
+                 u.setRole(rs.getString("role"));
                 u.setProfile_pic(rs.getString("profile_pic"));
                 users.add(u);
             }
@@ -328,10 +333,34 @@ public class userDAO {
             }
             return users;
         }
+
     }
-    
-    public static void main(String[] args) throws Exception {
-        List<User> user = userDAO.getInstance().findFriendsByKeyWord(2, "tu");
-        System.out.println(user.get(0).getUser_id());
+
+    public void updateUserIntroduction(int userId, String introduction) {
+    String query = "UPDATE userAccount SET user_introduce = ? WHERE user_id = ?";
+    try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+        stmt.setString(1, introduction);
+        stmt.setInt(2, userId);
+        stmt.executeUpdate();
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }   catch (Exception ex) {
+            ex.printStackTrace();
+        }
+}
+
+    public String getUserIntroduce(int sessionUserId) {
+        String query = "SELECT user_introduce FROM userAccount WHERE user_id = ?";
+        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)){
+            stmt.setInt(1, sessionUserId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if(rs.next()){
+                    return rs.getString("user_introduce");
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return "Xin chao`";
     }
 }

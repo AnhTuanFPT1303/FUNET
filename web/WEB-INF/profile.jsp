@@ -144,8 +144,17 @@
             <div class="post-section-in">
                 <section class="info-section">
                     <div class="about-info">
-                        <h4>Intro</h4>
-                        <p>Xin chào</p>
+                        <div class="user-introduction">
+                            <h2>Introduction</h2>
+                            <p id="user-intro-text">${user.user_introduce}</p>
+                            <button id="edit-intro-btn" class="btn btn-primary">Edit Introduction</button>
+
+                            <form id="edit-intro-form" action="userIntroduceServlet" method="post" style="display: none;">
+                                <input type="text" name="userIntro" class="form-control" placeholder="Introduce yourself..." value="${user.user_introduce}">
+                                <button type="submit" class="btn btn-success">Save</button>
+                                <button type="button" id="cancel-edit-btn" class="btn btn-secondary">Cancel</button>
+                            </form>
+                        </div>
                         <!--
                                 <div class="bio-btn-click">
                                         <input class="input-box" type="text" value="MD Mehedi Hasan">
@@ -203,7 +212,7 @@
                                 <button class="edit-bio btn">Edit Hobbies</button>
                         -->
 
-                        <button class="edit-bio btn">Edit Featured</button>
+                        <!-- <button class="edit-bio btn">Edit Featured</button> -->
                     </div>
 
                     <div class="box-design images-site">
@@ -214,11 +223,11 @@
 
                         <div class="at9-images">
                             <c:forEach var="post" items="${posts}">
-                                <c:if test="${not empty post.image_path}">
-                                    <div class="images-div">
-                                        <img src="assets/post_image/${post.image_path}" alt="User posted image">
-                                    </div>
-                                </c:if>
+                               
+                                        <c:if test="${post.type == 'image'}">
+                                            <img src="${post.image_path}" style="max-width : 100%">
+                                        </c:if>
+                                        
                             </c:forEach>
                         </div>
                     </div>
@@ -312,16 +321,18 @@
                                         </div>
                                     </c:if>
 
-                                    <c:if test="${sessionScope.user['user_id'] == user.user_id}">
-                                        <!-- Delete form -->
-<%--
-                                        <form action="deleteServlet" method="post">
-                                            <input type="hidden" name="_method" value="delete">
-                                            <input type="hidden" name="postId" value="${post.post_id}">
-                                            <button type="submit" class="btn btn-danger delete-button">Delete</button>
-                                        </form>
---%>
-                                    </c:if>
+                                    <form action="updatePostServlet" method="post" class="update-form" enctype="multipart/form-data" style="display: none;">
+                                        <input type="hidden" name="postId" value="${post.post_id}">
+                                        <textarea name="newBody" class="form-control">${post.body}</textarea>
+                                        <button type="submit" class="btn btn-primary">Update</button>
+                                        <div class="item">
+                                            <label for="photo-upload">
+                                                <i class="fas fa-cloud-upload-alt"></i> Photo/Video
+                                            </label>
+                                            <input id="photo-upload" type="file" name="newImage" accept=".jpeg, .png, .jpg" style="display: none;" onchange="updateFileName(this)">
+                                        </div>
+                                        <button type="button" class="btn btn-secondary cancel-update">Cancel</button>
+                                    </form>
 
                                     <span>
                                         <div class="Select-audience">
@@ -331,52 +342,84 @@
                                             </div>
 
                                             <div class="content-popaap">
-                                                <ul>
-                                                    <li id="public-btn">
-                                                        <div class="icon-div">
-                                                            <i class="fas fa-globe-europe"></i>
-                                                        </div>
-                                                        <div class="text-aria">
-                                                            <h2>Public</h2>
-                                                            <p>Anyone on or off Facebook</p>
-                                                            <i id="public-li-icon" class="far fa-circle"></i>
-                                                        </div>
-                                                    </li>
-
-                                                    <li class="activ-li-div" id="friends-btn">
-                                                        <div class="icon-div">
-                                                            <i class="fas fa-user-friends frind-icon"></i>
-                                                        </div>
-                                                        <div class="text-aria">
-                                                            <h2>Friends</h2>
-                                                            <p>Your friends on Facebook</p>
-                                                            <i id="friends-li-icon"
-                                                               class="far fa-dot-circle activ-li-icon"></i>
-                                                        </div>
-                                                    </li>
-
-                                                    <li id="lock-btn">
-                                                        <div class="icon-div">
-                                                            <i class="fas fa-lock"></i>
-                                                        </div>
-                                                        <div class="text-aria">
-                                                            <h2 class="onlu-me">Only Me</h2>
-                                                            <i id="lock-li-icon" class="far fa-circle"></i>
-                                                        </div>
-                                                    </li>
-                                                </ul>
+                                                <form id="updatePrivacyForm" action="updatePrivateServlet" method="post">
+                                                    <input type="hidden" name="postId" value="${post.post_id}">
+                                                    <input type="hidden" name="privacyMode" id="privacyMode">
+                                                    <ul>
+                                                        <li id="public-btn" onclick="updatePrivacy('public')">
+                                                            <div class="icon-div">
+                                                                <i class="fas fa-globe-europe"></i>
+                                                            </div>
+                                                            <div class="text-aria">
+                                                                <h2>Public</h2>
+                                                                <p>Anyone on or off FUNET</p>
+                                                                <i id="public-li-icon" class="far fa-circle"></i>
+                                                            </div>
+                                                        </li>
+                                                        <li class="activ-li-div" id="friends-btn" onclick="updatePrivacy('friend')">
+                                                            <div class="icon-div">
+                                                                <i class="fas fa-user-friends frind-icon"></i>
+                                                            </div>
+                                                            <div class="text-aria">
+                                                                <h2>Friends</h2>
+                                                                <p>Your friends on FUNET</p>
+                                                                <i id="friends-li-icon" class="far fa-dot-circle activ-li-icon"></i>
+                                                            </div>
+                                                        </li>
+                                                        <li id="lock-btn" onclick="updatePrivacy('private')">
+                                                            <div class="icon-div">
+                                                                <i class="fas fa-lock"></i>
+                                                            </div>
+                                                            <div class="text-aria">
+                                                                <h2 class="onlu-me">Only Me</h2>
+                                                                <i id="lock-li-icon" class="far fa-circle"></i>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </form>
                                             </div>
                                         </div>
                                     </span>
                                 </div>
                                 <span class="thre-dto-btn fas fa-ellipsis-h"></span>
+                                <c:if test="${sessionScope.user['user_id'] == user.user_id}">
+                                    <div class="dropdown-menu" style="display: none;">
+                                        <form action="updatePostServlet" method="post" class="update-form" enctype="multipart/form-data" style="display: none;">
+                                            <input type="hidden" name="postId" value="${post.post_id}">
+                                            <textarea name="newBody" class="form-control">${post.body}</textarea>
+                                            <button type="submit" class="btn btn-primary">Update</button>
+                                            <div class="item">
+                                                <label for="photo-upload">
+                                                    <i class="fas fa-cloud-upload-alt"></i> Photo/Video
+                                                </label>
+                                                <input id="photo-upload" type="file" name="newImage" accept=".jpeg, .png, .jpg" style="display: none;" onchange="updateFileName(this)">
+                                            </div>
+                                            <button type="button" class="btn btn-secondary cancel-update">Cancel</button>
+                                        </form>
+                                        <!-- Update button -->
+                                        <c:if test="${!post.isShared}">
+                                            <button class="btn btn-primary show-update-form update-post-btn" data-post-id="${post.post_id}" onclick="UpdatePostClick('${post.post_id}', '${post.body}')">Update</button>
+                                        </c:if>
+                                        <form action="deleteServlet" method="post" class="delete-form">
+                                            <input type="hidden" name="_method" value="delete">
+                                            <input type="hidden" name="postId" value="${post.post_id}">
+                                            <button type="submit" class="btn btn-link">Delete</button>
+                                        </form>
+                                    </div>
+                                </c:if>
                             </div>
                             <p class="post-text-show">${post.body}</p>
-                            <c:if test="${not empty post.image_path}">
-                                <div class=div-post-images>
-                                    <img class="post-images" src="assets/post_image/${post.image_path}" style="max-width: 100%">
-                                </div>
-                            </c:if>
+                            <c:choose>
+                                        <c:when test="${post.type == 'image'}">
+                                            <img src="${post.image_path}" style="max-width : 100%">
+                                        </c:when>
+                                        <c:otherwise>
+                                            <video style="max-width: 100%" controls>
+                                                <source src="${post.image_path}" type="video/mp4">
+                                                
+                                            </video>
+                                        </c:otherwise>
+                                    </c:choose>
                             <div class="post-reaction">
                                 <div class="reaction">
                                     <div class="reaction-count post-ratings-container">
@@ -468,6 +511,34 @@
                     </c:forEach>
                 </section>
             </div>
+            <!-- Thêm modal để hiển thị form cập nhật bài đăng -->
+            <div class="modal fade" id="updatePostModal" tabindex="-1" aria-labelledby="updatePostModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="updatePostModalLabel">Update Post</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form id="updatePostForm" method="post" enctype="multipart/form-data">
+                            <div class="modal-body">
+                                <input type="hidden" name="postId" id="postIdInput">
+                                <div class="mb-3">
+                                    <label for="newBody" class="form-label" id="formupdateidcontent">New Content</label>
+                                    <textarea class="form-control" id="newBody" name="newBody" rows="2"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="newImage" class="form-label" id="formupdateidimage photo-upload">New Image</label>
+                                    <input type="file" class="form-control" id="newImage" name="newImage" accept=".jpeg, .png, .jpg, .mp4" onchange="updateFileName(this)">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -476,21 +547,127 @@
         <script src="assets/js/likeButton.js" defer></script>
 
         <script>
-                                        document.addEventListener('DOMContentLoaded', function () {
-                                            const commentForm = document.getElementById('commentForm');
-                                            const commentInput = document.getElementById('body');
+                                        function updatePrivacy(mode) {
+                                            document.getElementById('privacyMode').value = mode;
+                                            document.getElementById('updatePrivacyForm').submit();
 
-                                            commentInput.addEventListener('keydown', function (event) {
-                                                if (event.key === 'Enter' && !event.shiftKey) {
-                                                    event.preventDefault();
-                                                    if (commentInput.value.trim() !== '') {
-                                                        commentForm.submit();
+                                        }
+
+                                        function UpdatePostClick(id, body) {
+                                            document.getElementById('postIdInput').value = id;
+                                            document.getElementById('newBody').value = body;
+
+                                            $('#updatePostModal').modal('show');
+                                        }
+                                        $('#updatePostForm').on('submit', function (event) {
+                                            event.preventDefault();
+
+                                            var formData = new FormData(this);
+
+                                            $.ajax({
+                                                url: 'updatePostServlet',
+                                                type: 'POST',
+                                                data: formData,
+                                                contentType: false,
+                                                processData: false,
+                                                success: function (response) {
+                                                    if (response.trim() === 'success') {
+
+                                                        $('#updatePostModal').modal('hide');
+                                                        location.reload();
+                                                    } else {
+
+                                                        alert('Error updating post server: ' + response);
                                                     }
+                                                },
+                                                error: function (xhr, status, error) {
+
+                                                    alert('Error updating post ajax: ' + error);
                                                 }
                                             });
                                         });
+
+
+
+
         </script>
 
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const commentForm = document.getElementById('commentForm');
+                const commentInput = document.getElementById('body');
 
+                commentInput.addEventListener('keydown', function (event) {
+                    if (event.key === 'Enter' && !event.shiftKey) {
+                        event.preventDefault();
+                        if (commentInput.value.trim() !== '') {
+                            commentForm.submit();
+                        }
+                    }
+                });
+            });
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const posts = document.querySelectorAll('.post');
+
+                posts.forEach(post => {
+                    const showUpdateFormBtn = post.querySelector('.show-update-form');
+                    const updateForm = post.querySelector('.update-form');
+                    const cancelUpdateBtn = post.querySelector('.cancel-update');
+
+                    if (showUpdateFormBtn) {
+                        showUpdateFormBtn.addEventListener('click', () => {
+                           // updateForm.style.display = 'block';
+                            showUpdateFormBtn.style.display = 'none';
+                        });
+                    }
+
+                    if (cancelUpdateBtn) {
+                        cancelUpdateBtn.addEventListener('click', () => {
+                           // updateForm.style.display = 'none';
+                            showUpdateFormBtn.style.display = 'block';
+                        });
+                    }
+                });
+            });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const posts = document.querySelectorAll('.post');
+                posts.forEach(post => {
+                    const threeDotBtn = post.querySelector('.thre-dto-btn');
+                    const dropdownMenu = post.querySelector('.dropdown-menu');
+                    const showUpdateFormBtn = post.querySelector('.show-update-form');
+                    const updateForm = post.querySelector('.update-form');
+                    const cancelUpdateBtn = post.querySelector('.cancel-update');
+                    threeDotBtn.addEventListener('click', () => {
+                        dropdownMenu.style.display = dropdownMenu.style.display === 'none' ? 'block' : 'none';
+                    });
+                    if (showUpdateFormBtn) {
+                        showUpdateFormBtn.addEventListener('click', () => {
+                         //   updateForm.style.display = 'block';
+                            showUpdateFormBtn.style.display = 'none';
+                            dropdownMenu.style.display = 'none';
+                        });
+                    }
+
+                    if (cancelUpdateBtn) {
+                        cancelUpdateBtn.addEventListener('click', () => {
+                           // updateForm.style.display = 'none';
+                            showUpdateFormBtn.style.display = 'block';
+                        });
+                    }
+                });
+                document.addEventListener('click', function (event) {
+                    if (!event.target.closest('.post')) {
+                        document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                            menu.style.display = 'none';
+                        });
+                    }
+                });
+            });
+        </script>
     </body>
 </html>

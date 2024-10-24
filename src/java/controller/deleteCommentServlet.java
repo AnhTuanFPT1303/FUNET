@@ -4,29 +4,27 @@
  */
 package controller;
 
+import dao.postDAO;
+import java.io.IOException;
 import java.io.PrintWriter;
-import dao.userDAO;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import jakarta.servlet.http.Part;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.Comment;
+import model.Post;
 import model.User;
 
 /**
  *
- * @author HELLO
+ * @author OS
  */
-@MultipartConfig
-public class changeAvatarServlet extends HttpServlet {
+public class deleteCommentServlet extends HttpServlet {
 
-    private userDAO userDao = userDAO.getInstance();    
-    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -44,10 +42,10 @@ public class changeAvatarServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet changeAvatarServlet</title>");
+            out.println("<title>Servlet deleteCommentServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet changeAvatarServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet deleteCommentServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -79,39 +77,17 @@ public class changeAvatarServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("application/json");
         HttpSession session = request.getSession(false);
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            response.sendRedirect("login.jsp");
-            return;
-        }
-
-        Part file = request.getPart("profile_pic");
-        String profile_pic = file.getSubmittedFileName();
-        String uploadPath = getServletContext().getRealPath("/assets/profile_avt/") + profile_pic;
+        int comment_id = Integer.parseInt(request.getParameter("commentId"));
+        postDAO postDAO = new postDAO();
         try {
-            FileOutputStream fos = new FileOutputStream(uploadPath);
-            InputStream is = file.getInputStream();
-
-            byte[] data = new byte[is.available()];
-            is.read(data);
-            fos.write(data);
-            fos.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+            postDAO.deleteComment(comment_id);
+            response.getWriter().write("{\"success\": true}");
+        } catch (Exception ex) {
+            Logger.getLogger(userpageServlet.class.getName()).log(Level.SEVERE, null, ex);
+            response.getWriter().write("{\"success\": false}");
         }
-
-        if (!profile_pic.isEmpty()) {
-            user.setProfile_pic(profile_pic);
-            try {
-                userDao.changeAvatar(user);
-                session.setAttribute("user", user);
-            } catch (Exception e) {
-                e.printStackTrace();
-                request.setAttribute("errorMessage", "Error");
-            }
-        }
-        response.sendRedirect("profile");
     }
 
     /**

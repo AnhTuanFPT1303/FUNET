@@ -4,29 +4,25 @@
  */
 package controller;
 
+import java.io.IOException;
 import java.io.PrintWriter;
-import dao.userDAO;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import jakarta.servlet.http.Part;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import model.User;
+import dao.userDAO;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
- * @author HELLO
+ * @author bim26
  */
-@MultipartConfig
-public class changeAvatarServlet extends HttpServlet {
+public class userIntroduceServlet extends HttpServlet {
 
-    private userDAO userDao = userDAO.getInstance();    
-    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -44,10 +40,10 @@ public class changeAvatarServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet changeAvatarServlet</title>");
+            out.println("<title>Servlet userIntroduceServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet changeAvatarServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet userIntroduceServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -80,38 +76,19 @@ public class changeAvatarServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            response.sendRedirect("login.jsp");
-            return;
-        }
-
-        Part file = request.getPart("profile_pic");
-        String profile_pic = file.getSubmittedFileName();
-        String uploadPath = getServletContext().getRealPath("/assets/profile_avt/") + profile_pic;
-        try {
-            FileOutputStream fos = new FileOutputStream(uploadPath);
-            InputStream is = file.getInputStream();
-
-            byte[] data = new byte[is.available()];
-            is.read(data);
-            fos.write(data);
-            fos.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (!profile_pic.isEmpty()) {
-            user.setProfile_pic(profile_pic);
-            try {
-                userDao.changeAvatar(user);
-                session.setAttribute("user", user);
-            } catch (Exception e) {
-                e.printStackTrace();
-                request.setAttribute("errorMessage", "Error");
+        if (session != null && session.getAttribute("user") != null) {
+            User user = (User) session.getAttribute("user");
+            String newIntroduction = request.getParameter("userIntro");
+            if (newIntroduction != null && !newIntroduction.trim().isEmpty()) {
+                userDAO.getInstance().updateUserIntroduction(user.getUser_id(), newIntroduction);
+                user.setUser_introduce(newIntroduction);
+                response.sendRedirect("profile");
+            } else {
+                response.sendRedirect("profile");
             }
+        } else {
+            response.sendRedirect("login");
         }
-        response.sendRedirect("profile");
     }
 
     /**

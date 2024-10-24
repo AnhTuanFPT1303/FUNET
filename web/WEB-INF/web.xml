@@ -20,6 +20,10 @@
         <servlet-name>UpdateOrderStatusServlet</servlet-name>
         <servlet-class>controller.UpdateOrderStatusServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>lmaterialLink</servlet-name>
+        <servlet-class>controller.lmaterialLink</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RemoveItemServlet</servlet-name>
         <url-pattern>/RemoveItemServlet</url-pattern>
@@ -43,6 +47,10 @@
     <servlet-mapping>
         <servlet-name>UpdateOrderStatusServlet</servlet-name>
         <url-pattern>/UpdateOrderStatusServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>lmaterialLink</servlet-name>
+        <url-pattern>/lmaterialLink</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

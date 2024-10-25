@@ -192,7 +192,7 @@ public class ConversationService {
 //                System.out.println(user.size());
 //                System.out.println(user.get(0).getUserId());
 
-            List<MessageDTO> message = ConversationService.getInstance().getAllMessagesByConversationId(4);
+            List<ConversationDTO> message = ConversationService.getInstance().getAllConversationsById(1);
             System.out.println(message.get(0).toString());
         }
 }

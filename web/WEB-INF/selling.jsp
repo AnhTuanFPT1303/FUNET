@@ -10,7 +10,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Home Page</title>
         <link href="assets/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="assets/css/lmaterial.css">
+        <link rel="stylesheet" href="assets/css/market.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="https://kit.fontawesome.com/7f80ec1f7e.js" crossorigin="anonymous"></script>
@@ -78,14 +78,14 @@
                 <main class="main-class col-10">
 
                     <h2 class="mt-4 mb-5 text-primary d-flex justify-content-center">Your Product</h2>
-                    <h5>${error}</h5>
+                    <h5 class="text-danger text-center mt-3">${error}</h5>
                     <div class="row">
                         <c:forEach var="product" items="${productList}">
                             <div class="col-3 mb-3">
                                 <div class="product-card border" style="border: 2px solid black; padding: 10px; text-align: center;">
                                     <h5>${product.productName}</h5>
-                                    <img src="${product.product_img}" alt="Item 1" class="img-fluid" style="max-width: 100%; height: auto;">
-                                    <p>Price: {product.price}</p>
+                                    <img src="${product.product_img}" alt="Item 1" class="img-fluid" style="max-width: 100%;">
+                                    <p>Price: ${product.price}</p>
                                     <form method="post" action="/FUNET/DeleteProductServlet">
                                         <input type="hidden" name="product_id" value="${product.productId}" />
                                         <button type="submit" class="btn btn-danger">Delete</button>

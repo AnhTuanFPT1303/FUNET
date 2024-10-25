@@ -36,7 +36,7 @@ public class DeleteProductServlet extends HttpServlet {
                 request.getRequestDispatcher("WEB-INF/selling.jsp").forward(request, response);
             }
         } catch (Exception e) {
-            request.setAttribute("error", "cannot delete product because product is on transaction");
+            request.setAttribute("error", "You cannot delete product because the product is on transaction");
             productDAO productDAO = new productDAO();
 
             List<Product> productList = null;

@@ -146,7 +146,7 @@
         <div class="container-fluid">
             <div class="row all-post">
                 <nav class="col-2 py-3 sidebar sticky-sidebar position-sticky" style="top: 76px;background: white;box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-                    <h2 class="text-primary">Learning Material</h2>
+                    <a href="lmaterialLink" style="text-decoration:none;"><h2 class="text-primary">Learning Material</h2></a>      
                     <form class="d-flex mb-3 search-learning-material-container" method="get" action="/FUNET/searchLearningMaterial">
                         <input class="search-form-controller me-2" name="search-name" type="search" placeholder="Find learning material" aria-label="Search">
                     </form>
@@ -170,7 +170,7 @@
                         </div>
                     </div>
                     <button class="btn btn-primary mt-3" id="toggleFormBtn" style="width:100%;">Add Learning Material</button>
-                    <button class="btn btn-secondary mt-3" id="showSavedMaterialsBtn" style="width:100%;">Saved Learning Materials</button>
+<!--                    <button class="btn btn-secondary mt-3" id="showSavedMaterialsBtn" style="width:100%;">Saved Learning Materials</button>-->
 
                 </nav>
 
@@ -184,7 +184,7 @@
                                             <i class="fa fa-ellipsis-h" style="color:black;"></i>
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="height:fit-content;width: fit-content;">
-                                            <li><a class="dropdown-item" href="#" onclick="showUpdateForm(${material.learningMaterialId}, '${material.learningMaterialName}', '${material.learningMaterialDescription}', '${material.learningMaterial_img}', '${material.learningMaterialContext}', '${material.subjectCode}', ${material.departmentId})">Update</a></li>
+                                            <li><a class="dropdown-item" href="#" onclick="showUpdateForm(${material.learningMaterialId}, '${material.learningMaterialName}', '${material.learningMaterialDescription}',  '${material.learningMaterialContext}', '${material.subjectCode}', ${material.departmentId})">Update</a></li>
                                             <li>
                                                 <form action="deleteLearningMaterial" method="post" style="display:inline;">
                                                     <input type="hidden" name="id" value="${material.learningMaterialId}">
@@ -192,7 +192,7 @@
                                                 </form>
                                             </li>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="height:fit-content;width: fit-content;">
-                                                <li><a class="dropdown-item" href="#" onclick="showUpdateForm(${material.learningMaterialId}, '${material.learningMaterialName}', '${material.learningMaterialDescription}', '${material.learningMaterial_img}', '${material.learningMaterialContext}', '${material.subjectCode}', ${material.departmentId})">Update</a></li>
+                                                <li><a class="dropdown-item" href="#" onclick="showUpdateForm(${material.learningMaterialId}, '${material.learningMaterialName}', '${material.learningMaterialDescription}', '${material.learningMaterialContext}', '${material.subjectCode}', ${material.departmentId})">Update</a></li>
                                                 <li>
                                                     <form action="deleteLearningMaterial" method="post" style="display:inline;">
                                                         <input type="hidden" name="id" value="${material.learningMaterialId}">
@@ -203,9 +203,7 @@
                                         </ul>
                                     </div>
 
-                                    <a href="${material.learningMaterialContext}" download>
-                                        <img class="material-img" src="${material.learningMaterial_img}" alt="${material.learningMaterialName}">
-                                    </a>
+                                    <a href="downloadMaterial?name=${material.learningMaterialContext}" >download </a>
                                     <h5>${material.learningMaterialName}</h5>
                                     <p>${material.learningMaterialDescription}</p>
                                     <p><small class="text-muted">Subject: ${material.subjectCode}</small></p>
@@ -219,7 +217,7 @@
 
                 <div class="container mt-4" id="learningMaterialForm" enctype="multipart/form-data" style="position: relative; width: 75%; background: none;">
                     <h2>Create Learning Material</h2>
-                    <form action="CreateLearningMaterial" method="post">
+                    <form action="creMaterial" method="post" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="name">Name:</label>
                             <input type="text" class="form-control" id="name" name="name" required>
@@ -242,12 +240,8 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="img">Image File:</label>
-                            <input type="file" class="form-control" id="img" name="img" required>
-                        </div>
-                        <div class="form-group">
                             <label for="context">Context File:</label>
-                            <input type="file" class="form-control" id="context" name="context" required>
+                            <input type="file" class="form-control" id="context" name="context" required >
                         </div>
                         <div class="form-group">
                             <label for="review">Review:</label>
@@ -328,7 +322,7 @@
                                                         });
                                                     });
 
-                                                    function showUpdateForm(id, name, description, img, context, subjectCode, departmentId) {
+                                                    function showUpdateForm(id, name, description, context, subjectCode, departmentId) {
                                                         var updateForm = document.getElementById('updateLearningMaterialForm');
                                                         var mainContent = document.querySelector('.main-class');
                                                         var learningMaterialForm = document.getElementById('learningMaterialForm');
@@ -336,7 +330,7 @@
                                                         document.getElementById('updateLearningMaterialId').value = id;
                                                         document.getElementById('updateName').value = name;
                                                         document.getElementById('updateDescription').value = description;
-                                                        document.getElementById('updateImg').value = img;
+                                                        
                                                         document.getElementById('updateContext').value = context;
                                                         document.getElementById('updateSubjectCode').value = subjectCode;
                                                         document.getElementById('updateDepartmentId').value = departmentId;

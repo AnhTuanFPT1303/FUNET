@@ -21,10 +21,10 @@ public class sqlConnect {
     private String passWord = "123";
     private String port = "1433";
     private String ip = "127.0.0.1";
-    private String dbName = "FUNET";
+    private String dbName = "FUNET2";
     private String deviceName = "DESKTOP-6E10C8A";
     private String driverClass = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    private String sqlUrl = "jdbc:sqlserver://DESKTOP-9HS9I2Q;databaseName=FUNET;encrypt=false;trustServerCertificate=false";
+    private String sqlUrl = "jdbc:sqlserver://DESKTOP-6E10C8A;databaseName=FUNET2;encrypt=false;trustServerCertificate=false";
 
     private sqlConnect() throws Exception {
         try {

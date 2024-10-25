@@ -20,25 +20,25 @@ public class LearningMaterial {
     private int userId;    
     private String learningMaterialName; 
     private String learningMaterialDescription; 
-    private String learningMaterial_img;
     private String learningMaterialContext; 
     private String subjectCode; 
     private Date publishDate; 
     private String review; 
     private int departmentId;
 
-    public LearningMaterial(int learningMaterialId, int userId, String learningMaterialName, String learningMaterialDescription, String learningMaterial_img, String learningMaterialContext, String subjectCode, Date publishDate, String review, int departmentId) {
+    public LearningMaterial(int learningMaterialId, int userId, String learningMaterialName, String learningMaterialDescription, String learningMaterialContext, String subjectCode, Date publishDate, String review, int departmentId) {
         this.learningMaterialId = learningMaterialId;
         this.userId = userId;
         this.learningMaterialName = learningMaterialName;
         this.learningMaterialDescription = learningMaterialDescription;
-        this.learningMaterial_img = learningMaterial_img;
         this.learningMaterialContext = learningMaterialContext;
         this.subjectCode = subjectCode;
         this.publishDate = publishDate;
         this.review = review;
         this.departmentId = departmentId;
     }
+
+ 
 
     // Getters and setters for all fields, including departmentId
     public int getDepartmentId() {
@@ -49,13 +49,7 @@ public class LearningMaterial {
         this.departmentId = departmentId;
     }
 
-    public String getLearningMaterial_img() {
-        return learningMaterial_img;
-    }
 
-    public void setLearningMaterial_img(String learningMaterial_img) {
-        this.learningMaterial_img = learningMaterial_img;
-    }
 
     public int getLearningMaterialId() {
         return learningMaterialId;

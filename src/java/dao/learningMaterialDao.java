@@ -30,14 +30,13 @@ public class learningMaterialDao {
                 int userId = resultSet.getInt("user_id");
                 String learningmaterialName = resultSet.getString("learningmaterial_name");
                 String learningmaterialDescription = resultSet.getString("learningmaterial_description");
-                String learningmaterialImg = resultSet.getString("learningmaterial_img");
                 String learningmaterialContext = resultSet.getString("learningmaterial_context");
                 String subjectCode = resultSet.getString("subject_code");
                 java.util.Date publishDate = resultSet.getDate("publish_date");
                 String review = resultSet.getString("review");
                 int departmentId = resultSet.getInt("department_id");
 
-                LearningMaterial learningMaterial = new LearningMaterial(learningMaterialId, userId, learningmaterialName, learningmaterialDescription, learningmaterialImg, learningmaterialContext, subjectCode, publishDate, review, departmentId);
+                LearningMaterial learningMaterial = new LearningMaterial(learningMaterialId, userId, learningmaterialName, learningmaterialDescription, learningmaterialContext, subjectCode, publishDate, review, departmentId);
                 learningMaterialsList.add(learningMaterial);
             }
         } catch (SQLException e) {
@@ -46,31 +45,31 @@ public class learningMaterialDao {
 
         return learningMaterialsList;
     }
-    public LearningMaterial getLearningMaterialById(int learningMaterialId) throws SQLException, Exception {
-    String sql = "SELECT * FROM learningmaterial WHERE learningmaterial_id = ?";
-    try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-        stmt.setInt(1, learningMaterialId);
-        try (ResultSet rs = stmt.executeQuery()) {
-            if (rs.next()) {
-                int userId = rs.getInt("user_id");
-                String learningMaterialName = rs.getString("learningmaterial_name");
-                String learningMaterialDescription = rs.getString("learningmaterial_description");
-                String learningMaterialImg = rs.getString("learningmaterial_img");
-                String learningMaterialContext = rs.getString("learningmaterial_context");
-                String subjectCode = rs.getString("subject_code");
-                Date publishDate = rs.getDate("publish_date");
-                String review = rs.getString("review");
-                int departmentId = rs.getInt("department_id");
 
-                return new LearningMaterial(learningMaterialId, userId, learningMaterialName, learningMaterialDescription, learningMaterialImg, learningMaterialContext, subjectCode, publishDate, review, departmentId);
+    public LearningMaterial getLearningMaterialById(int learningMaterialId) throws SQLException, Exception {
+        String sql = "SELECT * FROM learningmaterial WHERE learningmaterial_id = ?";
+        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, learningMaterialId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    int userId = rs.getInt("user_id");
+                    String learningMaterialName = rs.getString("learningmaterial_name");
+                    String learningMaterialDescription = rs.getString("learningmaterial_description");
+                    String learningMaterialContext = rs.getString("learningmaterial_context");
+                    String subjectCode = rs.getString("subject_code");
+                    Date publishDate = rs.getDate("publish_date");
+                    String review = rs.getString("review");
+                    int departmentId = rs.getInt("department_id");
+
+                    return new LearningMaterial(learningMaterialId, userId, learningMaterialName, learningMaterialDescription, learningMaterialContext, subjectCode, publishDate, review, departmentId);
+                }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Exception("Error retrieving learning material", e);
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
-        throw new Exception("Error retrieving learning material", e);
+        return null;
     }
-    return null;
-}
 
     public List<LearningMaterial> searchLearningMaterials(String keyword) throws Exception {
         List<LearningMaterial> learningMaterialsList = new ArrayList<>();
@@ -86,14 +85,13 @@ public class learningMaterialDao {
                     int userId = resultSet.getInt("user_id");
                     String learningmaterialName = resultSet.getString("learningmaterial_name");
                     String learningmaterialDescription = resultSet.getString("learningmaterial_description");
-                    String learningmaterialImg = resultSet.getString("learningmaterial_img");
                     String learningmaterialContext = resultSet.getString("learningmaterial_context");
                     String subjectCode = resultSet.getString("subject_code");
                     java.util.Date publishDate = resultSet.getDate("publish_date");
                     String review = resultSet.getString("review");
                     int departmentId = resultSet.getInt("department_id");
 
-                    LearningMaterial learningMaterial = new LearningMaterial(learningMaterialId, userId, learningmaterialName, learningmaterialDescription, learningmaterialImg, learningmaterialContext, subjectCode, publishDate, review, departmentId);
+                    LearningMaterial learningMaterial = new LearningMaterial(learningMaterialId, userId, learningmaterialName, learningmaterialDescription, learningmaterialContext, subjectCode, publishDate, review, departmentId);
                     learningMaterialsList.add(learningMaterial);
                 }
             }
@@ -116,14 +114,13 @@ public class learningMaterialDao {
                     int userId = resultSet.getInt("user_id");
                     String learningmaterialName = resultSet.getString("learningmaterial_name");
                     String learningmaterialDescription = resultSet.getString("learningmaterial_description");
-                    String learningmaterialImg = resultSet.getString("learningmaterial_img");
                     String learningmaterialContext = resultSet.getString("learningmaterial_context");
                     String subjectCode = resultSet.getString("subject_code");
                     java.util.Date publishDate = resultSet.getDate("publish_date");
                     String review = resultSet.getString("review");
                     int departmentIdResult = resultSet.getInt("department_id");
 
-                    LearningMaterial learningMaterial = new LearningMaterial(learningMaterialId, userId, learningmaterialName, learningmaterialDescription, learningmaterialImg, learningmaterialContext, subjectCode, publishDate, review, departmentIdResult);
+                    LearningMaterial learningMaterial = new LearningMaterial(learningMaterialId, userId, learningmaterialName, learningmaterialDescription, learningmaterialContext, subjectCode, publishDate, review, departmentIdResult);
                     learningMaterialsList.add(learningMaterial);
                 }
             }
@@ -133,31 +130,30 @@ public class learningMaterialDao {
 
         return learningMaterialsList;
     }
-public void createLearningMaterial(LearningMaterial learningMaterial) throws SQLException, Exception {
-    String sql = "INSERT INTO learningmaterial (user_id, learningmaterial_name, learningmaterial_description, learningmaterial_img, learningmaterial_context, subject_code, publish_date, review, department_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-        stmt.setInt(1, learningMaterial.getUserId());
-        stmt.setString(2, learningMaterial.getLearningMaterialName());
-        stmt.setString(3, learningMaterial.getLearningMaterialDescription());
-        stmt.setString(4, learningMaterial.getLearningMaterial_img());
-        stmt.setString(5, learningMaterial.getLearningMaterialContext());
-        stmt.setString(6, learningMaterial.getSubjectCode());
-        stmt.setTimestamp(7, new java.sql.Timestamp(learningMaterial.getPublishDate().getTime()));
-        stmt.setString(8, learningMaterial.getReview());
-        stmt.setInt(9, learningMaterial.getDepartmentId());
-        stmt.executeUpdate();
-    } catch (SQLException e) {
-        e.printStackTrace();
-        throw new Exception("Error creating learning material", e);
+
+    public void createLearningMaterial(LearningMaterial learningMaterial) throws SQLException, Exception {
+        String sql = "INSERT INTO learningmaterial (user_id, learningmaterial_name, learningmaterial_description, learningmaterial_context, subject_code, publish_date, review, department_id) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, learningMaterial.getUserId());
+            stmt.setString(2, learningMaterial.getLearningMaterialName());
+            stmt.setString(3, learningMaterial.getLearningMaterialDescription());
+            stmt.setString(4, learningMaterial.getLearningMaterialContext());
+            stmt.setString(5, learningMaterial.getSubjectCode());
+            stmt.setTimestamp(6, new java.sql.Timestamp(learningMaterial.getPublishDate().getTime()));
+            stmt.setString(7, learningMaterial.getReview());
+            stmt.setInt(8, learningMaterial.getDepartmentId());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Exception("Error creating learning material", e);
+        }
     }
-}
-   
+
     public void updateLearningMaterial(LearningMaterial learningMaterial) throws SQLException, Exception {
-        String sql = "UPDATE learningmaterial SET learningmaterial_name = ?, learningmaterial_description = ?, learningmaterial_img = ?, learningmaterial_context = ?, subject_code = ?, publish_date = ?, review = ?, department_id = ? WHERE learningmaterial_id = ?";
+        String sql = "UPDATE learningmaterial SET learningmaterial_name = ?, learningmaterial_description = ?,  learningmaterial_context = ?, subject_code = ?, publish_date = ?, review = ?, department_id = ? WHERE learningmaterial_id = ?";
         try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, learningMaterial.getLearningMaterialName());
             stmt.setString(2, learningMaterial.getLearningMaterialDescription());
-            stmt.setString(3, learningMaterial.getLearningMaterial_img());
             stmt.setString(4, learningMaterial.getLearningMaterialContext());
             stmt.setString(5, learningMaterial.getSubjectCode());
             stmt.setTimestamp(6, new java.sql.Timestamp(learningMaterial.getPublishDate().getTime()));
@@ -181,7 +177,8 @@ public void createLearningMaterial(LearningMaterial learningMaterial) throws SQL
             throw new Exception("Error deleting learning material", e);
         }
     }
- public void saveLearningMaterial(int userId, int learningMaterialId) throws SQLException, Exception {
+
+    public void saveLearningMaterial(int userId, int learningMaterialId) throws SQLException, Exception {
         String sql = "INSERT INTO saved_learning_materials (user_id, learning_material_id) VALUES (?, ?)";
         try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, userId);
@@ -211,7 +208,7 @@ public void createLearningMaterial(LearningMaterial learningMaterial) throws SQL
                     String review = rs.getString("review");
                     int departmentId = rs.getInt("department_id");
 
-                    LearningMaterial learningMaterial = new LearningMaterial(learningMaterialId, userIdDb, learningMaterialName, learningMaterialDescription, learningMaterialImg, learningMaterialContext, subjectCode, publishDate, review, departmentId);
+                    LearningMaterial learningMaterial = new LearningMaterial(learningMaterialId, userIdDb, learningMaterialName, learningMaterialDescription, learningMaterialContext, subjectCode, publishDate, review, departmentId);
                     savedMaterials.add(learningMaterial);
                 }
             }
@@ -221,5 +218,18 @@ public void createLearningMaterial(LearningMaterial learningMaterial) throws SQL
         }
         return savedMaterials;
     }
-     
+    public static void main(String[] args) {
+        try {
+            learningMaterialDao dao = new learningMaterialDao();
+            List<LearningMaterial> materials = dao.getAll();
+            System.out.println("Learning Materials:");
+
+            for (LearningMaterial material : materials) {
+                System.out.println(material);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

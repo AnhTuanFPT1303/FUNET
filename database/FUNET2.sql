@@ -166,7 +166,7 @@ CREATE TABLE product (
 GO
 SELECT * FROM product
 
-
+drop table learningmaterial
 CREATE TABLE learningmaterial (
     learningmaterial_id INT IDENTITY(1,1) PRIMARY KEY,
     user_id INT NOT NULL,
@@ -197,16 +197,7 @@ INSERT INTO department (department_name) VALUES
 ALTER TABLE learningmaterial ADD department_id INT;
 ALTER TABLE learningmaterial ADD CONSTRAINT fk_department_id FOREIGN KEY (department_id) REFERENCES department(department_id);
 -- Thêm dữ liệu cho bảng learningmaterial
-INSERT INTO learningmaterial (user_id, learningmaterial_name, learningmaterial_description, learningmaterial_img, learningmaterial_context, subject_code, department_id, review)
-VALUES 
-(1, 'Introduction to Economics', 'A comprehensive guide to economics for beginners.', 'assets/product/item.png', 'assets/leaningMaterial/ECO101.docx', 'ECO101', 1, 'Great resource for beginners.'),
-(2, 'Advanced Economics', 'In-depth study of economic theories and practices.', 'assets/product/item.png', 'assets/leaningMaterial/ECO201.docx', 'ECO201', 1, 'Excellent for advanced learners.'),
-(3, 'Introduction to IT', 'A comprehensive guide to IT for beginners.', 'assets/product/item.png', 'assets/leaningMaterial/IT101.docx', 'IT101', 2, 'Great resource for beginners.'),
-(2, 'Advanced Programming', 'In-depth study of programming languages and practices.', 'assets/product/item.png', 'assets/leaningMaterial/IT201.docx', 'IT201', 2, 'Excellent for advanced learners.'),
-(3, 'Introduction to Tourism', 'A comprehensive guide to tourism for beginners.', 'assets/product/item.png', 'assets/leaningMaterial/TOUR101.docx', 'TOUR101', 3, 'Great resource for beginners.'),
-(1, 'Advanced Tourism', 'In-depth study of tourism management and practices.', 'assets/product/item.png', 'assets/leaningMaterial/TOUR201.docx', 'TOUR201', 3, 'Excellent for advanced learners.'),
-(2, 'Introduction to Languages', 'A comprehensive guide to languages for beginners.', 'assets/product/item.png', 'assets/leaningMaterial/LANG101.docx', 'LANG101', 4, 'Great resource for beginners.'),
-(3, 'Advanced Linguistics', 'In-depth study of linguistics and language practices.', 'assets/product/item.png', 'assets/leaningMaterial/LANG201.docx', 'LANG201', 4, 'Excellent for advanced learners.');
+
 SELECT * FROM learningmaterial
 SELECT * FROM department;
 CREATE TABLE saved_learning_materials (

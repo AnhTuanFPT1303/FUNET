@@ -104,7 +104,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response) 
                 String imgPath = "assets/learningMaterial/" + imgFileName;
                 String contextPath = "assets/product/" + contextFileName;
 
-                LearningMaterial l = new LearningMaterial(id, user.getUser_id(), name, description, imgPath, contextPath, subjectCode, new Date(), review, departmentId);
+                LearningMaterial l = new LearningMaterial(id, user.getUser_id(), name, description, contextPath, subjectCode, new Date(), review, departmentId);
                 learningMaterialDao.updateLearningMaterial(l);
                 request.setAttribute("successMessage", "Learning Material updated successfully");
             } else {

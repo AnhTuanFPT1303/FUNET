@@ -6,11 +6,11 @@ USE FUNET;
 
 GO
 DROP TABLE IF EXISTS friendship;
-DROP TABLE IF EXISTS message;
 DROP TABLE IF EXISTS comment;
 DROP TABLE IF EXISTS post_like;
 DROP TABLE IF EXISTS post_share;
 DROP TABLE IF EXISTS post;
+DROP TABLE IF EXISTS message;
 DROP TABLE IF EXISTS conversation_users;
 DROP TABLE IF EXISTS conversation;
 DROP TABLE IF EXISTS game;
@@ -18,8 +18,10 @@ DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS learningmaterial;
 DROP TABLE IF EXISTS conversation;
 DROP TABLE IF EXISTS product;
+DROP TABLE IF EXISTS UserActivityLog;
+DROP TABLE IF EXISTS GameCategory;
 DROP TABLE IF EXISTS userAccount;
-
+drop procedure if exists getAllFriends;
 
 GO
 CREATE TABLE userAccount (
@@ -58,7 +60,8 @@ CREATE TABLE post (
   original_post_id INT NULL,
   share_count INT NOT NULL DEFAULT 0,
   privacy_mode NVARCHAR(10) NOT NULL DEFAULT 'friend',
-  FOREIGN KEY (user_id) REFERENCES userAccount (user_id)
+  FOREIGN KEY (user_id) REFERENCES userAccount (user_id),
+  type NVARCHAR(max)
 );
 
 GO
@@ -85,9 +88,19 @@ CREATE TABLE comment (
 
 GO
 CREATE TABLE conversation (
-	conversation_id INT PRIMARY KEY, 
+	conversation_id INT IDENTITY(1,1) PRIMARY KEY, 
 	conversation_name NVARCHAR(50),
-	conversation_avater nvarchar(50) NOT NULL
+	conversation_avatar nvarchar(50) NOT NULL
+);
+
+GO 
+CREATE TABLE conversation_users (
+	is_admin BIT NOT NULL,
+	user_id INT,
+	conversation_id INT,
+	FOREIGN KEY (user_id) REFERENCES userAccount(user_id),
+	FOREIGN KEY (conversation_id) REFERENCES conversation (conversation_id),
+	PRIMARY KEY (user_id, conversation_id)
 );
 
 GO
@@ -104,22 +117,6 @@ CREATE TABLE message (
 	FOREIGN KEY (conversation_id) REFERENCES conversation (conversation_id) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
-GO 
-CREATE TABLE conversation_member (
-	is_admin BIT NOT NULL,
-	user_id INT,
-	conversation_id INT,
-	CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES userAccount(user_id),
-	CONSTRAINT fk_convesation FOREIGN KEY (conversation_id) REFERENCES conversation (conversation_id) ON DELETE NO ACTION ON UPDATE NO ACTION,
-	PRIMARY KEY (user_id, conversation_id)
-)
-
-insert into userAccount values ('Nguyen', 'Tuan' , '123', 'anhtuan123@gmail.com', 'default_avt.jpg', 'student', 'false')
-insert into userAccount values ('Ha', 'Phan', '123', 'haphan123@gmail.com', 'default_avt.jpg', 'staft', 'false')
-insert into userAccount values ('Thanh', 'Tung', '123', 'thanhtung123@gmail.com', 'default_avt.jpg', 'student', 'false')
-insert into userAccount values ('vua', 'ga', '123', 'vuaga1260@gmail.com', 'default_avt.jpg', 'student', 'false')
-
-
 GO
 CREATE TABLE post_share (
     share_id INT IDENTITY(1,1) PRIMARY KEY,
@@ -127,65 +124,8 @@ CREATE TABLE post_share (
     post_id INT NOT NULL,
     share_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     like_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	  FOREIGN KEY (user_id) REFERENCES userAccount (user_id),
+	FOREIGN KEY (user_id) REFERENCES userAccount (user_id),
     FOREIGN KEY (post_id) REFERENCES post(post_id)
-);
-
-
-
-GO
-CREATE TABLE conversation (
-	conversation_id INT PRIMARY KEY, 
-	conversation_name NVARCHAR(50),
-	conversation_avater nvarchar(50) NOT NULL
-);
-
-GO
-CREATE TABLE message (
-	message_id INT IDENTITY(1,1) PRIMARY KEY,
-	sender INT NOT NULL,
-	receiver INT,
-	conversation_id INT NULL,
-	message_text NVARCHAR(400) NOT NULL,
-	message_type VARCHAR(40) NOT NULL,
-	sent_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	FOREIGN KEY (sender) REFERENCES userAccount (user_id),
-	FOREIGN KEY (receiver) REFERENCES userAccount (user_id),
-	FOREIGN KEY (conversation_id) REFERENCES conversation (conversation_id)
-);
-
-GO 
-CREATE TABLE conversation_member (
-	is_admin BIT NOT NULL,
-	user_id INT,
-	conversation_id INT,
-	FOREIGN KEY (user_id) REFERENCES userAccount(user_id),
-	FOREIGN KEY (conversation_id) REFERENCES conversation (conversation_id),
-	PRIMARY KEY (user_id, conversation_id)
-);
-
-GO
-CREATE TABLE product (
-    product_id INT IDENTITY(1,1) PRIMARY KEY,
-    user_id INT NOT NULL,
-    product_name VARCHAR(255) NOT NULL,
-    product_description VARCHAR(255) NOT NULL,
-    product_tag VARchAR(255) NOT NULL,
-    publish_date DATE NOT NULL,
-    price INT NOT NULL,
-    CONSTRAINT fk_product_user_id FOREIGN KEY (user_id) REFERENCES userAccount(user_id)
-);
-
-GO
-CREATE TABLE learningmaterial (
-    learningmaterial_id INT IDENTITY(1,1) PRIMARY KEY,
-    user_id INT NOT NULL,
-    learningmaterial_name VARCHAR(255) NOT NULL,
-    learningmaterial_description VARCHAR(255) NOT NULL,
-    subject_code VARCHAR(7) NOT NULL,
-    publish_date DATE NOT NULL,
-    review TEXT NOT NULL,
-    CONSTRAINT fk_learningmaterial_user_id FOREIGN KEY (user_id) REFERENCES userAccount(user_id)
 );
 
 GO
@@ -250,15 +190,7 @@ INSERT INTO Game (GameID, GameName, GameLink, CategoryID) VALUES
 (29, N'Spooky Dimensions', 'https://cdn.htmlgames.com/SpookyDimensions/', 5),
 (30, N'Circus Match 3', 'https://cdn.htmlgames.com/CircusMatch3/', 5);
 
-GO
-CREATE TABLE post_share (
-    share_id INT IDENTITY(1,1) PRIMARY KEY,
-    user_id INT NOT NULL,
-    post_id INT NOT NULL,
-    share_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_share_user FOREIGN KEY (user_id) REFERENCES userAccount (user_id),
-    CONSTRAINT fk_share_post FOREIGN KEY (post_id) REFERENCES post (post_id)
-);
+
 go
 CREATE TABLE UserActivityLog (
     log_id INT IDENTITY(1,1) PRIMARY KEY,
@@ -267,27 +199,6 @@ CREATE TABLE UserActivityLog (
     activity_details NVARCHAR(MAX),
     timestamp DATETIME DEFAULT GETDATE(), 
     FOREIGN KEY (user_id) REFERENCES userAccount(user_id)
-);
-go
- -- January
-INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned, created_at)
-VALUES ('UserJan', 'LastnameJan', 'password', 'userjan@example.com', 'default_avt.jpg', 'student', 0, '2024-01-15');
-
-GO
-CREATE TABLE conversation (
-	conversation_id INT IDENTITY(1,1) PRIMARY KEY, 
-	conversation_name NVARCHAR(50),
-	conversation_avatar nvarchar(50) NOT NULL
-);
-
-GO 
-CREATE TABLE conversation_users (
-	is_admin BIT NOT NULL,
-	user_id INT,
-	conversation_id INT,
-	FOREIGN KEY (user_id) REFERENCES userAccount(user_id),
-	FOREIGN KEY (conversation_id) REFERENCES conversation (conversation_id),
-	PRIMARY KEY (user_id, conversation_id)
 );
 
 GO
@@ -316,67 +227,25 @@ CREATE TABLE learningmaterial (
     review NVARCHAR(MAX), -- Thay đổi kiểu dữ liệu cho phù hợp
     CONSTRAINT fk_learningmaterial_user_id FOREIGN KEY (user_id) REFERENCES userAccount(user_id)
 );
+
+CREATE TABLE saved_post (
+    user_id INT NOT NULL,
+    post_id INT NOT NULL,
+    PRIMARY KEY (user_id, post_id),
+    CONSTRAINT fk_saved_user FOREIGN KEY (user_id) REFERENCES userAccount(user_id),
+    CONSTRAINT fk_saved_post FOREIGN KEY (post_id) REFERENCES post(post_id)
+);
+
+
 GO
-
-
-INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned, created_at)
-VALUES ('UserFeb', 'LastnameFeb', 'password', 'userfeb@example.com', 'default_avt.jpg', 'student', 0, '2024-02-15');
-
--- March
-INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned, created_at)
-VALUES ('UserMar', 'LastnameMar', 'password', 'usermar@example.com', 'default_avt.jpg', 'student', 0, '2024-03-15');
-
--- April
-INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned, created_at)
-VALUES ('UserApr', 'LastnameApr', 'password', 'userapr@example.com', 'default_avt.jpg', 'student', 0, '2024-04-15');
-
--- May
-INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned, created_at)
-VALUES ('UserMay', 'LastnameMay', 'password', 'usermay@example.com', 'default_avt.jpg', 'staff', 0, '2024-05-15');
-
--- June
-INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned, created_at)
-VALUES ('UserJun', 'LastnameJun', 'password', 'userjun@example.com', 'default_avt.jpg', 'staff', 0, '2024-06-15');
-
--- July
-INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned, created_at)
-VALUES ('UserJul', 'LastnameJul', 'password', 'userjul@example.com', 'default_avt.jpg', 'student', 0, '2024-07-15');
-
--- August
-INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned, created_at)
-VALUES ('UserAug', 'LastnameAug', 'password', 'useraug@example.com', 'default_avt.jpg', 'staff', 0, '2024-08-15');
-
--- September
-INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned, created_at)
-VALUES ('UserSep', 'LastnameSep', 'password', 'usersep@example.com', 'default_avt.jpg', 'student', 0, '2024-09-15');
-
-INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned, created_at)
-VALUES ('UserOctgaaah', 'LastnameOct', 'password', 'useroct@exampddalems.com', 'default_avt.jpg', 'staff', 0, '2024-09-15');
-
-
--- October
-INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned, created_at)
-VALUES ('UserOct', 'LastnameOct', 'password', 'useroct@example.com', 'default_avt.jpg', 'staff', 0, '2024-10-15');
-
-INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned, created_at)
-VALUES ('UserOctgh', 'LastnameOct', 'password', 'useroct@examplems.com', 'default_avt.jpg', 'staff', 0, '2024-10-15');
-
-SELECT * FROM UserActivityLog
-select * from post
-=======
-ALTER TABLE post_like DROP CONSTRAINT fk_like_user;
-ALTER TABLE post_like DROP CONSTRAINT fk_like_post;
-
-ALTER TABLE comment DROP CONSTRAINT fk_comment_user;
-ALTER TABLE comment DROP CONSTRAINT fk_comment_post;
-
-ALTER TABLE message DROP CONSTRAINT fk_sender;
-ALTER TABLE message DROP CONSTRAINT fk_receiver;
-ALTER TABLE message DROP CONSTRAINT fk_conversation;
-
-ALTER TABLE conversation_member DROP CONSTRAINT fk_user_id;
-ALTER TABLE conversation_member DROP CONSTRAINT fk_convesation;
-
-ALTER TABLE product DROP CONSTRAINT fk_product_user_id;
-
-ALTER TABLE learningmaterial DROP CONSTRAINT fk_learningmaterial_user_id;
+CREATE PROCEDURE getAllFriends
+    @userId INT
+AS
+BEGIN
+    SELECT u.user_id, u.first_name, u.last_name, u.profile_pic, u.role, u.is_banned, f.status
+    FROM userAccount u
+    INNER JOIN friendship f ON 
+        (f.sender = u.user_id AND f.receiver = @userId)
+        OR (f.receiver = u.user_id AND f.sender = @userId)
+    WHERE f.status = 'accepted';
+END;

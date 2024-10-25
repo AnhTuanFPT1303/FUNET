@@ -80,40 +80,25 @@
             <div class="row all-post">
                 <nav class="col-2 py-3 bg-light sidebar sticky-sidebar position-sticky" style="top: 76px;">
                     <div class="profile-section mb-3 d-flex align-items-center">
-                        <a href="userpageServlet?userId=${sessionScope.user['user_id']}" class="d-flex align-items-center text-decoration-none text-dark">
-                            <img src="assets/profile_avt/main.jpg" class="img-fluid rounded-circle avatar" style="object-fit: cover;">
-                            <p class="mb-0 ms-2 ava-name">${"vuaga1260"}</p>
-                        </a>
+                        <a href="profile?userId=${sessionScope.user['user_id']}" class="d-flex align-items-center text-decoration-none text-dark">
+                <button class="user-info-button">
+                    <img src="assets/profile_avt/${sessionScope.user['profile_pic']}" class="img-fluid rounded-circle avatar" style="object-fit: cover;">
+                    <p class="mb-0 ms-2 ava-name">${sessionScope.user['first_name']} ${sessionScope.user['last_name']}</p>
+                </button>
+            </a>
                     </div>
                     <div class="chat-box mb-3"></div>
 
-                    <form class="d-flex mb-3">
-                        <input class="form-control me-2" type="search" placeholder="Find product" aria-label="Search">
+                    <form action ="SearchProductServlet" class="d-flex mb-3">
+                       <input type="text" class="form-control me-2" name="keyword" placeholder="Find product">
                         <button class="btn btn-outline-primary" type="submit">Search</button>
                     </form>
+
                     <div class="btn-group-vertical w-100 mb-3">
                         <a href="/FUNET/home" class="btn btn-outline-primary mb-2">Main Page</a>
                         <a href="/FUNET/notificationServlet" class="btn btn-outline-primary mb-2">Notifications</a>
-                        <a href="/FUNET/AddProductServlet" class="btn btn-outline-primary mb-2">Add Product</a>
-                        <a href="/FUNET/SellingProductServlet" class="btn btn-outline-primary mb-2">Your products on sale</a>
-                    </div>
-
-                    <div class="accordion" id="accordionCategories">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    Categories
-                                </button>
-                            </h2>
-                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionCategories">
-                                <div class="accordion-body">
-                                    <ul class="list-group">
-                                        <li class="btn btn-outline-secondary mb-2"><a href="/FUNET/marketLink" class="text-decoration-none">Market Place</a></li>
-                                        <li class="btn btn-outline-secondary mb-2"><a href="/FUNET/lmaterialLink" class="text-decoration-none">Learning Material</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+                        <a href="/FUNET/AddProductServlet" class="btn btn-outline-primary mb-2">Add product to market</a>
+                        <a href="/FUNET/SellingProductServlet" class="btn btn-outline-primary mb-2">Yours products</a>
                     </div>
                 </nav>
 

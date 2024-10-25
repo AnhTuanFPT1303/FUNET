@@ -6,9 +6,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import model.Product;
+import model.User;
 
 public class DeleteProductServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int productId = Integer.parseInt(request.getParameter("product_id"));
         productDAO dao = new productDAO();
@@ -18,10 +22,32 @@ public class DeleteProductServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/SellingProductServlet");
             } else {
                 request.setAttribute("error", "Error deleting product.");
+                productDAO productDAO = new productDAO();
+
+                List<Product> productList = null;
+                try {
+                    User currentUser = (User) request.getSession(false).getAttribute("user");
+                    productList = productDAO.getSellingList(currentUser.getUser_id());
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+                request.setAttribute("productList", productList);
                 request.getRequestDispatcher("WEB-INF/selling.jsp").forward(request, response);
             }
         } catch (Exception e) {
-            request.setAttribute("error", "An error occurred: " + e.getMessage());
+            request.setAttribute("error", "You cannot delete product because the product is on transaction");
+            productDAO productDAO = new productDAO();
+
+            List<Product> productList = null;
+            try {
+                User currentUser = (User) request.getSession(false).getAttribute("user");
+                productList = productDAO.getSellingList(currentUser.getUser_id());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            request.setAttribute("productList", productList);
             request.getRequestDispatcher("WEB-INF/selling.jsp").forward(request, response);
         }
     }

@@ -489,6 +489,23 @@ img {
     word-break: break-word;
 }
 
+#confirmation-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: white;
+    border: 2px solid black;
+    z-index: 1000;
+    text-align: center;
+}
+
+#confirmation-popup button {
+    margin: 5px;
+    padding: 10px 20px;
+}
+
 .message-text>* {
     max-width: 100%;
 }

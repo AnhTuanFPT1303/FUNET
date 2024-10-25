@@ -105,6 +105,4 @@ public class Orders {
     public String toString() {
         return "Orders{" + "order_id=" + order_id + ", user_id=" + user_id + ", cart_id=" + cart_id + ", total_amount=" + total_amount + ", order_status=" + order_status + ", order_date=" + order_date + ", order_note=" + order_note + ", shipping_address=" + shipping_address + '}';
     }
-
-    
 }

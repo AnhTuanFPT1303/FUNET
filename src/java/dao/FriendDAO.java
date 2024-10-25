@@ -101,8 +101,8 @@ public class FriendDAO {
         PreparedStatement ps = conn.prepareStatement("SELECT * FROM friendship WHERE (sender = ? AND receiver=?) OR (sender = ? AND receiver = ?)");
         ps.setInt(1, currUser);
         ps.setInt(2, responUser);
-        ps.setInt(3, currUser);
-        ps.setInt(4, responUser);
+        ps.setInt(3, responUser);
+        ps.setInt(4, currUser);
 
         try (ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {

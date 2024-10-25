@@ -8,7 +8,49 @@ body {
     font-family: arial;
     position: relative;
 }
+.user-introduction {
+    margin-bottom: 20px;
+}
 
+.user-introduction h2 {
+    margin-bottom: 10px;
+}
+
+.user-introduction p {
+    margin-bottom: 10px;
+}
+.three-dot-btn {
+    border: none;
+    background-color: white;
+    outline: none;
+    cursor: pointer;
+}
+.edit-comment-btn{
+    border: none;
+    background-color: white;
+    outline: none;
+    cursor: pointer;
+}
+.delete-comment-btn{
+    border: none;
+    background-color: white;
+    outline: none;
+    cursor: pointer;
+}
+#edit-intro-form {
+    display: flex;
+    flex-direction: column;
+}
+
+#edit-intro-form .form-control {
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+#edit-intro-form .btn {
+    margin-right: 10px;
+}
 .popop-background {
     position: absolute;
     left: 0px;
@@ -795,11 +837,11 @@ body {
 }
 
 .privacy-info {
-    display:flex;    
+    display:flex;
 }
 
 .privacy-info i{
-    font-size: 9px;  
+    font-size: 9px;
     margin-left: 2%;
     margin-top: 3px;
 }
@@ -822,7 +864,7 @@ body {
 }
 
 .thre-dto-btn:hover {
-	background-color: #E4E6E9;
+    background-color: #E4E6E9;
 }
 
 .post-div {
@@ -1446,4 +1488,33 @@ For multi pictures display function
 
 .bio-btn-click {
     display: none;
+}
+
+.post {
+    position: relative;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 30px;
+    right: 0;
+    display: none;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.dropdown-menu button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+}
+
+.dropdown-menu button:hover {
+    background-color: #f0f0f0;
 }

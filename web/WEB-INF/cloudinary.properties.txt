@@ -1,0 +1,3 @@
+cloud_name=dxx8u5qnr
+api_key=694793228885481
+api_secret=ydUuGLOQjJ2UTdMaiJes0zggIpw

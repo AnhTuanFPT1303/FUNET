@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
+    <filter>
+        <filter-name>SessionCheckFilter</filter-name>
+        <filter-class>filter.SessionCheckFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>SessionCheckFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     <servlet>
         <servlet-name>ProductAjaxServlet</servlet-name>
         <servlet-class>controller.ProductAjaxServlet</servlet-class>
@@ -19,6 +27,10 @@
     <servlet>
         <servlet-name>UpdateOrderStatusServlet</servlet-name>
         <servlet-class>controller.UpdateOrderStatusServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>lmaterialLink</servlet-name>
+        <servlet-class>controller.lmaterialLink</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RemoveItemServlet</servlet-name>
@@ -44,11 +56,10 @@
         <servlet-name>UpdateOrderStatusServlet</servlet-name>
         <url-pattern>/UpdateOrderStatusServlet</url-pattern>
     </servlet-mapping>
-    <session-config>
-        <session-timeout>
-            30
-        </session-timeout>
-    </session-config>
+    <servlet-mapping>
+        <servlet-name>lmaterialLink</servlet-name>
+        <url-pattern>/lmaterialLink</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>ajaxServlet</servlet-name>
         <servlet-class>com.vnpay.common.ajaxServlet</servlet-class>
@@ -77,14 +88,6 @@
         <servlet-name>vnpayRefund</servlet-name>
         <url-pattern>/vnpayrefund/*</url-pattern>
     </servlet-mapping>
-    <filter>
-        <filter-name>SessionCheckFilter</filter-name>
-        <filter-class>filter.SessionCheckFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>SessionCheckFilter</filter-name>
-        <url-pattern>/</url-pattern>
-    </filter-mapping>
     <servlet>
         <servlet-name>loginServlet</servlet-name>
         <servlet-class>controller.loginServlet</servlet-class>
@@ -204,6 +207,42 @@
     <servlet>
         <servlet-name>sharePostServlet</servlet-name>
         <servlet-class>controller.sharePostServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserIntroduce</servlet-name>
+        <servlet-class>controller.UserIntroduce</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>userIntroduceServlet</servlet-name>
+        <servlet-class>controller.userIntroduceServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>updatePostServlet</servlet-name>
+        <servlet-class>controller.updatePostServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BanServlet</servlet-name>
+        <servlet-class>controller.BanServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FileUploadServlet</servlet-name>
+        <servlet-class>controller.FileUploadServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>updatePrivateServlet</servlet-name>
+        <servlet-class>controller.updatePrivateServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>deleteCommentServlet</servlet-name>
+        <servlet-class>controller.deleteCommentServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>updateCommentServlet</servlet-name>
+        <servlet-class>controller.updateCommentServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>savePostServlet</servlet-name>
+        <servlet-class>controller.savePostServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddToCartServlet</servlet-name>
@@ -347,11 +386,47 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UserRestController</servlet-name>
-        <url-pattern>/user-rest-controller</url-pattern>
+        <url-pattern>/users-rest-controller</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>sharePostServlet</servlet-name>
         <url-pattern>/sharePostServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserIntroduce</servlet-name>
+        <url-pattern>/UserIntroduce</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>userIntroduceServlet</servlet-name>
+        <url-pattern>/userIntroduceServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updatePostServlet</servlet-name>
+        <url-pattern>/updatePostServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BanServlet</servlet-name>
+        <url-pattern>/ban</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FileUploadServlet</servlet-name>
+        <url-pattern>/upload</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updatePrivateServlet</servlet-name>
+        <url-pattern>/updatePrivateServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>deleteCommentServlet</servlet-name>
+        <url-pattern>/deleteCommentServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updateCommentServlet</servlet-name>
+        <url-pattern>/updateCommentServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>savePostServlet</servlet-name>
+        <url-pattern>/savePostServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddCartServlet</servlet-name>

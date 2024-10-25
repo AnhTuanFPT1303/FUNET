@@ -10,7 +10,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Home Page</title>
         <link href="assets/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="assets/css/lmaterial.css">
+        <link rel="stylesheet" href="assets/css/market.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="https://kit.fontawesome.com/7f80ec1f7e.js" crossorigin="anonymous"></script>
@@ -55,53 +55,39 @@
             <div class="row all-post">
                 <nav class="col-2 py-3 bg-light sidebar sticky-sidebar position-sticky" style="top: 76px;">
                     <div class="profile-section mb-3 d-flex align-items-center">
-                        <a href="userpageServlet?userId=${sessionScope.user['user_id']}" class="d-flex align-items-center text-decoration-none text-dark">
-                            <img src="assets/profile_avt/main.jpg" class="img-fluid rounded-circle avatar" style="object-fit: cover;">
-                            <p class="mb-0 ms-2 ava-name">${"vuaga1260"}</p>
-                        </a>
+                        <a href="profile?userId=${sessionScope.user['user_id']}" class="d-flex align-items-center text-decoration-none text-dark">
+                <button class="user-info-button">
+                    <img src="assets/profile_avt/${sessionScope.user['profile_pic']}" class="img-fluid rounded-circle avatar" style="object-fit: cover;">
+                    <p class="mb-0 ms-2 ava-name">${sessionScope.user['first_name']} ${sessionScope.user['last_name']}</p>
+                </button>
+            </a>
                     </div>
                     <div class="chat-box mb-3"></div>
 
-                    <form class="d-flex mb-3">
-                        <input class="form-control me-2" type="search" placeholder="Find product" aria-label="Search">
+                    <form action ="SearchProductServlet" class="d-flex mb-3">
+                       <input type="text" class="form-control me-2" name="keyword" placeholder="Find product">
                         <button class="btn btn-outline-primary" type="submit">Search</button>
                     </form>
+
                     <div class="btn-group-vertical w-100 mb-3">
                         <a href="/FUNET/home" class="btn btn-outline-primary mb-2">Main Page</a>
                         <a href="/FUNET/notificationServlet" class="btn btn-outline-primary mb-2">Notifications</a>
-                        <a href="/FUNET/AddProductServlet" class="btn btn-outline-primary mb-2">Add product to our market</a>
-                        <a href="/FUNET/SellingProductServlet" class="btn btn-outline-primary mb-2">Yours products on sale</a>
-                    </div>
-
-                    <div class="accordion" id="accordionCategories">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    Categories
-                                </button>
-                            </h2>
-                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionCategories">
-                                <div class="accordion-body">
-                                    <ul class="list-group">
-                                        <li class="btn btn-outline-secondary mb-2"><a href="/FUNET/marketLink" class="text-decoration-none">Market Place</a></li>
-                                        <li class="btn btn-outline-secondary mb-2"><a href="/FUNET/lmaterialLink" class="text-decoration-none">Learning Material</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+                        <a href="/FUNET/AddProductServlet" class="btn btn-outline-primary mb-2">Add product to market</a>
+                        <a href="/FUNET/SellingProductServlet" class="btn btn-outline-primary mb-2">Yours products</a>
                     </div>
                 </nav>
 
                 <main class="main-class col-10">
 
                     <h2 class="mt-4 mb-5 text-primary d-flex justify-content-center">Your Product</h2>
+                    <h5 class="text-danger text-center mt-3">${error}</h5>
                     <div class="row">
                         <c:forEach var="product" items="${productList}">
                             <div class="col-3 mb-3">
                                 <div class="product-card border" style="border: 2px solid black; padding: 10px; text-align: center;">
                                     <h5>${product.productName}</h5>
-                                    <img src="${product.product_img}" alt="Item 1" class="img-fluid" style="max-width: 100%; height: auto;">
-                                    <!--<p>Price: {product.price}</p> -->
+                                    <img src="${product.product_img}" alt="Item 1" class="img-fluid" style="max-width: 100%;">
+                                    <p>Price: ${product.price}</p>
                                     <form method="post" action="/FUNET/DeleteProductServlet">
                                         <input type="hidden" name="product_id" value="${product.productId}" />
                                         <button type="submit" class="btn btn-danger">Delete</button>

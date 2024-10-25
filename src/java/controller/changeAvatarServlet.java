@@ -89,7 +89,6 @@ public class changeAvatarServlet extends HttpServlet {
         Part file = request.getPart("profile_pic");
         String profile_pic = file.getSubmittedFileName();
         String uploadPath = getServletContext().getRealPath("/assets/profile_avt/") + profile_pic;
-//        String uploadPath = "D:/fpt/prj301/project/FUNET_FINAL/FUNET/Downloads/FUNET/web/assets/profile_avt/" + profile_pic;
         try {
             FileOutputStream fos = new FileOutputStream(uploadPath);
             InputStream is = file.getInputStream();
@@ -112,7 +111,7 @@ public class changeAvatarServlet extends HttpServlet {
                 request.setAttribute("errorMessage", "Error");
             }
         }
-        response.sendRedirect("userpageServlet");
+        response.sendRedirect("profile");
     }
 
     /**

@@ -69,7 +69,7 @@ public class searchServlet extends HttpServlet {
             int currUser = (int) session.getAttribute("user_id");
             String name = request.getParameter("search-name");
             try {
-                ArrayList<User> userList = userDAO.getAllUserByName(name, currUser);
+                ArrayList<User> userList = userDAO.getInstance().findFriendsByKeyWord(currUser, name);
                 FriendDAO friendDAO = new FriendDAO();
                 HashMap<User, String> usersWithStatus = new HashMap<>();
 

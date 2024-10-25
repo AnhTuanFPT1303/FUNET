@@ -28,6 +28,27 @@ public class Post {
     private String originalPosterName;
     private int shareCount;
     private String originalPosterAvatar;
+    private String privacy_mode;
+    private boolean savedByCurrentUser;
+    private String type;
+    
+    public Post(int post_id, int user_id, String body, Timestamp post_time, String first_name, String last_name, String image_path, String profile_pic, int like_count, boolean isShared, int originalPostId, String originalPosterName, int shareCount, String originalPosterAvatar, String privacy_mode) {
+        this.post_id = post_id;
+        this.user_id = user_id;
+        this.body = body;
+        this.post_time = post_time;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.image_path = image_path;
+        this.profile_pic = profile_pic;
+        this.like_count = like_count;
+        this.isShared = isShared;
+        this.originalPostId = originalPostId;
+        this.originalPosterName = originalPosterName;
+        this.shareCount = shareCount;
+        this.originalPosterAvatar = originalPosterAvatar;
+        this.privacy_mode = privacy_mode;
+    }
 
     public Post(int post_id, int user_id, String body, Timestamp post_time, String first_name, String last_name, String image_path, String profile_pic, int like_count, boolean isShared, int originalPostId, String originalPosterName, int shareCount, String originalPosterAvatar) {
         this.post_id = post_id;
@@ -45,6 +66,7 @@ public class Post {
         this.shareCount = shareCount;
         this.originalPosterAvatar = originalPosterAvatar;
     }
+    
     
     
 
@@ -75,6 +97,24 @@ public class Post {
         this.likedByCurrentUser = likedByCurrentUser;
         this.comments = comments;
     }
+
+    public boolean isSavedByCurrentUser() {
+        return savedByCurrentUser;
+    }
+
+    public void setSavedByCurrentUser(boolean savedByCurrentUser) {
+        this.savedByCurrentUser = savedByCurrentUser;
+    }
+   
+    public String getPrivacy_mode() {
+        return privacy_mode;
+    }
+
+    public void setPrivacy_mode(String privacy_mode) {
+        this.privacy_mode = privacy_mode;
+    }
+    
+    
 
     public List<Comment> getComments() {
         return comments;
@@ -201,6 +241,15 @@ public class Post {
         this.profile_pic = profile_pic;
         this.like_count = like_count;
     }
+    
+    
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     
     public String getProfile_pic() {
@@ -253,6 +302,7 @@ public class Post {
 
     }
     
+    
 
     public Post() {
     }
@@ -292,6 +342,11 @@ public class Post {
 
     public void setPost_time(Timestamp post_time) {
         this.post_time = post_time;
+    }
+
+    @Override
+    public String toString() {
+        return "Post{" + "post_id=" + post_id + ", user_id=" + user_id + ", body=" + body + ", post_time=" + post_time + ", first_name=" + first_name + ", last_name=" + last_name + ", image_path=" + image_path + ", profile_pic=" + profile_pic + ", like_count=" + like_count + ", likedByCurrentUser=" + likedByCurrentUser + ", comments=" + comments + ", isShared=" + isShared + ", originalPostId=" + originalPostId + ", originalPosterName=" + originalPosterName + ", shareCount=" + shareCount + ", originalPosterAvatar=" + originalPosterAvatar + ", type=" + type + '}';
     }
 
     }

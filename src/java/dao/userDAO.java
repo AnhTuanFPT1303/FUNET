@@ -1,18 +1,18 @@
 package dao;
 
-import Security.SHA512WithSalt;
 import util.sqlConnect;
 import java.sql.*;
 import model.User;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class userDAO {
 
     private static userDAO instance = null;
 
-    private userDAO() {
+    public userDAO() {
 
     }
 
@@ -27,60 +27,20 @@ public class userDAO {
         boolean result = false;
         try {
             Connection conn = sqlConnect.getInstance().getConnection();
-            PreparedStatement st = conn.prepareStatement("SELECT * FROM userAccount WHERE email=?");
+            PreparedStatement st = conn.prepareStatement("Select * from userAccount where email=? AND password=?");
             st.setString(1, email);
+            st.setString(2, password);
             ResultSet rs = st.executeQuery();
-
             if (rs.next()) {
-                // Lấy chuỗi kết hợp (lưu cả salt và sha512 hash vào password)
-                String combinedHash = rs.getString("password");
-
-                // Tách salt và hashedPassword
-                String[] parts = combinedHash.split(":"); // Sử dụng dấu phân cách
-                byte[] salt = Base64.getDecoder().decode(parts[0]); // Giải mã salt
-                String storedHash = parts[1]; // hashedPassword
-
-                // Băm mật khẩu đã nhập với salt
-                String hashedInputPassword = SHA512WithSalt.hashPassWordWithSHA512(password, salt);
-
-                // So sánh mật khẩu đã băm
-                if (hashedInputPassword.equals(storedHash)) {
-                    result = true;
-                }
+                result = true;
             }
         } catch (Exception e) {
-            System.out.println("Connect Failed: " + e.getMessage());
+            System.out.println("Connect Failed");
         }
         return result;
     }
-    
-    public void hashPw(String firstName, String lastName, String email, String password, String profilePic, String role) throws Exception {
-        userDAO uDAO = new userDAO(); // Giả định UserDAO có phương thức register
-
-        // Bước 1: Mã hóa mật khẩu với salt
-        byte[] salt = SHA512WithSalt.createSalt(); // Tạo salt
-        String hashedPassword = SHA512WithSalt.hashPassWordWithSHA512(password, salt); // Băm mật khẩu với SHA-512
-        String combinedHash = Base64.getEncoder().encodeToString(salt) + ":" + hashedPassword; // Kết hợp salt và mật khẩu đã băm
-
-        // Bước 2: Tạo đối tượng User mới
-        User newUser = new User(firstName, lastName, combinedHash, email, profilePic, role, false); // false ở đây là is_banned
-
-        // Bước 3: Gọi phương thức register để thêm người dùng vào cơ sở dữ liệu
-        int userId = uDAO.register(newUser);  // Phương thức register trả về userId nếu thành công
-
-        // Bước 4: Kiểm tra kết quả đăng ký
-        if (userId > 0) {
-            System.out.println("Đăng ký thành công cho email: " + email + " với userId: " + userId);
-        } else {
-            System.out.println("Đăng ký thất bại cho email: " + email);
-        }
-    }
 
     public int register(User user) throws Exception {
-        // tạo giỏ hàng cho người dùng khi register
-        shoppingCartDAO sCartDAO = new shoppingCartDAO();
-        sCartDAO.addShoppingCart(user.getUser_id());
-        
         int generatedUserId = 0;
         String sql = "INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -94,7 +54,7 @@ public class userDAO {
             ps.setBoolean(7, user.getStatus());
 
             ps.executeUpdate();
-            
+
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
                 generatedUserId = rs.getInt(1); // Get the generated user_id
@@ -102,9 +62,7 @@ public class userDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
         return generatedUserId;
-        
     }
 
     public User getUserByEmail(String email) {
@@ -174,6 +132,7 @@ public class userDAO {
                 u.setUser_id(rs.getInt(1));
                 u.setFirst_name(rs.getString(2));
                 u.setLast_name(rs.getString(3));
+                u.setRole(rs.getString("role"));
                 u.setProfile_pic(rs.getString(4));
                 userList.add(u);
             }
@@ -228,6 +187,7 @@ public class userDAO {
                 u.setFirst_name(rs.getString("first_name"));
                 u.setLast_name(rs.getString("last_name"));
                 u.setEmail(rs.getString("email"));
+                u.setRole(rs.getString("role"));
                 u.setProfile_pic(rs.getString("profile_pic"));
                 users.add(u);
             }
@@ -292,8 +252,8 @@ public class userDAO {
         }
     }
 
-    public List<User> findFriendsByKeyWord(int userId, String keyWord) throws SQLException, Exception {
-        String sql = "SELECT u.user_id, u.profile_pic, u.first_name, u.last_name"
+    public ArrayList<User> findFriendsByKeyWord(int userId, String keyWord) throws SQLException, Exception {
+        String sql = "SELECT u.user_id, u.profile_pic, u.first_name, u.last_name "
                 + "FROM userAccount u "
                 + "WHERE u.user_id != ? AND (u.first_name LIKE ? OR u.last_name LIKE ?)";
 
@@ -304,13 +264,13 @@ public class userDAO {
             ps.setString(3, "%" + keyWord + "%");
 
             ResultSet rs = ps.executeQuery();
-            List<User> users = new ArrayList<>();
+            ArrayList<User> users = new ArrayList<>();
             while (rs.next()) {
                 User user = new User();
                 user.setUser_id(rs.getInt("user_id"));
                 user.setProfile_pic(rs.getString("profile_pic"));
-                user.setFirst_name("first_name");
-                user.setLast_name("last_name");
+                user.setFirst_name(rs.getString("first_name"));
+                user.setLast_name(rs.getString("last_name"));
                 users.add(user);
             }
             return users;
@@ -320,7 +280,7 @@ public class userDAO {
     public List<User> findUsersByConversationId(int conversationId) throws SQLException, Exception {
         String sql = "SELECT u.user_id, u.profile_pic, u.last_name, u.first_name, cu.is_admin "
                 + "FROM userAccount u "
-                + "JOIN conversations_users cu ON u.user_id = cu.user_id "
+                + "JOIN conversation_users cu ON u.user_id = cu.user_id "
                 + "WHERE cu.conversation_id = ?";
 
         try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -342,39 +302,72 @@ public class userDAO {
         }
     }
 
-    public List<User> findFriendsNotInConversation(int userId, String keyword, int conversationId) throws SQLException, Exception {
-        String sql = "SELECT u2.user_id, u2.profile_pic, u2.last_name, u2.first_name"
+    public List<User> getFriendsNotInConversation(int userId, String keyword, int conversationId) throws SQLException, Exception {
+        List<User> list = new ArrayList<>();
+        String sql = "SELECT DISTINCT u2.user_id, u2.profile_pic, u2.last_name, u2.first_name "
                 + "FROM userAccount u1 "
-                + "JOIN friendship f ON u1.user_id = f.receiver "
-                + "JOIN userAccount u2 ON u2.user_id = f.sender "
-                + "WHERE u1.user_id = ? AND f.status = 1 AND (u2.first_name LIKE ? OR u2.last_name LIKE ?) "
+                + "LEFT JOIN friendship f ON (u1.user_id = f.receiver OR u1.user_id = f.sender) "
+                + "LEFT JOIN userAccount u2 ON (u2.user_id = f.sender OR u2.user_id = f.receiver) "
+                + "WHERE u1.user_id != u2.user_id "
+                + "AND u1.user_id = ? "
+                + "AND f.status = 'accepted' "
+                + "AND (u2.first_name LIKE ? OR u2.last_name LIKE ?) "
                 + "AND u2.user_id NOT IN ( "
                 + "    SELECT u.user_id FROM userAccount u "
-                + "    JOIN conversations_users cu ON u.user_id = cu.user_id "
+                + "    JOIN conversation_users cu ON u.user_id = cu.user_id "
                 + "    WHERE cu.conversation_id = ? )";
 
         try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-
             ps.setInt(1, userId);
             ps.setString(2, "%" + keyword + "%");
             ps.setString(3, "%" + keyword + "%");
             ps.setInt(4, conversationId);
 
             ResultSet rs = ps.executeQuery();
-            List<User> users = new ArrayList<>();
             while (rs.next()) {
                 User user = new User();
                 user.setUser_id(rs.getInt("user_id"));
                 user.setProfile_pic(rs.getString("profile_pic"));
-                user.setFirst_name("first_name");
-                user.setLast_name("last_name");
-                users.add(user);
+                user.setLast_name(rs.getString("last_name"));
+                user.setFirst_name(rs.getString("first_name"));
+                list.add(user);
             }
-            return users;
+        }
+        return list;
+    }
+
+    public void updateUserIntroduction(int userId, String introduction) {
+        String query = "UPDATE userAccount SET user_introduce = ? WHERE user_id = ?";
+        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, introduction);
+            stmt.setInt(2, userId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
-    
-    public static void main(String[] args) {
-        userDAO.getInstance().login("nguyenhuuanhtuan123@gmail.com", "123");
+
+    public String getUserIntroduce(int sessionUserId) {
+        String query = "SELECT user_introduce FROM userAccount WHERE user_id = ?";
+        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, sessionUserId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("user_introduce");
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return "Xin chao`";
+    }
+
+    public static void main(String[] args) throws Exception {
+        List<User> list = userDAO.getInstance().getFriendsNotInConversation(1, "", 1);
+        for (User user : list) {
+            System.out.println(user.getFirst_name());
+        }
     }
 }

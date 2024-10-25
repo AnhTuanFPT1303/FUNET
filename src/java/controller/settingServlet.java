@@ -37,7 +37,7 @@ public class settingServlet extends HttpServlet {
                         sessionUser.setLast_name(lastName);
                         userDao.updateUser(sessionUser);
                         request.setAttribute("notification", "Your name has been changed to: " + firstName + " " + lastName);
-                        response.sendRedirect("userpageServlet");
+                        response.sendRedirect("profile");
                     }
                     case "changePassword" -> {
                         String oldPassword = request.getParameter("oldPassword");

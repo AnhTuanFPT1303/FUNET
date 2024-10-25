@@ -34,7 +34,7 @@ public class notificationServlet extends HttpServlet {
         
             request.setAttribute("ordersList", buyerOrders);
             request.setAttribute("sellerOrders", sellerOrders);
-            request.setAttribute("currentUserId", userId);
+            request.setAttribute("userId", userId);
             request.getRequestDispatcher("WEB-INF/marketNotification.jsp").forward(request, response);
         } catch (Exception ex) {
             Logger.getLogger(notificationServlet.class.getName()).log(Level.SEVERE, null, ex);

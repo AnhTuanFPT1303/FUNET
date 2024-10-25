@@ -90,7 +90,7 @@ public class MessageDao {
         int conversations_id = message.getGroupId();
         PreparedStatement stmt = null;
 
-        // If it's a one-on-one message (sender and receiver)
+        // If it's a one-to-one message (sender and receiver)
         if (receiver != 0) {
             String query = "INSERT INTO message(sender, receiver, message_text, message_type) VALUES(?,?,?,?)";
             stmt = conn.prepareStatement(query);
@@ -100,12 +100,12 @@ public class MessageDao {
             stmt.setString(4, type);      
         } // If it's a group message (sender and group)
         else {
-            String query = "INSERT INTO message(sender, message_text, message_type, conversations_id) VALUES(?,?,?,?)";
+            String query = "INSERT INTO message(sender, conversation_id, message_text, message_type) VALUES(?,?,?,?)";
             stmt = conn.prepareStatement(query);
             stmt.setInt(1, sender);       
-            stmt.setString(2, msg);         
-            stmt.setString(3, type);        
-            stmt.setInt(4, conversations_id); 
+            stmt.setInt(2, conversations_id);         
+            stmt.setString(3, msg);        
+            stmt.setString(4, type); 
         }
 
         // Execute the insert statement
@@ -114,5 +114,8 @@ public class MessageDao {
         // Close resources
         stmt.close();
     }
-
+    public static void main(String[] args) throws Exception {
+        List<Message> msg = MessageDao.getInstance().findAllMessagesBySenderAndReceiver(1, 2);
+        System.out.println(msg.get(1).getMessage());
+    }
 }

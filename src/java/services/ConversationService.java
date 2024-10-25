@@ -20,6 +20,7 @@ import model.User;
 import dtos.ConversationDTO;
 import dtos.MessageDTO;
 import dtos.UserDTO;
+import java.util.ArrayList;
 
 /**
  *
@@ -53,11 +54,12 @@ public class ConversationService {
 		return user;
 	}
 
+        //Sau này thêm set first last name để hiển thị trong group
 	private UserDTO convertToUserDTO(User user) {
 		UserDTO userDTO = new UserDTO();
-		user.setUser_id(userDTO.getUserId());
+		userDTO.setUserId(user.getUser_id());
 		userDTO.setProfile_pic(user.getProfile_pic());
-		user.setAdmin(userDTO.isIsAdmin());
+		userDTO.setIsAdmin(user.isAdmin());
 		return userDTO;
 	}
 
@@ -99,19 +101,19 @@ public class ConversationService {
 		conversationDAO.saveConversation(conversation, users);
 		conversationDTO.setId(conversation.getId());
 
-		String dirName = "group-" + conversationDTO.getId();
-		File privateDir = new File(FileService.rootLocation.toString() + "/" + dirName);
-		privateDir.mkdir();
-		String fileName = dirName + ".png";
-		File newFile = new File(privateDir.toString() + "/" + fileName);
-		try {
-			File defaultAvatar = new File(FileService.rootLocation.toString() + "/default/group.png");
-			Files.copy(defaultAvatar.toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-			conversation.setAvatar(fileName);
-			conversationDAO.saveConversation(conversation, null);
-			conversationDTO.setAvatar(fileName);
-		} catch (IOException ex) {
-		}
+//		String dirName = "group-" + conversationDTO.getId();
+//		File privateDir = new File(FileService.rootLocation.toString() + "/" + dirName);
+//		privateDir.mkdir();
+//		String fileName = dirName + ".png";
+//		File newFile = new File(privateDir.toString() + "/" + fileName);
+//		try {
+//			File defaultAvatar = new File(FileService.rootLocation.toString() + "/default/group.png");
+//			Files.copy(defaultAvatar.toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+//			conversation.setAvatar(fileName);
+//			conversationDAO.saveConversation(conversation, null);
+//			conversationDTO.setAvatar(fileName);
+//		} catch (IOException ex) {
+//		}
 	}
 
 	public List<ConversationDTO> getAllConversationsById(int user_id) throws Exception {
@@ -171,4 +173,26 @@ public class ConversationService {
 				.map(conversation -> convertToConversationDTO(conversation)).collect(Collectors.toList());
 		return conversationDTOs;
 	}
+        public static void main(String[] args) throws Exception {
+//            UserDTO user = new UserDTO();   
+//            user.setIsAdmin(true);
+//            user.setUserId(2);
+//            List<UserDTO> list = new ArrayList<>();
+//            list.add(user);
+//            ConversationDTO conversationDTO = new ConversationDTO(0, "abc", "abc", list);
+//            ConversationService.getInstance().saveConversation(conversationDTO);
+              
+
+//              List<ConversationDTO> c = ConversationService.getInstance().getAllConversationsById(2);
+//              for (ConversationDTO ca : c) {
+//                  System.out.println(ca.getId());
+//              }
+
+//                List<UserDTO> user = ConversationService.getInstance().getAllUsersByConversationId(4);
+//                System.out.println(user.size());
+//                System.out.println(user.get(0).getUserId());
+
+            List<ConversationDTO> message = ConversationService.getInstance().getAllConversationsById(1);
+            System.out.println(message.get(0).toString());
+        }
 }

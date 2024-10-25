@@ -87,15 +87,16 @@
                     </div>
                     <div class="chat-box mb-3"></div>
 
-                    <form class="d-flex mb-3">
-                        <input class="form-control me-2" type="search" placeholder="Find product" aria-label="Search">
+                    <form action ="SearchProductServlet" class="d-flex mb-3">
+                        <input type="text" class="form-control me-2" name="keyword" placeholder="Find product">
                         <button class="btn btn-outline-primary" type="submit">Search</button>
                     </form>
+
                     <div class="btn-group-vertical w-100 mb-3">
                         <a href="/FUNET/home" class="btn btn-outline-primary mb-2">Main Page</a>
                         <a href="/FUNET/notificationServlet" class="btn btn-outline-primary mb-2">Notifications</a>
-                        <a href="/FUNET/AddProductServlet" class="btn btn-outline-primary mb-2">Add Learning Material</a>
-                        <a href="/FUNET/SellingProductServlet" class="btn btn-outline-primary mb-2">Yours learning material</a>
+                        <a href="/FUNET/AddProductServlet" class="btn btn-outline-primary mb-2">Add product to market</a>
+                        <a href="/FUNET/SellingProductServlet" class="btn btn-outline-primary mb-2">Yours products</a>
                     </div>
                 </nav>
                 <div class="col-10 main-content">
@@ -111,7 +112,7 @@
                                         <p>Status: ${order.order_status}</p>
 
                                         <c:if test="${order.order_status == 'ongoing'}">
-                                            <form action="updateOrderStatus" method="POST">
+                                            <form action="UpdateOrderStatusServlet" method="POST">
                                                 <input type="hidden" name="orderId" value="${order.order_id}">
                                                 <input type="hidden" name="action" value="confirm">
                                                 <button type="submit" class="btn btn-success">Confirm Receipt</button>
@@ -130,9 +131,8 @@
                                     <p>Buyer ID: ${order.user_id}</p>
                                     <p>Total Amount: $${order.total_amount}</p>
                                     <p>Status: ${order.order_status}</p>
-
-                                    <c:if test="${order.order_status == 'pending'}">
-                                        <form action="updateOrderStatus" method="POST">
+                                    <c:if test="${order.order_status == 'Pending'}">
+                                        <form action="UpdateOrderStatusServlet" method="POST">
                                             <input type="hidden" name="orderId" value="${order.order_id}">
                                             <input type="hidden" name="action" value="submit">
                                             <button type="submit" class="btn btn-primary">Send Order</button>
@@ -140,7 +140,7 @@
                                     </c:if>
 
                                     <c:if test="${order.order_status == 'received'}">
-                                        <form action="updateOrderStatus" method="POST">
+                                        <form action="UpdateOrderStatusServlet" method="POST">
                                             <input type="hidden" name="orderId" value="${order.order_id}">
                                             <input type="hidden" name="action" value="getMoney">
                                             <button type="submit" class="btn btn-warning">Receive Payment</button>

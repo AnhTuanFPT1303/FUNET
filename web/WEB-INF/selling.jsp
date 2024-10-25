@@ -62,46 +62,30 @@
                     </div>
                     <div class="chat-box mb-3"></div>
 
-                    <form class="d-flex mb-3">
-                        <input class="form-control me-2" type="search" placeholder="Find product" aria-label="Search">
+                    <form action ="SearchProductServlet" class="d-flex mb-3">
+                       <input type="text" class="form-control me-2" name="keyword" placeholder="Find product">
                         <button class="btn btn-outline-primary" type="submit">Search</button>
                     </form>
+
                     <div class="btn-group-vertical w-100 mb-3">
                         <a href="/FUNET/home" class="btn btn-outline-primary mb-2">Main Page</a>
                         <a href="/FUNET/notificationServlet" class="btn btn-outline-primary mb-2">Notifications</a>
-                        <a href="/FUNET/AddProductServlet" class="btn btn-outline-primary mb-2">Add product to our market</a>
-                        <a href="/FUNET/SellingProductServlet" class="btn btn-outline-primary mb-2">Yours products on sale</a>
-                    </div>
-
-                    <div class="accordion" id="accordionCategories">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    Categories
-                                </button>
-                            </h2>
-                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionCategories">
-                                <div class="accordion-body">
-                                    <ul class="list-group">
-                                        <li class="btn btn-outline-secondary mb-2"><a href="/FUNET/marketLink" class="text-decoration-none">Market Place</a></li>
-                                        <li class="btn btn-outline-secondary mb-2"><a href="/FUNET/lmaterialLink" class="text-decoration-none">Learning Material</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+                        <a href="/FUNET/AddProductServlet" class="btn btn-outline-primary mb-2">Add product to market</a>
+                        <a href="/FUNET/SellingProductServlet" class="btn btn-outline-primary mb-2">Yours products</a>
                     </div>
                 </nav>
 
                 <main class="main-class col-10">
 
                     <h2 class="mt-4 mb-5 text-primary d-flex justify-content-center">Your Product</h2>
+                    <h5>${error}</h5>
                     <div class="row">
                         <c:forEach var="product" items="${productList}">
                             <div class="col-3 mb-3">
                                 <div class="product-card border" style="border: 2px solid black; padding: 10px; text-align: center;">
                                     <h5>${product.productName}</h5>
                                     <img src="${product.product_img}" alt="Item 1" class="img-fluid" style="max-width: 100%; height: auto;">
-                                    <!--<p>Price: {product.price}</p> -->
+                                    <p>Price: {product.price}</p>
                                     <form method="post" action="/FUNET/DeleteProductServlet">
                                         <input type="hidden" name="product_id" value="${product.productId}" />
                                         <button type="submit" class="btn btn-danger">Delete</button>

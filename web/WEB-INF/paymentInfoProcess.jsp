@@ -79,15 +79,16 @@
                         <p class="mb-0 ms-2 ava-name">${"vuaga1260"}</p>
                     </a>
                 </div>
-                <form class="d-flex mb-3">
-                    <input class="form-control me-2" type="search" placeholder="Find product" aria-label="Search">
+                <form action ="SearchProductServlet" class="d-flex mb-3">
+                    <input type="text" class="form-control me-2" name="keyword" placeholder="Find product">
                     <button class="btn btn-outline-primary" type="submit">Search</button>
                 </form>
+
                 <div class="btn-group-vertical w-100 mb-3">
                     <a href="/FUNET/home" class="btn btn-outline-primary mb-2">Main Page</a>
                     <a href="/FUNET/notificationServlet" class="btn btn-outline-primary mb-2">Notifications</a>
-                    <a href="/FUNET/AddProductServlet" class="btn btn-outline-primary mb-2">Add Learning Material</a>
-                    <a href="/FUNET/SellingProductServlet" class="btn btn-outline-primary mb-2">Your Learning Material</a>
+                    <a href="/FUNET/AddProductServlet" class="btn btn-outline-primary mb-2">Add product to market</a>
+                    <a href="/FUNET/SellingProductServlet" class="btn btn-outline-primary mb-2">Yours products</a>
                 </div>
             </nav>
 

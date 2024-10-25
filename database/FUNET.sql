@@ -164,6 +164,62 @@ CREATE TABLE product (
 );
 GO
 
+CREATE TABLE shoppingCart (
+	cart_id INT IDENTITY(1,1) PRIMARY KEY,
+	user_id INT NOT NULL,
+	add_date DATETIME DEFAULT GETDATE(),
+);
+Go
+
+CREATE TABLE shoppingCartItem (
+	item_id INT PRIMARY KEY IDENTITY(1,1),
+	cart_id INT NOT NULL,
+	product_id INT NOT NULL,
+    quantity INT NOT NULL CHECK (quantity > 0),
+    added_at DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (cart_id) REFERENCES ShoppingCart(cart_id),
+    FOREIGN KEY (product_id) REFERENCES Product(product_id)
+)
+
+CREATE TABLE Orders (
+    order_id INT primary key,
+    user_id INT NOT NULL,
+	cart_id INT NOT NULL,
+    total_amount DECIMAL(10, 2) NOT NULL,
+    order_status NVARCHAR(50) DEFAULT 'Pending', -- E.g., Pending, Shipped, Delivered
+    order_date DATETIME DEFAULT GETDATE(),
+	order_note NVARCHAR(MAX) NOT NULL,
+    shipping_address NVARCHAR(255) NOT NULL
+);
+GO
+
+
+INSERT INTO ShoppingCart (user_id)
+VALUES 
+(4),  
+(188); 
+GO
+
+INSERT INTO ShoppingCartItem (cart_id, product_id, quantity)
+VALUES 
+(3, 6, 1),  
+(3, 7, 2),  
+(4, 8, 1);  
+GO
+
+INSERT INTO Orders (user_id, total_amount, order_status, shipping_address)
+VALUES 
+(3, 1500.00, 'Pending', '123 Main St, City');
+GO
+
+INSERT INTO OrderDetails (order_id, product_id, quantity, price_per_unit)
+VALUES 
+(1, 6, 1, 1200.00),  -- 1 Laptop in Order ID 1
+(1, 7, 2, 150.00);    -- 2 Headphones in Order ID 1
+GO
+
+
+
 CREATE TABLE learningmaterial (
     learningmaterial_id INT IDENTITY(1,1) PRIMARY KEY,
     user_id INT NOT NULL,
@@ -209,3 +265,15 @@ ALTER TABLE conversation_member DROP CONSTRAINT fk_convesation;
 ALTER TABLE product DROP CONSTRAINT fk_product_user_id;
 
 ALTER TABLE learningmaterial DROP CONSTRAINT fk_learningmaterial_user_id;
+
+-- sử dụng sau
+CREATE TABLE OrderDetailDTO (
+    orderId INT PRIMARY KEY,
+    productName VARCHAR(255) NOT NULL,
+    quantity INT NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    orderStatus VARCHAR(50) NOT NULL,
+    orderDate TIMESTAMP NOT NULL,
+    sellerName VARCHAR(255) NOT NULL
+);
+--

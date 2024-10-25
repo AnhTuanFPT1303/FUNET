@@ -63,22 +63,10 @@
                     </div>
                     <div class="chat-box mb-3"></div>
 
-                    <!<!-- chưa có search -->
                     <form action ="SearchProductServlet" class="d-flex mb-3">
                        <input type="text" class="form-control me-2" name="keyword" placeholder="Find product">
                         <button class="btn btn-outline-primary" type="submit">Search</button>
                     </form>
-
-                    <div class="dropdown categories">
-                        <button class="btn btn-primary dropdown-toggle w-100" type="button" id="dropdownMenuBtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Product Type
-                        </button>
-                        <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuBtn">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </div>
 
                     <div class="btn-group-vertical w-100 mb-3">
                         <a href="/FUNET/home" class="btn btn-outline-primary mb-2">Main Page</a>
@@ -193,6 +181,9 @@
                                             </div>
                                             <div class="modal-body">
                                                 <img class="w-100 h-100 productImg" src="${product.product_img}" alt="img" style="width: auto;">
+                                            </div>
+                                            <div class="modal-body">
+                                                <h5 class="w-100 h-100 producDescription">${product.productDescription}</h5>
                                             </div>
 
 

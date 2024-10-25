@@ -24,6 +24,7 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import util.CloudinaryAPI;
 
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 10, // 10 MB
@@ -43,41 +44,6 @@ public class postServlet extends HttpServlet {
     ));
 
     private static final long serialVersionUID = 1L;
-    Cloudinary cloud;
-
-    @Override
-    public void init() throws ServletException {
-        LOGGER.info("Initializing postServlet");
-        Properties properties = new Properties();
-        String propFileName = "/WEB-INF/cloudinary.properties.txt";
-
-        try {
-            InputStream inputStream = getServletContext().getResourceAsStream(propFileName);
-            if (inputStream == null) {
-                LOGGER.severe("Property file '" + propFileName + "' not found in classpath");
-                throw new ServletException("Property file '" + propFileName + "' not found in classpath");
-            }
-
-            properties.load(inputStream);
-            String cloudName = properties.getProperty("cloud_name");
-            String apiKey = properties.getProperty("api_key");
-            String apiSecret = properties.getProperty("api_secret");
-
-            cloud = new Cloudinary(ObjectUtils.asMap(
-                    "cloud_name", cloudName,
-                    "api_key", apiKey,
-                    "api_secret", apiSecret
-            ));
-            LOGGER.info("Cloudinary initialization successful");
-
-        } catch (IOException ex) {
-            LOGGER.log(Level.SEVERE, "Failed to load properties file", ex);
-            throw new ServletException("Failed to load properties file", ex);
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Failed to initialize Cloudinary", e);
-            throw new ServletException("Failed to initialize Cloudinary", e);
-        }
-    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -156,7 +122,7 @@ public class postServlet extends HttpServlet {
                         }
                     }
 
-                    Map uploadResult = cloud.uploader().upload(tempFile, ObjectUtils.asMap(
+                    Map uploadResult = CloudinaryAPI.getInstance().uploader().upload(tempFile, ObjectUtils.asMap(
                             "resource_type", resourceType
                     ));
                     imageUrl = (String) uploadResult.get("url");

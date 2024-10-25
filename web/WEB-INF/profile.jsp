@@ -252,7 +252,7 @@
                             <c:forEach var="friend" items="${friends}">
                                 <div class="images-div">
                                     <img src="assets/profile_avt/${friend.profile_pic}" alt="${friend.first_name} ${friend.last_name}">
-                                    <p><a href="profile" class="user-link friend" data-user-id="${friend.user_id}">${friend.first_name} ${friend.last_name}</a></p>
+                                    <p><a href="profile?userId=${friend.user_id}" class="user-link friend" data-user-id="${friend.user_id}">${friend.first_name} ${friend.last_name}</a></p>
                                 </div>
                             </c:forEach>
                         </div>
@@ -577,11 +577,8 @@
                                                         document.getElementById('privacyMode-' + postId).value = mode;
                                                         document.getElementById('updatePrivacyForm-' + postId).submit();
                                                     }
-        </script>
-
-                                        }
-
-                                        function UpdatePostClick(id, body) {
+                                                    
+                                                    function UpdatePostClick(id, body) {
                                             document.getElementById('postIdInput').value = id;
                                             document.getElementById('newBody').value = body;
 
@@ -614,30 +611,8 @@
                                                 }
                                             });
                                         });
-
-
-
-
         </script>
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const commentForm = document.getElementById('commentForm');
-                const commentInput = document.getElementById('body');
-
-                commentInput.addEventListener('keydown', function (event) {
-                    if (event.key === 'Enter' && !event.shiftKey) {
-                        event.preventDefault();
-                        if (commentInput.value.trim() !== '') {
-                            commentForm.submit();
-                        }
-                    }
-        <script>
-            function updatePrivacy(mode) {
-                document.getElementById('privacyMode').value = mode;
-                document.getElementById('updatePrivacyForm').submit();
-            }
-        </script>
 
         <script>
             document.addEventListener('DOMContentLoaded', function () {
@@ -706,6 +681,26 @@
         </script>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
+                const editBtn = document.getElementById('edit-intro-btn');
+                const editForm = document.getElementById('edit-intro-form');
+                const cancelBtn = document.getElementById('cancel-edit-btn');
+                const introText = document.getElementById('user-intro-text');
+
+                editBtn.addEventListener('click', function () {
+                    editForm.style.display = 'block';
+                    introText.style.display = 'none';
+                    editBtn.style.display = 'none';
+                });
+
+                cancelBtn.addEventListener('click', function () {
+                    editForm.style.display = 'none';
+                    introText.style.display = 'block';
+                    editBtn.style.display = 'block';
+                });
+            });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
                 const posts = document.querySelectorAll('.post');
                 posts.forEach(post => {
                     const threeDotBtn = post.querySelector('.thre-dto-btn');
@@ -739,42 +734,6 @@
                     }
                 });
             });
-        </script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const posts = document.querySelectorAll('.post');
-                posts.forEach(post => {
-                    const threeDotBtn = post.querySelector('.thre-dto-btn');
-                    const dropdownMenu = post.querySelector('.dropdown-menu');
-                    const showUpdateFormBtn = post.querySelector('.show-update-form');
-                    const updateForm = post.querySelector('.update-form');
-                    const cancelUpdateBtn = post.querySelector('.cancel-update');
-                    threeDotBtn.addEventListener('click', () => {
-                        dropdownMenu.style.display = dropdownMenu.style.display === 'none' ? 'block' : 'none';
-                    });
-                    if (showUpdateFormBtn) {
-                        showUpdateFormBtn.addEventListener('click', () => {
-                            updateForm.style.display = 'block';
-                            showUpdateFormBtn.style.display = 'none';
-                            dropdownMenu.style.display = 'none';
-                        });
-                    }
-
-                    if (cancelUpdateBtn) {
-                        cancelUpdateBtn.addEventListener('click', () => {
-                            updateForm.style.display = 'none';
-                            showUpdateFormBtn.style.display = 'block';
-                        });
-                    }
-                });
-                document.addEventListener('click', function (event) {
-                    if (!event.target.closest('.post')) {
-                        document.querySelectorAll('.dropdown-menu').forEach(menu => {
-                            menu.style.display = 'none';
-                        });
-                    }
-                });
-            });
-        </script>
+        </script> 
     </body>
 </html>

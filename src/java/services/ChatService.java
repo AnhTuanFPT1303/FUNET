@@ -92,19 +92,6 @@ public class ChatService {
     }
 
     public void sendMessageToGroup(MessageDTO message, Queue<FileDTO> fileDTOs) throws Exception {
-        if (!message.getType().equals("text")) {
-            String url = message.getMessage();
-            String typeFile = message.getType();
-            if (typeFile.startsWith("audio")) {
-                message.setMessage("<audio controls>\r\n" + "  <source src=\"" + url + "\" type=\""
-                        + typeFile + "\">\r\n" + "</audio>");
-            } else if (typeFile.startsWith("video")) {
-                message.setMessage("<video width=\"400\" controls>\r\n" + "  <source src=\"" + url
-                        + "\" type=\"" + typeFile + "\">\r\n" + "</video>");
-            } else if (typeFile.startsWith("image")) {
-                message.setMessage("<img src=\"" + url + "\" alt=\"\">");
-            }
-        }
         List<User> usersGroup = userDao.findUsersByConversationId(message.getGroupId());
         Set<Integer> userIdGroup = usersGroup.stream().map(User::getUser_id).collect(Collectors.toSet());
         chatWebsockets.stream()

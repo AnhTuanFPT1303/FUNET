@@ -72,18 +72,21 @@ public class UserRestController extends HttpServlet {
             int id = Integer.parseInt(conversationId);
             try {
                 listUsers = userDAO.getInstance().getFriendsNotInConversation(Integer.parseInt(user_id), keyWord, id);
+                Logger.getLogger(UserRestController.class.getName()).info("will it be here1");
             } catch (Exception ex) {
                 Logger.getLogger(UserRestController.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else if (keyWord.isEmpty()) {
             try {
                 listUsers = userDAO.getInstance().getUserFriends(Integer.parseInt(user_id));
+                Logger.getLogger(UserRestController.class.getName()).info("will it be here2");
             } catch (Exception ex) {
                 Logger.getLogger(UserRestController.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             try {
                 listUsers = userDAO.getInstance().findFriendsByKeyWord(Integer.parseInt(user_id), keyWord);
+                Logger.getLogger(UserRestController.class.getName()).info("will it be here3");
             } catch (Exception ex) {
                 Logger.getLogger(UserRestController.class.getName()).log(Level.SEVERE, null, ex);
             }

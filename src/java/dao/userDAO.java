@@ -1,6 +1,6 @@
 package dao;
 
-import Security.SHA512WithSalt;
+//import Security.SHA512WithSalt;
 import util.sqlConnect;
 import java.sql.*;
 import model.User;
@@ -26,64 +26,80 @@ public class userDAO {
         return instance;
     }
 
+//    public boolean login(String email, String password) {
+//        boolean result = false;
+//        try {
+//            Connection conn = sqlConnect.getInstance().getConnection();
+//            PreparedStatement st = conn.prepareStatement("SELECT * FROM userAccount WHERE email=?");
+//            st.setString(1, email);
+//            ResultSet rs = st.executeQuery();
+//
+//            if (rs.next()) {
+//                // Lấy chuỗi kết hợp (lưu cả salt và sha512 hash vào password)
+//                String combinedHash = rs.getString("password");
+//
+//                // Tách salt và hashedPassword
+//                String[] parts = combinedHash.split(":"); // Sử dụng dấu phân cách
+//                byte[] salt = Base64.getDecoder().decode(parts[0]); // Giải mã salt
+//                String storedHash = parts[1]; // hashedPassword
+//
+//                // Băm mật khẩu đã nhập với salt
+//                String hashedInputPassword = SHA512WithSalt.hashPassWordWithSHA512(password, salt);
+//
+//                // So sánh mật khẩu đã băm
+//                if (hashedInputPassword.equals(storedHash)) {
+//                    result = true;
+//                }
+//            }
+//        } catch (Exception e) {
+//            System.out.println("Connect Failed: " + e.getMessage());
+//        }
+//        return result;
+//    }
+//    
+//    public void hashPw(String firstName, String lastName, String email, String password, String profilePic, String role) throws Exception {
+//        userDAO uDAO = new userDAO(); // Giả định UserDAO có phương thức register
+//
+//        // Bước 1: Mã hóa mật khẩu với salt
+//        byte[] salt = SHA512WithSalt.createSalt(); // Tạo salt
+//        String hashedPassword = SHA512WithSalt.hashPassWordWithSHA512(password, salt); // Băm mật khẩu với SHA-512
+//        String combinedHash = Base64.getEncoder().encodeToString(salt) + ":" + hashedPassword; // Kết hợp salt và mật khẩu đã băm
+//
+//        // Bước 2: Tạo đối tượng User mới
+//        User newUser = new User(firstName, lastName, combinedHash, email, profilePic, role, false); // false ở đây là is_banned
+//
+//        // Bước 3: Gọi phương thức register để thêm người dùng vào cơ sở dữ liệu
+//        int userId = uDAO.register(newUser);  // Phương thức register trả về userId nếu thành công
+//
+//        // Bước 4: Kiểm tra kết quả đăng ký
+//        if (userId > 0) {
+//            System.out.println("Đăng ký thành công cho email: " + email + " với userId: " + userId);
+//        } else {
+//            System.out.println("Đăng ký thất bại cho email: " + email);
+//        }
+//    }
+    
     public boolean login(String email, String password) {
         boolean result = false;
         try {
             Connection conn = sqlConnect.getInstance().getConnection();
-            PreparedStatement st = conn.prepareStatement("SELECT * FROM userAccount WHERE email=?");
+            PreparedStatement st = conn.prepareStatement("Select * from userAccount where email=? AND password=?");
             st.setString(1, email);
+            st.setString(2, password);
             ResultSet rs = st.executeQuery();
-
             if (rs.next()) {
-                // Lấy chuỗi kết hợp (lưu cả salt và sha512 hash vào password)
-                String combinedHash = rs.getString("password");
-
-                // Tách salt và hashedPassword
-                String[] parts = combinedHash.split(":"); // Sử dụng dấu phân cách
-                byte[] salt = Base64.getDecoder().decode(parts[0]); // Giải mã salt
-                String storedHash = parts[1]; // hashedPassword
-
-                // Băm mật khẩu đã nhập với salt
-                String hashedInputPassword = SHA512WithSalt.hashPassWordWithSHA512(password, salt);
-
-                // So sánh mật khẩu đã băm
-                if (hashedInputPassword.equals(storedHash)) {
-                    result = true;
-                }
+                result = true;
             }
         } catch (Exception e) {
-            System.out.println("Connect Failed: " + e.getMessage());
+            System.out.println("Connect Failed");
         }
         return result;
     }
-    
-    public void hashPw(String firstName, String lastName, String email, String password, String profilePic, String role) throws Exception {
-        userDAO uDAO = new userDAO(); // Giả định UserDAO có phương thức register
-
-        // Bước 1: Mã hóa mật khẩu với salt
-        byte[] salt = SHA512WithSalt.createSalt(); // Tạo salt
-        String hashedPassword = SHA512WithSalt.hashPassWordWithSHA512(password, salt); // Băm mật khẩu với SHA-512
-        String combinedHash = Base64.getEncoder().encodeToString(salt) + ":" + hashedPassword; // Kết hợp salt và mật khẩu đã băm
-
-        // Bước 2: Tạo đối tượng User mới
-        User newUser = new User(firstName, lastName, combinedHash, email, profilePic, role, false); // false ở đây là is_banned
-
-        // Bước 3: Gọi phương thức register để thêm người dùng vào cơ sở dữ liệu
-        int userId = uDAO.register(newUser);  // Phương thức register trả về userId nếu thành công
-
-        // Bước 4: Kiểm tra kết quả đăng ký
-        if (userId > 0) {
-            System.out.println("Đăng ký thành công cho email: " + email + " với userId: " + userId);
-        } else {
-            System.out.println("Đăng ký thất bại cho email: " + email);
-        }
-    }
 
     public int register(User user) throws Exception {
-        // tạo giỏ hàng cho người dùng khi register
-        shoppingCartDAO sCartDAO = new shoppingCartDAO();
-        sCartDAO.addShoppingCart(user.getUser_id());
-        
+//        shoppingCartDAO sCartDAO = new shoppingCartDAO();
+//        sCartDAO.addShoppingCart(user.getUser_id());
+//        
         int generatedUserId = 0;
         String sql = "INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -323,14 +339,14 @@ public class userDAO {
     }
 
     public List<User> getFriendsNotInConversation(int userId, String keyword, int conversationId) throws SQLException, Exception {
-        String sql = "SELECT u2.user_id, u2.profile_pic, u2.last_name, u2.first_name"
+        String sql = "SELECT u2.user_id, u2.profile_pic, u2.last_name, u2.first_name "
                 + "FROM userAccount u1 "
                 + "JOIN friendship f ON u1.user_id = f.receiver "
                 + "JOIN userAccount u2 ON u2.user_id = f.sender "
-                + "WHERE u1.user_id = ? AND f.status = 1 AND (u2.first_name LIKE ? OR u2.last_name LIKE ?) "
+                + "WHERE u1.user_id = ? AND f.status = 'accepted' AND (u2.first_name LIKE ? OR u2.last_name LIKE ?) "
                 + "AND u2.user_id NOT IN ( "
                 + "    SELECT u.user_id FROM userAccount u "
-                + "    JOIN conversations_users cu ON u.user_id = cu.user_id "
+                + "    JOIN conversation_users cu ON u.user_id = cu.user_id "
                 + "    WHERE cu.conversation_id = ? )";
 
         try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -346,8 +362,8 @@ public class userDAO {
                 User user = new User();
                 user.setUser_id(rs.getInt("user_id"));
                 user.setProfile_pic(rs.getString("profile_pic"));
-                user.setFirst_name("first_name");
-                user.setLast_name("last_name");
+                user.setFirst_name(rs.getString("first_name"));
+                user.setLast_name(rs.getString("last_name"));
                 users.add(user);
             }
             return users;
@@ -383,7 +399,9 @@ public class userDAO {
         return "Xin chao`";
     }
     public static void main(String[] args) throws SQLException, Exception {
-        List<User> list = userDAO.getInstance().findFriendsByKeyWord(1, "t");
-        System.out.println(list.get(0).getLast_name());
+//        List<User> list = userDAO.getInstance().getFriendsNotInConversation(1, "t", 1);
+//        System.out.println(list.get(0).getLast_name());
+    User user = new User("Nguyen", "Tuan", "1234", "nguyenhuuanhtuan123@gmail.com", "default_avt.jpg", "student", false);
+    userDAO.getInstance().register(user);
     }
 }

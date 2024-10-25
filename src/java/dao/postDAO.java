@@ -150,7 +150,7 @@ public class postDAO {
         List<Post> posts = new ArrayList<>();
         try {
             Connection conn = sqlConnect.getInstance().getConnection();
-            String query = "SELECT DISTINCT p.post_id, p.body, p.post_time, p.user_id, p.image_path, p.like_count, u.first_name, u.last_name, u.profile_pic, "
+            String query = "SELECT DISTINCT p.post_id, p.body, p.post_time, p.user_id, p.image_path, p.like_count, p.type, u.first_name, u.last_name, u.profile_pic, "
                     + "p.is_shared, p.original_post_id, p.privacy_mode, "
                     + "CASE WHEN p.is_shared = 1 THEN CONCAT(op.first_name, ' ', op.last_name) ELSE NULL END AS original_poster_name, "
                     + "CASE WHEN p.is_shared = 1 THEN op.profile_pic ELSE NULL END AS original_poster_avatar, "
@@ -680,9 +680,9 @@ public class postDAO {
     }
 
     public static void main(String[] args) {
-        List<Post> a = postDAO.getMyPosts(13);
+        List<Post> a = postDAO.getAllPosts(1);
         for (Post s : a) {
-            System.out.println(s);
+            System.out.println(s.getBody());
         }
     }
 }

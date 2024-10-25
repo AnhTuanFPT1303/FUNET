@@ -74,6 +74,50 @@ public class VerifyServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+//    @Override
+//    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+//            throws ServletException, IOException {
+//        String act = request.getParameter("action");
+//        HttpSession session = request.getSession(false);
+//        String otp = (String) session.getAttribute("otpCode");
+//        String email = (String) session.getAttribute("pendingEmail");
+//
+//        if ("resend".equals(act)) {
+//            SmtpProtocol smtpProtocol = new SmtpProtocol();
+//            otp = Integer.toString(smtpProtocol.sendMail(email));
+//            session.setAttribute("otpCode", otp);
+//            request.getRequestDispatcher("WEB-INF/verify.jsp").forward(request, response);
+//        } else {
+//            String inputOtp = (String) request.getParameter("otp-code");
+//            if (otp.equals(inputOtp)) {
+//                if (act.equals("newPass")) {
+//                    request.getRequestDispatcher("WEB-INF/newPassword.jsp").forward(request, response);
+//                } else {
+//                    Map<String, String> pendingUserInfo = (Map<String, String>) session.getAttribute("pendingUserInfo");
+//                    User user = new User();
+//                    user.setEmail(email);
+//                    user.setFirst_name(pendingUserInfo.get("firstName"));
+//                    user.setLast_name(pendingUserInfo.get("lastName"));
+//                    user.setPassword(pendingUserInfo.get("password"));
+//                    user.setProfile_pic("default_avt.jpg");
+//                    user.setRole("student");
+//                    user.setStatus(false);
+//                    try {
+//                        userDao.hashPw(user.getFirst_name(), user.getLast_name(), user.getEmail(), user.getPassword(), user.getProfile_pic(), user.getRole());
+//                    } catch (Exception ex) {
+//                        Logger.getLogger(VerifyServlet.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+//                    // Clean up session
+//                    session.invalidate();
+//                    request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
+//                }
+//            } else {
+//                request.setAttribute("msg", "Invalid OTP. Please try again.");
+//                request.getRequestDispatcher("WEB-INF/verify.jsp").forward(request, response);
+//            }
+//        }
+//    }
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -103,7 +147,7 @@ public class VerifyServlet extends HttpServlet {
                     user.setRole("student");
                     user.setStatus(false);
                     try {
-                        userDao.hashPw(user.getFirst_name(), user.getLast_name(), user.getEmail(), user.getPassword(), user.getProfile_pic(), user.getRole());
+                        userDao.register(user);
                     } catch (Exception ex) {
                         Logger.getLogger(VerifyServlet.class.getName()).log(Level.SEVERE, null, ex);
                     }

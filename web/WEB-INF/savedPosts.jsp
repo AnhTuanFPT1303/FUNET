@@ -1,9 +1,3 @@
-<%-- 
-    Document   : savedPosts
-    Created on : Oct 24, 2024, 1:51:38 AM
-    Author     : OS
---%>
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
@@ -564,12 +558,12 @@
             <h1>Saved Posts</h1>
             <c:forEach var="post" items="${posts}">
                         <div class="post mb-4" style="overflow-wrap: break-word" data-post-id="${post.post_id}" data-liked="${post.likedByCurrentUser}">
-                            <div class="post-header">
+                            <div class="post-header d-flex justify-content-between align-items-center">
                                 <img src="assets/profile_avt/${post.profile_pic}" class="img-fluid rounded-circle avatar me-2" style="width: 40px; height: 40px;object-fit: cover;">
                                 <small>${post.first_name} ${post.last_name} -- <fmt:formatDate value="${post.post_time}" pattern="yyyy-MM-dd HH:mm:ss" /></small>
                                     <form action="/FUNET/savePostServlet" method="post">
                                         <input type="hidden" name="postId" value="${post.post_id}">
-                                        <button type="submit" class="btn btn-warning" style="margin-left: 1500px">Unsave Post</button>
+                                        <button type="submit" class="btn btn-warning">Unsave Post</button>
                                     </form>
                             </div>
                             <c:if test="${post.isShared}">

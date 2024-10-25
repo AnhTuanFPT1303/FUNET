@@ -23,6 +23,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
         <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -646,17 +647,32 @@
                     <div><i class='fas fa-user-friends' > </i>    Friends</div>
                     <div> <box-icon name='group' type='solid' ></box-icon>    Groups  </div>
                     <a href="savePostServlet" style="text-decoration: none">
-                    <div>
-                        
+                        <div>
+
                             <box-icon type='solid' name='bookmark'></box-icon> Saved
-                    </div>
+                        </div>
                     </a>
                     <div><box-icon name='videos' type='solid'></box-icon> Video </div>
-                    <div><box-icon name='store-alt' type='solid'></box-icon> Market</div>
-                    <div><box-icon type='solid' name='book'></box-icon> Learning Materials</div>
-                    <a href="game" style="text-decoration: none;"> <div><i class='fas fa-gamepad' style='font-size:20px'></i> Game</div></a>
+                    <a href="marketLink" style="text-decoration: none">
+                        <div>
+
+                            <box-icon type='solid' name='store-alt'></box-icon> Market
+                        </div>
+                    </a>
+                    
+                    <a href="lmaterialLink" style="text-decoration: none">
+                        <div>
+
+                            <box-icon type='solid' name='store-alt'></box-icon> Learning Materials
+                        </div>
+                    </a>
+                    
+                    <a href="game" style="text-decoration: none">
+                        <div>
+                            <box-icon type='solid' class="fas fa-gamepad"></box-icon> Game
+                        </div>
+                    </a>
                     <hr style="border: 1px solid black; width: 100%;"><!-- comment -->
-                    <a href="dashBoard">dashboard</a>
 
                     <p>Your ShortCut</p>
                 </div>
@@ -700,13 +716,13 @@
                                     <label for="photo-upload">
                                         <i class="fas fa-cloud-upload-alt"></i> Photo/Video
                                     </label>
-                                    <input id="photo-upload" type="file" name="image" accept="image/*,video/*" style="display: none;" >
+                                    <input id="photo-upload" type="file" name="image" accept=".jpeg, .png, .jpg" style="display: none;" onchange="updateFileName(this)">
                                 </div>
                                 <div class="item">
                                     <label for="file-upload">
                                         <i class="fas fa-file-alt"></i> File
                                     </label>
-                                    <input id="file-upload" type="file" name="file" accept=".txt, .pdf, .docx" style="display: none;" >
+                                    <input id="file-upload" type="file" name="file" accept=".txt, .pdf, .docx" style="display: none;" onchange="updateFileName(this)">
                                 </div>
                             </div>
                         </div>
@@ -744,6 +760,7 @@
                             </div>
 
                             <c:if test="${post.isShared}">
+
                                 <div class="original-post-info d-flex align-items-center">
                                     <img src="assets/profile_avt/${post.originalPosterAvatar}" class="img-fluid rounded-circle avatar me-2" style="width: 30px; height: 30px;object-fit: cover;">
                                     <small>${post.originalPosterName}</small>
@@ -940,131 +957,6 @@
                                                 }
                                             });
 
-                        document.getElementById('messenger-btn').addEventListener('click', function () {
-                            toggleMenu('messenger-menu', 'messenger-btn');
-                        });
-
-                        document.getElementById('notification-btn').addEventListener('click', function () {
-                            toggleMenu('notification-menu', 'notification-btn');
-                        });
-
-                        document.getElementById('user-btn').addEventListener('click', function () {
-                            toggleMenu('user-menu', 'user-btn');
-                        });
-
-                        document.addEventListener('click', function (event) {
-                            const messengerMenu = document.getElementById('messenger-menu');
-                            const notificationMenu = document.getElementById('notification-menu');
-                            const userMenu = document.getElementById('user-menu');
-                            const messengerBtn = document.getElementById('messenger-btn');
-                            const notificationBtn = document.getElementById('notification-btn');
-                            const userBtn = document.getElementById('user-btn');
-
-                            if (!messengerMenu.contains(event.target) && !messengerBtn.contains(event.target)) {
-                                messengerMenu.style.display = 'none';
-                                messengerBtn.classList.remove('active-button');
-                            }
-                            if (!notificationMenu.contains(event.target) && !notificationBtn.contains(event.target)) {
-                                notificationMenu.style.display = 'none';
-                                notificationBtn.classList.remove('active-button');
-                            }
-                            if (!userMenu.contains(event.target) && !userBtn.contains(event.target)) {
-                                userMenu.style.display = 'none';
-                                userBtn.classList.remove('active-button');
-                            }
-                        });
-
-                        function toggleMenu(menuId, btnId) {
-                            const menu = document.getElementById(menuId);
-                            const button = document.getElementById(btnId);
-                            const otherMenuIds = ['messenger-menu', 'notification-menu', 'user-menu'].filter(id => id !== menuId);
-                            const otherButtons = ['messenger-btn', 'notification-btn', 'user-btn'].filter(id => id !== btnId);
-
-                            if (menu.style.display === 'none' || menu.style.display === '') {
-                                menu.style.display = 'block';
-                                button.classList.add('active-button');
-                                otherMenuIds.forEach(id => document.getElementById(id).style.display = 'none');
-                                otherButtons.forEach(id => document.getElementById(id).classList.remove('active-button'));
-                            } else {
-                                menu.style.display = 'none';
-                                button.classList.remove('active-button');
-                            }
-                        }
-                        document.addEventListener('DOMContentLoaded', function () {
-                            const overlay = document.getElementById('overlay');
-                            const formContainer = document.getElementById('formContainer');
-                            const postingInput = document.getElementById('posting');
-                            const photoVideoBtn = document.getElementById('photoVideoBtn');
-                            const fileBtn = document.getElementById('fileBtn');
-                            const closeButton = document.querySelector('.close-button');
-
-                            function showForm() {
-                                overlay.style.display = 'flex';
-                                formContainer.style.display = 'block';
-                            }
-
-                            function hideForm() {
-                                overlay.style.display = 'none';
-                                formContainer.style.display = 'none';
-                            }
-
-                            postingInput.addEventListener('click', showForm);
-                            photoVideoBtn.addEventListener('click', showForm);
-                            fileBtn.addEventListener('click', showForm);
-
-                            closeButton.addEventListener('click', hideForm);
-                            overlay.addEventListener('click', function (event) {
-                                if (event.target === overlay) {
-                                    hideForm();
-                                }
-                            });
-                            postForm.addEventListener('submit', function (event) {
-                                event.preventDefault();
-                                hideForm();
-
-                            });
-                        });
-
-
-
-                        document.addEventListener('DOMContentLoaded', function () {
-                            const textarea = document.getElementById('body');
-                            const formContainer = document.getElementById('formContainer');
-                            const baseFormHeight = 415;
-                            const initialTextareaHeight = 125;
-                            textarea.addEventListener('input', function () {
-                                adjustFontSizeAndFormHeight();
-                            });
-                            function adjustFontSizeAndFormHeight() {
-                                const maxLines = 3;
-                                const initialFontSize = 25;
-                                const reducedFontSize = 15;
-                                textarea.style.fontSize = initialFontSize + 'px';
-                                textarea.style.height = 'auto';
-
-                                const lineHeight = parseInt(window.getComputedStyle(textarea).lineHeight);
-                                const lines = Math.floor(textarea.scrollHeight / lineHeight);
-                                if (lines > maxLines) {
-                                    textarea.style.fontSize = reducedFontSize + 'px';
-                                }
-                                textarea.style.height = textarea.scrollHeight + 'px';
-                                const textareaExtraHeight = textarea.scrollHeight - initialTextareaHeight;
-                                formContainer.style.height = (baseFormHeight + textareaExtraHeight) + 'px';
-                            }
-                        });
-                        document.addEventListener('DOMContentLoaded', function () {
-                            const commentForm = document.getElementById('commentForm');
-                            const commentInput = document.getElementById('body');
-
-                            commentInput.addEventListener('keydown', function (event) {
-                                if (event.key === 'Enter' && !event.shiftKey) {
-                                    event.preventDefault();
-                                    if (commentInput.value.trim() !== '') {
-                                        commentForm.submit();
-                                    }
-                                }
-                            });
-                        });
                                             document.addEventListener('click', (e) => {
                                                 if (!e.target.closest('.thre-dto-btn')) {
                                                     document.querySelectorAll('.post .dropdown-save').forEach(menu => {
@@ -1153,27 +1045,27 @@
                 toggleMenu('user-menu', 'user-btn');
             });
 
-            document.addEventListener('click', function (event) {
-                const messengerMenu = document.getElementById('messenger-menu');
-                const notificationMenu = document.getElementById('notification-menu');
-                const userMenu = document.getElementById('user-menu');
-                const messengerBtn = document.getElementById('messenger-btn');
-                const notificationBtn = document.getElementById('notification-btn');
-                const userBtn = document.getElementById('user-btn');
-
-                if (!messengerMenu.contains(event.target) && !messengerBtn.contains(event.target)) {
-                    messengerMenu.style.display = 'none';
-                    messengerBtn.classList.remove('active-button');
-                }
-                if (!notificationMenu.contains(event.target) && !notificationBtn.contains(event.target)) {
-                    notificationMenu.style.display = 'none';
-                    notificationBtn.classList.remove('active-button');
-                }
-                if (!userMenu.contains(event.target) && !userBtn.contains(event.target)) {
-                    userMenu.style.display = 'none';
-                    userBtn.classList.remove('active-button');
-                }
-            });
+//            document.addEventListener('click', function (event) {
+//                const messengerMenu = document.getElementById('messenger-menu');
+//                const notificationMenu = document.getElementById('notification-menu');
+//                const userMenu = document.getElementById('user-menu');
+//                const messengerBtn = document.getElementById('messenger-btn');
+//                const notificationBtn = document.getElementById('notification-btn');
+//                const userBtn = document.getElementById('user-btn');
+//
+//                if (!messengerMenu.contains(event.target) && !messengerBtn.contains(event.target)) {
+//                    messengerMenu.style.display = 'none';
+//                    messengerBtn.classList.remove('active-button');
+//                }
+//                if (!notificationMenu.contains(event.target) && !notificationBtn.contains(event.target)) {
+//                    notificationMenu.style.display = 'none';
+//                    notificationBtn.classList.remove('active-button');
+//                }
+//                if (!userMenu.contains(event.target) && !userBtn.contains(event.target)) {
+//                    userMenu.style.display = 'none';
+//                    userBtn.classList.remove('active-button');
+//                }
+//            });
 
             function toggleMenu(menuId, btnId) {
                 const menu = document.getElementById(menuId);

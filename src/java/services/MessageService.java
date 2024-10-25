@@ -56,6 +56,9 @@ public class MessageService {
         int user_id = messageEntity.getSender();
         String type = messageEntity.getType();
         String message = messageEntity.getMessage();
+        if (!type.equals("text")) {
+            message = FileService.toTagHtml(type, user_id, message);
+        }
         int receiver = messageEntity.getReceiver();
         int groupId = messageEntity.getGroupId();
         MessageDTO messageDTO = new MessageDTO(user_id, receiver, message, type, groupId);
@@ -82,5 +85,7 @@ public class MessageService {
     }
 
     public static void main(String[] args) throws Exception {
+        List<MessageDTO> list = MessageService.getInstance().getAllMessagesBySenderAndReceiver(1, 2);
+        System.out.println(list.get(list.size()-1).getMessage());
     }
 }

@@ -33,7 +33,7 @@ public class CreMaterialServlet extends HttpServlet {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CreMaterialServlet.class.getName());
 
-    private static final String ACCESS_TOKEN = "";
+    private static final String ACCESS_TOKEN = "sl.B_bc5x942a8JehRzdl-i0X_jTGFpynATjnIPHyub2u9n1ROZK8TTftAFJJU6eIwbXkFZmd_Hn4tDhTi7OGeCwrNGW22LHq34GxOmc-bwX3RRrCkJyeAAq8gJKWOULhI0S0gv9h7GYdnsFNxQG2Gu";
     private DbxClientV2 client;
 
     @Override

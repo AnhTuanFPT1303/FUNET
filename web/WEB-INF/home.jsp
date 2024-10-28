@@ -16,6 +16,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Social Network</title>
         <link href="assets/css/bootstrap.min.css" rel="stylesheet">    
+        <link href="assets/css/logonavbar.css" rel="stylesheet">    
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
@@ -30,215 +31,7 @@
                 margin: 0;
                 background-color: whitesmoke;
             }
-            .navbar {
-                display: flex;
-                align-items: center;
-                justify-content: space-around;
-                position: relative;
-                background-color: #ffffff;
-                padding: 10px 20px;
-                height: 60px;
-                width: 100%;
-                top: 0;
-                z-index: 1000;
-                box-sizing: border-box;
-                position:sticky;
-                index:1000;
-            }
 
-            .center-buttons {
-                display: flex;
-                gap: 10px;
-                justify-content: center;
-                align-items: center;
-                flex-grow: 1;
-                margin-left: 10%;
-
-            }
-
-            .center-button {
-                flex: 1;
-                max-width: 80px;
-                height: 48px;
-                background: none;
-                border: none;
-                color: black;
-                cursor: pointer;
-                border-radius: 15px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                transition: background-color 0.3s ease;
-                margin: 0;
-            }
-
-
-
-
-            .logo {
-
-                font-size: 24px;
-                font-weight: bold;
-
-            }
-            .search-bar {
-                margin-bottom: 5px;
-                margin-bottom: 10px;
-            }
-            .search-bar input {
-                padding: 8px;
-                border: none;
-                border-radius: 15px;
-                height: 35px;
-                width: 250px;
-                transition: width 0.3s ease;
-                outline: 1px solid rgb(133, 130, 130);
-                font-size:15px;
-            }
-            .center-button:hover {
-                background-color: #CFC6C6;
-            }
-
-            .right-icons {
-                display: flex;
-                gap: 10px;
-                align-items: center;
-                width: 500px;
-                padding-left:330px;
-                justify-content:flex-end;
-            }
-
-            .icon {
-                font-size: 20px;
-                cursor: pointer;
-                color: black;
-            }
-            .icon-circle {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 40px;
-                height: 40px;
-                background-color: rgb(211, 211, 211);
-                border-radius: 50%;
-                transition: background-color 0.3s ease;
-            }
-            .icon-circle:hover {
-                background-color: darkgrey;
-            }
-            .dropdown-menu {
-                display: none;
-                position: fixed;
-
-                right: 20px;
-                width: 360px;
-                height: 500px;
-                background-color: white;
-                color: black;
-                border-radius: 15px;
-                padding: 10px;
-                z-index: 1000;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            }
-
-            .user-info {
-                width: 330px;
-                height: 75px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                border-radius: 7px;
-                margin-bottom: 10px;
-            }
-            .user-info-button {
-                display: flex;
-                align-items: center;
-                width: 328px;
-                height: 70px;
-                border: none;
-                background: none;
-                cursor: pointer;
-                border-radius: 7px;
-                padding: 5px;
-                transition: background-color 0.3s ease;
-            }
-            .user-info-button:hover {
-                background-color: #f2f2f2;
-            }
-            .avatar {
-                width: 50px;
-                height: 50px;
-                border-radius: 50%;
-                margin-right: 10px;
-            }
-            .username {
-                font-size: 16px;
-                font-weight: bold;
-            }
-            .menu-item {
-                align-items: center;
-                height: 75px;
-                padding: 10px;
-                cursor: pointer;
-                border-radius: 7px;
-                transition: background-color 0.3s ease;
-            }
-
-            .user-menu {
-                display: none;
-                position: fixed;
-                top: 50px;
-                right: 20px;
-                width: 360px;
-                max-height: 400px;
-                background-color: white;
-                color: black;
-                border-radius: 7px;
-                padding: 10px;
-                z-index: 1000;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            }
-
-            .user-menu div {
-                display: flex;
-                align-items: center;
-                padding: 10px 0;
-                cursor: pointer;
-                font-size: 16px;
-            }
-
-            .user-menu div:hover {
-                background-color: #eee;
-            }
-            .active-button {
-                background-color: rgb(191, 217, 243);
-                color: white;
-            }
-            .container{
-                max-width: 100%;
-            }
-
-            .RightItem, .UserAvatar{
-
-                width: 350px;
-
-            }
-
-            .UserAvatar:hover{
-                background-color: #e4e6e8;
-                border-radius: 7px;
-            }
-            .RightItem div:hover{
-                background-color: #e4e6e8;
-                border-radius: 7px;
-            }
-            .RightItem div{
-                margin-top: 10px;
-                display: flex;
-                align-items: center;
-                padding: 10px 0;
-                cursor: pointer;
-                font-size: 16px;
-                gap:20px;
-            }
             .post {
                 height: fit-content;
                 background-color: #fff;
@@ -437,9 +230,6 @@
                 }
             }
 
-
-
-
             .form-container {
                 width: 554px;
                 min-height: 415px;
@@ -564,7 +354,7 @@
     </head>
     <body>
         <div class="flex-container navbar">
-            <a href="home" style ="text-decoration:none">   <div class="logo" style="margin-bottom: 10%">Logo</div>
+            <a href="home" style ="text-decoration:none">   <div class="logo" style="margin-bottom: 10%">FUNET</div>
             </a>
             <form class="" method="get" action="/FUNET/searchServlet" id="searchForm">
                 <div class="search-bar">
@@ -573,26 +363,30 @@
                 </div>
             </form>
             <div class="center-buttons">
-
-                <button class="center-button" id="home-btn" href="home">
-                    <box-icon type='solid' name='home'></box-icon>
-                </button>
-                <button class="center-button" id="video-btn">
-                    <box-icon name='videos' type='solid'></box-icon>
-                </button>
-                <button class="center-button" id="market-btn">
-                    <box-icon name='store-alt' type='solid'></box-icon>
-                </button>
+                <a href="home">
+                    <button class="center-button" id="home-btn">
+                        <box-icon type='solid' name='home'></box-icon>
+                    </button>
+                </a>
+                <a href="video">
+                    <button class="center-button" id="video-btn">
+                        <box-icon name='school' type='solid'></box-icon>
+                    </button>
+                </a>
+                <a href="market">
+                    <button class="center-button" id="market-btn">
+                        <box-icon name='store-alt' type='solid'></box-icon>
+                    </button>
+                </a>
                 <a href="/FUNET/friendRequestServlet" class="friend-icon me-3">
                     <button class="center-button" id="friend-btn">
                         <box-icon name='group' type='solid'></box-icon>
-                    </button>                       
+                    </button>
                 </a>
-
             </div>
             <div class="right-icons">
-                <a href="/FUNET/chat" class="mess-icon me-3" style='margin-left:5px'>
-                    <span class="icon icon-circle" id="messenger-btn"><box-icon name='messenger' type='logo' ></box-icon></span>
+                <a href="/FUNET/chat" class="mess-icon" style='margin-left:5px'>
+                    <span class="icon icon-circle" id="messenger-btn"><box-icon name='messenger' type='logo'></box-icon></span>
                 </a>
                 <span class="icon icon-circle" id="notification-btn"><box-icon name='bell' type='solid' ></box-icon></span>
                 <span class="icon icon-circle" id="user-btn">&#128100;</span>
@@ -647,10 +441,10 @@
                     <div><i class='fas fa-user-friends' > </i>    Friends</div>
                     <div> <box-icon name='group' type='solid' ></box-icon>    Groups  </div>
                     <a href="savePostServlet" style="text-decoration: none">
-                    <div>
-                        
+                        <div>
+
                             <box-icon type='solid' name='bookmark'></box-icon> Saved
-                    </div>
+                        </div>
                     </a>
                     <div><box-icon name='videos' type='solid'></box-icon> Video </div>
                     <div><box-icon name='store-alt' type='solid'></box-icon> Market</div>
@@ -856,6 +650,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="assets/js/bootstrap.bundle.min.js"></script>
         <script src="assets/js/reaction.js" defer></script>
+        <script src="assets/js/logonavbar.js" defer></script>
 
         <script>
                                         document.addEventListener('DOMContentLoaded', function () {
@@ -993,68 +788,6 @@
         </script>
         <!-- --------- -->
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const searchInput = document.getElementById('search-input');
-                const searchForm = document.getElementById('searchForm');
-
-                searchInput.addEventListener('keypress', function (event) {
-                    if (event.key === 'Enter') {
-                        event.preventDefault();
-                        searchForm.submit();
-                    }
-                });
-            });
-
-            document.getElementById('messenger-btn').addEventListener('click', function () {
-                toggleMenu('messenger-menu', 'messenger-btn');
-            });
-
-            document.getElementById('notification-btn').addEventListener('click', function () {
-                toggleMenu('notification-menu', 'notification-btn');
-            });
-
-            document.getElementById('user-btn').addEventListener('click', function () {
-                toggleMenu('user-menu', 'user-btn');
-            });
-
-            document.addEventListener('click', function (event) {
-                const messengerMenu = document.getElementById('messenger-menu');
-                const notificationMenu = document.getElementById('notification-menu');
-                const userMenu = document.getElementById('user-menu');
-                const messengerBtn = document.getElementById('messenger-btn');
-                const notificationBtn = document.getElementById('notification-btn');
-                const userBtn = document.getElementById('user-btn');
-
-                if (!messengerMenu.contains(event.target) && !messengerBtn.contains(event.target)) {
-                    messengerMenu.style.display = 'none';
-                    messengerBtn.classList.remove('active-button');
-                }
-                if (!notificationMenu.contains(event.target) && !notificationBtn.contains(event.target)) {
-                    notificationMenu.style.display = 'none';
-                    notificationBtn.classList.remove('active-button');
-                }
-                if (!userMenu.contains(event.target) && !userBtn.contains(event.target)) {
-                    userMenu.style.display = 'none';
-                    userBtn.classList.remove('active-button');
-                }
-            });
-
-            function toggleMenu(menuId, btnId) {
-                const menu = document.getElementById(menuId);
-                const button = document.getElementById(btnId);
-                const otherMenuIds = ['messenger-menu', 'notification-menu', 'user-menu'].filter(id => id !== menuId);
-                const otherButtons = ['messenger-btn', 'notification-btn', 'user-btn'].filter(id => id !== btnId);
-
-                if (menu.style.display === 'none' || menu.style.display === '') {
-                    menu.style.display = 'block';
-                    button.classList.add('active-button');
-                    otherMenuIds.forEach(id => document.getElementById(id).style.display = 'none');
-                    otherButtons.forEach(id => document.getElementById(id).classList.remove('active-button'));
-                } else {
-                    menu.style.display = 'none';
-                    button.classList.remove('active-button');
-                }
-            }
             document.addEventListener('DOMContentLoaded', function () {
                 const overlay = document.getElementById('overlay');
                 const formContainer = document.getElementById('formContainer');

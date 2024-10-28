@@ -12,14 +12,26 @@ public class game {
     private int Magame;
     private String tengame;
     private String link;
+    private String linkimg;
     private String  theloai;
 
-    public game(int Magame, String tengame, String link ,String theloai) {
+    public game(int Magame, String tengame, String link, String linkimg, String theloai) {
         this.Magame = Magame;
         this.tengame = tengame;
         this.link = link;
-        this.theloai=theloai;
+        this.linkimg = linkimg;
+        this.theloai = theloai;
     }
+
+    public String getLinkimg() {
+        return linkimg;
+    }
+
+    public void setLinkimg(String linkimg) {
+        this.linkimg = linkimg;
+    }
+
+   
 
     public int getMagame() {
         return Magame;
@@ -55,6 +67,8 @@ public class game {
 
     @Override
     public String toString() {
-        return "game{" + "Magame=" + Magame + ", tengame=" + tengame + ", link=" + link + ", theloai=" + theloai + '}';
-    }   
+        return "game{" + "Magame=" + Magame + ", tengame=" + tengame + ", link=" + link + ", linkimg=" + linkimg + ", theloai=" + theloai + '}';
+    }
+
+     
 }

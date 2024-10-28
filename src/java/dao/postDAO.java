@@ -28,7 +28,6 @@ public class postDAO {
             stmt.setString(3, p.getImage_path());
             stmt.setString(4, p.getType());
             stmt.executeUpdate();
-            logActivity(p.getUser_id(), "New Post", p.getBody());
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -610,79 +609,7 @@ public class postDAO {
         return post;
     }
 
-    public void logActivity(int userId, String activityType, String activityDetails) {
-        String sql = "INSERT INTO UserActivityLog (user_id, activity_type, activity_details) VALUES (?, ?, ?)";
-        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+   
 
-            stmt.setInt(1, userId);
-            stmt.setString(2, activityType);
-            stmt.setString(3, activityDetails);
-
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("Error logging activity: " + e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public List<UserActivityLog> getUserActivities(int userId) {
-        List<UserActivityLog> activities = new ArrayList<>();
-        String sql = "SELECT * FROM UserActivityLog ul JOIN userAccount u ON ul.user_id=u.user_id WHERE u.user_id = ? ORDER BY timestamp DESC";
-        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, userId);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                UserActivityLog log = new UserActivityLog();
-                log.setLogId(rs.getInt("log_id"));
-                log.setUserId(rs.getInt("user_id"));
-                log.setRole(rs.getString("role"));
-                log.setFirstName(rs.getString("first_name"));
-                log.setLastName(rs.getString("last_name"));
-                log.setActivityType(rs.getString("activity_type"));
-                log.setActivityDetails(rs.getString("activity_details"));
-                log.setTimestamp(rs.getTimestamp("timestamp").toLocalDateTime());
-                activities.add(log);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return activities;
-    }
-
-    public List<UserActivityLog> geAlltUserActivities() {
-        List<UserActivityLog> activities = new ArrayList<>();
-        String sql = "SELECT * FROM UserActivityLog ul JOIN userAccount u ON ul.user_id=u.user_id  ORDER BY timestamp DESC";
-        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                UserActivityLog log = new UserActivityLog();
-                log.setLogId(rs.getInt("log_id"));
-                log.setUserId(rs.getInt("user_id"));
-                log.setRole(rs.getString("role"));
-                log.setFirstName(rs.getString("first_name"));
-                log.setLastName(rs.getString("last_name"));
-                log.setActivityType(rs.getString("activity_type"));
-                log.setActivityDetails(rs.getString("activity_details"));
-                log.setTimestamp(rs.getTimestamp("timestamp").toLocalDateTime());
-                activities.add(log);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return activities;
-    }
-
-    public static void main(String[] args) {
-        List<Post> a = postDAO.getAllPosts(1);
-        for (Post s : a) {
-            System.out.println(s.getBody());
-        }
-    }
+    
 }

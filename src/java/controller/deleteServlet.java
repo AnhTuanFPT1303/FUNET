@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dao.UserActivityDAO;
 import dao.postDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -85,7 +86,9 @@ public class deleteServlet extends HttpServlet {
 
         int postId = Integer.parseInt(request.getParameter("postId"));
         postDAO postDAO = new postDAO();
+        UserActivityDAO useractivitydao=new UserActivityDAO();
         try {
+            useractivitydao.deleteUserActivityByPostId(postId);
             postDAO.deletePost(postId);
         } catch (Exception ex) {
             Logger.getLogger(userpageServlet.class.getName()).log(Level.SEVERE, null, ex);

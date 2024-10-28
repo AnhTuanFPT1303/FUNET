@@ -673,6 +673,7 @@
                         </div>
                     </a>
                     <hr style="border: 1px solid black; width: 100%;"><!-- comment -->
+                    <a href="dashBoard">dashboard</a>
 
                     <p>Your ShortCut</p>
                 </div>

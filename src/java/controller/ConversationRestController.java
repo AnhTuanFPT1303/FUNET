@@ -29,7 +29,9 @@ import services.ConversationService;
  * @author HELLO
  */
 public class ConversationRestController extends HttpServlet {
+
     private static final Logger LOGGER = Logger.getLogger(ConversationRestController.class.getName());
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -74,11 +76,6 @@ public class ConversationRestController extends HttpServlet {
         String conversationKeyword = request.getParameter("conversationKeyword");
         String json = "";
 
-        LOGGER.info("Parameters received: user_id=" + user_id + 
-                    ", usersConversationId=" + usersConversationId + 
-                    ", messagesConversationId=" + messagesConversationId + 
-                    ", conversationKeyword=" + conversationKeyword);
-        
         ConversationService conversationService = ConversationService.getInstance();
         ObjectMapper objectMapper = new ObjectMapper();
         try {
@@ -104,7 +101,6 @@ public class ConversationRestController extends HttpServlet {
                 LOGGER.info("Fetch go here");
                 int id = Integer.parseInt(usersConversationId);
                 List<UserDTO> userDTOs = conversationService.getAllUsersByConversationId(id);
-                LOGGER.info("Number of user: " + userDTOs.size());
                 json = objectMapper.writeValueAsString(userDTOs);
 
             } else if (messagesConversationId != null && !messagesConversationId.isEmpty()) {
@@ -149,6 +145,7 @@ public class ConversationRestController extends HttpServlet {
             BufferedReader reader = request.getReader();
             while ((line = reader.readLine()) != null) {
                 requestBody.append(line);
+                Logger.getLogger(ConversationRestController.class.getName()).info(line);
             }
         } catch (IOException ex) {
             json = "{\"error\":\"" + ex.getMessage() + "\"}";
@@ -157,7 +154,7 @@ public class ConversationRestController extends HttpServlet {
             return;
         }
         LOGGER.info(requestBody.toString());
-        
+
         ObjectMapper objectMapper = new ObjectMapper();
         ConversationDTO conversation = objectMapper.readValue(requestBody.toString(), ConversationDTO.class);
         try {
@@ -166,7 +163,6 @@ public class ConversationRestController extends HttpServlet {
             Logger.getLogger(ConversationRestController.class.getName()).log(Level.SEVERE, null, ex);
         }
         json = objectMapper.writeValueAsString(conversation);
-
         printWriter.print(json);
         printWriter.flush();
     }

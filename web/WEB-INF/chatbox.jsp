@@ -18,6 +18,45 @@
         <p id="userAvatar" style="display: none">assets/profile_avt/${sessionScope.user['profile_pic']}</p>
         <div class="container">
             <div class="conversation-container">
+                <div class="modal-box border" id="settings">
+                    <div class="modal-box-head">
+                        <div class="modal-box-title">
+                            Group Settings
+                        </div>
+                        <div class="modal-box-close toggle-btn" data-id="add-user" onclick="toggleModal(this, false)">
+                            <i class="fa fa-times"></i>
+                        </div>
+                    </div>
+                    <div class="modal-box-body">
+                        <div data-id="manage-user" onclick="toggleModal(this, true)">
+                            <h2>Groups Member</h2>
+                        </div>
+                        <div data-id="change-name" onclick="toggleModal(this, true)">
+                            <h2>Change Group Name</h2>
+                        </div>
+                        <label style="cursor: pointer; display: inline-block;">
+                            <input type="file" style="display: none;" accept="image/*" onchange="uploadGroupAvatar(this)" />
+                            <h2>Change Group Avatar</h2>
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-box border" id="change-name">
+                    <div class="modal-box-head">
+                        <div class="modal-box-title">
+                            Change Group Name
+                        </div>
+                        <div class="modal-box-close toggle-btn" data-id="add-group" onclick="toggleModal(this, false)">
+                            <i class="fa fa-times"></i>
+                        </div>
+                    </div>
+                    <hr>
+                    <form action="" onsubmit="changeGroupName(event)">
+                        <div class="modal-box-body">
+                            <input type="text" class="txt-input txt-new-group-name" placeholder="Group Name...">
+                        </div>		
+                        <button type="submit" class="btn">Save</button>		
+                    </form>
+                </div>
                 <div class="modal-box border" id="add-group">
                     <div class="modal-box-head">
                         <div class="modal-box-title">

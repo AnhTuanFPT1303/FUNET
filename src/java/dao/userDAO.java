@@ -293,8 +293,8 @@ public class userDAO {
                 User user = new User();
                 user.setUser_id(rs.getInt("user_id"));
                 user.setProfile_pic(rs.getString("profile_pic"));
-                user.setFirst_name("first_name");
-                user.setLast_name("last_name");
+                user.setFirst_name(rs.getString("first_name"));
+                user.setLast_name(rs.getString("last_name"));
                 user.setAdmin(rs.getBoolean("is_admin"));
                 users.add(user);
             }
@@ -365,7 +365,7 @@ public class userDAO {
     }
 
     public static void main(String[] args) throws Exception {
-        List<User> list = userDAO.getInstance().getFriendsNotInConversation(1, "", 1);
+        List<User> list = userDAO.getInstance().findUsersByConversationId(1);
         for (User user : list) {
             System.out.println(user.getFirst_name());
         }

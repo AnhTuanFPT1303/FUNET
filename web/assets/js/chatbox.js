@@ -8,7 +8,7 @@ var last_name = document.getElementById("last_name").textContent;
 
 var typeChat = "user";
 var groupName = null;
-var groupId = null
+var groupId = null;
 
 var back = null;
 var rightSide = null;
@@ -327,8 +327,8 @@ function loadMessages() {
         if (this.readyState == 4 && this.status == 200) {
             var messages = JSON.parse(this.responseText);
             var chatbox = "";
-            var imageCount = 0; 
-            var loadedImages = 0; 
+            var imageCount = 0;
+            var loadedImages = 0;
 
             messages.forEach(msg => {
                 try {
@@ -344,15 +344,14 @@ function loadMessages() {
                     for (let img of imgs) {
                         img.onload = () => {
                             loadedImages++;
-
                             if (loadedImages === imageCount) {
                                 goLastestMsg();
                             }
                         };
                         img.onerror = () => {
-                            loadedImages++; 
+                            loadedImages++;
                             if (loadedImages === imageCount) {
-                                goLastestMsg(); 
+                                goLastestMsg();
                             }
                         };
                     }
@@ -440,9 +439,9 @@ function setGroup(element) {
                         + '</div>'
                         + '<div class="invite-user">'
                         + '<span class="total-invite-user">' + numberMember + ' paticipants</span>'
-                        + '<span data-id="add-user" onclick="toggleModal(this, true); searchMemberByKeyword(``);" class="invite toggle-btn">Invite</span>'
+                        + '<span data-id="add-user" onclick="toggleModal(this, true); searchMemberByKeyword(1);" class="invite toggle-btn">Invite</span>'
                         + '</div>'
-                        + '<div class="setting toggle-btn" data-id="manage-user" onclick="toggleModal(this, true);  fetchUser();">'
+                        + '<div class="setting toggle-btn" data-id="settings" onclick="toggleModal(this, true);  fetchUser();">'
                         + '<i class="fa fa-cog"></i>'
                         + '</div>'
                         + '</div>'
@@ -490,7 +489,6 @@ function createGroup(e) {
     object.users = [];
     object.users.push(user);
     toggleAllModal();
-
     fetch("http://" + window.location.host + "/FUNET/conversations-rest-controller", {
         method: "post",
         cache: 'no-cache',
@@ -551,22 +549,21 @@ function addMember(e) {
 
 function fetchUser() {
 
-    fetch("http://" + window.location.host + "/conversations-rest-controller?usersConversationId=" + groupId)
+    fetch("http://" + window.location.host + "/FUNET/conversations-rest-controller?usersConversationId=" + groupId)
             .then(data => data.json())
             .then(users => {
                 document.querySelector(".manage-member-body .list-user ul").innerHTML = "";
 
-                if (users.length == 1) {
+                if (users.length == 0) {
                     document.querySelector(".manage-member-body .list-user ul").innerHTML = "No members in group";
                     document.querySelector(".manage-member-body .list-user ul").style = "text-align: center; font-size: 1.8rem;";
                 } else {
                     document.querySelector(".manage-member-body .list-user ul").style = "";
                 }
 
+                let findObject = users.find(element => element.user_id == user_id);
+                let isAdmin = findObject.isAdmin;
                 users.forEach(function (data) {
-                    if (data.user_id == user_id)
-                        return;
-
                     let appendUser = '<li>'
                             + '<div class="user-contain">'
                             + '<div class="user-img">'
@@ -575,17 +572,16 @@ function fetchUser() {
                             + 'alt="Image of user">'
                             + '</div>'
                             + '<div class="user-info" style="flex-grow: 1;">'
-                            + '<span class="user-name">' + data.username + '</span>'
+                            + '<span class="user-name">' + data.first_name + " " + data.last_name + '</span>'
                             + '</div>';
 
-                    if (!data.admin)
-                        appendUser += '<div class="user-delete" style="font-weight: 700;" data-username="' + data.username + '" onclick="deleteMember(this)">Delete</div>'
+                    if (isAdmin && data.user_id != user_id)
+                        appendUser += '<div class="user-delete" style="font-weight: 700;" data-username="' + data.user_id + '" onclick="deleteMember(this)">Delete</div>'
 
                     appendUser += '</div></li>';
 
                     document.querySelector(".manage-member-body .list-user ul").innerHTML += appendUser;
                 });
-
             })
             .catch(ex => console.log(ex));
 
@@ -638,9 +634,9 @@ function confirmDelete(grpId) {
 }
 
 function deleteMember(ele) {
-    let username = ele.getAttribute("data-username");
+    let data_id = ele.getAttribute("data-username");
 
-    fetch("http://" + window.location.host + "/conversations-rest-controller?conversationId=" + groupId + "&user_id=" + user_id, {
+    fetch("http://" + window.location.host + "/FUNET/conversations-rest-controller?conversationId=" + groupId + "&user_id=" + data_id, {
         method: 'delete'
     })
             .then(function (data) {
@@ -654,7 +650,7 @@ function deleteMember(ele) {
                 if (inviteNumber)
                     inviteNumber.innerHTML = numberMember + " paticipants";
 
-                toggleAllModal();
+                ele.closest("li").remove();
             })
             .catch(ex => console.log(ex));
 
@@ -669,6 +665,90 @@ function toggleAllModal() {
 
 }
 
+function changeGroupName(e) {
+    e.preventDefault();
+
+    let newName = document.querySelector(".txt-new-group-name").value;
+    let object = new Object();
+    object.groupId = groupId;
+    object.groupName = newName;
+    object.avatar = null;
+    toggleAllModal();
+
+    fetch("http://" + window.location.host + "/FUNET/chat?group-name", {
+        method: "post",
+        cache: 'no-cache',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(object)
+    })
+            .then(function () {
+                return fetchGroup();
+            });
+
+}
+
+function uploadGroupAvatar(avt) {
+    var avatarData = new FormData();
+    // Access the first file from the input's files array
+    var file = avt.files[0];
+
+    if (file) { // Check if a file was selected
+        avatarData.append('file', file);
+
+        fetch("http://" + window.location.host + "/FUNET/upload", {
+            method: 'POST',
+            cache: 'no-cache',
+            body: avatarData // No Content-Type header set
+        })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.url) {
+                        console.log("Avatar uploaded successfully:", data.url);
+                        updateGroupAvatar(data.url);
+                    } else {
+                        console.error('Upload failed:', data);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error uploading to server:', error);
+                });
+    } else {
+        console.error('No file selected');
+    }
+}
+
+
+function updateGroupAvatar(avatarUrl) {
+    var id = groupId;
+    console.log("log id: " + id)
+    let object = new Object();
+    object.groupId = groupId;
+    object.avatar = avatarUrl;
+    object.name = null;
+
+    fetch("http://" + window.location.host + "/FUNET/chat?update-avatar", {
+        method: 'POST',
+        cache: 'no-cache',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(object)
+    })
+            .then(response => {
+                if (response.ok) {
+                    console.log("Group avatar updated successfully.");
+                } else {
+                    console.error('Failed to update group avatar:', response);
+                }
+            })
+            .catch(error => {
+                console.error('Error updating group avatar:', error);
+            });
+}
+
+
 function toggleModal(ele, mode) {
     let modalBox = document.querySelectorAll(".modal-box");
     let id = ele.getAttribute("data-id");
@@ -676,7 +756,6 @@ function toggleModal(ele, mode) {
     modalBox.forEach(function (modal) {
         modal.classList.remove("active");
     });
-
 
     if (mode)
         document.getElementById(id).classList.add("active");
@@ -724,7 +803,7 @@ function fetchGroup() {
                     let findObject = data.users.find(element => element.user_id == user_id);
                     let isAdmin = findObject.isAdmin;
 
-                    let imgSrc = ' src="assets/group/group1/' + data.avatar + '"';
+                    let imgSrc = ' src="' + data.avatar + '"';
                     let appendUser = '<li id="group-' + data.id + '">'
                             + '<div class="user-contain" data-id="' + data.id + '" data-number="' + numberMember + '" data-name="' + data.name + '" onclick="setGroup(this);">'
                             + '<div class="user-img">'
@@ -842,8 +921,6 @@ function customLoadMessageGroup(sender, groupIdFromServer, message) {
 
 function searchMemberByKeyword(ele) {
     let keyword = ele.value;
-    if (keyword != null)
-        ;
     fetch("http://" + window.location.host + "/FUNET/users-rest-controller?user_id=" + user_id + "&keyword=" + keyword + "&conversationId=" + groupId)
             .then(function (data) {
                 return data.json();

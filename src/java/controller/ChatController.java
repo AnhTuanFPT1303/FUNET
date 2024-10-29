@@ -14,14 +14,19 @@ import java.util.List;
 import model.*;
 import dao.FriendDAO;
 import jakarta.servlet.http.HttpSession;
+import java.io.BufferedReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.json.JSONObject;
+import services.ConversationService;
 
 /**
  *
  * @author HELLO
  */
 public class ChatController extends HttpServlet {
+
+    private ConversationService conversationService = ConversationService.getInstance();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -84,7 +89,31 @@ public class ChatController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        StringBuilder jsonBuffer = new StringBuilder();
+        String line;
+
+        // Read JSON input from request
+        try (BufferedReader reader = request.getReader()) {
+            while ((line = reader.readLine()) != null) {
+                jsonBuffer.append(line);
+            }
+        }
+
+        // Parse JSON object
+        String jsonString = jsonBuffer.toString();
+        JSONObject jsonObject = new JSONObject(jsonString);
+
+        int conversationId = jsonObject.getInt("groupId");
+        String groupName = jsonObject.optString("groupName", null);
+        String avatar = jsonObject.optString("avatar", null);
+
+        try {
+            conversationService.updateConversationById(conversationId, groupName, avatar);
+            request.getRequestDispatcher("WEB-INF/chatbox.jsp").forward(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(ChatController.class.getName()).log(Level.SEVERE, null, ex);
+            request.getRequestDispatcher("WEB-INF/chatbox.jsp").forward(request, response);
+        }
     }
 
     /**

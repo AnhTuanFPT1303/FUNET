@@ -4,19 +4,21 @@
  */
 package dao;
 
+import controller.ConversationRestController;
 import java.util.List;
 import model.Conversation;
 import model.User;
 import util.sqlConnect;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  *
  * @author HELLO
  */
 public class ConversationDAO {
-
+private static final Logger LOGGER = Logger.getLogger(ConversationDAO.class.getName());
     /**
      * @param args the command line arguments
      */
@@ -33,7 +35,7 @@ public class ConversationDAO {
         return instance;
     }
 
-        public void saveConversation(Conversation conversation, List<User> users) throws Exception {
+    public void saveConversation(Conversation conversation, List<User> users) throws Exception {
         if (users == null) {
             return;
         } else {
@@ -50,13 +52,13 @@ public class ConversationDAO {
             }
         }
     }
-        
+
     private void createNewConversation(Connection conn, Conversation conversation, List<User> users) throws Exception {
 //      CONCAT('group-', CAST(IDENT_CURRENT('conversation') AS CHAR(50)))
         String createConversationSQL = "INSERT INTO conversation(conversation_name, conversation_avatar) VALUES(?, ?)";
         PreparedStatement st = conn.prepareStatement(createConversationSQL, PreparedStatement.RETURN_GENERATED_KEYS);
         st.setString(1, conversation.getName());
-        st.setString(2, "group2.jpg");
+        st.setString(2, "assets/group/group1/group2.jpg");
         st.executeUpdate();
         ResultSet rs = st.getGeneratedKeys();
         if (rs.next()) {
@@ -79,13 +81,23 @@ public class ConversationDAO {
         st.executeUpdate();
     }
 
-    private void updateConversation(Connection conn, Conversation conversation) throws Exception {
-        String updateSQL = "UPDATE conversation SET conversation_name=?, conversation_avatar=? WHERE conversation_id=?";
-        PreparedStatement st = conn.prepareStatement(updateSQL);
-        st.setString(1, conversation.getName());
-        st.setString(2, conversation.getAvatar().replaceAll(" ", ""));
-        st.setInt(3, conversation.getId());
-        st.executeUpdate();
+    public void updateConversation(Conversation conversation) throws Exception {
+        Connection conn = sqlConnect.getInstance().getConnection();
+        LOGGER.info("update request");
+        if (conversation.getAvatar() == null) {
+            String updateSQL = "UPDATE conversation SET conversation_name=? WHERE conversation_id=?";
+            PreparedStatement st = conn.prepareStatement(updateSQL);
+            st.setString(1, conversation.getName());
+            st.setInt(2, conversation.getId());
+            st.executeUpdate();
+        } else {
+            LOGGER.info("perform change avatar with: " + conversation.getId() + "    " + conversation.getAvatar());
+            String updateSQL = "UPDATE conversation SET conversation_avatar=? WHERE conversation_id=?";
+            PreparedStatement st = conn.prepareStatement(updateSQL);
+            st.setString(1, conversation.getAvatar());
+            st.setInt(2, conversation.getId());
+            st.executeUpdate();
+        }
     }
 
     public List<Conversation> findAllConversationsByUserId(int userId) throws Exception {

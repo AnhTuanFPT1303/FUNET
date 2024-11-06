@@ -16,7 +16,7 @@
         <script src="https://kit.fontawesome.com/7f80ec1f7e.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
-        
+
     </head>
 
     <body>
@@ -105,18 +105,18 @@
                         </span>
                     </p>
                 </div>
-                            <%--
-                <div class="profile-button-site">
-                    <div class="btn-site-pro">
-                        <a href="setting" style="text-decoration: none">
-                            <span class="edit-profile-btn">
-                                <i class="fas fa-pen"></i>
-                                Edit Profile
-                            </span>
-                        </a>
-                    </div>
-                </div>
-                            --%>
+                <%--
+    <div class="profile-button-site">
+        <div class="btn-site-pro">
+            <a href="setting" style="text-decoration: none">
+                <span class="edit-profile-btn">
+                    <i class="fas fa-pen"></i>
+                    Edit Profile
+                </span>
+            </a>
+        </div>
+    </div>
+                --%>
             </div>
         </section>
         <section class="full-navbar">
@@ -227,11 +227,11 @@
 
                         <div class="at9-images">
                             <c:forEach var="post" items="${posts}">
-                               
-                                        <c:if test="${post.type == 'image'}">
-                                            <img src="${post.image_path}" style="max-width : 100%">
-                                        </c:if>
-                                        
+
+                                <c:if test="${post.type == 'image'}">
+                                    <img src="${post.image_path}" style="max-width : 100%">
+                                </c:if>
+
                             </c:forEach>
                         </div>
                     </div>
@@ -412,17 +412,19 @@
                                 </c:if>
                             </div>
                             <p class="post-text-show">${post.body}</p>
-                            <c:choose>
-                                        <c:when test="${post.type == 'image'}">
-                                            <img src="${post.image_path}" style="max-width : 100%">
-                                        </c:when>
-                                        <c:otherwise>
-                                            <video style="max-width: 100%" controls>
-                                                <source src="${post.image_path}" type="video/mp4">
-                                                
-                                            </video>
-                                        </c:otherwise>
-                                    </c:choose>
+                            <c:if test="${not empty post.image_path}">
+                                <c:choose>
+                                    <c:when test="${post.type == 'image'}">
+                                        <img src="${post.image_path}" style="max-width : 100%">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <video style="max-width: 100%" controls>
+                                            <source src="${post.image_path}" type="video/mp4">
+
+                                        </video>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:if>
                             <div class="post-reaction">
                                 <div class="reaction">
                                     <div class="reaction-count post-ratings-container">
@@ -450,7 +452,7 @@
                             <div class="activate">
                                 <div class="lcs-btn lcs-btn_i post-rating ${post.likedByCurrentUser ? 'post-rating-selected' : ''}">
                                     <p>
-                                        
+
                                         <span class="material-icons" style="color: ${post.likedByCurrentUser ? '#1877f2' : '#65676b'};">
                                             thumb_up
                                         </span>
@@ -573,12 +575,12 @@
         <script src="assets/js/comment.js" defer></script>
 
         <script>
-                                                    function updatePrivacy(postId, mode) {
-                                                        document.getElementById('privacyMode-' + postId).value = mode;
-                                                        document.getElementById('updatePrivacyForm-' + postId).submit();
-                                                    }
-                                                    
-                                                    function UpdatePostClick(id, body) {
+                                        function updatePrivacy(postId, mode) {
+                                            document.getElementById('privacyMode-' + postId).value = mode;
+                                            document.getElementById('updatePrivacyForm-' + postId).submit();
+                                        }
+
+                                        function UpdatePostClick(id, body) {
                                             document.getElementById('postIdInput').value = id;
                                             document.getElementById('newBody').value = body;
 
@@ -665,14 +667,14 @@
 
                     if (showUpdateFormBtn) {
                         showUpdateFormBtn.addEventListener('click', () => {
-                           // updateForm.style.display = 'block';
+                            // updateForm.style.display = 'block';
                             showUpdateFormBtn.style.display = 'none';
                         });
                     }
 
                     if (cancelUpdateBtn) {
                         cancelUpdateBtn.addEventListener('click', () => {
-                           // updateForm.style.display = 'none';
+                            // updateForm.style.display = 'none';
                             showUpdateFormBtn.style.display = 'block';
                         });
                     }
@@ -713,7 +715,7 @@
                     });
                     if (showUpdateFormBtn) {
                         showUpdateFormBtn.addEventListener('click', () => {
-                         //   updateForm.style.display = 'block';
+                            //   updateForm.style.display = 'block';
                             showUpdateFormBtn.style.display = 'none';
                             dropdownMenu.style.display = 'none';
                         });
@@ -721,7 +723,7 @@
 
                     if (cancelUpdateBtn) {
                         cancelUpdateBtn.addEventListener('click', () => {
-                           // updateForm.style.display = 'none';
+                            // updateForm.style.display = 'none';
                             showUpdateFormBtn.style.display = 'block';
                         });
                     }

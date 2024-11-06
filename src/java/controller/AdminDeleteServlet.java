@@ -12,19 +12,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.Comment;
-import model.Post;
-import model.User;
 
 /**
  *
- * @author OS
+ * @author Quocb
  */
-public class deleteCommentServlet extends HttpServlet {
+public class AdminDeleteServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,10 +38,10 @@ public class deleteCommentServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet deleteCommentServlet</title>");
+            out.println("<title>Servlet AdminDeleteServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet deleteCommentServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AdminDeleteServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -78,18 +73,34 @@ public class deleteCommentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("application/json");
-        HttpSession session = request.getSession(false);
-        int comment_id = Integer.parseInt(request.getParameter("commentId"));
-         UserActivityDAO useractivitydao=new UserActivityDAO();
+        String type = request.getParameter("type");
+        int id = Integer.parseInt(request.getParameter("idtype"));
+        int userId = Integer.parseInt(request.getParameter("userId"));
         postDAO postDAO = new postDAO();
-        try {
-            useractivitydao.deleteUserActivityByCommentId(comment_id);
-            postDAO.deleteComment(comment_id);
-            response.getWriter().write("{\"success\": true}");
-        } catch (Exception ex) {
-            Logger.getLogger(userpageServlet.class.getName()).log(Level.SEVERE, null, ex);
-            response.getWriter().write("{\"success\": false}");
+         UserActivityDAO useractivitydao=new UserActivityDAO();
+        if (type.equals("Post")) {
+            Logger.getLogger(userpageServlet.class.getName()).info("try to delete post");
+            
+            try {
+                 useractivitydao.deleteUserActivityByPostId(id);
+                postDAO.deletePost(id);
+                Logger.getLogger(userpageServlet.class.getName()).info("delete post complete");
+            } catch (Exception ex) {
+                Logger.getLogger(userpageServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            response.sendRedirect("log?id="+userId);
+        }
+        if (type.equals("Comment")){
+             Logger.getLogger(userpageServlet.class.getName()).info("try to delete comment");
+              try {
+                  useractivitydao.deleteUserActivityByCommentId(id);
+                 postDAO.deleteComment(id);
+                 Logger.getLogger(userpageServlet.class.getName()).info("delete comment complete");
+            } catch (Exception ex) {
+                Logger.getLogger(userpageServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+          response.sendRedirect("log?id="+userId);
         }
     }
 

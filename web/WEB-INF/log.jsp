@@ -29,6 +29,8 @@
                         <th>Role</th>
                         <th>Name</th>
                         <th>Activity Type</th>
+                        <th>Post id</th>
+                        <th>Comment id</th>
                         <th>Details</th>
                         <th>Time</th>
                         <th>Delete</th>

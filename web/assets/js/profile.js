@@ -1,26 +1,35 @@
+function updatePrivacy(mode, element) {
+    const form = element.closest('.updatePrivacyForm');
+    form.querySelector('.privacyMode').value = mode;
+    form.submit();
+    
+}
 
-let select_audience = document.querySelector(".popop-background");
-let popop_background = document.querySelector(".Select-audience");
-let public_btn_i = document.getElementById('public-btn-i');
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.public-btn-i').forEach(button => {
+        button.addEventListener('click', function () {
+            const post = this.closest('.post');
+            post.querySelector('.Select-audience').classList.toggle('dis_block');
+            post.querySelector('.popop-background').classList.toggle('dis_block');
+        });
+    });
 
+    document.querySelectorAll('.popup-close-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            const post = this.closest('.post');
+            post.querySelector('.Select-audience').classList.remove('dis_block');
+            post.querySelector('.popop-background').classList.remove('dis_block');
+        });
+    });
 
-public_btn_i.addEventListener("click", function () {
-    popop_background.classList.toggle("dis_block");
-    select_audience.classList.toggle("dis_block");
+    document.querySelectorAll('.Select-audience').forEach(background => {
+        background.addEventListener('click', function () {
+            const post = this.closest('.post');
+            post.querySelector('.Select-audience').classList.remove('dis_block');
+            post.querySelector('.popop-background').classList.remove('dis_block');
+        });
+    });
 });
-
-let popup_close_btn = document.getElementById("popup-close-btn");
-
-popup_close_btn.addEventListener("click", function () {
-    select_audience.classList.remove("dis_block");
-    popop_background.classList.remove("dis_block");
-});
-
-select_audience.addEventListener("click", function () {
-    select_audience.classList.remove("dis_block");
-    popop_background.classList.remove("dis_block");
-});
-
 
 
 let public_btn = document.getElementById("public-btn");

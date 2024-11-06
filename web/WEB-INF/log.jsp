@@ -1,4 +1,7 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="model.User"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -10,30 +13,30 @@
     <body>
         <div id="users-page" class="container mt-5">
             <h1 class="mt-4">Users Management</h1>
+            <% User us = (User) request.getAttribute("user"); %>
+            <h2 class="mt-5"><%= us.getFirst_name() %> <%= us.getLast_name() %> </h2>
 
             <% String userId = request.getParameter("id");%>
             <input type="hidden" id="userId" value="<%= userId%>">
 
             <!-- Add Ban and Unban buttons -->
             <div class="d-flex justify-content-end mb-4">
-                 <a id="ban-user" class="btn btn-danger me-2" href="dashBoard ">DashBoard</a>
-                <a id="ban-user" class="btn btn-danger me-2" href="ban?id=<%= userId%>&action=ban ">Ban User</a>
-                <a id="unban-user" class="btn btn-success" href="ban?id=<%= userId%>&action=unban">Unban User</a>
+                <a id="ban-user" class="btn btn-danger me-2" href="dashBoard ">DashBoard</a>
+                                       <a id="ban-user" class="btn btn-danger me-2" href="ban?id=<%= userId%>&action=ban ">Ban User</a>
+                        
+                            <a id="unban-user" class="btn btn-success" href="ban?id=<%= userId%>&action=unban">Unban User</a>
+                      
             </div>
 
             <!-- User Activities Table -->
             <table class="table table-bordered table-hover">
                 <thead class="table-dark">
                     <tr>
-                        <th>Post Id</th>
                         <th>Role</th>
-                        <th>Name</th>
                         <th>Activity Type</th>
-                        <th>Post id</th>
-                        <th>Comment id</th>
                         <th>Details</th>
                         <th>Time</th>
-                        <th>Delete</th>
+                        <th>Delete button</th>
                     </tr>
                 </thead>
                 <tbody>

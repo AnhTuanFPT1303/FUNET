@@ -365,9 +365,11 @@ public class userDAO {
     }
 
     public static void main(String[] args) throws Exception {
-        List<User> list = userDAO.getInstance().getFriendsNotInConversation(1, "", 1);
-        for (User user : list) {
-            System.out.println(user.getFirst_name());
-        }
+       userDAO dao=new userDAO();
+       User u=dao.getUserById(1);
+//        for (User user : list) {
+//            System.out.println(user.getFirst_name());
+//        }
+        System.out.print(u);
     }
 }

@@ -36,6 +36,14 @@
         <servlet-name>AdminDeleteServlet</servlet-name>
         <servlet-class>controller.AdminDeleteServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CreGameServlet</servlet-name>
+        <servlet-class>controller.CreGameServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteGameServlet</servlet-name>
+        <servlet-class>controller.DeleteGameServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RemoveItemServlet</servlet-name>
         <url-pattern>/RemoveItemServlet</url-pattern>
@@ -459,6 +467,14 @@
     <servlet-mapping>
         <servlet-name>AdminDeleteServlet</servlet-name>
         <url-pattern>/adminDelete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreGameServlet</servlet-name>
+        <url-pattern>/creGame</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteGameServlet</servlet-name>
+        <url-pattern>/deleteGame</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>/WEB-INF/login.jsp</welcome-file>

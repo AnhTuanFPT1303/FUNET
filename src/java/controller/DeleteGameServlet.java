@@ -4,25 +4,19 @@
  */
 package controller;
 
-import dao.userDAO;
+import dao.gameDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import model.User;
 
 /**
  *
  * @author Quocb
  */
-@WebServlet("/log")
-public class LogServlet extends HttpServlet {
+public class DeleteGameServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,10 +35,10 @@ public class LogServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LogServlet</title>");
+            out.println("<title>Servlet DeleteGameServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LogServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet DeleteGameServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,18 +56,7 @@ public class LogServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Integer id=Integer.parseInt(request.getParameter("id"));
-        userDAO dao=new userDAO();
-       User us;
-        try {
-            us = dao.getUserById(id);
-            request.setAttribute("name", us.getFirst_name()+" "+us.getLast_name());
-            request.setAttribute("user", us);
-        } catch (SQLException ex) {
-            Logger.getLogger(LogServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-      request.getRequestDispatcher("/WEB-INF/log.jsp?id="+id).forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -87,7 +70,15 @@ public class LogServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+       Integer id= Integer.parseInt( request.getParameter("id"));
+       try{
+           gameDAO dao=new gameDAO();
+           dao.DeleteGame(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+       
     }
 
     /**

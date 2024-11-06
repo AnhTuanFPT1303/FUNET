@@ -23,6 +23,11 @@ public class game {
         this.theloai = theloai;
     }
 
+    public game() {
+    }
+    
+    
+
     public String getLinkimg() {
         return linkimg;
     }

@@ -62,12 +62,8 @@ public class UpdateDiaryServlet extends HttpServlet {
             }
 
             out.println("<tr>");
-            out.println("<td>" + activity.getUserId() + "</td>");
             out.println("<td>" + activity.getRole() + "</td>");
-            out.println("<td>" + activity.getFirstName() + " " + activity.getLastName() + "</td>");
             out.println("<td>" + activity.getActivityType() + "</td>");
-            out.println("<td>" + activity.getPostId() + "</td>");
-            out.println("<td>" + activity.getCommentId() + "</td>");
             out.println("<td style='word-wrap: break-word;'>" + activity.getActivityDetails() + "</td>");
             out.println("<td> " + activity.getTimestamp().format(formatter) + "</td>");
             out.print("<td>");
@@ -80,7 +76,7 @@ public class UpdateDiaryServlet extends HttpServlet {
             out.print("</td>");
             out.println("</tr>");
 
-            // Log activity details for debugging
+           
             
         }
 

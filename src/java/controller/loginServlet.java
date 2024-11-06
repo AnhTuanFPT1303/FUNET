@@ -102,7 +102,13 @@ public class loginServlet extends HttpServlet {
                 session.setAttribute("user_id", user.getUser_id());
                 session.setAttribute("last_name", user.getLast_name());
                 session.setAttribute("first_name", user.getFirst_name());
-                response.sendRedirect("home");
+                if (user.getRole().equals("Admin")){
+                    response.sendRedirect("dashBoard");
+                }
+                else{
+                    response.sendRedirect("home");
+                }
+                
             } else {
                 request.setAttribute("msg", "Wrong username or password.");
                 request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);

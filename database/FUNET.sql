@@ -38,7 +38,7 @@ CREATE TABLE userAccount (
   role VARCHAR(20) NOT NULL, 
   user_introduce NVARCHAR(50),
   is_banned BIT NOT NULL,
-   created_at DATE DEFAULT CAST(GETDATE() AS DATE) NOT NULL
+  created_at DATE DEFAULT CAST(GETDATE() AS DATE) NOT NULL
 );
 
 
@@ -154,48 +154,49 @@ GO
 
 GO
 CREATE TABLE Game (
-    GameID INT PRIMARY KEY,
+    GameID INT PRIMARY KEY IDENTITY(1,1),
     GameName NVARCHAR(50) NOT NULL,
     GameLink NVARCHAR(200),
 	Img NVARCHAR(200),
     CategoryID INT,
     FOREIGN KEY (CategoryID) REFERENCES GameCategory(CategoryID)
 );
-
+Insert INTO Game ( GameName, GameLink,Img, CategoryID) VALUES ('baobla','3451','img',1);
 
 select * from Game
+Delete from Game where GameID=34
 GO
-INSERT INTO Game (GameID, GameName, GameLink,Img, CategoryID) VALUES 
-(1, N'Triple Cars', 'https://cdn.htmlgames.com/TripleCars/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128426/1_m5ce3b.jpg', 1),
-(2, N'Pyramid Solitaire - Great Pyramid', 'https://cdn.htmlgames.com/PyramidSolitaire-GreatPyramid/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128429/2_hbckn7.jpg', 4),
-(3, N'Sushi Master', 'https://cdn.htmlgames.com/SushiMasterMatch3/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128432/3_fejrwt.jpg' ,3),
-(4, N'Goblin Run', 'https://cdn.htmlgames.com/GoblinRun/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128433/4_mwn2gs.jpg' ,1),
-(5, N'Solitaire Collection 2', 'https://cdn.htmlgames.com/SolitaireCollection2/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128434/5_kqtfci.jpg' ,4),
-(6, N'Escape Room - Home Escape', 'https://cdn.htmlgames.com/EscapeRoom-HomeEscape/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128436/6_jnwrix.jpg' ,2),
-(7, N'Reach 7', 'https://cdn.htmlgames.com/Reach7/', 'https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128437/7_mnp4xu.jpg',3),
-(8, N'Solitaire Collection', 'https://cdn.htmlgames.com/SolitaireCollection/', 'https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128440/8_zsb97b.jpg',4),
-(9, N'2048 Billiards', 'https://cdn.htmlgames.com/2048Billiards/', 'https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128443/9_n0pe4j.jpg',3),
-(10, N'Jungle Link', 'https://cdn.htmlgames.com/JungleLink/', 'https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128442/10_haa16t.jpg',2),
-(11, N'The Watermelon Game', 'https://cdn.htmlgames.com/TheWatermelonGame/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128447/11_mfk2fp.png' ,5),
-(12, N'Double Klondike', 'https://cdn.htmlgames.com/DoubleKlondike/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128446/12_chkpc8.png' ,4),
-(13, N'Water Sort', 'https://cdn.htmlgames.com/WaterSort/', 'https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128451/13_ln7tcj.png',1),
-(14, N'Jungle Sniper', 'https://cdn.htmlgames.com/JungleSniper/', 'https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128449/14_s56l3x.png',6),
-(15, N'Kitty Mahjong', 'https://cdn.htmlgames.com/KittyMahjong/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128455/15_vzjess.png' ,6),
-(16, N'Balloon Maze', 'https://cdn.htmlgames.com/BalloonMaze/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128456/16_duqruw.png' ,2),
-(17, N'Mysterious Pirate Jewels 3', 'https://cdn.htmlgames.com/MysteriousPirateJewels3/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128453/17_urluf9.png' ,2),
-(18, N'Aladdin Solitaire', 'https://cdn.htmlgames.com/AladdinSolitaire/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128463/18_linw8x.png' ,3),
-(19, N'Tap It Away 3D', 'https://cdn.htmlgames.com/TapItAway3D/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128459/19_nbcgxt.png' ,5),
-(20, N'Pyramid Solitaire - Ancient China', 'https://cdn.htmlgames.com/PyramidSolitaire-AncientChina/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128467/20_d8w2fu.png' ,2),
-(21, N'Ninja Breakout', 'https://cdn.htmlgames.com/NinjaBreakout/', 'https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128462/21_atiu5f.png',6),
-(22, N'Bubble Throw', 'https://cdn.htmlgames.com/BubbleThrow/', 'https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128473/22_tvl6jc.png',6),
-(23, N'Freecell Extreme', 'https://cdn.htmlgames.com/FreecellExtreme/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128474/23_ardt0p.png',4),
-(24, N'Connect the Dots', 'https://cdn.htmlgames.com/ConnectTheDots/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128466/24_szcuqa.png' ,5),
-(25, N'Harbour Escape', 'https://cdn.htmlgames.com/HarbourEscape/', 'https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128476/25_nag1rk.png',1),
-(26, N'Flower World 2', 'https://cdn.htmlgames.com/FlowerWorld2/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128478/26_hrruhx.png' ,1),
-(27, N'Black and White Mahjong 3', 'https://cdn.htmlgames.com/BlackAndWhiteMahjong3/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128471/27_uimb29.png' ,3),
-(28, N'Archery Training', 'https://cdn.htmlgames.com/ArcheryTraining/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128480/28_sdcsmp.png' ,6),
-(29, N'Spooky Dimensions', 'https://cdn.htmlgames.com/SpookyDimensions/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128482/29_xpuh9w.png' ,5),
-(30, N'Circus Match 3', 'https://cdn.htmlgames.com/CircusMatch3/', 'https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128484/30_s6hfa9.png',5);
+INSERT INTO Game ( GameName, GameLink,Img, CategoryID) VALUES 
+( N'Triple Cars', 'https://cdn.htmlgames.com/TripleCars/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128426/1_m5ce3b.jpg', 1),
+(  N'Pyramid Solitaire - Great Pyramid', 'https://cdn.htmlgames.com/PyramidSolitaire-GreatPyramid/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128429/2_hbckn7.jpg', 4),
+( N'Sushi Master', 'https://cdn.htmlgames.com/SushiMasterMatch3/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128432/3_fejrwt.jpg' ,3),
+( N'Goblin Run', 'https://cdn.htmlgames.com/GoblinRun/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128433/4_mwn2gs.jpg' ,1),
+( N'Solitaire Collection 2', 'https://cdn.htmlgames.com/SolitaireCollection2/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128434/5_kqtfci.jpg' ,4),
+( N'Escape Room - Home Escape', 'https://cdn.htmlgames.com/EscapeRoom-HomeEscape/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128436/6_jnwrix.jpg' ,2),
+( N'Reach 7', 'https://cdn.htmlgames.com/Reach7/', 'https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128437/7_mnp4xu.jpg',3),
+( N'Solitaire Collection', 'https://cdn.htmlgames.com/SolitaireCollection/', 'https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128440/8_zsb97b.jpg',4),
+( N'2048 Billiards', 'https://cdn.htmlgames.com/2048Billiards/', 'https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128443/9_n0pe4j.jpg',3),
+( N'Jungle Link', 'https://cdn.htmlgames.com/JungleLink/', 'https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128442/10_haa16t.jpg',2),
+( N'The Watermelon Game', 'https://cdn.htmlgames.com/TheWatermelonGame/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128447/11_mfk2fp.png' ,5),
+( N'Double Klondike', 'https://cdn.htmlgames.com/DoubleKlondike/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128446/12_chkpc8.png' ,4),
+( N'Water Sort', 'https://cdn.htmlgames.com/WaterSort/', 'https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128451/13_ln7tcj.png',1),
+( N'Jungle Sniper', 'https://cdn.htmlgames.com/JungleSniper/', 'https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128449/14_s56l3x.png',6),
+( N'Kitty Mahjong', 'https://cdn.htmlgames.com/KittyMahjong/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128455/15_vzjess.png' ,6),
+( N'Balloon Maze', 'https://cdn.htmlgames.com/BalloonMaze/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128456/16_duqruw.png' ,2),
+( N'Mysterious Pirate Jewels 3', 'https://cdn.htmlgames.com/MysteriousPirateJewels3/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128453/17_urluf9.png' ,2),
+( N'Aladdin Solitaire', 'https://cdn.htmlgames.com/AladdinSolitaire/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128463/18_linw8x.png' ,3),
+( N'Tap It Away 3D', 'https://cdn.htmlgames.com/TapItAway3D/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128459/19_nbcgxt.png' ,5),
+( N'Pyramid Solitaire - Ancient China', 'https://cdn.htmlgames.com/PyramidSolitaire-AncientChina/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128467/20_d8w2fu.png' ,2),
+( N'Ninja Breakout', 'https://cdn.htmlgames.com/NinjaBreakout/', 'https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128462/21_atiu5f.png',6),
+( N'Bubble Throw', 'https://cdn.htmlgames.com/BubbleThrow/', 'https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128473/22_tvl6jc.png',6),
+( N'Freecell Extreme', 'https://cdn.htmlgames.com/FreecellExtreme/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128474/23_ardt0p.png',4),
+( N'Connect the Dots', 'https://cdn.htmlgames.com/ConnectTheDots/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128466/24_szcuqa.png' ,5),
+( N'Harbour Escape', 'https://cdn.htmlgames.com/HarbourEscape/', 'https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128476/25_nag1rk.png',1),
+( N'Flower World 2', 'https://cdn.htmlgames.com/FlowerWorld2/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128478/26_hrruhx.png' ,1),
+( N'Black and White Mahjong 3', 'https://cdn.htmlgames.com/BlackAndWhiteMahjong3/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128471/27_uimb29.png' ,3),
+( N'Archery Training', 'https://cdn.htmlgames.com/ArcheryTraining/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128480/28_sdcsmp.png' ,6),
+( N'Spooky Dimensions', 'https://cdn.htmlgames.com/SpookyDimensions/','https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128482/29_xpuh9w.png' ,5),
+( N'Circus Match 3', 'https://cdn.htmlgames.com/CircusMatch3/', 'https://res.cloudinary.com/dxx8u5qnr/image/upload/v1730128484/30_s6hfa9.png',5);
 
 
 go

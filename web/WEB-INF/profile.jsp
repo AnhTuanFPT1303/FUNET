@@ -580,13 +580,13 @@
                                             document.getElementById('updatePrivacyForm-' + postId).submit();
                                         }
 
-                                        function UpdatePostClick(id, body) {
+                                        function UpdatePostClick(id, body) {// function mở form update post với id updatePostModal
                                             document.getElementById('postIdInput').value = id;
                                             document.getElementById('newBody').value = body;
 
                                             $('#updatePostModal').modal('show');
                                         }
-                                        $('#updatePostForm').on('submit', function (event) {
+                                        $('#updatePostForm').on('submit', function (event) {// ajax cập nhật
                                             event.preventDefault();
 
                                             var formData = new FormData(this);

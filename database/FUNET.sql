@@ -38,7 +38,7 @@ CREATE TABLE userAccount (
   role VARCHAR(20) NOT NULL, 
   user_introduce NVARCHAR(50),
   is_banned BIT NOT NULL,
-   created_at DATE DEFAULT CAST(GETDATE() AS DATE) NOT NULL
+  created_at DATE DEFAULT CAST(GETDATE() AS DATE) NOT NULL
 );
 
 
@@ -94,7 +94,7 @@ GO
 CREATE TABLE conversation (
 	conversation_id INT IDENTITY(1,1) PRIMARY KEY, 
 	conversation_name NVARCHAR(50),
-	conversation_avatar nvarchar(50) NOT NULL
+	conversation_avatar nvarchar(200) NOT NULL
 );
 
 GO 
@@ -286,6 +286,62 @@ CREATE TABLE product (
     price DECIMAL(10, 2) NOT NULL, 
     CONSTRAINT fk_product_user_id FOREIGN KEY (user_id) REFERENCES userAccount(user_id)
 );
+GO
+
+CREATE TABLE shoppingCart (
+	cart_id INT IDENTITY(1,1) PRIMARY KEY,
+	user_id INT NOT NULL,
+	add_date DATETIME DEFAULT GETDATE(),
+);
+Go
+
+CREATE TABLE shoppingCartItem (
+	item_id INT PRIMARY KEY IDENTITY(1,1),
+	cart_id INT NOT NULL,
+	product_id INT NOT NULL,
+    quantity INT NOT NULL CHECK (quantity > 0),
+    added_at DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (cart_id) REFERENCES ShoppingCart(cart_id),
+    FOREIGN KEY (product_id) REFERENCES Product(product_id)
+)
+
+CREATE TABLE Orders (
+    order_id INT primary key,
+    user_id INT NOT NULL,
+	cart_id INT NOT NULL,
+    total_amount DECIMAL(10, 2) NOT NULL,
+    order_status NVARCHAR(50) DEFAULT 'Pending', -- E.g., Pending, Shipped, Delivered
+    order_date DATETIME DEFAULT GETDATE(),
+	order_note NVARCHAR(MAX) NOT NULL,
+    shipping_address NVARCHAR(255) NOT NULL
+);
+GO
+
+
+INSERT INTO ShoppingCart (user_id)
+VALUES 
+(1),  
+(188); 
+GO
+
+INSERT INTO ShoppingCartItem (cart_id, product_id, quantity)
+VALUES 
+(3, 6, 1),  
+(3, 7, 2),  
+(4, 8, 1);  
+GO
+
+INSERT INTO Orders (user_id, total_amount, order_status, shipping_address)
+VALUES 
+(3, 1500.00, 'Pending', '123 Main St, City');
+GO
+
+INSERT INTO OrderDetails (order_id, product_id, quantity, price_per_unit)
+VALUES 
+(1, 6, 1, 1200.00),  -- 1 Laptop in Order ID 1
+(1, 7, 2, 150.00);    -- 2 Headphones in Order ID 1
+GO
+
 
 GO
 CREATE TABLE learningmaterial (
@@ -325,3 +381,52 @@ BEGIN
         OR (f.receiver = u.user_id AND f.sender = @userId)
     WHERE f.status = 'accepted';
 END;
+
+
+go
+ -- January
+INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned, created_at)
+VALUES ('UserJan', 'LastnameJan', 'password', 'userjan@example.com', 'default_avt.jpg', 'student', 0, '2024-01-15');
+
+-- February
+INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned, created_at)
+VALUES ('UserFeb', 'LastnameFeb', 'password', 'userfeb@example.com', 'default_avt.jpg', 'student', 0, '2024-02-15');
+
+-- March
+INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned, created_at)
+VALUES ('UserMar', 'LastnameMar', 'password', 'usermar@example.com', 'default_avt.jpg', 'student', 0, '2024-03-15');
+
+-- April
+INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned, created_at)
+VALUES ('UserApr', 'LastnameApr', 'password', 'userapr@example.com', 'default_avt.jpg', 'student', 0, '2024-04-15');
+
+-- May
+INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned, created_at)
+VALUES ('UserMay', 'LastnameMay', 'password', 'usermay@example.com', 'default_avt.jpg', 'staff', 0, '2024-05-15');
+
+-- June
+INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned, created_at)
+VALUES ('UserJun', 'LastnameJun', 'password', 'userjun@example.com', 'default_avt.jpg', 'staff', 0, '2024-06-15');
+
+-- July
+INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned, created_at)
+VALUES ('UserJul', 'LastnameJul', 'password', 'userjul@example.com', 'default_avt.jpg', 'student', 0, '2024-07-15');
+
+-- August
+INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned, created_at)
+VALUES ('UserAug', 'LastnameAug', 'password', 'useraug@example.com', 'default_avt.jpg', 'staff', 0, '2024-08-15');
+
+-- September
+INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned, created_at)
+VALUES ('UserSep', 'LastnameSep', 'password', 'usersep@example.com', 'default_avt.jpg', 'student', 0, '2024-09-15');
+
+INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned, created_at)
+VALUES ('UserOctgaaah', 'LastnameOct', 'password', 'useroct@exampddalems.com', 'default_avt.jpg', 'staff', 0, '2024-09-15');
+
+
+-- October
+INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned, created_at)
+VALUES ('UserOct', 'LastnameOct', 'password', 'useroct@example.com', 'default_avt.jpg', 'staff', 0, '2024-10-15');
+
+INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned, created_at)
+VALUES ('UserOctgh', 'LastnameOct', 'password', 'useroct@examplems.com', 'default_avt.jpg', 'staff', 0, '2024-10-15');

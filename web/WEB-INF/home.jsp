@@ -350,6 +350,36 @@
             .submit-button:disabled {
                 background-color: #e0e0e0;
             }
+            
+            .comment-options {
+    position: relative;
+}
+
+.comment-actions {
+    position: absolute;
+    right: 0;
+    display: none;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.comment-actions button {
+    display: block;
+    width: 100%;
+    padding: 5px 10px;
+    border: none;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+}
+
+.comment-actions button:hover {
+    background-color: #f0f0f0;
+}
+            
         </style>
     </head>
     <body>
@@ -442,7 +472,6 @@
                     <div> <box-icon name='group' type='solid' ></box-icon>    Groups  </div>
                     <a href="savePostServlet" style="text-decoration: none">
                         <div>
-
                             <box-icon type='solid' name='bookmark'></box-icon> Saved
                         </div>
                     </a>
@@ -579,6 +608,9 @@
                                             <img src="assets/profile_avt/${comment.profile_pic}" class="img-fluid rounded-circle avatar me-2" style="width: 30px; height: 30px; object-fit: cover;">
                                             <small><strong>${comment.first_name} ${comment.last_name}</strong></small>
                                         </div>
+                                        
+                                        
+                                        
                                         <div class="comment-body" style="display: flex; justify-content: space-between; align-items: center;">
                                             <p style="margin-bottom: 0;" class="comment-text">${comment.comment_text}</p>
                                             <div class="comment-options">
@@ -600,6 +632,8 @@
                                             <button type="submit" class="btn btn-primary">Save</button>
                                             <button type="button" class="btn btn-secondary cancel-edit-comment">Cancel</button>
                                         </form>
+                                            
+                                            
                                     </div>
                                 </c:forEach>
                             </div>

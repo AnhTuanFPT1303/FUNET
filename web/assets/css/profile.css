@@ -1527,3 +1527,32 @@ For multi pictures display function
 .time-privacy-container p {
     margin-right: 10px;
 }
+
+.comment-options {
+    position: relative;
+}
+
+.comment-actions {
+    position: absolute;
+    right: 0;
+    display: none;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.comment-actions button {
+    display: block;
+    width: 100%;
+    padding: 5px 10px;
+    border: none;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+}
+
+.comment-actions button:hover {
+    background-color: #f0f0f0;
+}

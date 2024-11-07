@@ -518,54 +518,58 @@ public class postDAO {
     }
 
     public static List<Post> getSavedPosts(int userId) {
-        List<Post> posts = new ArrayList<>();
-        String query = "SELECT p.post_id, p.body, p.post_time, p.user_id, p.image_path, p.like_count, p.type, u.first_name, u.last_name, u.profile_pic, "
-            + "p.is_shared, p.original_post_id, p.privacy_mode, "
-            + "CASE WHEN p.is_shared = 1 THEN CONCAT(op.first_name, ' ', op.last_name) ELSE NULL END AS original_poster_name, "
-            + "CASE WHEN p.is_shared = 1 THEN op.profile_pic ELSE NULL END AS original_poster_avatar, "
-            + "(SELECT COUNT(*) FROM post_share WHERE post_id = p.post_id) AS share_count "
-            + "FROM post p "
-            + "JOIN userAccount u ON p.user_id = u.user_id "
-            + "LEFT JOIN post op_post ON p.original_post_id = op_post.post_id "
-            + "LEFT JOIN userAccount op ON op_post.user_id = op.user_id "
-            + "JOIN saved_post sp ON p.post_id = sp.post_id "
-            + "WHERE sp.user_id = ? AND p.privacy_mode != 'private' "
-            + "ORDER BY p.post_time DESC";
+    List<Post> posts = new ArrayList<>();
+    String query = "SELECT p.post_id, p.body, p.post_time, p.user_id, p.image_path, p.like_count, p.type, u.first_name, u.last_name, u.profile_pic, "
+        + "p.is_shared, p.original_post_id, p.privacy_mode, "
+        + "CASE WHEN p.is_shared = 1 THEN CONCAT(op.first_name, ' ', op.last_name) ELSE NULL END AS original_poster_name, "
+        + "CASE WHEN p.is_shared = 1 THEN op.profile_pic ELSE NULL END AS original_poster_avatar, "
+        + "(SELECT COUNT(*) FROM post_share WHERE post_id = p.post_id) AS share_count "
+        + "FROM post p "
+        + "JOIN userAccount u ON p.user_id = u.user_id "
+        + "LEFT JOIN post op_post ON p.original_post_id = op_post.post_id "
+        + "LEFT JOIN userAccount op ON op_post.user_id = op.user_id "
+        + "JOIN saved_post sp ON p.post_id = sp.post_id "
+        + "WHERE sp.user_id = ? AND (p.privacy_mode = 'public' OR "
+        + "(p.privacy_mode = 'friend' AND EXISTS (SELECT 1 FROM friendship f WHERE f.status = 'accepted' AND "
+        + "(f.sender = ? AND f.receiver = p.user_id) OR (f.receiver = ? AND f.sender = p.user_id)))) "
+        + "ORDER BY p.post_time DESC";
 
-        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setInt(1, userId);
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    int post_id = rs.getInt("post_id");
-                    int user_id = rs.getInt("user_id");
-                    String body = rs.getString("body");
-                    Timestamp post_time = rs.getTimestamp("post_time");
-                    String first_name = rs.getString("first_name");
-                    String last_name = rs.getString("last_name");
-                    String image_path = rs.getString("image_path");
-                    int like_count = rs.getInt("like_count");
-                    String profile_pic = rs.getString("profile_pic");
-                    boolean isShared = rs.getBoolean("is_shared");
-                    int originalPostId = rs.getInt("original_post_id");
-                    String originalPosterName = rs.getString("original_poster_name");
-                    int shareCount = rs.getInt("share_count");
-                    String originalPosterAvatar = rs.getString("original_poster_avatar");
-                    String privacy_mode = rs.getString("privacy_mode");
+    try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+        stmt.setInt(1, userId);
+        stmt.setInt(2, userId);
+        stmt.setInt(3, userId);
+        try (ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                int post_id = rs.getInt("post_id");
+                int user_id = rs.getInt("user_id");
+                String body = rs.getString("body");
+                Timestamp post_time = rs.getTimestamp("post_time");
+                String first_name = rs.getString("first_name");
+                String last_name = rs.getString("last_name");
+                String image_path = rs.getString("image_path");
+                int like_count = rs.getInt("like_count");
+                String profile_pic = rs.getString("profile_pic");
+                boolean isShared = rs.getBoolean("is_shared");
+                int originalPostId = rs.getInt("original_post_id");
+                String originalPosterName = rs.getString("original_poster_name");
+                int shareCount = rs.getInt("share_count");
+                String originalPosterAvatar = rs.getString("original_poster_avatar");
+                String privacy_mode = rs.getString("privacy_mode");
 
-                    Post post = new Post(post_id, user_id, body, post_time, first_name, last_name, image_path, profile_pic, like_count, isShared, originalPostId, originalPosterName, shareCount, originalPosterAvatar, privacy_mode);
-                    post.setComments(getComments(post.getPost_id()));
-                    String type = rs.getString("type");
-                    post.setType(type);
-                    posts.add(post);
-                }
+                Post post = new Post(post_id, user_id, body, post_time, first_name, last_name, image_path, profile_pic, like_count, isShared, originalPostId, originalPosterName, shareCount, originalPosterAvatar, privacy_mode);
+                post.setComments(getComments(post.getPost_id()));
+                String type = rs.getString("type");
+                post.setType(type);
+                posts.add(post);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        return posts;
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+    return posts;
+}
 
     public static void main(String[] args) {
         List<Post> posts;

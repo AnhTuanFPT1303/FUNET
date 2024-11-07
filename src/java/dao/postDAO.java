@@ -34,17 +34,34 @@ public class postDAO {
     }
 
     public void updatePostPrivacy(int postId, String privacyMode) {
-        String query = "UPDATE post SET privacy_mode = ? WHERE post_id = ?";
-        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, privacyMode);
-            stmt.setInt(2, postId);
-            stmt.executeUpdate();
+    String updatePrivacyQuery = "UPDATE post SET privacy_mode = ? WHERE post_id = ?";
+    String deleteSharedPostsQuery = "DELETE FROM post WHERE original_post_id = ? AND is_shared = 1";
+
+    try (Connection conn = sqlConnect.getInstance().getConnection()) {
+        conn.setAutoCommit(false);
+        try (PreparedStatement updateStmt = conn.prepareStatement(updatePrivacyQuery);
+             PreparedStatement deleteStmt = conn.prepareStatement(deleteSharedPostsQuery)) {
+
+            updateStmt.setString(1, privacyMode);
+            updateStmt.setInt(2, postId);
+            updateStmt.executeUpdate();
+
+            if ("private".equalsIgnoreCase(privacyMode)) {
+                deleteStmt.setInt(1, postId);
+                deleteStmt.executeUpdate();
+            }
+
+            conn.commit();
         } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
+            conn.rollback();
             e.printStackTrace();
         }
-    }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }   catch (Exception ex) {
+            Logger.getLogger(postDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+}
 
     public void addComment(Comment c) {
         String query = "INSERT INTO comment (post_id, user_id, comment_text, comment_image) VALUES (?, ?, ?, ?)";
@@ -500,20 +517,20 @@ public class postDAO {
         return false;
     }
 
-    public List<Post> getSavedPosts(int userId) {
+    public static List<Post> getSavedPosts(int userId) {
         List<Post> posts = new ArrayList<>();
         String query = "SELECT p.post_id, p.body, p.post_time, p.user_id, p.image_path, p.like_count, p.type, u.first_name, u.last_name, u.profile_pic, "
-                + "p.is_shared, p.original_post_id, p.privacy_mode, "
-                + "CASE WHEN p.is_shared = 1 THEN CONCAT(op.first_name, ' ', op.last_name) ELSE NULL END AS original_poster_name, "
-                + "CASE WHEN p.is_shared = 1 THEN op.profile_pic ELSE NULL END AS original_poster_avatar, "
-                + "(SELECT COUNT(*) FROM post_share WHERE post_id = p.post_id) AS share_count "
-                + "FROM post p "
-                + "JOIN userAccount u ON p.user_id = u.user_id "
-                + "LEFT JOIN post op_post ON p.original_post_id = op_post.post_id "
-                + "LEFT JOIN userAccount op ON op_post.user_id = op.user_id "
-                + "JOIN saved_post sp ON p.post_id = sp.post_id "
-                + "WHERE sp.user_id = ? "
-                + "ORDER BY p.post_time DESC";
+            + "p.is_shared, p.original_post_id, p.privacy_mode, "
+            + "CASE WHEN p.is_shared = 1 THEN CONCAT(op.first_name, ' ', op.last_name) ELSE NULL END AS original_poster_name, "
+            + "CASE WHEN p.is_shared = 1 THEN op.profile_pic ELSE NULL END AS original_poster_avatar, "
+            + "(SELECT COUNT(*) FROM post_share WHERE post_id = p.post_id) AS share_count "
+            + "FROM post p "
+            + "JOIN userAccount u ON p.user_id = u.user_id "
+            + "LEFT JOIN post op_post ON p.original_post_id = op_post.post_id "
+            + "LEFT JOIN userAccount op ON op_post.user_id = op.user_id "
+            + "JOIN saved_post sp ON p.post_id = sp.post_id "
+            + "WHERE sp.user_id = ? AND p.privacy_mode != 'private' "
+            + "ORDER BY p.post_time DESC";
 
         try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, userId);
@@ -552,6 +569,6 @@ public class postDAO {
 
     public static void main(String[] args) {
         List<Post> posts;
-        posts = getMyPosts(2);
+        posts = getSavedPosts(1);
     }
 }

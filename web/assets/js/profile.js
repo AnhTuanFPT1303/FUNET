@@ -2,7 +2,19 @@ function updatePrivacy(mode, element) {
     const form = element.closest('.updatePrivacyForm');
     form.querySelector('.privacyMode').value = mode;
     form.submit();
-    
+    const post = element.closest('.post');
+    const privacyIcon = post.querySelector('.public-btn-i');
+
+    if (mode === 'public') {
+        privacyIcon.classList.remove('fa-user-friends', 'fa-lock');
+        privacyIcon.classList.add('fa-globe-europe');
+    } else if (mode === 'friend') {
+        privacyIcon.classList.remove('fa-globe-europe', 'fa-lock');
+        privacyIcon.classList.add('fa-user-friends');
+    } else if (mode === 'private') {
+        privacyIcon.classList.remove('fa-globe-europe', 'fa-user-friends');
+        privacyIcon.classList.add('fa-lock');
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -29,94 +41,20 @@ document.addEventListener('DOMContentLoaded', function () {
             post.querySelector('.popop-background').classList.remove('dis_block');
         });
     });
+
+    document.querySelectorAll('.post').forEach(post => {
+        const privacyMode = post.querySelector('.privacyMode').value;
+        const privacyIcon = post.querySelector('.public-btn-i');
+
+        if (privacyMode === 'public') {
+            privacyIcon.classList.add('fa-globe-europe');
+        } else if (privacyMode === 'friend') {
+            privacyIcon.classList.add('fa-user-friends');
+        } else if (privacyMode === 'private') {
+            privacyIcon.classList.add('fa-lock');
+        }
+    });
 });
-
-
-let public_btn = document.getElementById("public-btn");
-let friends_btn = document.getElementById("friends-btn");
-let lock_btn = document.getElementById("lock-btn");
-
-let public_li_icon = document.getElementById("public-li-icon");
-let friends_li_icon = document.getElementById("friends-li-icon");
-let lock_li_icon = document.getElementById("lock-li-icon");
-
-public_btn.addEventListener("click", function () {
-    public_btn.classList.add("activ-li-div");
-    friends_btn.classList.remove("activ-li-div");
-
-    public_li_icon.classList.add("activ-li-icon");
-    public_li_icon.classList.add("fa-dot-circle");
-
-    lock_li_icon.classList.remove("activ-li-icon");
-    public_btn_i.classList.remove("fa-lock");
-    lock_li_icon.classList.add("fa-circle");
-    lock_btn.classList.remove("activ-li-div");
-
-    friends_li_icon.classList.remove("activ-li-icon");
-    friends_li_icon.style.color = "#707070";
-    friends_li_icon.classList.add("fa-circle");
-    friends_li_icon.classList.remove("fa-dot-circle");
-
-    public_btn_i.classList.add("fa-globe-europe");
-    public_btn_i.classList.remove("fa-user-friends");
-
-    select_audience.classList.remove("dis_block");
-    popop_background.classList.remove("dis_block");
-});
-
-
-
-friends_btn.addEventListener("click", function () {
-    public_btn.classList.remove("activ-li-div");
-    friends_btn.classList.add("activ-li-div");
-
-    public_li_icon.classList.remove("activ-li-icon");
-    public_li_icon.classList.remove("fa-dot-circle");
-
-    friends_li_icon.classList.add("activ-li-icon");
-    friends_li_icon.classList.remove("fa-circle");
-    friends_li_icon.classList.add("fa-dot-circle");
-
-    lock_li_icon.classList.remove("activ-li-icon");
-    public_btn_i.classList.remove("fa-lock");
-    lock_li_icon.classList.add("fa-circle");
-    lock_btn.classList.remove("activ-li-div");
-    lock_li_icon.classList.remove("fa-dot-circle");
-
-    public_btn_i.classList.remove("fa-globe-europe");
-    public_btn_i.classList.add("fa-user-friends");
-
-    select_audience.classList.remove("dis_block")
-    popop_background.classList.remove("dis_block")
-});
-
-
-lock_btn.addEventListener("click", function () {
-    public_btn.classList.remove("activ-li-div");
-    friends_btn.classList.remove("activ-li-div");
-
-    public_li_icon.classList.remove("activ-li-icon");
-    public_li_icon.classList.remove("fa-dot-circle");
-
-    friends_li_icon.classList.remove("activ-li-icon");
-    friends_li_icon.style.color = "#707070";
-    friends_li_icon.classList.add("fa-circle");
-    friends_li_icon.classList.remove("fa-dot-circle");
-
-    lock_li_icon.classList.remove("fa-circle");
-    lock_li_icon.classList.add("fa-dot-circle");
-    lock_li_icon.classList.add("activ-li-icon");
-    lock_btn.classList.add("activ-li-div");
-
-    public_btn_i.classList.remove("fa-globe-europe");
-    public_btn_i.classList.remove("fa-user-friends");
-    public_btn_i.classList.add("fa-lock");
-
-    select_audience.classList.remove("dis_block");
-    popop_background.classList.remove("dis_block");
-});
-
-
 
 
 document.addEventListener('DOMContentLoaded', function () {

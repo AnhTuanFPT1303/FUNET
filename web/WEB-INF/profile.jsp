@@ -366,7 +366,9 @@
                                 <div class="privacy-info">
                                     <div class="time-privacy-container">
                                         <p><a href="#"><fmt:formatDate value="${post.post_time}" pattern="dd-MM" /></a></p>
+                                        <c:if test="${sessionScope.user['user_id'] == user.user_id}">
                                         <span class="public-btn-i fas fa-user-friends"></span>
+                                        </c:if>
                                     </div>
                                 </div>
 
@@ -495,7 +497,7 @@
                         </div>
 
                         <div class="activate d-flex justify-content-around mt-2">
-                            <div class="lcs-btn lcs-btn_i post-rating ${post.likedByCurrentUser ? 'post-rating-selected' : ''} d-flex align-items-center">
+                            <div class="lcs-btn lcs-btn_i post-rating ${post.likedByCurrentUser ? 'post-rating-selected' : ''} d-flex align-items-center" style="background: white">
                                 <span class="material-icons" style="color: ${post.likedByCurrentUser ? '#1877f2' : '#65676b'};">
                                     thumb_up
                                 </span>
@@ -505,7 +507,7 @@
                                 <i class="far fa-comment-alt"></i>
                                 <span class="ms-1">Comment</span>
                             </div>
-                            <div class="lcs-btn d-flex align-items-center">
+                            <div class="lcs-btn d-flex align-items-center" style="background: white">
                                 <form action="sharePostServlet" method="post" style="display: inline;">
                                     <input type="hidden" name="postId" value="${post.post_id}">
                                     <input type="hidden" name="sourceUrl" value="profile">

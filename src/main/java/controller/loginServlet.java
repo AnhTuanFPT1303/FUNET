@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
+import java.util.logging.Logger;
 
 import model.User;
 
@@ -59,7 +60,7 @@ public class loginServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("user") != null) {
-            request.getRequestDispatcher("WEB-INF/home.jsp").forward(request, response);
+            response.sendRedirect("home");
         } else {
             request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
         }
@@ -88,13 +89,13 @@ public class loginServlet extends HttpServlet {
             status = false;
         }
 
-        if (!status) {
+        if (!status) {            
             request.setAttribute("msg", "Re-enter Email & password.");
             request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
         } else {
             boolean verify = userDao.login(email, passWord);
-
             if (verify) {
+                Logger.getLogger(loginServlet.class.getName()).info("login success");
                 User user = userDao.getUserByEmail(email);
                 HttpSession session = request.getSession(true);
                 session.setMaxInactiveInterval(1800);
@@ -104,6 +105,7 @@ public class loginServlet extends HttpServlet {
                 session.setAttribute("first_name", user.getFirst_name());
                 response.sendRedirect("home");
             } else {
+                Logger.getLogger(loginServlet.class.getName()).info("login failed");
                 request.setAttribute("msg", "Wrong username or password.");
                 request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
             }

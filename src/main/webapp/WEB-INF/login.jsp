@@ -20,7 +20,7 @@
                 <form method="post" action="/signup">
                     <h1>Create Account</h1>
                     <div class="social-container">
-                        <a href="https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=http://localhost/GoogleValidate&response_type=code&client_id=141463377028-7grc9ri1n2peprn9fhuucjamiudeopcs.apps.googleusercontent.com&approval_prompt=force" class="social"><i class="fab fa-google-plus-g"></i></a>
+                        <a href="https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=https://funet.azurewebsites.net/GoogleValidate&response_type=code&client_id=141463377028-7grc9ri1n2peprn9fhuucjamiudeopcs.apps.googleusercontent.com&approval_prompt=force" class="social"><i class="fab fa-google-plus-g"></i></a>
                     </div>
                     <input type="text" id="firstname" name="firstName" placeholder="First Name">
                     <input type="text" id="lastname" name="lastName" placeholder="Last Name" />
@@ -34,7 +34,7 @@
                 <form action="/login" method="post">
                     <h1>Sign in</h1>
                     <div class="social-container">
-                        <a href="https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=http://localhost/GoogleValidate&response_type=code&client_id=141463377028-7grc9ri1n2peprn9fhuucjamiudeopcs.apps.googleusercontent.com&approval_prompt=force" class="social"><i class="fab fa-google-plus-g"></i></a>
+                        <a href="https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=https://funet.azurewebsites.net/GoogleValidate&response_type=code&client_id=141463377028-7grc9ri1n2peprn9fhuucjamiudeopcs.apps.googleusercontent.com&approval_prompt=force" class="social"><i class="fab fa-google-plus-g"></i></a>
                     </div>
                     <span>or use your account</span>
                     <input type="email" name="userEmail" placeholder="Email" onkeyup="emailCheck()"/>

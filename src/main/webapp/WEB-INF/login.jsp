@@ -42,8 +42,8 @@
                     <a href="forgotPassword">Forgot your password?</a>
                     <button>Sign In</button>
                 </form>
-            </div>
-            <div class="overlay-container">
+            </div> 
+           <div class="overlay-container">
                 <div class="overlay">
                     <div class="overlay-panel overlay-left">
                         <h1>Welcome Back!</h1>

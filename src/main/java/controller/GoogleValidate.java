@@ -61,7 +61,6 @@ public class GoogleValidate extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Logger.getLogger(GoogleValidate.class.getName()).info("DOGET triggered");
         String code = request.getParameter("code");
         GoogleLogin ggLogin = new GoogleLogin();
         User user = ggLogin.getUserInfo(ggLogin.getToken(code)); // Get user data from Google
@@ -70,14 +69,12 @@ public class GoogleValidate extends HttpServlet {
 
         HttpSession session = request.getSession(true);
         session.setMaxInactiveInterval(1800); // Set session timeout (30 minutes)
-         Logger.getLogger(GoogleValidate.class.getName()).info("GET token done");
         if (existingUser != null) {
             // Existing user: use the existing user's details
             session.setAttribute("user", existingUser);
             session.setAttribute("user_id", existingUser.getUser_id());
             session.setAttribute("last_name", existingUser.getLast_name());
             session.setAttribute("first_name", existingUser.getFirst_name());
-             Logger.getLogger(GoogleValidate.class.getName()).info("User exist");
         } else {
             try {
                 // New user: insert into the DB and set session attributes
@@ -93,7 +90,6 @@ public class GoogleValidate extends HttpServlet {
                 session.setAttribute("user_id", newUserId);
                 session.setAttribute("last_name", user.getLast_name());
                 session.setAttribute("first_name", user.getFirst_name());
-                 Logger.getLogger(GoogleValidate.class.getName()).info("create user");
             } catch (Exception ex) {
                 Logger.getLogger(GoogleValidate.class.getName()).log(Level.SEVERE, null, ex);
             }

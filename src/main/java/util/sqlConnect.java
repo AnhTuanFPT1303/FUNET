@@ -19,12 +19,8 @@ public class sqlConnect {
     private Connection connection = null;
     private String userName = "thecucumber";
     private String passWord = "AnhTuan1332004";
-    private String port = "1433";
-    private String ip = "127.0.0.1";
-    private String dbName = "FUNET";
-    private String deviceName = "LAPTOP-5D2CNVK4";
     private String driverClass = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    private String sqlUrl = "jdbc:sqlserver://funet-server.database.windows.net:1433;database=funet-database;user=thecucumber@funet-server;password=AnhTuan1332004;encrypt=false;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+    private String sqlUrl = "jdbc:sqlserver://funet-server.database.windows.net:1433;database=funet-database;user=thecucumber@funet-server;password=AnhTuan1332004;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
 
     private sqlConnect() throws Exception {
         try {
@@ -37,8 +33,6 @@ public class sqlConnect {
 
     public static sqlConnect getInstance() throws SQLException, Exception {
         if (instance == null) {
-            instance = new sqlConnect();
-        } else if (instance.getConnection().isClosed()) {
             instance = new sqlConnect();
         }
         return instance;

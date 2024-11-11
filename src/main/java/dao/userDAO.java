@@ -35,7 +35,7 @@ public class userDAO {
                 result = true;
             }
         } catch (Exception e) {
-            System.out.println("Connect Failed");
+            System.out.println("Not because database");
         }
         return result;
     }

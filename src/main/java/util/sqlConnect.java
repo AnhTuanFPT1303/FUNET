@@ -27,7 +27,7 @@ public class sqlConnect {
             Class.forName(driverClass);
             connection = DriverManager.getConnection(sqlUrl, userName, passWord);
         } catch (SQLException s) {
-            System.out.println("Connect Failed");
+            System.out.println("Database connect failed");
         }
     }
 

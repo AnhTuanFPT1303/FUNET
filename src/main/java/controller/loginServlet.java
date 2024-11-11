@@ -95,7 +95,6 @@ public class loginServlet extends HttpServlet {
         } else {
             boolean verify = userDao.login(email, passWord);
             if (verify) {
-                Logger.getLogger(loginServlet.class.getName()).info("login success");
                 User user = userDao.getUserByEmail(email);
                 HttpSession session = request.getSession(true);
                 session.setMaxInactiveInterval(1800);

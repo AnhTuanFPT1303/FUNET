@@ -33,8 +33,10 @@ public class userDAO {
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 result = true;
+                System.out.println("Get userid work" +  rs.getInt(1));
             }
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("Not because database");
         }
         return result;

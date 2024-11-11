@@ -103,7 +103,7 @@ public class loginServlet extends HttpServlet {
                 session.setAttribute("user_id", user.getUser_id());
                 session.setAttribute("last_name", user.getLast_name());
                 session.setAttribute("first_name", user.getFirst_name());
-                response.sendRedirect("home");
+                request.getRequestDispatcher("WEB-INF/home.jsp").forward(request, response);
             } else {
                 Logger.getLogger(loginServlet.class.getName()).info("login failed");
                 request.setAttribute("msg", "Wrong username or password.");

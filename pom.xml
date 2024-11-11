@@ -120,6 +120,12 @@
             <artifactId>jakarta.mail-api</artifactId>
             <version>2.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>jakarta.mail</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+ 
         <!-- https://mvnrepository.com/artifact/jakarta.websocket/jakarta.websocket-client-api -->
         <dependency>
             <groupId>jakarta.websocket</groupId>
@@ -175,6 +181,12 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.10.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.api-client/google-api-client -->
+        <dependency>
+            <groupId>com.google.api-client</groupId>
+            <artifactId>google-api-client</artifactId>
+            <version>2.6.0</version>
         </dependency>
 
     </dependencies>

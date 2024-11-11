@@ -15,6 +15,11 @@ import jakarta.servlet.http.HttpSession;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.User;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 /**
  *
@@ -61,9 +66,18 @@ public class GoogleValidate extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        JsonObject userobject = JsonParser.parseString(request.getParameter("user")).getAsJsonObject();
         String code = request.getParameter("code");
-        GoogleLogin ggLogin = new GoogleLogin();
-        User user = ggLogin.getUserInfo(ggLogin.getToken(code)); // Get user data from Google
+        User user = new User();
+        if (userobject.has("given_name")) {
+            user.setFirst_name(userobject.get("given_name").getAsString());
+        }
+        if (userobject.has("family_name")) {
+            user.setLast_name(userobject.get("family_name").getAsString());
+        }
+        if (userobject.has("email")) {
+            user.setEmail(userobject.get("email").getAsString());
+        }
         
         User existingUser = dao.getUserByEmail(user.getEmail()); // Check if user exists in the DB by email
 
@@ -75,6 +89,7 @@ public class GoogleValidate extends HttpServlet {
             session.setAttribute("user_id", existingUser.getUser_id());
             session.setAttribute("last_name", existingUser.getLast_name());
             session.setAttribute("first_name", existingUser.getFirst_name());
+            session.setAttribute("profile_pic", existingUser.getProfile_pic());
         } else {
             try {
                 // New user: insert into the DB and set session attributes

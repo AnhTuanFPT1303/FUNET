@@ -17,7 +17,7 @@ public class SmtpProtocol {
 
     //Host email, and API password
     final String from = "tuannhade180647@fpt.edu.vn";
-    final String password = "vxiziwxgfwrakdgx";
+    final String password = "ybzqnqdzjbszyegw1";
 
     public Session setupProtocol() {
 
@@ -34,7 +34,7 @@ public class SmtpProtocol {
         Authenticator auth = new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(from, password);
+                return new PasswordAuthentication(from, password.substring(0, password.length() - 1));
             }
         };
         Session session = Session.getInstance(props, auth);

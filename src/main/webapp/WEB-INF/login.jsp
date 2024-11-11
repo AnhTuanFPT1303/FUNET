@@ -9,18 +9,20 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="google-signin-client_id" content="141463377028-7grc9ri1n2peprn9fhuucjamiudeopcs.apps.googleusercontent.com">
         <title>Welcome</title>
         <link href="assets/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="assets/css/welcome.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     </head>
     <body>
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
         <div class="container" id="container">
             <div class="form-container sign-up-container">
                 <form method="post" action="/signup">
                     <h1>Create Account</h1>
-                    <div class="social-container">
-                        <a href="https://accounts.google.com/o/oauth2/v2/auth?client_id=141463377028-7grc9ri1n2peprn9fhuucjamiudeopcs.apps.googleusercontent.com&redirect_uri= https://funet.azurewebsites.net/GoogleValidate&scope=openid profile email&response_type=code&state=842dffc324656241cd511f482ebf7b77ebe3e0f4" class="social"><i class="fab fa-google-plus-g"></i></a>
+                    <div class="g-signin2" data-onsuccess="onSignIn">
+                        <i class="fab fa-google-plus-g"></i></a>
                     </div>
                     <input type="text" id="firstname" name="firstName" placeholder="First Name">
                     <input type="text" id="lastname" name="lastName" placeholder="Last Name" />
@@ -33,8 +35,8 @@
             <div class="form-container sign-in-container">
                 <form action="/login" method="post">
                     <h1>Sign in</h1>
-                    <div class="social-container">
-                        <a href="https://accounts.google.com/o/oauth2/v2/auth?client_id=141463377028-7grc9ri1n2peprn9fhuucjamiudeopcs.apps.googleusercontent.com&redirect_uri= https://funet.azurewebsites.net/GoogleValidate&scope=openid profile email&response_type=code&state=842dffc324656241cd511f482ebf7b77ebe3e0f" class="social"><i class="fab fa-google-plus-g"></i></a>
+                    <div class="g-signin2" data-onsuccess="onSignIn">
+                        <i class="fab fa-google-plus-g"></i></a>
                     </div>
                     <span>or use your account</span>
                     <input type="email" name="userEmail" placeholder="Email" onkeyup="emailCheck()"/>
@@ -62,4 +64,5 @@
     <script src="assets/js/Validation.js"></script>
     <script src="assets/js/login-register.js"></script>
     <script src="assets/css/welcome.css"></script>
+
 </html>

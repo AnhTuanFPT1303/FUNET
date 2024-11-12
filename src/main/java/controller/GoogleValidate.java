@@ -90,7 +90,7 @@ public class GoogleValidate extends HttpServlet {
         try {
             String idTokenString = request.getParameter("id_token");
             if (idTokenString == null) {
-                System.out.println("String token is null");
+                Logger.getLogger(GoogleValidate.class.getName()).info("id token is: " + idTokenString);
                 return;
             }
             NetHttpTransport transport = new NetHttpTransport();
@@ -113,7 +113,7 @@ public class GoogleValidate extends HttpServlet {
                 user.setEmail(payload.getEmail());
                 user.setFirst_name((String) payload.get("family_name"));
                 user.setLast_name((String) payload.get("given_name"));
-                System.out.println(user.getFirst_name());
+                Logger.getLogger(GoogleValidate.class.getName()).info("user first name is: " + user.getFirst_name());
             }
 
             User existingUser = dao.getUserByEmail(user.getEmail()); // Check if user exists in the DB by email

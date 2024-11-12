@@ -16,7 +16,7 @@ public class Product {
     private double price; 
     private int quantity;
 
-    public Product(int productId, int userId, String productName, String productDescription, String product_img, String productTag, Date publishDate, double priceprice,int quantity) {
+    public Product(int productId, int userId, String productName, String productDescription, String product_img, String productTag, Date publishDate, double price, int quantity) {
         this.productId = productId;
         this.userId = userId;
         this.productName = productName;
@@ -39,7 +39,7 @@ public class Product {
     public String getProduct_img() {
         return product_img;
     }
-    
+
     public void setProduct_img(String product_img) {
         this.product_img = product_img;
     }
@@ -99,6 +99,4 @@ public class Product {
     public void setPrice(double price) {
         this.price = price;
     }
-    
-    
 }

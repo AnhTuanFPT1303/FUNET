@@ -21,6 +21,7 @@ public class RemoveItemServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int productId = Integer.parseInt(request.getParameter("productId"));
+        int quantity = Integer.parseInt(request.getParameter("quantity"));
 
         // Lấy session hiện tại
         HttpSession session = request.getSession(false);
@@ -36,13 +37,14 @@ public class RemoveItemServlet extends HttpServlet {
                 if (cartId != -1) {
                     // Xóa sản phẩm khỏi giỏ hàng
                     cartDAO.removeItem(cartId, productId);
+                    cartDAO.increaseProductQuantity(productId, quantity);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
             // Cập nhật lại giỏ hàng trong session hoặc chuyển hướng
-            response.sendRedirect("/marketLink");
+            response.sendRedirect("/FUNET/marketLink");
         }
     }
 }

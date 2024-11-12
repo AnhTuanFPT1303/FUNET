@@ -74,18 +74,20 @@ public class OrderControlServlet extends HttpServlet {
             request.setAttribute("totalAmount", totalAmount);
             request.setAttribute("ordersList", ordersList);
             
+            sCartDAO.updateOrderDetailbyShoppingCartItem(orderId);
+            
             if (transactionStatus.equals(
                     "Fail") || transactionStatus.equals("invalid signature")) {
                 try {
                     oDAO.deleteOrder(orderId);
                     // Chuyển tiếp request đến market.jsp
-                    request.getRequestDispatcher("WEB-INF/market.jsp").forward(request, response);
+                    response.sendRedirect("marketLink");
                 } catch (Exception ex) {
                     Logger.getLogger(OrderControlServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
                 // Chuyển tiếp request đến market.jsp
-                request.getRequestDispatcher("WEB-INF/market.jsp").forward(request, response);
+                response.sendRedirect("marketLink");
             }
         } catch (Exception ex) {
             Logger.getLogger(OrderControlServlet.class.getName()).log(Level.SEVERE, null, ex);

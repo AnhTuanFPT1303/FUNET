@@ -35,6 +35,11 @@ public class Product {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    public String getProduct_img() {
+        return product_img;
+    }
+    
     public void setProduct_img(String product_img) {
         this.product_img = product_img;
     }

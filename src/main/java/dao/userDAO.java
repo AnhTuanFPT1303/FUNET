@@ -89,6 +89,7 @@ public class userDAO {
                 user.setProfile_pic(rs.getString("profile_pic"));
                 user.setRole(rs.getString("role"));
                 user.setStatus(rs.getBoolean("is_banned"));
+                user.setIs_banned(rs.getBoolean("is_banned"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -115,6 +116,7 @@ public class userDAO {
                 u.setProfile_pic(rs.getString(6));
                 u.setRole(rs.getString(7));
                 u.setStatus(false);
+                u.setIs_banned(rs.getBoolean("is_banned"));
             }
 
         } catch (Exception e) {
@@ -194,7 +196,9 @@ public class userDAO {
                 u.setEmail(rs.getString("email"));
                 u.setRole(rs.getString("role"));
                 u.setProfile_pic(rs.getString("profile_pic"));
+                u.setIs_banned(rs.getBoolean("is_banned"));
                 users.add(u);
+                
             }
         } catch (SQLException e) {
             System.out.println("Error fetching all users: " + e.getMessage());

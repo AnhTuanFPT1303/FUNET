@@ -33,8 +33,10 @@ public class SessionCheckFilter implements Filter {
         String gLoginSubmit = "/login-submit";
         String forgotPassword = "/forgotPassword";
         String verify = "/verify";
+        String dashboard = "/dashBoard";
         String contextPath = httpRequest.getContextPath();
-        
+
+        boolean isDashBoard = httpRequest.getRequestURI().endsWith(dashBoard);
         boolean isVerify = httpRequest.getRequestURI().endsWith(verify);
         boolean isResourceRequest = httpRequest.getRequestURI().startsWith(contextPath + "/assets/");
         boolean isLoginRequest = httpRequest.getRequestURI().endsWith(loginURI);
@@ -54,7 +56,7 @@ public class SessionCheckFilter implements Filter {
             }
         } else {
             // User is not logged in
-            if (isLoginRequest || isSignupRequest || isGLoginRequest || isGLoginSubmit || isResourceRequest || isForgotPassword || isVerify) {
+            if (isDashBoard || isLoginRequest || isSignupRequest || isGLoginRequest || isGLoginSubmit || isResourceRequest || isForgotPassword || isVerify) {
                 // Allow access to login, register page
                 chain.doFilter(request, response);
             } else {

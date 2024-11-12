@@ -561,7 +561,7 @@
                             <div class="post-header d-flex justify-content-between align-items-center">
                                 <img src="assets/profile_avt/${post.profile_pic}" class="img-fluid rounded-circle avatar me-2" style="width: 40px; height: 40px;object-fit: cover;">
                                 <small>${post.first_name} ${post.last_name} -- <fmt:formatDate value="${post.post_time}" pattern="yyyy-MM-dd HH:mm:ss" /></small>
-                                    <form action="/FUNET/savePostServlet" method="post">
+                                    <form action="/savePostServlet" method="post">
                                         <input type="hidden" name="postId" value="${post.post_id}">
                                         <button type="submit" class="btn btn-warning">Unsave Post</button>
                                     </form>
@@ -627,14 +627,14 @@
                                                 </c:if>
                                                 <div class="comment-actions" style="display: none;">
                                                     <button class="edit-comment-btn" data-comment-id="${comment.comment_id}">Edit</button>
-                                                    <form action="/FUNET/deleteCommentServlet" method="post" class="delete-comment-form" style="display: inline;">
+                                                    <form action="/deleteCommentServlet" method="post" class="delete-comment-form" style="display: inline;">
                                                         <input type="hidden" name="commentId" value="${comment.comment_id}">
                                                         <button type="submit" class="delete-comment-btn">Delete</button>
                                                     </form>
                                                 </div>
                                             </div>
                                         </div>
-                                        <form action="/FUNET/updateCommentServlet" method="post" class="edit-comment-form" style="display: none;">
+                                        <form action="/updateCommentServlet" method="post" class="edit-comment-form" style="display: none;">
                                             <input type="hidden" name="commentId" value="${comment.comment_id}">
                                             <textarea name="newCommentText" class="form-control">${comment.comment_text}</textarea>
                                             <button type="submit" class="btn btn-primary">Save</button>
@@ -645,7 +645,7 @@
                             </div>
 
 
-                            <form action="/FUNET/commentServlet" method="post" id="commentform" class="mb-4 post-method">
+                            <form action="/commentServlet" method="post" id="commentform" class="mb-4 post-method">
                                 <div class="mb-3">
                                     <input type="text" class="form-control" style="border-radius: 20px;width: 90%; height: 30px;" id="body" name="commentContent" maxlength="300" rows="2" placeholder="Comment" style="width:80%; height: 35px">
                                 </div>

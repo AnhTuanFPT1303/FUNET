@@ -23,7 +23,7 @@
         <div class="flex-container navbar">
             <a href="home" style ="text-decoration:none">   <div class="logo" style="margin-bottom: 10%; color: black;">FUNET</div>
             </a>
-            <form class="" method="get" action="/FUNET/searchServlet" id="searchForm">
+            <form class="" method="get" action="/searchServlet" id="searchForm">
                 <div class="search-bar" style="margin-top:1%;">
                     <input class="form-control" name="search-name" type="search" placeholder="Searching in FUNET" aria-label="Search" id="search-input" style="padding-left:5%; margin-left: 10px">
 
@@ -45,14 +45,14 @@
                         <box-icon name='store-alt' type='solid'></box-icon>
                     </button>
                 </a>
-                <a href="/FUNET/friendRequestServlet" class="friend-icon me-3">
+                <a href="/friendRequestServlet" class="friend-icon me-3">
                     <button class="center-button" id="friend-btn">
                         <box-icon name='group' type='solid'></box-icon>
                     </button>
                 </a>
             </div>
             <div class="right-icons">
-                <a href="/FUNET/chat" class="mess-icon" style='margin-left:5px'>
+                <a href="/chat" class="mess-icon" style='margin-left:5px'>
                     <span class="icon icon-circle" id="messenger-btn"><box-icon name='messenger' type='logo'></box-icon></span>
                 </a>
                 <span class="icon icon-circle" id="notification-btn" style="display:none"><box-icon name='bell' type='solid' ></box-icon></span>
@@ -85,7 +85,7 @@
             </div>
 
 
-            <form method="post" action="/FUNET/logout" style="display: inline; width: 100%;">
+            <form method="post" action="/logout" style="display: inline; width: 100%;">
                 <div class="menu-item" style="display: flex; align-items: center; cursor: pointer; width: 100%;">
                     <box-icon type='solid' name='log-out'style=" margin-left:1%;"></box-icon>
                     <button type="submit" style="border: none; background: none; color: black; font-size: 16px; margin-left: 5px; cursor: pointer; flex: 1; text-align: left;">
@@ -242,7 +242,7 @@
                 </section>
                 <section class="post-info">
                     <div class="box-design">
-                        <form action="/FUNET/home" method="post" enctype="multipart/form-data" onsubmit="document.getElementById('myBtn').disabled = true;" id="commentForm">
+                        <form action="/home" method="post" enctype="multipart/form-data" onsubmit="document.getElementById('myBtn').disabled = true;" id="commentForm">
                             <div class="post-upload-T">
                                 <div class="profil-ing-div">
                                     <a href="#">
@@ -463,7 +463,7 @@
                                     </a>
                                 </div>
                                 <div class="comment-input">
-                                    <form action="/FUNET/commentServlet" method="post" class="mb-4 post-method" id="commentForm" enctype="multipart/form-data">
+                                    <form action="/commentServlet" method="post" class="mb-4 post-method" id="commentForm" enctype="multipart/form-data">
                                         <div class="mb-3">
                                             <input type="text" class="form-control" id="body" name="commentContent" maxlength="300" rows="2" placeholder="Write a comment…">
                                         </div>
@@ -500,14 +500,14 @@
                                             </c:if>
                                             <div class="comment-actions" style="display: none;">
                                                 <button class="edit-comment-btn" data-comment-id="${comment.comment_id}">Edit</button>
-                                                <form action="/FUNET/deleteCommentServlet" method="post" class="delete-comment-form" style="display: inline;">
+                                                <form action="/deleteCommentServlet" method="post" class="delete-comment-form" style="display: inline;">
                                                     <input type="hidden" name="commentId" value="${comment.comment_id}">
                                                     <button type="submit" class="delete-comment-btn">Delete</button>
                                                 </form>
                                             </div>
                                         </div>
                                     </div>
-                                    <form action="/FUNET/updateCommentServlet" method="post" class="edit-comment-form" style="display: none;">
+                                    <form action="/updateCommentServlet" method="post" class="edit-comment-form" style="display: none;">
                                         <input type="hidden" name="commentId" value="${comment.comment_id}">
                                         <textarea name="newCommentText" class="form-control">${comment.comment_text}</textarea>
                                         <button type="submit" class="btn btn-primary">Save</button>

@@ -61,7 +61,7 @@
         <div class="flex-container navbar">
             <a href="home" style ="text-decoration:none">   <div class="logo" style="margin-bottom: 10%">FUNET</div>
             </a>
-            <form class="" method="get" action="/FUNET/searchServlet" id="searchForm">
+            <form class="" method="get" action="/searchServlet" id="searchForm">
                 <div class="search-bar" style="margin-top:1%;">
                     <input class="form-control" name="search-name" type="search" placeholder="Searching in FUNET" aria-label="Search" id="search-input" style="padding-left:5%;">
 
@@ -83,14 +83,14 @@
                         <box-icon name='store-alt' type='solid'></box-icon>
                     </button>
                 </a>
-                <a href="/FUNET/friendRequestServlet" class="friend-icon me-3">
+                <a href="/friendRequestServlet" class="friend-icon me-3">
                     <button class="center-button" id="friend-btn">
                         <box-icon name='group' type='solid'></box-icon>
                     </button>
                 </a>
             </div>
             <div class="right-icons">
-                <a href="/FUNET/chat" class="mess-icon" style='margin-left:5px'>
+                <a href="/chat" class="mess-icon" style='margin-left:5px'>
                     <span class="icon icon-circle" id="messenger-btn"><box-icon name='messenger' type='logo'></box-icon></span>
                 </a>
                 <span class="icon icon-circle" id="notification-btn" style="display:none"><box-icon name='bell' type='solid' ></box-icon></span>
@@ -123,7 +123,7 @@
         </div>
         
 
-        <form method="post" action="/FUNET/logout" style="display: inline; width: 100%;">
+        <form method="post" action="/logout" style="display: inline; width: 100%;">
             <div class="menu-item" style="display: flex; align-items: center; cursor: pointer; width: 100%;">
                 <box-icon type='solid' name='log-out'style=" margin-left:1%;"></box-icon>
                 <button type="submit" style="border: none; background: none; color: black; font-size: 16px; margin-left: 5px; cursor: pointer; flex: 1; text-align: left;">
@@ -137,7 +137,7 @@
             <div class="row all-post">
                 <nav class="col-2 py-3 sidebar sticky-sidebar position-sticky" style="top: 76px;background: white;box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);height:fit-content;">
                     <a href="lmaterialLink" style="text-decoration:none;"><h2 class="text-primary">Learning Material</h2></a>      
-                    <form class="d-flex mb-3 search-learning-material-container" method="get" action="/FUNET/searchLearningMaterial">
+                    <form class="d-flex mb-3 search-learning-material-container" method="get" action="/searchLearningMaterial">
                         <input class="search-form-controller me-2" name="search-name" type="search" placeholder="Find learning material" aria-label="Search" style="width:100%;">
                     </form>
                     <div class="accordion" id="accordionCategories">
@@ -150,10 +150,10 @@
                             <div id="departmentList" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionCategories">
                                 <div class="accordion-body">
                                     <ul class="list-group">
-                                        <li class="list-group-item"><a href="/FUNET/learningMaterialDepartmentSearch?departmentId=1" style="text-decoration: none;">Economy</a></li>
-                                        <li class="list-group-item"><a href="/FUNET/learningMaterialDepartmentSearch?departmentId=2" style="text-decoration: none;">IT</a></li>
-                                        <li class="list-group-item"><a href="/FUNET/learningMaterialDepartmentSearch?departmentId=3" style="text-decoration: none;">Tourism</a></li>
-                                        <li class="list-group-item"><a href="/FUNET/learningMaterialDepartmentSearch?departmentId=4" style="text-decoration: none;">Languages</a></li>
+                                        <li class="list-group-item"><a href="/learningMaterialDepartmentSearch?departmentId=1" style="text-decoration: none;">Economy</a></li>
+                                        <li class="list-group-item"><a href="/learningMaterialDepartmentSearch?departmentId=2" style="text-decoration: none;">IT</a></li>
+                                        <li class="list-group-item"><a href="/learningMaterialDepartmentSearch?departmentId=3" style="text-decoration: none;">Tourism</a></li>
+                                        <li class="list-group-item"><a href="/learningMaterialDepartmentSearch?departmentId=4" style="text-decoration: none;">Languages</a></li>
                                     </ul>
                                 </div>
                             </div>

@@ -78,6 +78,7 @@ public class MessageService {
     public void saveMessage(MessageDTO messageDTO) {
         try {
             Message messageEntity = convertToEntity(messageDTO);
+            System.out.println(messageEntity.getMessage());
             messageDAO.saveMessage(messageEntity);
         } catch (Exception ex) {
             System.out.println("Err here");

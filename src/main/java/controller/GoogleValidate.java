@@ -67,7 +67,6 @@ public class GoogleValidate extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         JsonObject userobject = JsonParser.parseString(request.getParameter("user")).getAsJsonObject();
-        String code = request.getParameter("code");
         User user = new User();
         if (userobject.has("given_name")) {
             user.setFirst_name(userobject.get("given_name").getAsString());
@@ -100,7 +99,6 @@ public class GoogleValidate extends HttpServlet {
                 
                 int newUserId = dao.register(user);
                 user.setUser_id(newUserId); // Set the newly created ID
-                
                 session.setAttribute("user", user);
                 session.setAttribute("user_id", newUserId);
                 session.setAttribute("last_name", user.getLast_name());
@@ -111,7 +109,7 @@ public class GoogleValidate extends HttpServlet {
         }
 
         // Redirect to home after successful login
-        response.sendRedirect("home");
+        request.getRequestDispatcher("WEB-INF/home.jsp").forward(request, response);
     }
 
     /**

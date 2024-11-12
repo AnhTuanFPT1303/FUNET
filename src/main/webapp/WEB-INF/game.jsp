@@ -20,13 +20,16 @@
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+           <link href="assets/css/logonavbar.css" rel="stylesheet">   
 
 
         <style>
             .button {
                 transition: background-color 0.3s, transform 0.3s;
             }
-
+            body {
+                overflow: hidden; /* Prevents scrolling on the body */
+            }
 
             .sidebargame {
                 position: fixed;
@@ -34,13 +37,10 @@
                 left: 0;
                 bottom: 0;
                 width: 340px;
-                height: calc(100vh - 70px);
-                padding: 20px;
-                background-color: #f8f9fa;
-                box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
                 overflow-y: auto;
-                scrollbar-width: thin; /* Firefox */
-                scrollbar-color: #888 #f1f1f1; /* Firefox */
+                height: calc(100vh - 70px);
+                scrollbar-width: thin; /*  Firefox */
+                scrollbar-color: #888 #f1f1f1; /*  Firefox */
             }
 
             /* Webkit Chrome, Safari */
@@ -61,44 +61,14 @@
                 background: #555;
             }
 
-            /* Căn chỉnh các phần tử bên trong */
-            .sidebargame h2 {
-                font-size: 1.5rem;
-                font-weight: bold;
-                margin-bottom: 1rem;
-            }
-
-            .sidebargame .relative {
-                margin-bottom: 1.5rem;
-            }
-
-            .sidebargame .sidebar-btn {
-                display: flex;
-                align-items: center;
-                padding: 10px;
-                border-radius: 8px;
-                transition: background-color 0.3s, transform 0.3s;
-            }
-
-            .sidebargame .sidebar-btn:hover {
-                background-color: #e2e8f0;
-                transform: scale(1.05);
-            }
-
-            .sidebargame .sidebar-btn i {
-                margin-right: 10px;
-                font-size: 1.2rem;
-            }
-
             .main-content {
 
-                height: calc(100vh - 80px);
-
+                height: calc(100vh - 80px); /* Subtract header height from viewport height */
+                overflow-y: auto;
             }
             .main-content {
                 margin-left: 340px;
-                padding-top: 70px;
-                height: calc(100vh - 80px);
+                padding-top: 0px; 
             }
             aside {
                 width: 360px;
@@ -108,16 +78,10 @@
             .game-card {
                 aspect-ratio: 3/4;
             }
-            #result {
+            #result{
                 overflow-y: auto;
-                width: 100%; 
-                min-width: 250px; 
-                height: auto; 
-                max-height: 324px; 
-                background-color: white; 
-                border: 1px solid #ccc; 
-                border-radius: 8px; 
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
+                weight:290px;
+                height: 324px;
             }
 
 
@@ -125,14 +89,16 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-around;
-                position: fixed; /* Đảm bảo navbar luôn cố định */
-                top: 0; /* Đảm bảo navbar luôn ở trên cùng */
+                position: relative;
                 background-color: #ffffff;
                 padding: 10px 20px;
                 height: 60px;
                 width: 100%;
+                top: 0;
                 z-index: 1000;
                 box-sizing: border-box;
+                position: sticky;
+                index: 1000;
             }
 
             .center-buttons {
@@ -250,48 +216,86 @@
     <body class="bg-gray-100">
 
         <!-- Top Navigation -->
-        <div class="flex-container navbar">
-            <a href="home" style ="text-decoration:none">   <div class="logo" style="margin-bottom: 10%">Logo</div>
+       <div class="flex-container navbar">
+            <a href="home" style ="text-decoration:none">   <div class="logo" style="margin-bottom: 10%">FUNET</div>
             </a>
             <form class="" method="get" action="/FUNET/searchServlet" id="searchForm">
-                <div class="search-bar">
-                    <input class="form-control" name="search-name" type="search" placeholder="Searching in FUNET" aria-label="Search" id="search-input">
+                <div class="search-bar" style="margin-top:1%; margin-left:1%">
+                    <input class="form-control" name="search-name" type="search" placeholder="Searching in FUNET" aria-label="Search" id="search-input" style="padding-left:5%;">
 
                 </div>
             </form>
             <div class="center-buttons">
-
-                <button class="center-button" id="home-btn" href="home">
-                    <box-icon type='solid' name='home'></box-icon>
-                </button>
-                <button class="center-button" id="video-btn">
-                    <box-icon name='videos' type='solid'></box-icon>
-                </button>
-                <button class="center-button" id="market-btn">
-                    <box-icon name='store-alt' type='solid'></box-icon>
-                </button>
+                <a href="home">
+                    <button class="center-button" id="home-btn">
+                        <box-icon type='solid' name='home'></box-icon>
+                    </button>
+                </a>
+                <a href="lmaterialLink"> 
+                    <button class="center-button" id="video-btn">
+                        <box-icon type='solid' name='book'></box-icon>
+                    </button>
+                </a>
+                <a href="market">
+                    <button class="center-button" id="market-btn">
+                        <box-icon name='store-alt' type='solid'></box-icon>
+                    </button>
+                </a>
                 <a href="/FUNET/friendRequestServlet" class="friend-icon me-3">
                     <button class="center-button" id="friend-btn">
                         <box-icon name='group' type='solid'></box-icon>
-                    </button>                       
+                    </button>
                 </a>
-
             </div>
             <div class="right-icons">
-                <a href="/FUNET/chat" class="mess-icon me-3" style='margin-left:5px'>
-                    <span class="icon icon-circle" id="messenger-btn"><box-icon name='messenger' type='logo' ></box-icon></span>
+                <a href="/FUNET/chat" class="mess-icon" style='margin-left:5px'>
+                    <span class="icon icon-circle" id="messenger-btn"><box-icon name='messenger' type='logo'></box-icon></span>
                 </a>
-                <span class="icon icon-circle" id="notification-btn"><box-icon name='bell' type='solid' ></box-icon></span>
+                <span class="icon icon-circle" id="notification-btn" style="display:none"><box-icon name='bell' type='solid' ></box-icon></span>
                 <span class="icon icon-circle" id="user-btn">&#128100;</span>
             </div>
 
         </div>
 
+        <div class="dropdown-menu" id="notification-menu">
+            <p>Notification content goes here...</p>
+        </div>
+    
+    <div class="dropdown-menu" id="notification-menu">
+        <p>Notification content goes here...</p>
+    </div>
+    <div class="user-menu" id="user-menu" >
+        <div class="user-info">
+            <a href="profile?userId=${sessionScope.user['user_id']}" class="d-flex align-items-center text-decoration-none text-dark">
+                <button class="user-info-button">
+                    <img src="assets/profile_avt/${sessionScope.user['profile_pic']}" class="img-fluid rounded-circle avatar" style="object-fit: cover;">
+                    <p class="mb-0 ms-2 ava-name">${sessionScope.user['first_name']} ${sessionScope.user['last_name']}</p>
+                </button>
+            </a>
+        </div>
+        <div class="menu-item">
+            <box-icon name='cog' type='solid' style="margin-right:3%; margin-left:1%;">Settings</box-icon>Settings
+        </div>
+        <div class="menu-item" >
+            <box-icon name='error-circle'style="margin-right:3%; margin-left:1%;"></box-icon>Report
+        </div>
+        
+
+        <form method="post" action="/FUNET/logout" style="display: inline; width: 100%;">
+            <div class="menu-item" style="display: flex; align-items: center; cursor: pointer; width: 100%;">
+                <box-icon type='solid' name='log-out'style=" margin-left:1%;"></box-icon>
+                <button type="submit" style="border: none; background: none; color: black; font-size: 16px; margin-left: 5px; cursor: pointer; flex: 1; text-align: left;">
+                    Log Out
+                </button>
+            </div>
+        </form>
+    </div>
+
         <!-- Main Container -->
         <div class="flex h-screen">
             <!-- Sidebar -->
             <aside class="bg-white p-5 shadow-md sidebargame">
-                <h2 class="text-xl font-bold mb-4">Game</h2>
+                <h2 class="text-xl font-bold mb-4">Chơi game</h2>
                 <i class="fa fa-setting"></i>
                 <!-- Tìm kiếm -->
 
@@ -324,7 +328,7 @@
                     });
                 </script>
                 <div class="relative mb-6">
-                    <input type="text" id="keyword" placeholder="Finding in game" class="border p-2 rounded-lg w-full pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <input type="text" id="keyword" placeholder="Tìm kiếm trong phần chơi game" class="border p-2 rounded-lg w-full pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <div class="absolute inset-y-0 right-0 flex items-center pr-3">
                         <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
@@ -346,38 +350,37 @@
                 <div class="flex flex-col space-y-2">
                     <button onclick="filterGames('All')" class="sidebar-btn flex items-center space-x-2 transition-transform transform hover:scale-105 hover:bg-blue-100 rounded-lg p-2">
                         <i class="fas fa-gamepad w-6 h-6 flex-shrink-0"></i> 
-                        <span>Play game</span>
+                        <span>Chơi game</span>
                     </button>
-                    <!--                    <button class="sidebar-btn flex items-center space-x-2 transition-transform transform hover:scale-105 hover:bg-blue-100 rounded-lg p-2">
-                                            <i class="fas fa-bell w-6 h-6 flex-shrink-0"></i> 
-                                            <span>Thông Báo</span>
-                                        </button>-->
+                    <button class="sidebar-btn flex items-center space-x-2 transition-transform transform hover:scale-105 hover:bg-blue-100 rounded-lg p-2">
+                        <i class="fas fa-bell w-6 h-6 flex-shrink-0"></i> 
+                        <span>Thông Báo</span>
+                    </button>
 
+                 <hr class="my-5">
 
-
-                    <!--                    <p class="text-sm text-gray-500 mb-2">Game của bạn</p>
-                                         <button class="sidebar-btn flex items-center space-x-2 transition-transform transform hover:scale-105 hover:bg-blue-100 rounded-lg p-2">
-                                            <i class="far fa-bookmark w-6 h-6 flex-shrink-0"></i>    
-                                            <span>Lưu game</span>
-                                        </button> -->
-
+                    <p class="text-sm text-gray-500 mb-2">Game của bạn</p>
+                     <button class="sidebar-btn flex items-center space-x-2 transition-transform transform hover:scale-105 hover:bg-blue-100 rounded-lg p-2">
+                        <i class="far fa-bookmark w-6 h-6 flex-shrink-0"></i>    
+                        <span>Lưu game</span>
+                    </button> 
+                 
 
                     <hr class="my-4">
 
                     <!-- Categories -->
-                    <h3 class="text-lg font-semibold mb-4">
-                        Category</h3>
+                    <h3 class="text-lg font-semibold mb-4">Hạng mục</h3>
                     <button onclick="filterGames('All')" class="sidebar-btn flex items-center space-x-2 transition-transform transform hover:scale-105 hover:bg-blue-100 rounded-lg p-2">
                         <i class="fas fa-th-large w-6 h-6 flex-shrink-0"></i> 
-                        <span>All game</span>
+                        <span>Tất cả game</span>
                     </button>
                     <button onclick="filterGames('Action')" class="sidebar-btn flex items-center space-x-2 transition-transform transform hover:scale-105 hover:bg-blue-100 rounded-lg p-2">
                         <i class="fas fa-running w-6 h-6 flex-shrink-0"></i> 
-                        <span>Action</span>
+                        <span>Hành động</span>
                     </button>
                     <button onclick="filterGames('Adventure')" class="sidebar-btn flex items-center space-x-2 transition-transform transform hover:scale-105 hover:bg-blue-100 rounded-lg p-2">
                         <i class="fas fa-map w-6 h-6 flex-shrink-0"></i> 
-                        <span>Adventure</span>
+                        <span>Phiêu lưu</span>
                     </button>
                     <Button onclick="filterGames('Board game')" class="sidebar-btn flex items-center space-x-2 transition-transform transform hover:scale-105 hover:bg-blue-100 rounded-lg p-2">
                         <i class="fas fa-chess-board w-6 h-6 flex-shrink-0"></i> 
@@ -385,15 +388,15 @@
                     </Button>
                     <button onclick="filterGames('Card game')" class="sidebar-btn flex items-center space-x-2 transition-transform transform hover:scale-105 hover:bg-blue-100 rounded-lg p-2">
                         <i class="fas fa-cards w-6 h-6 flex-shrink-0"></i> 
-                        <span>Card game</span>
+                        <span>Đánh bài</span>
                     </button>
                     <button onclick="filterGames('Building')" class="sidebar-btn flex items-center space-x-2 transition-transform transform hover:scale-105 hover:bg-blue-100 rounded-lg p-2">
                         <i class="fas fa-building w-6 h-6 flex-shrink-0"></i> 
-                        <span>Building</span>
+                        <span>Xây dựng</span>
                     </button>
                     <button onclick="filterGames('Combat')" class="sidebar-btn flex items-center space-x-2 transition-transform transform hover:scale-105 hover:bg-blue-100 rounded-lg p-2">
                         <i class="fas fa-fist-raised w-6 h-6 flex-shrink-0"></i> 
-                        <span>Combat</span>
+                        <span>Chiến đấu</span>
                     </button>
                 </div>
             </aside>
@@ -404,7 +407,7 @@
                     if (theloai !== 'All')
                         document.querySelector('.title').textContent = theloai;
                     else
-                        document.querySelector('.title').textContent = 'All game';
+                        document.querySelector('.title').textContent = 'Tất cả game';
 
 
                     games.forEach(game => {
@@ -421,7 +424,7 @@
 
             <!-- Main Content -->
             <main class="flex-grow p-6 main-content">
-                <h1 id="title" class=" title text-4xl font-bold text-center" style="margin: 20px ">All game</h1>
+                <h1 id="title" class=" title text-4xl font-bold text-center" style="margin: 20px ">Tất cả game</h1>
                 <div class="grid grid-cols-4 gap-6">
                     <!-- Game Cards -->
                     <c:forEach var="game" items="${list}">
@@ -449,6 +452,8 @@
                 </div>
             </div>
         </div>
+                        <script src="assets/js/logonavbar.js" defer></script>
+
         <script>
             function showGame(gameUrl) {
                 // Hiển thị modal chứa game

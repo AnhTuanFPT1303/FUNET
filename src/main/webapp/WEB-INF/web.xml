@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
-         version="6.0">
+<web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
     <filter>
         <filter-name>SessionCheckFilter</filter-name>
         <filter-class>filter.SessionCheckFilter</filter-class>
@@ -38,6 +35,34 @@
     <servlet>
         <servlet-name>AdminDeleteServlet</servlet-name>
         <servlet-class>controller.AdminDeleteServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreMaterialServlet</servlet-name>
+        <servlet-class>controller.CreMaterialServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DownloadMaterialServlet</servlet-name>
+        <servlet-class>controller.DownloadMaterialServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>deleteLearningMaterial</servlet-name>
+        <servlet-class>controller.deleteLearningMaterial</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>saveLearningMaterial</servlet-name>
+        <servlet-class>controller.saveLearningMaterial</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>updateLearningMaterial</servlet-name>
+        <servlet-class>controller.updateLearningMaterial</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>learningMaterialDepartmentSearch</servlet-name>
+        <servlet-class>controller.learningMaterialDepartmentSearch</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>searchLearningMaterial</servlet-name>
+        <servlet-class>controller.searchLearningMaterial</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RemoveItemServlet</servlet-name>
@@ -486,6 +511,34 @@
     <servlet-mapping>
         <servlet-name>DeleteGameServlet</servlet-name>
         <url-pattern>/deleteGame</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreMaterialServlet</servlet-name>
+        <url-pattern>/creMaterial</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DownloadMaterialServlet</servlet-name>
+        <url-pattern>/downloadMaterial</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>saveLearningMaterial</servlet-name>
+        <url-pattern>/saveLearningMaterial</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>searchLearningMaterial</servlet-name>
+        <url-pattern>/searchLearningMaterial</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>deleteLearningMaterial</servlet-name>
+        <url-pattern>/deleteLearningMaterial</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updateLearningMaterial</servlet-name>
+        <url-pattern>/updateLearningMaterial</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>learningMaterialDepartmentSearch</servlet-name>
+        <url-pattern>/learningMaterialDepartmentSearch</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>/WEB-INF/login.jsp</welcome-file>

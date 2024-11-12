@@ -29,8 +29,9 @@ public class productDAO {
                 java.util.Date publishDate = resultSet.getDate("publish_date");
                 
                 double price = resultSet.getDouble("price");
+                int quantity = resultSet.getInt("quantity");
                 // luu product vao list product
-                Product product = new Product(productId, userId, productName, productDescription, product_img, productTag, publishDate, price);
+                Product product = new Product(productId, userId, productName, productDescription, product_img, productTag, publishDate, price, quantity);
                 productList.add(product);  
             }
 
@@ -61,8 +62,9 @@ public class productDAO {
                 java.util.Date publishDate = resultSet.getDate("publish_date");
 
                 double price = resultSet.getDouble("price");
+                int quantity = resultSet.getInt("quantity");
                 // luu product vao list product
-                Product product = new Product(productId, userId, productName, productDescription, product_img, productTag, publishDate, price);
+                Product product = new Product(productId, userId, productName, productDescription, product_img, productTag, publishDate, price, quantity);
                 sellingProductList.add(product);
             }
         } catch (Exception exception) {
@@ -73,7 +75,7 @@ public class productDAO {
     }
 
     public void addProduct(Product product) {
-        String sql = "INSERT INTO product (user_id, product_name, product_description, product_img, product_tag, publish_date, price) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO product (user_id, product_name, product_description, product_img, product_tag, publish_date, price, quantity) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
 
             preparedStatement.setInt(1, product.getUserId());
@@ -83,6 +85,7 @@ public class productDAO {
             preparedStatement.setString(5, product.getProductTag());
             preparedStatement.setDate(6, new java.sql.Date(product.getPublishDate().getTime()));
             preparedStatement.setDouble(7, product.getPrice());
+            preparedStatement.setInt(8, product.getQuantity());
             preparedStatement.executeUpdate();
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -160,8 +163,9 @@ public class productDAO {
                     String productTag = resultSet.getString("product_tag");
                     java.util.Date publishDate = resultSet.getDate("publish_date");
                     double price = resultSet.getDouble("price");
+                    int quantity = resultSet.getInt("quantity");
 
-                    Product product = new Product(productId, userId, productName, productDescription, product_img, productTag, publishDate, price);
+                    Product product = new Product(productId, userId, productName, productDescription, product_img, productTag, publishDate, price, quantity);
                     searchResults.add(product);
                 }
             }
@@ -170,6 +174,18 @@ public class productDAO {
         }
 
         return searchResults;
+    }
+
+    public void updateProductQuantityAndPrice(int productId, int quantity, double price) throws Exception {
+        String sql = "UPDATE Products SET quantity = ?, price = ? WHERE product_id = ?";
+        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, quantity);
+            stmt.setDouble(2, price);
+            stmt.setInt(3, productId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) throws Exception {

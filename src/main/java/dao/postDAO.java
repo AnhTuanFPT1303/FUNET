@@ -527,9 +527,9 @@ public class postDAO {
         return false;
     }
 
-     public static List<Post> getSavedPosts(int userId) {
-    List<Post> posts = new ArrayList<>();
-    String query = "SELECT p.post_id, p.body, p.post_time, p.user_id, p.image_path, p.like_count, p.type, u.first_name, u.last_name, u.profile_pic, "
+   public List<Post> getSavedPosts(int userId) {
+        List<Post> posts = new ArrayList<>();
+        String query = "SELECT p.post_id, p.body, p.post_time, p.user_id, p.image_path, p.like_count, p.type, u.first_name, u.last_name, u.profile_pic, "
                 + "p.is_shared, p.original_post_id, p.privacy_mode, "
                 + "CASE WHEN p.is_shared = 1 THEN CONCAT(op.first_name, ' ', op.last_name) ELSE NULL END AS original_poster_name, "
                 + "CASE WHEN p.is_shared = 1 THEN op.profile_pic ELSE NULL END AS original_poster_avatar, "
@@ -542,42 +542,40 @@ public class postDAO {
                 + "WHERE sp.user_id = ? "
                 + "ORDER BY p.post_time DESC";
 
-    try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
-        stmt.setInt(1, userId);
-        stmt.setInt(2, userId);
-        stmt.setInt(3, userId);
-        try (ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                int post_id = rs.getInt("post_id");
-                int user_id = rs.getInt("user_id");
-                String body = rs.getString("body");
-                Timestamp post_time = rs.getTimestamp("post_time");
-                String first_name = rs.getString("first_name");
-                String last_name = rs.getString("last_name");
-                String image_path = rs.getString("image_path");
-                int like_count = rs.getInt("like_count");
-                String profile_pic = rs.getString("profile_pic");
-                boolean isShared = rs.getBoolean("is_shared");
-                int originalPostId = rs.getInt("original_post_id");
-                String originalPosterName = rs.getString("original_poster_name");
-                int shareCount = rs.getInt("share_count");
-                String originalPosterAvatar = rs.getString("original_poster_avatar");
-                String privacy_mode = rs.getString("privacy_mode");
+        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, userId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int post_id = rs.getInt("post_id");
+                    int user_id = rs.getInt("user_id");
+                    String body = rs.getString("body");
+                    Timestamp post_time = rs.getTimestamp("post_time");
+                    String first_name = rs.getString("first_name");
+                    String last_name = rs.getString("last_name");
+                    String image_path = rs.getString("image_path");
+                    int like_count = rs.getInt("like_count");
+                    String profile_pic = rs.getString("profile_pic");
+                    boolean isShared = rs.getBoolean("is_shared");
+                    int originalPostId = rs.getInt("original_post_id");
+                    String originalPosterName = rs.getString("original_poster_name");
+                    int shareCount = rs.getInt("share_count");
+                    String originalPosterAvatar = rs.getString("original_poster_avatar");
+                    String privacy_mode = rs.getString("privacy_mode");
 
-                Post post = new Post(post_id, user_id, body, post_time, first_name, last_name, image_path, profile_pic, like_count, isShared, originalPostId, originalPosterName, shareCount, originalPosterAvatar, privacy_mode);
-                post.setComments(getComments(post.getPost_id()));
-                String type = rs.getString("type");
-                post.setType(type);
-                posts.add(post);
+                    Post post = new Post(post_id, user_id, body, post_time, first_name, last_name, image_path, profile_pic, like_count, isShared, originalPostId, originalPosterName, shareCount, originalPosterAvatar, privacy_mode);
+                    post.setComments(getComments(post.getPost_id()));
+                    String type = rs.getString("type");
+                    post.setType(type);
+                    posts.add(post);
+                }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    } catch (Exception e) {
-        e.printStackTrace();
+        return posts;
     }
-    return posts;
-}
 
     public Post getPostById(int postId) {
         Post post = null;

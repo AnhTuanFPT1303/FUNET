@@ -17,29 +17,35 @@ public class sqlConnect {
 
     private static sqlConnect instance = null;
     private Connection connection = null;
-    private String userName = "thecucumber";
-    private String passWord = "AnhTuan1332004";
+    private String userName = "thecucumber"; // Ideally from env variables
+    private String passWord = "AnhTuan1332004"; // Ideally from env variables
     private String driverClass = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    private String sqlUrl = "jdbc:sqlserver://funet-server.database.windows.net:1433;database=funet-database;user=thecucumber@funet-server;password=AnhTuan1332004;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+    private String sqlUrl = "jdbc:sqlserver://funet-server.database.windows.net:1433;"
+            + "database=funet-database;"
+            + "user=thecucumber@funet-server;"
+            + "password=AnhTuan1332004;"
+            + "encrypt=true;"
+            + "trustServerCertificate=false;"
+            + "hostNameInCertificate=*.database.windows.net;"
+            + "loginTimeout=30;";
 
-    private sqlConnect() throws Exception {
-        try {
-            Class.forName(driverClass);
-            connection = DriverManager.getConnection(sqlUrl, userName, passWord);
-        } catch (SQLException s) {
-            System.out.println("Database connect failed");
-        }
+    private sqlConnect() throws SQLException, ClassNotFoundException {
+        Class.forName(driverClass);
+        this.connection = DriverManager.getConnection(sqlUrl, userName, passWord);
     }
 
-    public static sqlConnect getInstance() throws SQLException, Exception {
+    public static synchronized sqlConnect getInstance() throws SQLException, ClassNotFoundException {
         if (instance == null) {
             instance = new sqlConnect();
-        } else if (instance.getConnection().isClosed()) {
-            instance = new sqlConnect();
+        } else {
+            Connection conn = instance.getConnection();
+            if (conn == null || conn.isClosed()) {
+                instance = new sqlConnect();
+            }
         }
         return instance;
     }
-    
+
     public Connection getConnection() {
         return connection;
     }

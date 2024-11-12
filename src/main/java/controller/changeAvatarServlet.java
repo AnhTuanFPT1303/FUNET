@@ -88,7 +88,7 @@ public class changeAvatarServlet extends HttpServlet {
 
         Part file = request.getPart("profile_pic");
         String profile_pic = file.getSubmittedFileName();
-        String uploadPath = getServletContext().getRealPath("/assets/profile_avt/") + profile_pic;
+        String uploadPath = "https://funet.azurewebsites.net/assets/profile_avt/" + profile_pic;
         try {
             FileOutputStream fos = new FileOutputStream(uploadPath);
             InputStream is = file.getInputStream();

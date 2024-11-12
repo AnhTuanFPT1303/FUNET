@@ -374,7 +374,7 @@ public class userDAO {
     }
 
     public static void main(String[] args) throws Exception {
-        User list = userDAO.getInstance().getUserByEmail("userjan@example.com");
+        User list = userDAO.getInstance().getUserById(1);
         System.out.println(list.getFirst_name());
     }
 }

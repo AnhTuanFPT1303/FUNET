@@ -15,6 +15,8 @@ public class game {
     private String linkimg;
     private String  theloai;
 
+    public game() {}
+    
     public game(int Magame, String tengame, String link, String linkimg, String theloai) {
         this.Magame = Magame;
         this.tengame = tengame;

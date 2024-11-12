@@ -64,4 +64,18 @@
     <script src="assets/js/Validation.js"></script>
     <script src="assets/js/login-register.js"></script>
     <script src="assets/css/welcome.css"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+                        function onSignIn(googleUser) {
+                            var idtoken = googleUser.getAuthResponse().id_token;
+                            console.log('token is: ' + idtoken);
+                            var xhr = new XMLHttpRequest();
+                            xhr.open('POST', 'https://funet.azurewebsites.net/GoogleValidate');
+                            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                            xhr.onload = function () {
+                                console.log('Signed in as: ' + xhr.responseText);
+                            };
+                            xhr.send('id_token=' + idtoken);
+                        }
+    </script>
 </html>

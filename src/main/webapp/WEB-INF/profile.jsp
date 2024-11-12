@@ -241,6 +241,7 @@
                     <!-- Output end here -->
                 </section>
                 <section class="post-info">
+                    <c:if test="${sessionScope.user['user_id'] == user.user_id}">
                     <div class="box-design">
                         <form action="/home" method="post" enctype="multipart/form-data" onsubmit="document.getElementById('myBtn').disabled = true;" id="commentForm">
                             <div class="post-upload-T">
@@ -271,7 +272,7 @@
                                     <input id="photo-upload-video" type="file" name="video" accept=".mp4, .webm, .mpeg" style="display: none;" onchange="updateFileName(this)">
                                 </div>
                             </div>
-
+                            </c:if>
 
                         </form>
                     </div>

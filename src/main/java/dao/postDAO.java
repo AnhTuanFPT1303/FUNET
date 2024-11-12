@@ -429,7 +429,7 @@ public class postDAO {
         String deleteCommentsQuery = "DELETE FROM comment WHERE post_id = ? OR post_id IN (SELECT post_id FROM post WHERE original_post_id = ? AND is_shared = 1)";
         String deleteLikesQuery = "DELETE FROM post_like WHERE post_id = ? OR post_id IN (SELECT post_id FROM post WHERE original_post_id = ? AND is_shared = 1)";
         String deleteSharesQuery = "DELETE FROM post_share WHERE post_id = ? OR post_id IN (SELECT post_id FROM post WHERE original_post_id = ? AND is_shared = 1)";
-
+        String deleteUserActivityQuery = "DELETE FROM UserActivityLog WHERE post_id = ? OR post_id IN (SELECT post_id FROM post WHERE original_post_id = ? AND is_shared = 1)";
         try (Connection conn = sqlConnect.getInstance().getConnection()) {
             conn.setAutoCommit(false);
             try {
@@ -439,6 +439,11 @@ public class postDAO {
                     stmt.executeUpdate();
                 }
                 try (PreparedStatement stmt = conn.prepareStatement(deleteLikesQuery)) {
+                    stmt.setInt(1, postId);
+                    stmt.setInt(2, postId);
+                    stmt.executeUpdate();
+                }
+                try (PreparedStatement stmt = conn.prepareStatement(deleteUserActivityQuery)) {
                     stmt.setInt(1, postId);
                     stmt.setInt(2, postId);
                     stmt.executeUpdate();

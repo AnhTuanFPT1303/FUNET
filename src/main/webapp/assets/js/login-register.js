@@ -12,13 +12,13 @@ signInButton.addEventListener('click', () => {
 
 
 function onSignIn(googleUser) {
-    var user = googleUser.getBasicProfile();
-    console.log('Signed in as: ');
+    var idtoken = googleUser.getAuthResponse().id_token;
+    console.log(idtoken);
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'https://funet.azurewebsites.net/GoogleValidate');
+    xhr.open('GET', 'https://yourbackend.example.com/tokensignin');
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onload = function () {
         console.log('Signed in as: ' + xhr.responseText);
     };
-    xhr.send('user=' + user);
+    xhr.send('id_token=' + idtoken);
 }

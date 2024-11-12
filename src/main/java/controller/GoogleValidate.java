@@ -95,7 +95,7 @@ public class GoogleValidate extends HttpServlet {
                 user.setEmail(payload.getEmail());
                 user.setFirst_name((String) payload.get("family_name"));
                 user.setLast_name((String) payload.get("given_name"));
-                
+                System.out.println(user.getFirst_name());
                 // Use or store profile information
                 // ...
             }

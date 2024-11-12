@@ -27,7 +27,7 @@ var numberMember = 0;
 
 window.onload = function () {
     if ("WebSocket" in window) {
-        websocket = new WebSocket('ws://' + window.location.host + '/chat/' + user_id);
+        websocket = new WebSocket('wss://' + 'funet.azurewebsites.net' + '/chat/' + user_id);
         websocket.onopen = function () {
         };
 

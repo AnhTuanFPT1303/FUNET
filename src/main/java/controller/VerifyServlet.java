@@ -74,7 +74,7 @@ public class VerifyServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         String otp = (String) session.getAttribute("otpCode");
         String email = (String) session.getAttribute("pendingEmail");
-
+        System.out.println(otp);
         if ("resend".equals(act)) {
             SmtpProtocol smtpProtocol = new SmtpProtocol();
             otp = Integer.toString(smtpProtocol.sendMail(email));

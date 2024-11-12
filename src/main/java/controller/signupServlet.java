@@ -88,7 +88,7 @@ public class signupServlet extends HttpServlet {
             if (!dao.checkEmail(email)) {
                 SmtpProtocol smtpProtocol = new SmtpProtocol();
                 String verifyCode = Integer.toString(smtpProtocol.sendMail(email));
-                HttpSession session = request.getSession();
+                HttpSession session = request.getSession(true);
                 session.setAttribute("pendingEmail", email);
                 session.setAttribute("pendingUserInfo", Map.of(
                         "firstName", firstName,

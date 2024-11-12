@@ -67,6 +67,7 @@
                     <div id="txt-c-5" class="bg-color-5"></div>
                     <div id="txt-c-6" class="bg-color-6"></div>
                 </div>
+
             </div>
         </div>
         <section class="cover-image-section">

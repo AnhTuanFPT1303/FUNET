@@ -137,11 +137,11 @@
             <div class="col-4 mainContainer">
                 <div class="post">
                     <section class="input">
-                        <a href="profile?userId=${sessionScope.user['user_id']}" style="text-decoration:none"  ><img src="assets/profile_avt/${user.profile_pic}"  class="img-fluid rounded-circle avatar" style="margin-right: 10px;"></a> 
+                        <a href="profile?userId=${sessionScope.user['user_id']}" style="text-decoration:none"  ><img src="assets/profile_avt/${user.profile_pic}"  class="img-fluid rounded-circle avatar2" style="margin-right: 10px;"></a> 
                         <div class="inputArea">
                             <input type="text" placeholder="What ya thinking..." id="posting">
                         </div>
-                        <hr style="border: 1px solid black; width: 100%;">
+                        <hr style="border: 1px solid black; width: 100%; margin:0;">
                         <div class="btn-document">
                             <div class="item" id="photoVideoBtn" >Photo/Video</div>
                             <div class="item" id="fileBtn">File</div>
@@ -157,25 +157,23 @@
                             <div class="head"><p class="form-title">Create post</p>
                                 <button type="button" class="close-button" aria-label="Close">X</button>
                             </div>
-
                             <hr class="hr-line">
-                            <div class="form-header">                        <a href="profile?userId=${sessionScope.user['user_id']}" style="text-decoration:none"  ><img src="assets/profile_avt/${sessionScope.user['profile_pic']}" class="avatar"></a> 
-
-
+                            <div class="form-header">                        
+                                <a href="profile?userId=${sessionScope.user['user_id']}" style="text-decoration:none"  ><img src="assets/profile_avt/${sessionScope.user['profile_pic']}" class="avatar"></a> 
                                 <p class="mb-0 ava-name">${sessionScope.user['first_name']} ${sessionScope.user['last_name']}</p>
                             </div>
                             <div class="textarea-container"　id="formContainer">
                                 <textarea class="form-control" id="body" name="postContent" placeholder="What ya thinking" maxlength="300" oninput="adjustFontSize()"></textarea>
                             </div>
-                            <hr class="hr-line">
-                            <div class="upload-section">
-                                <div class="item">
+                            <hr class="hr-line" >
+                            <div class="upload-section" style="margin-top:0;margin-bottom:1%;">
+                                <div class="item" style="height:50px; padding-top:3%;">
                                     <label for="photo-upload">
                                         <i class="fas fa-cloud-upload-alt"></i> Photo/Video
                                     </label>
                                     <input id="photo-upload" type="file" name="image" accept=".jpeg, .png, .jpg" style="display: none;" onchange="updateFileName(this)">
                                 </div>
-                                <div class="item">
+                                <div class="item"style="height:50px; padding-top:3%;">
                                     <label for="file-upload">
                                         <i class="fas fa-file-alt"></i> File
                                     </label>
@@ -244,7 +242,7 @@
 
 
                             <div class="post-ratings-container">
-                                <div class="post-rating ${post.likedByCurrentUser ? 'post-rating-selected' : ''}">
+                                <div class="post-rating ${post.likedByCurrentUser ? 'post-rating-selected' : ''}" style="margin-left:2%;">
                                     <button type="button" style="background: none; border: none; cursor: pointer; padding: 0;">
                                         <span class="material-icons" style="color: ${post.likedByCurrentUser ? '#1877f2' : '#65676b'};">
                                             thumb_up
@@ -253,7 +251,8 @@
                                     <span class="like-count"><span class="post-rating-count">${post.like_count}</span></span>
                                 </div>
                                 <%-- <c:if test="${!post.isShared}"> --%>
-                                <div class="post-share">
+                              
+                                <div class="post-share" style="margin-left:78%">
                                     <form action="sharePostServlet" method="post" style="display: inline;">
                                         <input type="hidden" name="postId" value="${post.post_id}">
                                         <input type="hidden" name="sourceUrl" value="home">
@@ -276,12 +275,14 @@
                                                 <c:if test="${sessionScope.user['user_id'] == comment.user_id}">
                                                     <button class="three-dot-btn" data-comment-id="${comment.comment_id}">...</button>
                                                 </c:if>
-                                                <div class="comment-actions" style="display: none;">
+                                                <div class="comment-actions" style="display: none; flex-direction:column;">
+                                                    
                                                     <button class="edit-comment-btn" data-comment-id="${comment.comment_id}">Edit</button>
                                                     <form action="/FUNET/deleteCommentServlet" method="post" class="delete-comment-form" style="display: inline;">
                                                         <input type="hidden" name="commentId" value="${comment.comment_id}">
                                                         <button type="submit" class="delete-comment-btn">Delete</button>
                                                     </form>
+                                                       
                                                 </div>
                                             </div>
                                         </div>
@@ -298,7 +299,7 @@
 
                             <form action="/FUNET/commentServlet" method="post" id="commentform" class="mb-4 post-method">
                                 <div class="mb-3">
-                                    <input type="text" class="form-control" style="border-radius: 20px;width: 90%; height: 30px;" id="body" name="commentContent" maxlength="300" rows="2" placeholder="Comment" style="width:80%; height: 35px">
+                                    <input type="text" class="form-control" style="border-radius: 20px;width: 90%; height: 30px;margin-bottom:0;" id="body" name="commentContent" maxlength="300" rows="2" placeholder="Comment" style="width:80%; height: 35px">
                                 </div>
                                 <input type="hidden" name="sourceUrl" value="home">
                                 <input type="hidden" name="post_id" value="${post.post_id}">
@@ -317,13 +318,15 @@
                     <h2 style="color: #0d6efd">List Friends</h2>
                     <hr style="margin:0;border:solid black 1px">
                     <c:forEach var="friend" items="${friends}">
-                        <div class="post mb-4 d-flex align-items-center" style="overflow-wrap: break-word">
-                            <a href="#" class="user-link friend" data-user-id="${friend.user_id}">
+                        <div class="post mb-4 d-flex align-items-center friends" style="overflow-wrap: break-word;border: none;background: none;">
+                            <a href="profile?userId=${friend.user_id}" class="user-link friend" data-user-id="${friend.user_id}" style="text-decoration:none;">
                                 <img src="assets/profile_avt/${friend.profile_pic}" alt="avatar picture" class="img-fluid rounded-circle avatar me-2" style="width: 50px; height: 50px; object-fit: cover;">
+                                 <small>${friend.first_name} ${friend.last_name}</small>
                             </a>
-                            <small>${friend.first_name} ${friend.last_name}</small>
+                           
                         </div>
                     </c:forEach>
+                     
                 </aside>
             </div>
         </div>

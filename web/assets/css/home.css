@@ -38,6 +38,10 @@ body {
                 box-sizing: border-box;
                 margin-top: 30px;
             }
+            .avatar2{
+                height:40px;
+                width:40px;
+            }
 
             .input {
                 display: flex;
@@ -53,8 +57,8 @@ body {
             .inputArea input {
                 border: none;
                 border-radius: 15px;
-                height: 40px;
-                width: 90%;
+                height: 30px;
+                width: 98%;
                 transition: width 0.3s ease;
                 outline: 1px solid rgb(133, 130, 130);
                 box-sizing: border-box;
@@ -63,20 +67,32 @@ body {
                 display:flex;
                 justify-content: space-between;
                 width:100%;
-
             }
 
 
             .item {
                 flex: 1;
                 text-align: center;
-                height:50px;
-                padding: 10px;
-                margin: 5px;
-                margin-bottom: 10px;
+                height:30px;
+                margin-left:5px;
+                margin-right: 5px;
+                
+                margin-top:1%;             
+                padding-top:1%;
                 transition: transform 0.2s;
                 cursor: pointer;
-                max-height:400px;
+            }
+            .item2 {
+                flex: 1;
+                text-align: center;
+                height:50px;
+                margin-left:5px;
+                margin-right: 5px;
+                
+                margin-top:1%;             
+                padding-top:1%;
+                transition: transform 0.2s;
+                cursor: pointer;
             }
 
             .item:hover {
@@ -360,3 +376,4 @@ body {
                 position:fixed;
                 margin-left: 67%;
             }
+            

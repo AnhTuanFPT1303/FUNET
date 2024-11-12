@@ -97,13 +97,7 @@ header{
     left: 57%;
     transform: translateX(-50%);
 }
-.friend-icon,
-.mess-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-     margin: 0 200px;
-}
+
 .mess-icon i {
     font-size: 25px;
 }

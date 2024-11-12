@@ -72,7 +72,7 @@
             <div class="user-info">
                 <a href="profile?userId=${sessionScope.user['user_id']}" class="d-flex align-items-center text-decoration-none text-dark">
                     <button class="user-info-button">
-                        <img src="assets/profile_avt/${sessionScope.user['profile_pic']}" class="img-fluid rounded-circle avatar" style="object-fit: cover;">
+                        <img src="data:image/png;base64,${sessionScopte.user['profile_pic']}" class="img-fluid rounded-circle avatar" style="object-fit: cover;">
                         <p class="mb-0 ms-2 ava-name">${sessionScope.user['first_name']} ${sessionScope.user['last_name']}</p>
                     </button>
                 </a>
@@ -122,7 +122,7 @@
         </div>
         <section class="cover-image-section">
             <header class="cover-hader-site">
-                <img src="assets/profile_avt/${user.profile_pic}">
+                <img src="data:image/png;base64,${user.profile_pic}">
                 <div class="cover-image-div">
                     <div class="cover-image-edite-btn">
                         <a href="setting" style="text-decoration: none">
@@ -140,7 +140,7 @@
                 <div class="profile-image-site">
                     <div class="profile-image-div">
                         <a href="setting" style="text-decoration: none">
-                            <img src="assets/profile_avt/${user.profile_pic}">
+                            <img src="data:image/png;base64,${user.profile_pic}">
                         </a>
                         <span class="fas fa-camera"></span>
                     </div>
@@ -232,7 +232,7 @@
                             <!-- Write for each to output some friend here -->
                             <c:forEach var="friend" items="${friends}">
                                 <div class="images-div">
-                                    <img src="assets/profile_avt/${friend.profile_pic}" alt="${friend.first_name} ${friend.last_name}">
+                                    <img src="data:image/png;base64,${friend.profile_pic}" alt="${friend.first_name} ${friend.last_name}">
                                     <p><a href="profile?userId=${friend.user_id}" class="user-link friend" data-user-id="${friend.user_id}">${friend.first_name} ${friend.last_name}</a></p>
                                 </div>
                             </c:forEach>
@@ -246,7 +246,7 @@
                             <div class="post-upload-T">
                                 <div class="profil-ing-div">
                                     <a href="#">
-                                        <img src="assets/profile_avt/${user.profile_pic}">
+                                        <img src="data:image/png;base64,${user.profile_pic}">
                                     </a>
                                 </div>
                                 <div class="">
@@ -283,7 +283,7 @@
 
                                 <div class="profil-ing-div post-profile-img">
                                     <a href="#" id="profile-link">
-                                        <img src="assets/profile_avt/${user.profile_pic}">
+                                        <img src="data:image/png;base64,${user.profile_pic}">
                                     </a>
                                 </div>
                                 <div class="user-info" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0)">
@@ -459,7 +459,7 @@
                             <div class="comment-site">
                                 <div class="profil-ing-div">
                                     <a href="#">
-                                        <img src="assets/profile_avt/${sessionScope.user['profile_pic']}">
+                                        <img src="data:image/png;base64,${sessionScope.user['profile_pic']}">
                                     </a>
                                 </div>
                                 <div class="comment-input">
@@ -489,7 +489,7 @@
                             <c:forEach var="comment" items="${post.comments}">
                                 <div class="comment mb-2" style="margin-left: 20px;">
                                     <div class="comment-header">
-                                        <img src="assets/profile_avt/${comment.profile_pic}" class="img-fluid rounded-circle avatar me-2" style="width: 30px; height: 30px; object-fit: cover;">
+                                        <img src="data:image/png;base64,${comment.profile_pic}" class="img-fluid rounded-circle avatar me-2" style="width: 30px; height: 30px; object-fit: cover;">
                                         <small><strong>${comment.first_name} ${comment.last_name}</strong></small>
                                     </div>
                                     <div class="comment-body" style="display: flex; justify-content: space-between; align-items: center;">

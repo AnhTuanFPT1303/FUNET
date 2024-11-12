@@ -23,6 +23,8 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
         <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+        <link href="assets/css/home.css" rel="stylesheet">    
+
 
         <style>
             body {
@@ -43,7 +45,7 @@
                 z-index: 1000;
                 box-sizing: border-box;
                 position:sticky;
-                index:1000;
+                z-index:1000;
             }
 
             .center-buttons {
@@ -185,16 +187,15 @@
             .user-menu {
                 display: none;
                 position: fixed;
-                top: 50px;
                 right: 20px;
                 width: 360px;
-                max-height: 400px;
+                height: fit-content;
                 background-color: white;
                 color: black;
                 border-radius: 7px;
                 padding: 10px;
                 z-index: 1000;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                box-shadow: 1px 2px 3px 4px rgba(0, 0, 0, 0.1);
             }
 
             .user-menu div {
@@ -203,6 +204,7 @@
                 padding: 10px 0;
                 cursor: pointer;
                 font-size: 16px;
+                height:50px;
             }
 
             .user-menu div:hover {
@@ -436,10 +438,6 @@
                     justify-content: center;
                 }
             }
-
-
-
-
             .form-container {
                 width: 554px;
                 min-height: 415px;
@@ -578,9 +576,9 @@
                         <box-icon type='solid' name='home'></box-icon>
                     </button>
                 </a>
-                <a href="video">
+                <a href="lmaterialLink"> 
                     <button class="center-button" id="video-btn">
-                        <box-icon name='school' type='solid'></box-icon>
+                        <box-icon type='solid' name='book'></box-icon>
                     </button>
                 </a>
                 <a href="market">
@@ -598,7 +596,7 @@
                 <a href="/FUNET/chat" class="mess-icon" style='margin-left:5px'>
                     <span class="icon icon-circle" id="messenger-btn"><box-icon name='messenger' type='logo'></box-icon></span>
                 </a>
-                <span class="icon icon-circle" id="notification-btn"><box-icon name='bell' type='solid' ></box-icon></span>
+                <span class="icon icon-circle" id="notification-btn" style="display:none"><box-icon name='bell' type='solid' ></box-icon></span>
                 <span class="icon icon-circle" id="user-btn">&#128100;</span>
             </div>
 
@@ -607,11 +605,11 @@
         <div class="dropdown-menu" id="notification-menu">
             <p>Notification content goes here...</p>
         </div>
-    </div>
+    
     <div class="dropdown-menu" id="notification-menu">
         <p>Notification content goes here...</p>
     </div>
-    <div class="user-menu" id="user-menu">
+    <div class="user-menu" id="user-menu" >
         <div class="user-info">
             <a href="profile?userId=${sessionScope.user['user_id']}" class="d-flex align-items-center text-decoration-none text-dark">
                 <button class="user-info-button">
@@ -621,25 +619,23 @@
             </a>
         </div>
         <div class="menu-item">
-            <box-icon name='cog' type='solid'>Settings</box-icon>Settings
+            <box-icon name='cog' type='solid' style="margin-right:3%; margin-left:1%;">Settings</box-icon>Settings
         </div>
-        <div class="menu-item">
-            <box-icon name='error-circle'></box-icon>Report
+        <div class="menu-item" >
+            <box-icon name='error-circle'style="margin-right:3%; margin-left:1%;"></box-icon>Report
         </div>
-        <div class="menu-item">
-            <box-icon name='moon' type='solid'></box-icon>Dark Mode
-        </div>
+        
 
         <form method="post" action="/FUNET/logout" style="display: inline; width: 100%;">
             <div class="menu-item" style="display: flex; align-items: center; cursor: pointer; width: 100%;">
-                <box-icon type='solid' name='log-out'></box-icon>
+                <box-icon type='solid' name='log-out'style=" margin-left:1%;"></box-icon>
                 <button type="submit" style="border: none; background: none; color: black; font-size: 16px; margin-left: 5px; cursor: pointer; flex: 1; text-align: left;">
                     Log Out
                 </button>
             </div>
         </form>
     </div>
-                
+
     <div class="container"><div class="row">
             <div class="col-4" style="margin-top:1%;">
                 <a href="profile?userId=${sessionScope.user['user_id']}" style="text-decoration:none">
@@ -656,9 +652,10 @@
                             <box-icon type='solid' name='bookmark'></box-icon> Saved
                         </div>
                     </a>
-                    <div><box-icon name='videos' type='solid'></box-icon> Video </div>
                     <div><box-icon name='store-alt' type='solid'></box-icon> Market</div>
-                    <div><box-icon type='solid' name='book'></box-icon> Learning Materials</div>
+                    <a href="lmaterialLink"> 
+                        <div><box-icon type='solid' name='book'></box-icon> Learning Materials</div>
+                    </a>
                     <div><i class='fas fa-gamepad' style='font-size:20px'></i> Game</div>
                     <hr style="border: 1px solid black; width: 100%;"><!-- comment -->
 
@@ -765,7 +762,7 @@
                                         <c:otherwise>
                                             <video style="max-width: 100%" controls>
                                                 <source src="${post.image_path}" type="video/mp4">
-                                                
+
                                             </video>
                                         </c:otherwise>
                                     </c:choose>

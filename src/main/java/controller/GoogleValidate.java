@@ -4,6 +4,7 @@
  */
 package controller;
 
+import com.fasterxml.jackson.core.JsonFactory;
 import dao.userDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,8 +19,12 @@ import model.User;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import java.security.GeneralSecurityException;
+import java.util.Collections;
 
 /**
  *
@@ -27,7 +32,8 @@ import com.google.gson.JsonParser;
  */
 public class GoogleValidate extends HttpServlet {
 
-    private userDAO dao = userDAO.getInstance();    
+    private userDAO dao = userDAO.getInstance();
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -66,50 +72,69 @@ public class GoogleValidate extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        JsonObject userobject = JsonParser.parseString(request.getParameter("user")).getAsJsonObject();
         User user = new User();
-        if (userobject.has("given_name")) {
-            user.setFirst_name(userobject.get("given_name").getAsString());
-        }
-        if (userobject.has("family_name")) {
-            user.setLast_name(userobject.get("family_name").getAsString());
-        }
-        if (userobject.has("email")) {
-            user.setEmail(userobject.get("email").getAsString());
-        }
-        
-        User existingUser = dao.getUserByEmail(user.getEmail()); // Check if user exists in the DB by email
-
-        HttpSession session = request.getSession(true);
-        session.setMaxInactiveInterval(1800); // Set session timeout (30 minutes)
-        if (existingUser != null) {
-            // Existing user: use the existing user's details
-            session.setAttribute("user", existingUser);
-            session.setAttribute("user_id", existingUser.getUser_id());
-            session.setAttribute("last_name", existingUser.getLast_name());
-            session.setAttribute("first_name", existingUser.getFirst_name());
-            session.setAttribute("profile_pic", existingUser.getProfile_pic());
-        } else {
-            try {
-                // New user: insert into the DB and set session attributes
-                user.setPassword(null); // No password for Google login
-                user.setProfile_pic("default_avt.jpg");
-                user.setRole("student");
-                user.setStatus(false);
+        try {
+            String idTokenString = request.getParameter("id_token");
+            NetHttpTransport transport = new NetHttpTransport();
+            JacksonFactory jsonFactory = new JacksonFactory();
+            GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
+                    // Specify the CLIENT_ID of the app that accesses the backend:
+                    .setAudience(Collections.singletonList("141463377028-7grc9ri1n2peprn9fhuucjamiudeopcs.apps.googleusercontent.com"))
+                    // Or, if multiple clients access the backend:
+                    //.setAudience(Arrays.asList(CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3))
+                    .build();
+            GoogleIdToken idToken = verifier.verify(idTokenString);
+            if (idToken != null) {
+                Payload payload = idToken.getPayload();
                 
-                int newUserId = dao.register(user);
-                user.setUser_id(newUserId); // Set the newly created ID
-                session.setAttribute("user", user);
-                session.setAttribute("user_id", newUserId);
-                session.setAttribute("last_name", user.getLast_name());
-                session.setAttribute("first_name", user.getFirst_name());
-            } catch (Exception ex) {
-                Logger.getLogger(GoogleValidate.class.getName()).log(Level.SEVERE, null, ex);
+                // Print user identifier
+                String userId = payload.getSubject();
+                System.out.println("User ID: " + userId);
+                
+                // Get profile information from payload
+                user.setEmail(payload.getEmail());
+                user.setFirst_name((String) payload.get("family_name"));
+                user.setLast_name((String) payload.get("given_name"));
+                
+                // Use or store profile information
+                // ...
             }
+            
+            User existingUser = dao.getUserByEmail(user.getEmail()); // Check if user exists in the DB by email
+            
+            HttpSession session = request.getSession(true);
+            session.setMaxInactiveInterval(1800); // Set session timeout (30 minutes)
+            if (existingUser != null) {
+                // Existing user: use the existing user's details
+                session.setAttribute("user", existingUser);
+                session.setAttribute("user_id", existingUser.getUser_id());
+                session.setAttribute("last_name", existingUser.getLast_name());
+                session.setAttribute("first_name", existingUser.getFirst_name());
+                session.setAttribute("profile_pic", existingUser.getProfile_pic());
+            } else {
+                try {
+                    // New user: insert into the DB and set session attributes
+                    user.setPassword(null); // No password for Google login
+                    user.setProfile_pic("default_avt.jpg");
+                    user.setRole("student");
+                    user.setStatus(false);
+                    
+                    int newUserId = dao.register(user);
+                    user.setUser_id(newUserId); // Set the newly created ID
+                    session.setAttribute("user", user);
+                    session.setAttribute("user_id", newUserId);
+                    session.setAttribute("last_name", user.getLast_name());
+                    session.setAttribute("first_name", user.getFirst_name());
+                } catch (Exception ex) {
+                    Logger.getLogger(GoogleValidate.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+            // Redirect to home after successful login
+            request.getRequestDispatcher("WEB-INF/home.jsp").forward(request, response);
+        } catch (GeneralSecurityException ex) {
+            Logger.getLogger(GoogleValidate.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        // Redirect to home after successful login
-        request.getRequestDispatcher("WEB-INF/home.jsp").forward(request, response);
     }
 
     /**

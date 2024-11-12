@@ -26,7 +26,7 @@ public class updateLearningMaterial extends HttpServlet {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(updateLearningMaterial.class.getName());
 
-    private static final String ACCESS_TOKEN = "";
+    private static final String ACCESS_TOKEN = "sl.B_oVGLZBc_ZXr3lMWjy6DxIkooVzryaLCDrIp-mFaw3mFLxWlIqpC_vM1GYdC9t8A8XaevphHfLB_kuu5wTp_suI_wNCVWdDdFL6ldE37u2tB8ilYGFjuOLAsJqqgNfAlD9ctkXBGLzD2yieqHJmkPo";
     private DbxClientV2 client;
 
     @Override

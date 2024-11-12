@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.util.Date;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.LearningMaterial;
 import model.User;
 
@@ -25,7 +26,7 @@ public class updateLearningMaterial extends HttpServlet {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(updateLearningMaterial.class.getName());
 
-    private static final String ACCESS_TOKEN = "sl.B_oVGLZBc_ZXr3lMWjy6DxIkooVzryaLCDrIp-mFaw3mFLxWlIqpC_vM1GYdC9t8A8XaevphHfLB_kuu5wTp_suI_wNCVWdDdFL6ldE37u2tB8ilYGFjuOLAsJqqgNfAlD9ctkXBGLzD2yieqHJmkPo";
+    private static final String ACCESS_TOKEN = "";
     private DbxClientV2 client;
 
     @Override
@@ -62,7 +63,7 @@ public class updateLearningMaterial extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-
+        learningMaterialDao dao = new learningMaterialDao();
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("user") != null) {
             logger.info("User session found. Proceeding with file upload.");
@@ -91,10 +92,17 @@ public class updateLearningMaterial extends HttpServlet {
                             .uploadAndFinish(inputStream);
                     logger.info("File uploaded successfully.");
                 }
+                else {
+                    LearningMaterial lm=dao.getLearningMaterialById(learningMaterialId);
+                    context=lm.getLearningMaterialContext();
+                }
+                        
             } catch (DbxException | IOException e) {
                 logger.info("Error uploading file to Dropbox");
                 response.sendRedirect("lmaterialLink");
                 return;
+            } catch (Exception ex) {
+                Logger.getLogger(updateLearningMaterial.class.getName()).log(Level.SEVERE, null, ex);
             }
 
             int departmentId;
@@ -110,7 +118,7 @@ public class updateLearningMaterial extends HttpServlet {
 
             LearningMaterial learningMaterial = new LearningMaterial(learningMaterialId, userId, name, description, context, subjectCode, publishDate, review, departmentId);
 
-            learningMaterialDao dao = new learningMaterialDao();
+            
             try {
                 dao.updateLearningMaterial(learningMaterial);
                 logger.info("Learning material updated successfully.");

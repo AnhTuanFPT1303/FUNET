@@ -214,7 +214,6 @@ function sendMessage(e) {
 
 function sendText() {
     var messageContent = document.getElementById("message").value;
-
     var messageType = "text";
     document.getElementById("message").value = ''; // Clear input field
 
@@ -267,6 +266,7 @@ function sendAttachments() {
                         }
                         setMessage(message);
                         message.message = data.url;
+                        console.log("data of message is: " + message.message);
                         // Send the message containing the Cloudinary URL through WebSocket
                         websocket.send(JSON.stringify(message)); // Send the message via WebSocket
                         console.log("Message sent via WebSocket:", message.message);

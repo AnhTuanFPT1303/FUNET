@@ -126,7 +126,7 @@
                 </div>
             </div>
 
-        <div class="container col-3">
+        <div class="container col-4">
             <h1>Saved Posts</h1>
             <c:forEach var="post" items="${posts}">
                         <div class="post mb-4" style="overflow-wrap: break-word" data-post-id="${post.post_id}" data-liked="${post.likedByCurrentUser}">

@@ -230,6 +230,7 @@ function saveGame() {
 }
 
 // Search and Filter Functions
+
 document.getElementById('gameSearch').addEventListener('input', function(e) {
     const searchTerm = e.target.value.toLowerCase();
     filterGames(searchTerm, document.getElementById('categoryFilter').value);

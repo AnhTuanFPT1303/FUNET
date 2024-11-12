@@ -17,7 +17,7 @@ public class SmtpProtocol {
 
     //Host email, and API password
     final String from = "tuannhade180647@fpt.edu.vn";
-    final String password = "vxiziwxgfwrakdgx";
+    final String password = "ybzqnqdzjbszyegw";
 
     public Session setupProtocol() {
 

@@ -34,6 +34,8 @@ public class sqlConnect {
     public static sqlConnect getInstance() throws SQLException, Exception {
         if (instance == null) {
             instance = new sqlConnect();
+        } else if (instance.connection.isClosed()) {
+            instance = new sqlConnect();
         }
         return instance;
     }

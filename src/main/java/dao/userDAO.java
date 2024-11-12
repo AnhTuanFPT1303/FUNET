@@ -27,6 +27,7 @@ public class userDAO {
         boolean result = false;
         try {
             Connection conn = sqlConnect.getInstance().getConnection();
+            System.out.println("Get connection done");
             PreparedStatement st = conn.prepareStatement("Select * from userAccount where email=? AND password=?");
             st.setString(1, email);
             st.setString(2, password);
@@ -367,9 +368,7 @@ public class userDAO {
     }
 
     public static void main(String[] args) throws Exception {
-        List<User> list = userDAO.getInstance().findUsersByConversationId(1);
-        for (User user : list) {
-            System.out.println(user.getFirst_name());
-        }
+        User list = userDAO.getInstance().getUserByEmail("userjan@example.com");
+        System.out.println(list.getFirst_name());
     }
 }

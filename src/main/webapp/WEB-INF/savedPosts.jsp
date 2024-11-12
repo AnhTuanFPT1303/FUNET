@@ -93,8 +93,40 @@
             </div>
         </form>
     </div>
+<div class="container">
+        <div class="row">
+            <div class="col-4 dashBoard" style="margin-top:1%;">
+                <a href="profile?userId=${sessionScope.user['user_id']}" style="text-decoration:none; width: fit-content;">
+                    <div class="UserAvatar" >
+                        <img src="assets/profile_avt/${user.profile_pic}" class="img-fluid rounded-circle avatar" style="margin-left:1%;">
+                        <span class="mb-0 ms-2 ava-name">${sessionScope.user['first_name']} ${sessionScope.user['last_name']}</span>        
+                    </div></a>
 
-        <div class="container">
+                <div class="RightItem">
+                    <a href="/friendRequestServlet" style="text-decoration: none">
+                         <div><i class='fas fa-user-friends'style="margin-left:5%;" > </i>    Friends</div>
+                    </a>                   
+                    <a href="savePostServlet" style="text-decoration: none">
+                        <div>
+                            <box-icon type='solid' name='bookmark'style="margin-left:5%;"></box-icon> Saved
+                        </div>
+                    </a>
+                    <a href="marketLink" style="text-decoration: none">
+                         <div><box-icon name='store-alt' type='solid'style="margin-left:5%;"></box-icon> Market</div>
+                    </a>
+                   
+                    <a href="lmaterialLink"style="text-decoration: none"> 
+                        <div><box-icon type='solid' name='book'style="margin-left:5%;"></box-icon> Learning Materials</div>
+                    </a>
+                    <a href="game" style="text-decoration: none"><div><i class='fas fa-gamepad' style='font-size:20px;margin-left:5%;'></i> Game</div></a>
+                    
+                    <hr style="border: 1px solid black; width: 100%;"><!-- comment -->
+
+                    <p>Your ShortCut</p>
+                </div>
+            </div>
+
+        <div class="container col-3">
             <h1>Saved Posts</h1>
             <c:forEach var="post" items="${posts}">
                         <div class="post mb-4" style="overflow-wrap: break-word" data-post-id="${post.post_id}" data-liked="${post.likedByCurrentUser}">

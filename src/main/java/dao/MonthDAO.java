@@ -6,8 +6,7 @@ import model.Month;
 import util.sqlConnect;
 
 public class MonthDAO {
-    Trần Bảo
-public List<Month> Get7Month() {
+    public List<Month> Get7Month() {
         List<Month> results = new ArrayList<>();
         String sql = "WITH LastSevenMonths AS ("
                 + "    SELECT "

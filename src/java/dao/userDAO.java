@@ -32,28 +32,26 @@ public class userDAO {
             ResultSet rs = st.executeQuery();
 
             if (rs.next()) {
-                // Lấy chuỗi kết hợp (lưu cả salt và sha512 hash vào password)
+                // Lấy chuỗi combinedHash chứa cả salt và hash
                 String combinedHash = rs.getString("password");
 
-                // Tách salt và hashedPassword
-                String[] parts = combinedHash.split(":"); // Sử dụng dấu phân cách
-                byte[] salt = Base64.getDecoder().decode(parts[0]); // Giải mã salt
-                String storedHash = parts[1]; // hashedPassword
+                // Tách salt và storedHash
+                String[] parts = combinedHash.split(":");
+                byte[] salt = Base64.getDecoder().decode(parts[0]);
+                String storedHash = parts[1];
 
-                // Băm mật khẩu đã nhập với salt
+                // Hash mật khẩu nhập vào với salt lấy từ DB
                 String hashedInputPassword = SHA512WithSalt.hashPassWordWithSHA512(password, salt);
 
-                // So sánh mật khẩu đã băm
-                if (hashedInputPassword.equals(storedHash)) {
-                    result = true;
-                }
+                // So sánh với hash được lưu trong DB
+                result = hashedInputPassword.equals(storedHash);
             }
         } catch (Exception e) {
             System.out.println("Connect Failed: " + e.getMessage());
         }
         return result;
     }
-    
+
     public void hashPw(String firstName, String lastName, String email, String password, String profilePic, String role) throws Exception {
         userDAO uDAO = new userDAO(); // Giả định UserDAO có phương thức register
 
@@ -63,10 +61,10 @@ public class userDAO {
         String combinedHash = Base64.getEncoder().encodeToString(salt) + ":" + hashedPassword; // Kết hợp salt và mật khẩu đã băm
 
         // Bước 2: Tạo đối tượng User mới
-        User newUser = new User(firstName, lastName, combinedHash, email, profilePic, role, false); // false ở đây là is_banned
+        User newUser = new User(firstName, lastName, combinedHash, email, profilePic, role, false); // `false` là `is_banned`
 
         // Bước 3: Gọi phương thức register để thêm người dùng vào cơ sở dữ liệu
-        int userId = uDAO.register(newUser);  // Phương thức register trả về userId nếu thành công
+        int userId = uDAO.register(newUser); // Phương thức register trả về userId nếu thành công
 
         // Bước 4: Kiểm tra kết quả đăng ký
         if (userId > 0) {
@@ -77,35 +75,38 @@ public class userDAO {
     }
 
     public int register(User user) throws Exception {
-        // tạo giỏ hàng cho người dùng khi register
-        shoppingCartDAO sCartDAO = new shoppingCartDAO();
-        sCartDAO.addShoppingCart(user.getUser_id());
-        
         int generatedUserId = 0;
         String sql = "INSERT INTO userAccount (first_name, last_name, password, email, profile_pic, role, is_banned) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
         try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
             ps.setString(1, user.getFirst_name());
             ps.setString(2, user.getLast_name());
-            ps.setString(3, user.getPassword()); // Password should be null for Google login
+            ps.setString(3, user.getPassword()); // Mật khẩu đã băm (combinedHash)
             ps.setString(4, user.getEmail());
             ps.setString(5, user.getProfile_pic());
             ps.setString(6, user.getRole());
             ps.setBoolean(7, user.getStatus());
 
             ps.executeUpdate();
-            
+
+            // Lấy `user_id` được sinh ra tự động sau khi thêm vào CSDL
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
-                generatedUserId = rs.getInt(1); // Get the generated user_id
+                generatedUserId = rs.getInt(1);
+
+                // Nếu người dùng được thêm thành công, tạo giỏ hàng cho người dùng
+                shoppingCartDAO sCartDAO = new shoppingCartDAO();
+                sCartDAO.addShoppingCart(generatedUserId);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         return generatedUserId;
-        
     }
+
 
     public User getUserByEmail(String email) {
         User user = null;

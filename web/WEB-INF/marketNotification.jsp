@@ -104,33 +104,74 @@
                     <div class="container my-4">
                         <div class="buyer-orders mb-5">
                             <h3 class="text-center">Your Purchased Orders</h3>
-                            <c:forEach items="${ordersList}" var="order">
-                                <c:if test="${order.user_id == userId}">
-                                    <div class="order-item border rounded p-3 mb-3">
-                                        <h5>Order ID: ${order.order_id}</h5>
-                                        <p>Total Amount: $${order.total_amount}</p>
-                                        <p>Status: ${order.order_status}</p>
+                            <c:forEach items="${buyerOrdersList}" var="order" varStatus="loop">
+                                <div class="order-item border rounded p-3 mb-3">
+                                    <h5>Order ID: ${order.order_id}</h5>
+                                    <p>Total Amount: $${order.total_amount}</p>
+                                    <p>Status: ${order.order_status}</p>
 
-                                        <c:if test="${order.order_status == 'ongoing'}">
-                                            <form action="UpdateOrderStatusServlet" method="POST">
-                                                <input type="hidden" name="orderId" value="${order.order_id}">
-                                                <input type="hidden" name="action" value="confirm">
-                                                <button type="submit" class="btn btn-success">Confirm Receipt</button>
-                                            </form>
-                                        </c:if>
-                                    </div>
-                                </c:if>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Product ID</th>
+                                                <th>Quantity</th>
+                                                <th>Price</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="${buyerOrderDetails[loop.index]}" var="detail">
+                                                <tr>
+                                                    <td>${detail.productId}</td>
+                                                    <td>${detail.quantity}</td>
+                                                    <td>$${detail.price}</td>
+                                                    <td>${detail.orderStatus}</td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+
+                                    <c:if test="${order.order_status == 'ongoing'}">
+                                        <form action="UpdateOrderStatusServlet" method="POST">
+                                            <input type="hidden" name="orderId" value="${order.order_id}">
+                                            <input type="hidden" name="action" value="confirm">
+                                            <button type="submit" class="btn btn-success">Confirm Receipt</button>
+                                        </form>
+                                    </c:if>
+                                </div>
                             </c:forEach>
                         </div>
 
                         <div class="seller-orders">
                             <h3 class="text-center">Orders from Your Products</h3>
-                            <c:forEach items="${sellerOrders}" var="order">
+                            <c:forEach items="${sellerOrders}" var="order" varStatus="loop">
                                 <div class="order-item border rounded p-3 mb-3">
                                     <h5>Order ID: ${order.order_id}</h5>
                                     <p>Buyer ID: ${order.user_id}</p>
                                     <p>Total Amount: $${order.total_amount}</p>
                                     <p>Status: ${order.order_status}</p>
+
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Product ID</th>
+                                                <th>Quantity</th>
+                                                <th>Price</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="${sellerOrderDetails[loop.index]}" var="detail">
+                                                <tr>
+                                                    <td>${detail.productId}</td>
+                                                    <td>${detail.quantity}</td>
+                                                    <td>$${detail.price}</td>
+                                                    <td>${detail.orderStatus}</td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+
                                     <c:if test="${order.order_status == 'Pending'}">
                                         <form action="UpdateOrderStatusServlet" method="POST">
                                             <input type="hidden" name="orderId" value="${order.order_id}">
@@ -156,9 +197,9 @@
                 <footer class="bg-light text-center text-lg-start mt-5">
                     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.1);">
                     </div>
-                    </footer>
-                    </main>
-                </div>
+                </footer>
+                </main>
+            </div>
         </div>
 
         <script src="assets/js/bootstrap.bundle.min.js"></script>

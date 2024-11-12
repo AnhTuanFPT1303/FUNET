@@ -64,7 +64,7 @@
                     <div class="chat-box mb-3"></div>
 
                     <form action ="SearchProductServlet" class="d-flex mb-3">
-                       <input type="text" class="form-control me-2" name="keyword" placeholder="Find product">
+                        <input type="text" class="form-control me-2" name="keyword" placeholder="Find product">
                         <button class="btn btn-outline-primary" type="submit">Search</button>
                     </form>
 
@@ -130,8 +130,8 @@
                                                                         <input type="hidden" name="productId" value="${item.productId}">
                                                                         <button type="submit" class="btn btn-danger">Remove</button>
                                                                     </form>
-                                                            </c:if>
-                                                        </c:forEach>
+                                                                </c:if>
+                                                            </c:forEach>
                                                         </td>
                                                     </tr>
                                                 </c:forEach>
@@ -139,8 +139,8 @@
                                                     <td></td>
                                                     <td></td>
                                                     <td>Total Amount:</td>
-                                                        <td>${totalAmount}</td>
-                                                    </tr>
+                                                    <td>${totalAmount}</td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </c:if>
@@ -150,7 +150,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    
+
                                     <form method="post" action="/FUNET/OrderProcessServlet">
                                         <input type="hidden" name="cartId" value="${cartId}">
                                         <input type="hidden" name="totalAmount" value="${totalAmount}">
@@ -165,35 +165,33 @@
 
                     <div class="row">
                         <c:forEach var="product" items="${productList}">
-                            <div class="col-3 mb-3 productList">
-                                <div class="product-card border" style="border: 2px solid black; padding: 10px; text-align: center;">
-                                    <h5>${product.productName}</h5>
-                                    <img src="${product.product_img}" alt="Item 1" class="img-fluid" style="max-width: 100%;">
-                                    <p>Price: ${product.price}</p>
-                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#infoModal${product.productId}">View info</button>
-                                </div>
-
-                                <div class="modal fade" id="infoModal${product.productId}" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel${product.productId}" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="infoModalLabel${product.productId}">${product.productName}</h5>
-                                            </div>
-                                            <div class="modal-body">
-                                                <img class="w-100 h-100 productImg" src="${product.product_img}" alt="img" style="width: auto;">
-                                            </div>
-                                            <div class="modal-body">
-                                                <h5 class="w-100 h-100 producDescription">${product.productDescription}</h5>
-                                            </div>
-
-
+                            <c:if test="${product.quantity > 0}">
+                                <c:if test="${userId != product.userId}">
+                                <div class="col-3 mb-3 productList">
+                                    <div class="product-card border" style="border: 2px solid black; padding: 10px; text-align: center;">
+                                        <h5>${product.productName}</h5>
+                                        <img src="${product.product_img}" alt="Item 1" class="img-fluid" style="max-width: 100%;">
+                                        <p>Quantity: ${product.quantity}</p>
+                                        <p>Price: ${product.price}</p>
+                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#infoModal${product.productId}">View info</button>
+                                    </div>
+                                    <div class="modal fade" id="infoModal${product.productId}" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel${product.productId}" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="infoModalLabel${product.productId}">${product.productName}</h5>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <img class="w-100 h-100 productImg" src="${product.product_img}" alt="img" style="width: auto;">
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h5 class="w-100 h-100 producDescription">${product.productDescription}</h5>
+                                                </div>
                                                 <div class="quantity-container d-flex align-items-center mt-3">
                                                     <button type="button" class="btn btn-secondary" id="decrease${product.productId}" onclick="changeQuantity(${product.productId}, -1)">-</button>
                                                     <input type="text" id="quantity${product.productId}" name="quantity" value="1" class="form-control mx-2 text-center" style="width: 50px;" readonly>
                                                     <button type="button" class="btn btn-secondary" id="increase${product.productId}" onclick="changeQuantity(${product.productId}, 1)">+</button>
                                                 </div>
-
-
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                                     <form method="post" action="/FUNET/AddCartServlet" onsubmit="updateHiddenQuantity(${product.productId})">
@@ -201,12 +199,13 @@
                                                         <input type="hidden" id="hiddenQuantity${product.productId}" name="quantity" value="1">
                                                         <button type="submit" class="btn btn-primary">Add to cart</button>
                                                     </form>
-
                                                 </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                              </c:if>
+                            </c:if>
                         </c:forEach>
                     </div>
                 </main>

@@ -171,6 +171,8 @@ CREATE TABLE shoppingCart (
 );
 Go
 
+TRUNCATE TABLE shoppingCartItem
+
 CREATE TABLE shoppingCartItem (
 	item_id INT PRIMARY KEY IDENTITY(1,1),
 	cart_id INT NOT NULL,

@@ -24,6 +24,10 @@
         <servlet-name>lmaterialLink</servlet-name>
         <servlet-class>controller.lmaterialLink</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateProductServlet</servlet-name>
+        <servlet-class>controller.UpdateProductServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RemoveItemServlet</servlet-name>
         <url-pattern>/RemoveItemServlet</url-pattern>
@@ -51,6 +55,10 @@
     <servlet-mapping>
         <servlet-name>lmaterialLink</servlet-name>
         <url-pattern>/lmaterialLink</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateProductServlet</servlet-name>
+        <url-pattern>/UpdateProductServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

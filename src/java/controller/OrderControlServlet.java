@@ -74,6 +74,8 @@ public class OrderControlServlet extends HttpServlet {
             request.setAttribute("totalAmount", totalAmount);
             request.setAttribute("ordersList", ordersList);
             
+            sCartDAO.updateOrderDetailbyShoppingCartItem(orderId);
+            
             if (transactionStatus.equals(
                     "Fail") || transactionStatus.equals("invalid signature")) {
                 try {

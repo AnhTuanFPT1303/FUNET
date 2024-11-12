@@ -7,16 +7,14 @@ import model.Product;
 import util.sqlConnect;
 
 public class productDAO {
-    
+
     public List<Product> getAll() throws Exception {
-        
+
         List<Product> productList = new ArrayList<>();
-        
-        String sql = "SELECT * FROM product";  
-        
-        try (Connection conn = sqlConnect.getInstance().getConnection();
-             PreparedStatement preparedStatement = conn.prepareStatement(sql);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+        String sql = "SELECT * FROM product";
+
+        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement preparedStatement = conn.prepareStatement(sql); ResultSet resultSet = preparedStatement.executeQuery()) {
             // ket noi sql va lay thong tin product ra khoi sql
             while (resultSet.next()) {
                 int productId = resultSet.getInt("product_id");
@@ -25,27 +23,29 @@ public class productDAO {
                 String productDescription = resultSet.getString("product_description");
                 String product_img = resultSet.getString("product_img");
                 String productTag = resultSet.getString("product_tag");
-                
+
                 java.util.Date publishDate = resultSet.getDate("publish_date");
-                
+
                 double price = resultSet.getDouble("price");
+                int quantity = resultSet.getInt("quantity");
                 // luu product vao list product
-                Product product = new Product(productId, userId, productName, productDescription, product_img, productTag, publishDate, price);
-                productList.add(product);  
+                Product product = new Product(productId, userId, productName, productDescription, product_img, productTag, publishDate, price, quantity);
+                productList.add(product);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         return productList;
     }
+
     // lấy dữ liệu những sản phẩm đang bán của người dùng
-    public List<Product> getSellingList(int userId) throws Exception{
-        
+    public List<Product> getSellingList(int userId) throws Exception {
+
         List<Product> sellingProductList = new ArrayList<>();
-        
-        try{
+
+        try {
             Connection conn = sqlConnect.getInstance().getConnection();
             PreparedStatement preparedStatement = conn.prepareStatement("Select * from product where user_id = ?");
             preparedStatement.setInt(1, userId);
@@ -61,8 +61,9 @@ public class productDAO {
                 java.util.Date publishDate = resultSet.getDate("publish_date");
 
                 double price = resultSet.getDouble("price");
+                int quantity = resultSet.getInt("quantity");
                 // luu product vao list product
-                Product product = new Product(productId, userId, productName, productDescription, product_img, productTag, publishDate, price);
+                Product product = new Product(productId, userId, productName, productDescription, product_img, productTag, publishDate, price, quantity);
                 sellingProductList.add(product);
             }
         } catch (Exception exception) {
@@ -73,7 +74,7 @@ public class productDAO {
     }
 
     public void addProduct(Product product) {
-        String sql = "INSERT INTO product (user_id, product_name, product_description, product_img, product_tag, publish_date, price) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO product (user_id, product_name, product_description, product_img, product_tag, publish_date, price, quantity) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
 
             preparedStatement.setInt(1, product.getUserId());
@@ -83,6 +84,7 @@ public class productDAO {
             preparedStatement.setString(5, product.getProductTag());
             preparedStatement.setDate(6, new java.sql.Date(product.getPublishDate().getTime()));
             preparedStatement.setDouble(7, product.getPrice());
+            preparedStatement.setInt(8, product.getQuantity());
             preparedStatement.executeUpdate();
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -160,8 +162,9 @@ public class productDAO {
                     String productTag = resultSet.getString("product_tag");
                     java.util.Date publishDate = resultSet.getDate("publish_date");
                     double price = resultSet.getDouble("price");
+                    int quantity = resultSet.getInt("quantity");
 
-                    Product product = new Product(productId, userId, productName, productDescription, product_img, productTag, publishDate, price);
+                    Product product = new Product(productId, userId, productName, productDescription, product_img, productTag, publishDate, price, quantity);
                     searchResults.add(product);
                 }
             }
@@ -171,6 +174,23 @@ public class productDAO {
 
         return searchResults;
     }
+
+    public boolean updateProductQuantityAndPrice(int productId, int quantity, double price) throws Exception {
+        String sql = "UPDATE Product SET quantity = ?, price = ? WHERE product_id = ?";
+        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, quantity);
+            stmt.setDouble(2, price);
+            stmt.setInt(3, productId);
+
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+    
 
     public static void main(String[] args) throws Exception {
         productDAO prD = new productDAO();

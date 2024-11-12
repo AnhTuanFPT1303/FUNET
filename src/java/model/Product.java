@@ -14,8 +14,9 @@ public class Product {
     private String productTag; 
     private Date publishDate; 
     private double price; 
+    private int quantity;
 
-    public Product(int productId, int userId, String productName, String productDescription, String product_img, String productTag, Date publishDate, double price) {
+    public Product(int productId, int userId, String productName, String productDescription, String product_img, String productTag, Date publishDate, double price, int quantity) {
         this.productId = productId;
         this.userId = userId;
         this.productName = productName;
@@ -24,6 +25,15 @@ public class Product {
         this.productTag = productTag;
         this.publishDate = publishDate;
         this.price = price;
+        this.quantity = quantity;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public String getProduct_img() {

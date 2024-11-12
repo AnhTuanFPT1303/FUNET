@@ -116,6 +116,11 @@
                             <label for="productTag">product tag:</label>
                             <input type="text" class="form-control" id="productTag" name="productTag" required>
                         </div>
+                        <!-- xu ly sau -->
+                        <div class="form-group">
+                            <label for="quantity">Quantity:</label>
+                            <input type="number" class="form-control" id="quantity" name="quantity" step="0.01" required>
+                        </div> 
                         <div class="form-group">
                             <label for="price">Price:</label>
                             <input type="number" class="form-control" id="price" name="price" step="0.01" required>
@@ -127,6 +132,52 @@
                         <button type="submit" class="btn btn-primary">Upload</button>
                     </form>
 
+                    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="updateModalLabel">Update Product</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- Form cập nhật sản phẩm -->
+                                    <form action="UpdateProductServlet" method="post" enctype="multipart/form-data"> 
+                                        <div class="form-group">
+                                            <label for="productName">Product Name:</label>
+                                            <input type="text" class="form-control" id="productName" name="productName" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="productDescription">Product Description:</label>
+                                            <textarea class="form-control" id="productDescription" name="productDescription" required></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="productTag">Product Tag:</label>
+                                            <input type="text" class="form-control" id="productTag" name="productTag" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="quantity">Quantity:</label>
+                                            <input type="number" class="form-control" id="quantity" name="quantity" step="0.01" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="price">Price:</label>
+                                            <input type="number" class="form-control" id="price" name="price" step="0.01" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="productImage">Product Image:</label>
+                                            <input type="file" class="form-control" id="productImage" name="productImage" accept="image/*" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Upload</button>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <footer class="bg-light text-center text-lg-start mt-5">
                         <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.1);">
                         </div>
@@ -135,6 +186,8 @@
             </div>
         </div>
 
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script src="assets/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

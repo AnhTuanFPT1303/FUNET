@@ -54,6 +54,7 @@ public class marketLink extends HttpServlet {
     }
 
     // Truyền danh sách sản phẩm và cart item sang JSP
+    request.setAttribute("userId", userId);
     request.setAttribute("cartId", cartId);
     request.setAttribute("productList", productList);
     request.setAttribute("cartItems", sCartItemList);

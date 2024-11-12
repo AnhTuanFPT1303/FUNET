@@ -12,7 +12,13 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/F:/New%20folder/FUNET3/web/WEB-INF/marketNotification.jsp</file>
+            <file>file:/F:/New%20folder/FUNET3/src/java/dao/ordersDAO.java</file>
+            <file>file:/F:/New%20folder/FUNET3/web/WEB-INF/paymentInfoProcess.jsp</file>
+            <file>file:/F:/New%20folder/FUNET3/src/java/model/OrderDetailDTO.java</file>
+            <file>file:/F:/New%20folder/FUNET3/src/java/dao/productDAO.java</file>
+            <file>file:/F:/New%20folder/FUNET3/web/vnpay_return.jsp</file>
+            <file>file:/F:/New%20folder/FUNET3/src/java/controller/VNPayServlet.java</file>
+            <file>file:/F:/New%20folder/FUNET3/src/java/dao/shoppingCartDAO.java</file>
         </group>
     </open-files>
 </project-private>

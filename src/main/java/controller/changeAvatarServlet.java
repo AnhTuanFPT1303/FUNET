@@ -13,9 +13,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Base64;
 import model.User;
 
 /**
@@ -25,8 +28,8 @@ import model.User;
 @MultipartConfig
 public class changeAvatarServlet extends HttpServlet {
 
-    private userDAO userDao = userDAO.getInstance();    
-    
+    private userDAO userDao = userDAO.getInstance();
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -88,7 +91,8 @@ public class changeAvatarServlet extends HttpServlet {
 
         Part file = request.getPart("profile_pic");
         String profile_pic = file.getSubmittedFileName();
-        String uploadPath = "https://funet.azurewebsites.net/assets/profile_avt/" + profile_pic;
+        String uploadPath = getServletContext().getRealPath("/assets/profile_avt/") + profile_pic;
+
         try {
             FileOutputStream fos = new FileOutputStream(uploadPath);
             InputStream is = file.getInputStream();
@@ -97,12 +101,15 @@ public class changeAvatarServlet extends HttpServlet {
             is.read(data);
             fos.write(data);
             fos.close();
+
+            // Convert the image to Base64
+            String base64String = encodeFileToBase64Binary(new File(uploadPath));
+            user.setProfile_pic(base64String);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         if (!profile_pic.isEmpty()) {
-            user.setProfile_pic(profile_pic);
             try {
                 userDao.changeAvatar(user);
                 session.setAttribute("user", user);
@@ -123,5 +130,19 @@ public class changeAvatarServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    public static String encodeFileToBase64Binary(File file) throws IOException {
+        FileInputStream fileInputStream = null;
+        byte[] bytes = new byte[(int) file.length()];
+        try {
+            fileInputStream = new FileInputStream(file);
+            fileInputStream.read(bytes);
+        } finally {
+            if (fileInputStream != null) {
+                fileInputStream.close();
+            }
+        }
+        return Base64.getEncoder().encodeToString(bytes);
+    }
 
 }

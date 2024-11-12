@@ -51,7 +51,10 @@ public class DashBoardServlet extends HttpServlet {
             request.setAttribute("data4", results.get(4).getCount() != null ? results.get(4).getCount() : 0);
             request.setAttribute("data5", results.get(5).getCount() != null ? results.get(5).getCount() : 0);
             request.setAttribute("data6", results.get(6).getCount() != null ? results.get(6).getCount() : 0);
-
+            gameDAO gamedao=new gameDAO();
+            List<game> gamelist= gamedao.getAllGames();
+            request.setAttribute("games", gamelist);
+            
             try {
                 // request.setAttribute("",);
                 //request.setAttribute("activities",activities);

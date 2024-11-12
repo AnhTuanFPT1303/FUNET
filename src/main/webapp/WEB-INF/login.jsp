@@ -21,7 +21,7 @@
             <div class="form-container sign-up-container">
                 <form method="post" action="/signup">
                     <h1>Create Account</h1>
-                    <div class="g-signin2" data-onsuccess="onSignIn">
+                    <div class="g-signin2" data-onsuccess="onSignIn();">
                         <i class="fab fa-google-plus-g"></i></a>
                     </div>
                     <input type="text" id="firstname" name="firstName" placeholder="First Name">
@@ -35,7 +35,7 @@
             <div class="form-container sign-in-container">
                 <form action="/login" method="post">
                     <h1>Sign in</h1>
-                    <div class="g-signin2" data-onsuccess="onSignIn">
+                    <div class="g-signin2" data-onsuccess="onSignIn();">
                         <i class="fab fa-google-plus-g"></i></a>
                     </div>
                     <span>or use your account</span>
@@ -64,5 +64,4 @@
     <script src="assets/js/Validation.js"></script>
     <script src="assets/js/login-register.js"></script>
     <script src="assets/css/welcome.css"></script>
-
 </html>

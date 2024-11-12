@@ -248,7 +248,6 @@ function sendAttachments() {
                 .then(data => {
                     // Check if the upload was successful
                     if (data.url) {
-                        console.log(data.url);
                         // Set the message content based on file type and the uploaded URL
                         if (messageType.startsWith("audio")) {
                             message.message = '<audio controls>'
@@ -265,16 +264,11 @@ function sendAttachments() {
                             message.message = '<a href="' + data.url + '" target="_blank">' + messageContent + '</a>';
                         }
                         setMessage(message);
-                        message.message = data.url;
-                        console.log("data of message is: " + message.message);
-                        // Send the message containing the Cloudinary URL through WebSocket
-                        websocket.send(JSON.stringify(message)); // Send the message via WebSocket
-                        console.log("Message sent via WebSocket:", message.message);
-                        // Optionally, call setMessage(message) if you want to display the message locally as well
-
                     } else {
                         console.error('Upload failed:', data);
                     }
+                    message.message = data.url;
+                    websocket.send(JSON.stringify(message));
                 })
                 .catch(error => {
                     console.error('Error uploading to server:', error);

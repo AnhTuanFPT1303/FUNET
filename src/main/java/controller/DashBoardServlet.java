@@ -27,7 +27,6 @@ import model.UserActivityLog;
  *
  * @author Quocb
  */
-@WebServlet("/dashBoard")
 public class DashBoardServlet extends HttpServlet {
 
     @Override

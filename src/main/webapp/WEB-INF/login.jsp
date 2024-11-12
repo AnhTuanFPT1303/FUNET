@@ -11,7 +11,6 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="google-signin-client_id" content="141463377028-7grc9ri1n2peprn9fhuucjamiudeopcs.apps.googleusercontent.com">
         <title>Welcome</title>
-        <link href="assets/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="assets/css/welcome.css">
     </head>
     <body>
@@ -63,6 +62,5 @@
     <script src="assets/js/Validation.js"></script>
     <script src="assets/js/login-register.js"></script>
     <script src="assets/css/welcome.css"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 </html>

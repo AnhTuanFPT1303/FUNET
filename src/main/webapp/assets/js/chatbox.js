@@ -240,7 +240,7 @@ function sendAttachments() {
         var message = buildMessageToJson(messageContent, messageType);
         const formData = new FormData();
         formData.append('file', file);
-        fetch("http://" + window.location.host + "/upload", {
+        fetch("https://" + window.location.host + "/upload", {
             method: 'POST',
             cache: 'no-cache',
             body: formData // No Content-Type header set
@@ -368,7 +368,7 @@ function loadMessages() {
         }
     };
 
-    xhttp.open("GET", "http://" + window.location.host + "/chat-rest-controller?sender=" + user_id + "&receiver=" + receiver, true);
+    xhttp.open("GET", "https://" + window.location.host + "/chat-rest-controller?sender=" + user_id + "&receiver=" + receiver, true);
     xhttp.send();
 }
 
@@ -419,7 +419,7 @@ function setGroup(element) {
     numberMember = parseInt(element.getAttribute("data-number"));
 
 
-    fetch("http://" + window.location.host + "/conversations-rest-controller?usersConversationId=" + groupId)
+    fetch("https://" + window.location.host + "/conversations-rest-controller?usersConversationId=" + groupId)
             .then(data => data.json())
             .then(data => {
                 let findObject = data.find(element => element.user_id == user_id);
@@ -434,7 +434,7 @@ function setGroup(element) {
                         + 'alt="Image of user">'
                         + '</div>'
                         + '<div class="user-info">'
-                        + '<a href="http://' + window.location.host + '/conversation?conversationId=' + groupId + '" class="user-name">' + groupName + '</a>'
+                        + '<a href="https://' + window.location.host + '/conversation?conversationId=' + groupId + '" class="user-name">' + groupName + '</a>'
                         + '</div>'
                         + '</div>'
                         + '<div class="invite-user">'
@@ -489,7 +489,7 @@ function createGroup(e) {
     object.users = [];
     object.users.push(user);
     toggleAllModal();
-    fetch("http://" + window.location.host + "/conversations-rest-controller", {
+    fetch("https://" + window.location.host + "/conversations-rest-controller", {
         method: "post",
         cache: 'no-cache',
         headers: {
@@ -523,7 +523,7 @@ function addMember(e) {
     });
 
 
-    fetch("http://" + window.location.host + "/conversations-rest-controller", {
+    fetch("https://" + window.location.host + "/conversations-rest-controller", {
         method: "post",
         cache: 'no-cache',
         headers: {
@@ -549,7 +549,7 @@ function addMember(e) {
 
 function fetchUser() {
 
-    fetch("http://" + window.location.host + "/conversations-rest-controller?usersConversationId=" + groupId)
+    fetch("https://" + window.location.host + "/conversations-rest-controller?usersConversationId=" + groupId)
             .then(data => data.json())
             .then(users => {
                 document.querySelector(".manage-member-body .list-user ul").innerHTML = "";
@@ -617,7 +617,7 @@ function deleteGroup(ele) {
 }
 
 function confirmDelete(grpId) {
-    fetch("http://" + window.location.host + "/conversations-rest-controller?conversationId=" + grpId, {
+    fetch("https://" + window.location.host + "/conversations-rest-controller?conversationId=" + grpId, {
         method: 'Delete'
     })
             .then(function (data) {
@@ -636,7 +636,7 @@ function confirmDelete(grpId) {
 function deleteMember(ele) {
     let data_id = ele.getAttribute("data-username");
 
-    fetch("http://" + window.location.host + "/conversations-rest-controller?conversationId=" + groupId + "&user_id=" + data_id, {
+    fetch("https://" + window.location.host + "/conversations-rest-controller?conversationId=" + groupId + "&user_id=" + data_id, {
         method: 'delete'
     })
             .then(function (data) {
@@ -675,7 +675,7 @@ function changeGroupName(e) {
     object.avatar = null;
     toggleAllModal();
 
-    fetch("http://" + window.location.host + "/chat?group-name", {
+    fetch("https://" + window.location.host + "/chat?group-name", {
         method: "post",
         cache: 'no-cache',
         headers: {
@@ -697,7 +697,7 @@ function uploadGroupAvatar(avt) {
     if (file) { // Check if a file was selected
         avatarData.append('file', file);
 
-        fetch("http://" + window.location.host + "/upload", {
+        fetch("https://" + window.location.host + "/upload", {
             method: 'POST',
             cache: 'no-cache',
             body: avatarData // No Content-Type header set
@@ -728,7 +728,7 @@ function updateGroupAvatar(avatarUrl) {
     object.avatar = avatarUrl;
     object.name = null;
 
-    fetch("http://" + window.location.host + "/chat?update-avatar", {
+    fetch("https://" + window.location.host + "/chat?update-avatar", {
         method: 'POST',
         cache: 'no-cache',
         headers: {
@@ -791,7 +791,7 @@ function addUserChange(e) {
 
 function fetchGroup() {
     console.log(user_id);
-    fetch("http://" + window.location.host + "/conversations-rest-controller?user_id=" + user_id)
+    fetch("https://" + window.location.host + "/conversations-rest-controller?user_id=" + user_id)
             .then(function (data) {
                 return data.json();
             })
@@ -848,7 +848,7 @@ function handleResponsive() {
 
 function searchFriendByKeyword(keyword) {
     if (keyword != null)
-        fetch("http://" + window.location.host + "/users-rest-controller?user_id=" + user_id + "&keyword=" + keyword)
+        fetch("https://" + window.location.host + "/users-rest-controller?user_id=" + user_id + "&keyword=" + keyword)
                 .then(function (data) {
                     return data.json();
                 })
@@ -860,7 +860,7 @@ function searchFriendByKeyword(keyword) {
                                 + '<div class="user-contain">'
                                 + '<div class="user-img">'
                                 + '<img id="img-' + data.user_id + '"'
-                                + ' src="http://' + window.location.host + '/assets/profile_avt/' + data.profile_pic + '"'
+                                + ' src="https://' + window.location.host + '/assets/profile_avt/' + data.profile_pic + '"'
                                 + 'alt="Image of user">'
                                 + '<div id="status-' + data.user_id + '" class="user-img-dot ' + status + '"></div>'
                                 + '</div>'
@@ -892,7 +892,7 @@ function loadMessagesGroup() {
             goLastestMsg();
         }
     };
-    xhttp.open("GET", "http://" + window.location.host + "/conversations-rest-controller?messagesConversationId=" + groupId, true);
+    xhttp.open("GET", "https://" + window.location.host + "/conversations-rest-controller?messagesConversationId=" + groupId, true);
     xhttp.send();
 }
 
@@ -921,7 +921,7 @@ function customLoadMessageGroup(sender, groupIdFromServer, message) {
 
 function searchMemberByKeyword(ele) {
     let keyword = ele.value;
-    fetch("http://" + window.location.host + "/users-rest-controller?user_id=" + user_id + "&keyword=" + keyword + "&conversationId=" + groupId)
+    fetch("https://" + window.location.host + "/users-rest-controller?user_id=" + user_id + "&keyword=" + keyword + "&conversationId=" + groupId)
             .then(function (data) {
                 return data.json();
             })

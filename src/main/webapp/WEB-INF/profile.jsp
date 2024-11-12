@@ -16,34 +16,85 @@
         <script src="https://kit.fontawesome.com/7f80ec1f7e.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
-
+        <link rel="stylesheet" type="text/css" href="assets/css/logonavbar.css">
     </head>
 
     <body>
-        <header id="header">
-            <nav class="navbar custom-navbar">
-                <div class="container-fluid d-flex align-items-center">
-                    <a class="navbar-brand text-primary" href="/home" style="font-weight: bold">FUNET</a>
-                    <form class="d-flex ms-2 flex-grow-1" method="get" action="/searchServlet">
-                        <input class="form-control" name="search-name" type="search" placeholder="Searching in FUNET" aria-label="Search">
-                        <button type="submit" class="search-button">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </button>
-                    </form>
-                    <div class="nav-icons d-flex align-items-center">
-                        <a href="/friendRequestServlet" class="friend-icon me-3">
-                            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" class="x19dipnz x1lliihq x1tzjh5l x1k90msu x2h7rmj x1qfuztq" style="--color:var(--secondary-icon)"><path d="M.5 12c0 6.351 5.149 11.5 11.5 11.5S23.5 18.351 23.5 12 18.351.5 12 .5.5 5.649.5 12zm2 0c0-.682.072-1.348.209-1.99a2 2 0 0 1 0 3.98A9.539 9.539 0 0 1 2.5 12zm.84-3.912A9.502 9.502 0 0 1 12 2.5a9.502 9.502 0 0 1 8.66 5.588 4.001 4.001 0 0 0 0 7.824 9.514 9.514 0 0 1-1.755 2.613A5.002 5.002 0 0 0 14 14.5h-4a5.002 5.002 0 0 0-4.905 4.025 9.515 9.515 0 0 1-1.755-2.613 4.001 4.001 0 0 0 0-7.824zM12 5a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm-2 4a2 2 0 1 0 4 0 2 2 0 0 0-4 0zm11.291 1.01a9.538 9.538 0 0 1 0 3.98 2 2 0 0 1 0-3.98zM16.99 20.087A9.455 9.455 0 0 1 12 21.5c-1.83 0-3.54-.517-4.99-1.414a1.004 1.004 0 0 1-.01-.148V19.5a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v.438a1 1 0 0 1-.01.148z"></path></svg>
-                        </a>
-                        <a href="/chat" class="mess-icon me-3">
-                            <i class="fas fa-comments"></i>
-                        </a> 
-                    </div>
-                    <form method="post" action="/logout">
-                        <button type="submit" class="navbar-brand text-primary log-out" style="font-weight: bold">Log out</button>
-                    </form>
+        <div class="flex-container navbar">
+            <a href="home" style ="text-decoration:none">   <div class="logo" style="margin-bottom: 10%; color: black;">FUNET</div>
+            </a>
+            <form class="" method="get" action="/FUNET/searchServlet" id="searchForm">
+                <div class="search-bar" style="margin-top:1%;">
+                    <input class="form-control" name="search-name" type="search" placeholder="Searching in FUNET" aria-label="Search" id="search-input" style="padding-left:5%; margin-left: 10px">
+
                 </div>
-            </nav>
-        </header>
+            </form>
+            <div class="center-buttons">
+                <a href="home">
+                    <button class="center-button" id="home-btn">
+                        <box-icon type='solid' name='home'></box-icon>
+                    </button>
+                </a>
+                <a href="lmaterialLink"> 
+                    <button class="center-button" id="video-btn">
+                        <box-icon type='solid' name='book'></box-icon>
+                    </button>
+                </a>
+                <a href="market">
+                    <button class="center-button" id="market-btn">
+                        <box-icon name='store-alt' type='solid'></box-icon>
+                    </button>
+                </a>
+                <a href="/FUNET/friendRequestServlet" class="friend-icon me-3">
+                    <button class="center-button" id="friend-btn">
+                        <box-icon name='group' type='solid'></box-icon>
+                    </button>
+                </a>
+            </div>
+            <div class="right-icons">
+                <a href="/FUNET/chat" class="mess-icon" style='margin-left:5px'>
+                    <span class="icon icon-circle" id="messenger-btn"><box-icon name='messenger' type='logo'></box-icon></span>
+                </a>
+                <span class="icon icon-circle" id="notification-btn" style="display:none"><box-icon name='bell' type='solid' ></box-icon></span>
+                <span class="icon icon-circle" id="user-btn">&#128100;</span>
+            </div>
+
+        </div>
+
+        <div class="dropdown-menu" id="notification-menu">
+            <p>Notification content goes here...</p>
+        </div>
+
+        <div class="dropdown-menu" id="notification-menu">
+            <p>Notification content goes here...</p>
+        </div>
+        <div class="user-menu" id="user-menu" >
+            <div class="user-info">
+                <a href="profile?userId=${sessionScope.user['user_id']}" class="d-flex align-items-center text-decoration-none text-dark">
+                    <button class="user-info-button">
+                        <img src="assets/profile_avt/${sessionScope.user['profile_pic']}" class="img-fluid rounded-circle avatar" style="object-fit: cover;">
+                        <p class="mb-0 ms-2 ava-name">${sessionScope.user['first_name']} ${sessionScope.user['last_name']}</p>
+                    </button>
+                </a>
+            </div>
+            <div class="menu-item">
+                <box-icon name='cog' type='solid' style="margin-right:3%; margin-left:1%;">Settings</box-icon>Settings
+            </div>
+            <div class="menu-item" >
+                <box-icon name='error-circle'style="margin-right:3%; margin-left:1%;"></box-icon>Report
+            </div>
+
+
+            <form method="post" action="/FUNET/logout" style="display: inline; width: 100%;">
+                <div class="menu-item" style="display: flex; align-items: center; cursor: pointer; width: 100%;">
+                    <box-icon type='solid' name='log-out'style=" margin-left:1%;"></box-icon>
+                    <button type="submit" style="border: none; background: none; color: black; font-size: 16px; margin-left: 5px; cursor: pointer; flex: 1; text-align: left;">
+                        Log Out
+                    </button>
+                </div>
+            </form>
+        </div>
+
         <div class="popop-background"></div>
         <div class="thim-div">
             <div class="hadr-thim-bar">
@@ -105,18 +156,6 @@
                         </span>
                     </p>
                 </div>
-                <%--
-    <div class="profile-button-site">
-        <div class="btn-site-pro">
-            <a href="setting" style="text-decoration: none">
-                <span class="edit-profile-btn">
-                    <i class="fas fa-pen"></i>
-                    Edit Profile
-                </span>
-            </a>
-        </div>
-    </div>
-                --%>
             </div>
         </section>
         <section class="full-navbar">
@@ -159,64 +198,6 @@
                                 <button type="button" id="cancel-edit-btn" class="btn btn-secondary">Cancel</button>
                             </form>
                         </div>
-                        <!--
-                                <div class="bio-btn-click">
-                                        <input class="input-box" type="text" value="MD Mehedi Hasan">
-                                        <p class="length-count-txt">
-                                                <span id="length-count">101</span> characters remaining
-                                        </p>
-                                        <div class="putlic-c-o-btn">
-                                                <div>
-                                                        <p><span class="fas fa-globe-europe"></span> Public</p>
-                                                </div>
-                                                <div class="button-site-js">
-                                                        <button id="cencel-btn">Cencel</button>
-                                                        <button id="save-btn">Save</button>
-                                                </div>
-                                        </div>
-                                </div>
-                                <button id="bio-edit-btn" class="edit-bio btn">Edit Bio</button>
-                        -->
-                        <!--	
-                                <ul>
-                                        <li><i class="fas fa-briefcase"></i> Works at
-                                                <a href="#">Sad Mia</a>
-                                        </li>
-
-                                        <li><i class="fas fa-graduation-cap"></i> Went to
-                                                <a href="#">kamarkhali high school</a>
-                                        </li>
-
-                                        <li><i class="fas fa-home"></i> Lives in
-                                                <a href="#">Dhaka, Bangladesh</a>
-                                        </li>
-
-                                        <li><i class="fas fa-map-marker-alt"></i> From
-                                                <a href="#">Faridpur, Dhaka, Bangladesh</a>
-                                        </li>
-                                        <li><i class="fas fa-heart"></i> Single</li>
-                                        <li><i class="fas fa-globe"></i> <a href="#">
-                                                        sadmia.com
-                                                </a></li>
-                                </ul>
-                        -->
-                        <!--	
-                                <button class="edit-bio btn">Edit Details</button>
-
-                                <div class="Hobbies-show">
-                                        <span><i class="fas fa-laptop-code"></i> Learning to Code</span>
-
-                                        <span><i class="fas fa-laptop-code"></i>Code</span>
-
-                                        <span><i class="fas fa-book"></i>Learning</span>
-
-                                        <span><i class="fas fa-camera-retro"></i>Photography</span>
-                                </div>
-
-                                <button class="edit-bio btn">Edit Hobbies</button>
-                        -->
-
-                        <!-- <button class="edit-bio btn">Edit Featured</button> -->
                     </div>
 
                     <div class="box-design images-site">
@@ -261,7 +242,7 @@
                 </section>
                 <section class="post-info">
                     <div class="box-design">
-                        <form action="/home" method="post" enctype="multipart/form-data" onsubmit="document.getElementById('myBtn').disabled = true;" id="commentForm">
+                        <form action="/FUNET/home" method="post" enctype="multipart/form-data" onsubmit="document.getElementById('myBtn').disabled = true;" id="commentForm">
                             <div class="post-upload-T">
                                 <div class="profil-ing-div">
                                     <a href="#">
@@ -277,19 +258,17 @@
                                 </div>
                             </div>
                             <div class="photo-upload">
-                                <div class="post-upl">
-
-
-                                    <p for="photo-upload">
-                                        <i class="fas fa-cloud-upload-alt"></i> Photo/Video
-                                    </p>
-                                    <input id="photo-upload" type="file" name="image" accept=".jpeg, .png, .jpg" style="display: none;" onchange="updateFileName(this)">
-
-
-
+                                <div class="post-upl" style="margin-left: 100px">
+                                    <label for="photo-upload-image" class="">
+                                        <i class="fas fa-images"></i> Photo
+                                    </label>
+                                    <input id="photo-upload-image" type="file" name="image" accept=".jpeg, .png, .jpg" style="display: none;" onchange="updateFileName(this)">
                                 </div>
-                                <div class="post-upl">
-                                    <p><i class="fas fa-flag"></i> Life Event</p>
+                                <div class="post-upl" style="margin-right: 300px">
+                                    <label for="photo-upload-video">
+                                        <i class="fas fa-video"></i> Video
+                                    </label>
+                                    <input id="photo-upload-video" type="file" name="video" accept=".mp4, .webm, .mpeg" style="display: none;" onchange="updateFileName(this)">
                                 </div>
                             </div>
 
@@ -307,13 +286,15 @@
                                         <img src="assets/profile_avt/${user.profile_pic}">
                                     </a>
                                 </div>
-                                <div class="user-info">
+                                <div class="user-info" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0)">
 
                                     <h2><a href=""#>${post.first_name} ${post.last_name}</a></h2>
 
                                     <div class="privacy-info"> 
                                         <p><a href="#"><fmt:formatDate value="${post.post_time}" pattern="dd-MM" /></a></p>
-                                        <i id="public-btn-i" class="fas fa-user-friends"></i>
+                                            <c:if test="${sessionScope.user['user_id'] == user.user_id}">
+                                            <span class="public-btn-i fa-solid fa-gear" style="margin-left: 10px"></span>
+                                        </c:if>
                                     </div>
 
                                     <c:if test="${post.isShared}">
@@ -330,9 +311,13 @@
                                         <button type="submit" class="btn btn-primary">Update</button>
                                         <div class="item">
                                             <label for="photo-upload">
-                                                <i class="fas fa-cloud-upload-alt"></i> Photo/Video
+                                                <i class="fas fa-cloud-upload-alt"></i> Photo
                                             </label>
                                             <input id="photo-upload" type="file" name="newImage" accept=".jpeg, .png, .jpg" style="display: none;" onchange="updateFileName(this)">
+                                            <label for="photo-upload">
+                                                <i class="fas fa-cloud-upload-alt"></i> Video
+                                            </label>
+                                            <input id="photo-upload" type="file" name="newImage" accept=".mp4, .webm" style="display: none;" onchange="updateFileName(this)">
                                         </div>
                                         <button type="button" class="btn btn-secondary cancel-update">Cancel</button>
                                     </form>
@@ -341,41 +326,41 @@
                                         <div class="Select-audience">
                                             <div class="header-popap">
                                                 <p class="h-pop">Select audience</p>
-                                                <span id="popup-close-btn" class="fas fa-times"></span>
+                                                <span class="popup-close-btn fas fa-times"></span>
                                             </div>
 
                                             <div class="content-popaap">
-                                                <form id="updatePrivacyForm" action="updatePrivateServlet" method="post">
+                                                <form class="updatePrivacyForm" action="updatePrivateServlet" method="post">
                                                     <input type="hidden" name="postId" value="${post.post_id}">
-                                                    <input type="hidden" name="privacyMode" id="privacyMode">
+                                                    <input type="hidden" name="privacyMode" class="privacyMode">
                                                     <ul>
-                                                        <li id="public-btn" onclick="updatePrivacy('public')">
+                                                        <li class="public-btn" onclick="updatePrivacy('public', this)">
                                                             <div class="icon-div">
                                                                 <i class="fas fa-globe-europe"></i>
                                                             </div>
                                                             <div class="text-aria">
                                                                 <h2>Public</h2>
                                                                 <p>Anyone on or off FUNET</p>
-                                                                <i id="public-li-icon" class="far fa-circle"></i>
+                                                                <i class="public-li-icon far fa-circle"></i>
                                                             </div>
                                                         </li>
-                                                        <li class="activ-li-div" id="friends-btn" onclick="updatePrivacy('friend')">
+                                                        <li class="activ-li-div friends-btn" onclick="updatePrivacy('friend', this)">
                                                             <div class="icon-div">
                                                                 <i class="fas fa-user-friends frind-icon"></i>
                                                             </div>
                                                             <div class="text-aria">
                                                                 <h2>Friends</h2>
                                                                 <p>Your friends on FUNET</p>
-                                                                <i id="friends-li-icon" class="far fa-dot-circle activ-li-icon"></i>
+                                                                <i class="friends-li-icon far fa-dot-circle activ-li-icon"></i>
                                                             </div>
                                                         </li>
-                                                        <li id="lock-btn" onclick="updatePrivacy('private')">
+                                                        <li class="lock-btn" onclick="updatePrivacy('private', this)">
                                                             <div class="icon-div">
                                                                 <i class="fas fa-lock"></i>
                                                             </div>
                                                             <div class="text-aria">
                                                                 <h2 class="onlu-me">Only Me</h2>
-                                                                <i id="lock-li-icon" class="far fa-circle"></i>
+                                                                <i class="lock-li-icon far fa-circle"></i>
                                                             </div>
                                                         </li>
                                                     </ul>
@@ -386,7 +371,7 @@
                                 </div>
                                 <span class="thre-dto-btn fas fa-ellipsis-h"></span>
                                 <c:if test="${sessionScope.user['user_id'] == user.user_id}">
-                                    <div class="dropdown-menu" style="display: none;">
+                                    <div class="dropdown-menu" style="display: none; position: absolute;right: 0;width: 0;height: 100px;">
                                         <form action="updatePostServlet" method="post" class="update-form" enctype="multipart/form-data" style="display: none;">
                                             <input type="hidden" name="postId" value="${post.post_id}">
                                             <textarea name="newBody" class="form-control">${post.body}</textarea>
@@ -449,21 +434,18 @@
 
                             </div>
 
-                            <div class="activate">
-                                <div class="lcs-btn lcs-btn_i post-rating ${post.likedByCurrentUser ? 'post-rating-selected' : ''}">
-                                    <p>
-
-                                        <span class="material-icons" style="color: ${post.likedByCurrentUser ? '#1877f2' : '#65676b'};">
-                                            thumb_up
-                                        </span>
-                                        <span class="post-icon-text_i">${post.likedByCurrentUser ? 'Liked' : 'Like'}</span>
-                                    </p>
+                            <div class="activate d-flex justify-content-around mt-2">
+                                <div class="lcs-btn lcs-btn_i post-rating ${post.likedByCurrentUser ? 'post-rating-selected' : ''} d-flex align-items-center" style="background: white">
+                                    <span class="material-icons" style="color: ${post.likedByCurrentUser ? '#1877f2' : '#65676b'};">
+                                        thumb_up
+                                    </span>
+                                    <span class="post-icon-text_i ms-1" style="margin-top: 5px; font-weight: bold">${post.likedByCurrentUser ? 'Liked' : 'Like'}</span>
                                 </div>
                                 <div class="lcs-btn d-flex align-items-center" style="font-weight: bold">
                                     <i class="far fa-comment-alt"></i>
                                     <span class="ms-1">Comment</span>
                                 </div>
-                                <div class="lcs-btn d-flex align-items-center">
+                                <div class="lcs-btn d-flex align-items-center" style="background: white">
                                     <form action="sharePostServlet" method="post" style="display: inline;">
                                         <input type="hidden" name="postId" value="${post.post_id}">
                                         <input type="hidden" name="sourceUrl" value="profile">
@@ -481,7 +463,7 @@
                                     </a>
                                 </div>
                                 <div class="comment-input">
-                                    <form action="/commentServlet" method="post" class="mb-4 post-method" id="commentForm" enctype="multipart/form-data">
+                                    <form action="/FUNET/commentServlet" method="post" class="mb-4 post-method" id="commentForm" enctype="multipart/form-data">
                                         <div class="mb-3">
                                             <input type="text" class="form-control" id="body" name="commentContent" maxlength="300" rows="2" placeholder="Write a comment…">
                                         </div>
@@ -518,14 +500,14 @@
                                             </c:if>
                                             <div class="comment-actions" style="display: none;">
                                                 <button class="edit-comment-btn" data-comment-id="${comment.comment_id}">Edit</button>
-                                                <form action="/deleteCommentServlet" method="post" class="delete-comment-form" style="display: inline;">
+                                                <form action="/FUNET/deleteCommentServlet" method="post" class="delete-comment-form" style="display: inline;">
                                                     <input type="hidden" name="commentId" value="${comment.comment_id}">
                                                     <button type="submit" class="delete-comment-btn">Delete</button>
                                                 </form>
                                             </div>
                                         </div>
                                     </div>
-                                    <form action="/updateCommentServlet" method="post" class="edit-comment-form" style="display: none;">
+                                    <form action="/FUNET/updateCommentServlet" method="post" class="edit-comment-form" style="display: none;">
                                         <input type="hidden" name="commentId" value="${comment.comment_id}">
                                         <textarea name="newCommentText" class="form-control">${comment.comment_text}</textarea>
                                         <button type="submit" class="btn btn-primary">Save</button>
@@ -575,10 +557,7 @@
         <script src="assets/js/comment.js" defer></script>
 
         <script>
-                                        function updatePrivacy(postId, mode) {
-                                            document.getElementById('privacyMode-' + postId).value = mode;
-                                            document.getElementById('updatePrivacyForm-' + postId).submit();
-                                        }
+
 
                                         function UpdatePostClick(id, body) {
                                             document.getElementById('postIdInput').value = id;
@@ -737,5 +716,109 @@
                 });
             });
         </script> 
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const searchInput = document.getElementById('search-input');
+                const searchForm = document.getElementById('searchForm');
+
+                searchInput.addEventListener('keypress', function (event) {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        searchForm.submit();
+                    }
+                });
+            });
+
+            document.getElementById('messenger-btn').addEventListener('click', function () {
+                toggleMenu('messenger-menu', 'messenger-btn');
+            });
+
+            document.getElementById('notification-btn').addEventListener('click', function () {
+                toggleMenu('notification-menu', 'notification-btn');
+            });
+
+            document.getElementById('user-btn').addEventListener('click', function () {
+                toggleMenu('user-menu', 'user-btn');
+            });
+
+
+            function toggleMenu(menuId, btnId) {
+                const menu = document.getElementById(menuId);
+                const button = document.getElementById(btnId);
+                const otherMenuIds = ['messenger-menu', 'notification-menu', 'user-menu'].filter(id => id !== menuId);
+                const otherButtons = ['messenger-btn', 'notification-btn', 'user-btn'].filter(id => id !== btnId);
+
+                if (menu.style.display === 'none' || menu.style.display === '') {
+                    menu.style.display = 'block';
+                    button.classList.add('active-button');
+                    otherMenuIds.forEach(id => document.getElementById(id).style.display = 'none');
+                    otherButtons.forEach(id => document.getElementById(id).classList.remove('active-button'));
+                } else {
+                    menu.style.display = 'none';
+                    button.classList.remove('active-button');
+                }
+            }
+            document.addEventListener('DOMContentLoaded', function () {
+                const overlay = document.getElementById('overlay');
+                const formContainer = document.getElementById('formContainer');
+                const postingInput = document.getElementById('posting');
+                const photoVideoBtn = document.getElementById('photoVideoBtn');
+                const fileBtn = document.getElementById('fileBtn');
+                const closeButton = document.querySelector('.close-button');
+
+                function showForm() {
+                    overlay.style.display = 'flex';
+                    formContainer.style.display = 'block';
+                }
+
+                function hideForm() {
+                    overlay.style.display = 'none';
+                    formContainer.style.display = 'none';
+                }
+
+                postingInput.addEventListener('click', showForm);
+                photoVideoBtn.addEventListener('click', showForm);
+                fileBtn.addEventListener('click', showForm);
+
+                closeButton.addEventListener('click', hideForm);
+                overlay.addEventListener('click', function (event) {
+                    if (event.target === overlay) {
+                        hideForm();
+                    }
+                });
+                postForm.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    hideForm();
+
+                });
+            });
+
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const textarea = document.getElementById('body');
+                const formContainer = document.getElementById('formContainer');
+                const baseFormHeight = 415;
+                const initialTextareaHeight = 125;
+                textarea.addEventListener('input', function () {
+                    adjustFontSizeAndFormHeight();
+                });
+                function adjustFontSizeAndFormHeight() {
+                    const maxLines = 3;
+                    const initialFontSize = 25;
+                    const reducedFontSize = 15;
+                    textarea.style.fontSize = initialFontSize + 'px';
+                    textarea.style.height = 'auto';
+
+                    const lineHeight = parseInt(window.getComputedStyle(textarea).lineHeight);
+                    const lines = Math.floor(textarea.scrollHeight / lineHeight);
+                    if (lines > maxLines) {
+                        textarea.style.fontSize = reducedFontSize + 'px';
+                    }
+                    textarea.style.height = textarea.scrollHeight + 'px';
+                    const textareaExtraHeight = textarea.scrollHeight - initialTextareaHeight;
+                    formContainer.style.height = (baseFormHeight + textareaExtraHeight) + 'px';
+                }
+            });
+        </script>
     </body>
 </html>

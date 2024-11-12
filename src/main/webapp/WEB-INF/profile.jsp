@@ -241,8 +241,8 @@
                     <!-- Output end here -->
                 </section>
                 <section class="post-info">
-                    <c:if test="${sessionScope.user['user_id'] == user.user_id}">
                     <div class="box-design">
+                        <c:if test="${sessionScope.user['user_id'] == user.user_id}">
                         <form action="/home" method="post" enctype="multipart/form-data" onsubmit="document.getElementById('myBtn').disabled = true;" id="commentForm">
                             <div class="post-upload-T">
                                 <div class="profil-ing-div">

@@ -168,16 +168,16 @@
                                 <input type="text" class="form-control" id="gameSearch" placeholder="Search games...">
                             </div>
                             <div class="col-md-3">
-                                <select class="form-select" id="categoryFilter">
-                                    <option value="">All Categories</option>
-                                    <option value="1">Action</option>
-                                    <option value="2">Adventure</option>
-                                    <option value="3">Board game</option>
-                                    <option value="4">Card game</option>
-                                    <option value="5">Building</option>
-                                    <option value="6">Combat</option>
-                                </select>
-                            </div>
+    <select class="form-select" id="categoryFilter">
+        <option value="">All Categories</option>
+        <option value="Action">Action</option>
+        <option value="Adventure">Adventure</option>
+        <option value="Board game">Board game</option>
+        <option value="Card game">Card game</option>
+        <option value="Building">Building</option>
+        <option value="Combat">Combat</option>
+    </select>
+</div>
                         </div>
 
                         <!-- Games Grid -->

@@ -304,12 +304,12 @@ header{
     transform: translateX(-50%);
 }
 .shopping-cart-icon{
-    color: orange;
+    color: black;
     background-color: white;
     width: 100px;
     height: 36px;
     border-radius: 5px;
-    border-color: #0b5ed7;
+    border-color: black;
 }
 
 .lm-icon,

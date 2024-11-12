@@ -143,6 +143,8 @@ public class shoppingCartDAO {
 
         String sql = "Select shoppingCart.cart_id, shoppingCart.user_id as b_id, shoppingCartItem.product_id as p_id, shoppingCartItem.quantity as quant, product.user_id as p_id, product.price as pr from shoppingCart inner join shoppingCartItem on shoppingCart.cart_id = shoppingCartItem.cart_id inner join product on product.product_id = shoppingCartItem.product_id Where shoppingCart.cart_id = ?";
 
+        shoppingCartDAO sCartDAO = new shoppingCartDAO();
+
         List<OrderDetailDTO> orderDetailList = new ArrayList<>();
 
         try (Connection connection = sqlConnect.getInstance().getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -150,27 +152,29 @@ public class shoppingCartDAO {
             preparedStatement.setInt(1, cartId);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
+                    int productId = resultSet.getInt("p_id");
+                    int quantity = resultSet.getInt("quant");
                     OrderDetailDTO orderDetailDTO = new OrderDetailDTO(
                             orderId,
-                            resultSet.getInt("p_id"),
-                            resultSet.getInt("quant"),
+                            productId,
+                            quantity,
                             resultSet.getInt("pr"),
                             "Pending",
                             resultSet.getInt("p_id"),
                             resultSet.getInt("b_id")
                     );
                     orderDetailList.add(orderDetailDTO);
+
                 }
             }
-            
-            for (OrderDetailDTO orderDetailDTO : orderDetailList){
+
+            for (OrderDetailDTO orderDetailDTO : orderDetailList) {
                 System.out.println(orderDetailDTO);
             }
 
         } catch (Exception e) {
-            e.printStackTrace();  
+            e.printStackTrace();
         }
-        
 
         String insertSql = "INSERT INTO OrderDetailDTO (orderid, productid, quantity, price, orderStatus, sellerid, buyerid) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement insertStmt = conn.prepareStatement(insertSql)) {
@@ -201,9 +205,67 @@ public class shoppingCartDAO {
         }
     }
 
+    public boolean increaseProductQuantity(int productId, int quantityToIncrease) throws SQLException, Exception {
+        // Lấy số lượng hiện tại của sản phẩm trong kho
+        String getQuantitySql = "SELECT quantity FROM product WHERE product_id = ?";
+        int currentQuantity = 0;
+
+        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(getQuantitySql)) {
+            stmt.setInt(1, productId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    currentQuantity = rs.getInt("quantity");
+                }
+            }
+        }
+
+        // Tăng số lượng sản phẩm trong kho
+        String updateQuantitySql = "UPDATE product SET quantity = ? WHERE product_id = ?";
+
+        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(updateQuantitySql)) {
+            stmt.setInt(1, currentQuantity + quantityToIncrease);  // Tăng số lượng
+            stmt.setInt(2, productId);
+
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;  // Trả về true nếu cập nhật thành công
+        }
+    }
+
+    public boolean reduceProductQuantity(int productId, int quantityBought) throws SQLException, Exception {
+        // Lấy số lượng hiện tại của sản phẩm trong kho
+        String getQuantitySql = "SELECT quantity FROM product WHERE product_id = ?";
+        int currentQuantity = 0;
+
+        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(getQuantitySql)) {
+            stmt.setInt(1, productId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    currentQuantity = rs.getInt("quantity");
+                }
+            }
+        }
+
+        // Kiểm tra xem số lượng mua có lớn hơn số lượng hiện có trong kho không
+        if (quantityBought > currentQuantity) {
+            return false;  // Không thể giảm số lượng vì sản phẩm không đủ trong kho
+        }
+
+        // Giảm số lượng sản phẩm trong kho
+        String updateQuantitySql = "UPDATE product SET quantity = ? WHERE product_id = ?";
+
+        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(updateQuantitySql)) {
+            stmt.setInt(1, currentQuantity - quantityBought);
+            stmt.setInt(2, productId);
+
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;  // Trả về true nếu cập nhật thành công
+        }
+    }
+
     public static void main(String[] args) throws Exception {
-        shoppingCartDAO s = new shoppingCartDAO();
-        s.updateOrderDetailbyShoppingCartItem(66298678);
+
     }
 
 }

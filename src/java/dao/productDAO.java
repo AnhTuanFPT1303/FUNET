@@ -40,6 +40,36 @@ public class productDAO {
         return productList;
     }
 
+    public Product getProductById(int productId) throws Exception {
+        Product product = null;
+
+        try {
+            Connection conn = sqlConnect.getInstance().getConnection();
+            PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM product WHERE product_id = ?");
+            preparedStatement.setInt(1, productId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            // Kiểm tra nếu có kết quả trả về
+            if (resultSet.next()) {
+                int userId = resultSet.getInt("user_id");
+                String productName = resultSet.getString("product_name");
+                String productDescription = resultSet.getString("product_description");
+                String product_img = resultSet.getString("product_img");
+                String productTag = resultSet.getString("product_tag");
+                java.util.Date publishDate = resultSet.getDate("publish_date");
+                double price = resultSet.getDouble("price");
+                int quantity = resultSet.getInt("quantity");
+
+                // Tạo đối tượng Product với thông tin từ cơ sở dữ liệu
+                product = new Product(productId, userId, productName, productDescription, product_img, productTag, publishDate, price, quantity);
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
+        return product;
+    }
+
     // lấy dữ liệu những sản phẩm đang bán của người dùng
     public List<Product> getSellingList(int userId) throws Exception {
 
@@ -190,7 +220,6 @@ public class productDAO {
             return false;
         }
     }
-    
 
     public static void main(String[] args) throws Exception {
         productDAO prD = new productDAO();

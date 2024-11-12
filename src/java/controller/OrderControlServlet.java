@@ -81,13 +81,13 @@ public class OrderControlServlet extends HttpServlet {
                 try {
                     oDAO.deleteOrder(orderId);
                     // Chuyển tiếp request đến market.jsp
-                    request.getRequestDispatcher("WEB-INF/market.jsp").forward(request, response);
+                    response.sendRedirect("marketLink");
                 } catch (Exception ex) {
                     Logger.getLogger(OrderControlServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
                 // Chuyển tiếp request đến market.jsp
-                request.getRequestDispatcher("WEB-INF/market.jsp").forward(request, response);
+                response.sendRedirect("marketLink");
             }
         } catch (Exception ex) {
             Logger.getLogger(OrderControlServlet.class.getName()).log(Level.SEVERE, null, ex);

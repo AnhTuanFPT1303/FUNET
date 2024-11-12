@@ -35,7 +35,9 @@ public class notificationServlet extends HttpServlet {
 
             for (Orders order : buyerOrders) {
                 List<OrderDetailDTO> orderDetails = oDAO.getDetail(order.getOrder_id());
-                buyerOrderDetails.add(orderDetails);
+                if (!orderDetails.isEmpty()) { 
+                    buyerOrderDetails.add(orderDetails);
+                }
             }
 
             List<Orders> sellerOrders = oDAO.getOrdersBySellerProducts(currentUser.getUser_id());
@@ -43,7 +45,9 @@ public class notificationServlet extends HttpServlet {
 
             for (Orders order : sellerOrders) {
                 List<OrderDetailDTO> orderDetails = oDAO.getDetail(order.getOrder_id());
-                sellerOrderDetails.add(orderDetails);
+                if (!orderDetails.isEmpty()) { 
+                    sellerOrderDetails.add(orderDetails);
+                }
             }
 
             request.setAttribute("buyerOrdersList", buyerOrders);

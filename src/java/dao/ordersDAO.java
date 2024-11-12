@@ -53,23 +53,23 @@ public class ordersDAO {
         ordersDAO oDAO = new ordersDAO();
         int cartId = oDAO.getCartIdByOrderId(orderId);
 
-        String sql = "Select shoppingCart.cart_id, shoppingCart.user_id as b_id, shoppingCartItem.product_id as p_id, shoppingCartItem.quantity as quant, product.user_id as p_id, product.price as pr from shoppingCart inner join shoppingCartItem on shoppingCart.cart_id = shoppingCartItem.cart_id inner join product on product.product_id = shoppingCartItem.product_id Where shoppingCart.cart_id = ?";
+        String sql = "Select * From OrderDetailDTO  Where orderId = ?";
 
         List<OrderDetailDTO> orderDetailList = new ArrayList<>();
 
         try (Connection connection = sqlConnect.getInstance().getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            preparedStatement.setInt(1, cartId);
+            preparedStatement.setInt(1, orderId);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     OrderDetailDTO orderDetailDTO = new OrderDetailDTO(
                             orderId,
-                            resultSet.getInt("p_id"),
-                            resultSet.getInt("quant"),
-                            resultSet.getInt("pr"),
-                            "Pending",
-                            resultSet.getInt("p_id"),
-                            resultSet.getInt("b_id")
+                            resultSet.getInt("productId"),
+                            resultSet.getInt("quantity"),
+                            resultSet.getInt("price"),
+                            resultSet.getString("orderStatus"),
+                            resultSet.getInt("sellerid"),
+                            resultSet.getInt("buyerid")
                     );
                     orderDetailList.add(orderDetailDTO);
                 }

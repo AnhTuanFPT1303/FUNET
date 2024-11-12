@@ -65,18 +65,17 @@
 
                     <form action ="SearchProductServlet" class="d-flex mb-3">
                         <input type="text" class="form-control me-2" name="keyword" placeholder="Find product">
-                        <button class="btn btn-outline-primary" type="submit">Search</button>
+                        <button class="btn btn-outline-dark fa-solid fa-magnifying-glass" type="submit"></button>
                     </form>
 
                     <div class="btn-group-vertical w-100 mb-3">
-                        <a href="/FUNET/home" class="btn btn-outline-primary mb-2">Main Page</a>
-                        <a href="/FUNET/notificationServlet" class="btn btn-outline-primary mb-2">Notifications</a>
-                        <a href="/FUNET/AddProductServlet" class="btn btn-outline-primary mb-2">Add product to market</a>
-                        <a href="/FUNET/SellingProductServlet" class="btn btn-outline-primary mb-2">Yours products</a>
+                        <a href="/FUNET/notificationServlet" class="btn btn-outline-dark fa-solid fa-bell mb-2"> Notifications</a>
+                        <a href="/FUNET/AddProductServlet" class="btn btn-outline-dark fa-solid fa-plus mb-2"> Add product</a>
+                        <a href="/FUNET/SellingProductServlet" class="btn btn-outline-dark fa-solid fa-money-bill mb-2"> Yours products</a>
                     </div>
                 </nav>
-                <main class="main-class col-10">
-                    <h2 class="mt-4 mb-5 text-primary d-flex justify-content-center">Product today</h2>
+                <main class="main-class col-10" style="min-height: 750px">
+                    <h2 class="mt-4 mb-5 text-dark d-flex justify-content-center">Product today</h2>
 
 
                     <button class="shopping-cart-icon fa-solid fa-cart-shopping" data-toggle="modal" data-target="#orderModal"></button>
@@ -128,6 +127,7 @@
                                                                 <c:if test="${product.productId == item.productId}">
                                                                     <form method="post" action="/FUNET/RemoveItemServlet">
                                                                         <input type="hidden" name="productId" value="${item.productId}">
+                                                                        <input type="hidden" value="${item.quantity}" name="quantity">
                                                                         <button type="submit" class="btn btn-danger">Remove</button>
                                                                     </form>
                                                                 </c:if>
@@ -173,7 +173,7 @@
                                         <img src="${product.product_img}" alt="Item 1" class="img-fluid" style="max-width: 100%;">
                                         <p>Quantity: ${product.quantity}</p>
                                         <p>Price: ${product.price}</p>
-                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#infoModal${product.productId}">View info</button>
+                                        <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#infoModal${product.productId}">View info</button>
                                     </div>
                                     <div class="modal fade" id="infoModal${product.productId}" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel${product.productId}" aria-hidden="true">
                                         <div class="modal-dialog modal-lg" role="document">
@@ -183,6 +183,9 @@
                                                 </div>
                                                 <div class="modal-body">
                                                     <img class="w-100 h-100 productImg" src="${product.product_img}" alt="img" style="width: auto;">
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h5 class="w-100 h-100 producDescription">${product.productTag}</h5>
                                                 </div>
                                                 <div class="modal-body">
                                                     <h5 class="w-100 h-100 producDescription">${product.productDescription}</h5>
@@ -196,7 +199,7 @@
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                                     <form method="post" action="/FUNET/AddCartServlet" onsubmit="updateHiddenQuantity(${product.productId})">
                                                         <input type="hidden" name="product_id" value="${product.productId}">
-                                                        <input type="hidden" id="hiddenQuantity${product.productId}" name="quantity" value="1">
+                                                        <input type="hidden" id="hiddenQuantity${product.productId}" name="quantity" min="1">
                                                         <button type="submit" class="btn btn-primary">Add to cart</button>
                                                     </form>
                                                 </div>

@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="assets/css/lmaterial.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
         <script src="https://kit.fontawesome.com/7f80ec1f7e.js" crossorigin="anonymous"></script>
         <script>
             function showNotification(message) {
@@ -89,14 +90,13 @@
 
                     <form action ="SearchProductServlet" class="d-flex mb-3">
                         <input type="text" class="form-control me-2" name="keyword" placeholder="Find product">
-                        <button class="btn btn-outline-primary" type="submit">Search</button>
+                        <button class="btn btn-outline-dark fa-solid fa-magnifying-glass" type="submit"></button>
                     </form>
 
                     <div class="btn-group-vertical w-100 mb-3">
-                        <a href="/FUNET/home" class="btn btn-outline-primary mb-2">Main Page</a>
-                        <a href="/FUNET/notificationServlet" class="btn btn-outline-primary mb-2">Notifications</a>
-                        <a href="/FUNET/AddProductServlet" class="btn btn-outline-primary mb-2">Add product to market</a>
-                        <a href="/FUNET/SellingProductServlet" class="btn btn-outline-primary mb-2">Yours products</a>
+                        <a href="/FUNET/notificationServlet" class="btn btn-outline-dark fa-solid fa-bell mb-2"> Notifications</a>
+                        <a href="/FUNET/AddProductServlet" class="btn btn-outline-dark fa-solid fa-plus mb-2"> Add product</a>
+                        <a href="/FUNET/SellingProductServlet" class="btn btn-outline-dark fa-solid fa-money-bill mb-2"> Yours products</a>
                     </div>
                 </nav>
                 <div class="col-10 main-content">
@@ -181,12 +181,37 @@
                                     </c:if>
 
                                     <c:if test="${order.order_status == 'received'}">
-                                        <form action="UpdateOrderStatusServlet" method="POST">
-                                            <input type="hidden" name="orderId" value="${order.order_id}">
-                                            <input type="hidden" name="action" value="getMoney">
-                                            <button type="submit" class="btn btn-warning">Receive Payment</button>
-                                        </form>
+                                        <!-- Nút mở modal -->
+                                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#receivePaymentModal">
+                                            Receive Payment
+                                        </button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="receivePaymentModal" tabindex="-1" aria-labelledby="receivePaymentModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="receivePaymentModalLabel">Confirm Payment Reception</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Are you sure you want to receive the payment for this order?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <!-- Form nhận thanh toán -->
+                                                        <form action="UpdateOrderStatusServlet" method="POST">
+                                                            <input type="hidden" name="orderId" value="${order.order_id}">
+                                                            <input type="hidden" name="action" value="getMoney">
+                                                            <button type="submit" class="btn btn-warning">Receive Payment</button>
+                                                        </form>
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </c:if>
+
+
                                 </div>
                             </c:forEach>
                         </div>
@@ -201,7 +226,8 @@
                 </main>
             </div>
         </div>
-
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
         <script src="assets/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

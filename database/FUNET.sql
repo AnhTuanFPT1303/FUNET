@@ -348,15 +348,19 @@ CREATE TABLE learningmaterial (
     learningmaterial_id INT IDENTITY(1,1) PRIMARY KEY,
     user_id INT NOT NULL,
     learningmaterial_name NVARCHAR(255) NOT NULL,
-    learningmaterial_description NVARCHAR(500), -- Tăng độ dài mô tả nếu cần
-    learningmaterial_img NVARCHAR(MAX) NOT NULL, -- Change to NVARCHAR(MAX)
-    learningmaterial_context NVARCHAR(MAX) NOT NULL, -- Change to NVARCHAR(MAX)
+    learningmaterial_description NVARCHAR(500),
+    learningmaterial_context NVARCHAR(255) NOT NULL,
     subject_code NVARCHAR(7) NOT NULL,
-    publish_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, -- Thêm giá trị mặc định
-    review NVARCHAR(MAX), -- Thay đổi kiểu dữ liệu cho phù hợp
+    publish_date DATETIME2(3) NOT NULL DEFAULT CURRENT_TIMESTAMP, -- Ensure millisecond precision
+    review NVARCHAR(MAX),
+    department_id INT NOT NULL,
     CONSTRAINT fk_learningmaterial_user_id FOREIGN KEY (user_id) REFERENCES userAccount(user_id)
 );
-
+INSERT INTO learningmaterial (user_id, learningmaterial_name, learningmaterial_description, learningmaterial_context, subject_code, publish_date, review, department_id) VALUES 
+(1, 'Economics 101', 'Introduction to Economics', 'econ101.pdf', 'ECON101', GETDATE(), 'Great material for beginners', 1),
+(2, 'Advanced IT', 'Deep dive into IT topics', 'adv_it.pdf', 'IT202', GETDATE(), 'In-depth and comprehensive', 2),
+(3, 'Tourism Basics', 'Fundamentals of Tourism', 'tourism_basics.pdf', 'TOUR101', GETDATE(), 'Essential for tourism students', 3),
+(4, 'Language Learning', 'Effective language learning techniques', 'lang_learning.pdf', 'LANG101', GETDATE(), 'Very helpful for language learners', 4);
 
 
 

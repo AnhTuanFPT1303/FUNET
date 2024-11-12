@@ -8,7 +8,7 @@ document.querySelectorAll('.nav-button').forEach(button => {
 });
 
 function showPage(pageId) {
-    console.log('Showing page:', pageId); // Debug log
+    console.log('Showing page:', pageId); 
     document.querySelectorAll('.page').forEach(page => {
         page.classList.remove('active');
     });
@@ -21,7 +21,8 @@ function showPage(pageId) {
     });
     const activeButton = document.querySelector(`[data-page="${pageId}"]`);
     activeButton.classList.add('active');
-    console.log('Active button:', activeButton); // Debug log
+    console.log('Active button:', activeButton); 
+    
 }
 
 // Initialize charts
@@ -159,3 +160,97 @@ document.querySelector('[data-page="analytics"]').addEventListener('click', init
 
 // cập nhật
 //updateActivities();
+
+
+
+
+// Previous navigation code remains the same
+
+// Game Management Functions
+let gameModal;
+
+document.addEventListener('DOMContentLoaded', function() {
+    gameModal = new bootstrap.Modal(document.getElementById('gameModal'));
+});
+
+function showAddGameModal() {
+    document.getElementById('modalTitle').textContent = 'Add New Game';
+    document.getElementById('gameForm').reset();
+    gameModal.show();
+}
+
+function editGame(gameId) {
+    document.getElementById('modalTitle').textContent = 'Edit Game';
+    
+    // Fetch game details
+    fetch(`/admin/getGame?id=${gameId}`)
+        .then(response => response.json())
+        .then(game => {
+            const form = document.getElementById('gameForm');
+            form.magame.value = game.magame;
+            form.tengame.value = game.tengame;
+            form.link.value = game.link;
+            form.linkimg.value = game.linkimg;
+            form.theloai.value = game.theloai;
+            
+            gameModal.show();
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+function deleteGame(gameId) {
+    if (confirm('Are you sure you want to delete this game?')) {
+        fetch(`deleteGame?id=${gameId}`, {
+            method: 'POST'
+        })
+        .then(response => {
+            if (response.ok) {
+                location.reload();
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+}
+
+function saveGame() {
+    const form = document.getElementById('gameForm');
+    const formData = new FormData(form);
+    
+    fetch('creGame', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (response.ok) {
+            gameModal.hide();
+            location.reload();
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+// Search and Filter Functions
+document.getElementById('gameSearch').addEventListener('input', function(e) {
+    const searchTerm = e.target.value.toLowerCase();
+    filterGames(searchTerm, document.getElementById('categoryFilter').value);
+});
+
+document.getElementById('categoryFilter').addEventListener('change', function(e) {
+    const searchTerm = document.getElementById('gameSearch').value.toLowerCase();
+    filterGames(searchTerm, e.target.value);
+});
+
+function filterGames(searchTerm, category) {
+    const gameCards = document.querySelectorAll('.game-card');
+    
+    gameCards.forEach(card => {
+        const title = card.querySelector('.card-title').textContent.toLowerCase();
+        const gameCategory = card.querySelector('.category-badge').textContent;
+        
+        const matchesSearch = title.includes(searchTerm);
+        const matchesCategory = category === '' || gameCategory === category;
+        
+        card.closest('.col-md-4').style.display = 
+            matchesSearch && matchesCategory ? 'block' : 'none';
+    });
+}

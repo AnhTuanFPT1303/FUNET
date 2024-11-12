@@ -313,7 +313,9 @@
 
                                     <div class="privacy-info"> 
                                         <p><a href="#"><fmt:formatDate value="${post.post_time}" pattern="dd-MM" /></a></p>
-                                        <i id="public-btn-i" class="fas fa-user-friends"></i>
+                                        <c:if test="${sessionScope.user['user_id'] == user.user_id}">
+                                        <span class="public-btn-i fas fa-user-friends"></span>
+                                        </c:if>
                                     </div>
 
                                     <c:if test="${post.isShared}">
@@ -339,49 +341,49 @@
 
                                     <span>
                                         <div class="Select-audience">
-                                            <div class="header-popap">
-                                                <p class="h-pop">Select audience</p>
-                                                <span id="popup-close-btn" class="fas fa-times"></span>
-                                            </div>
+                                    <div class="header-popap">
+                                        <p class="h-pop">Select audience</p>
+                                        <span class="popup-close-btn fas fa-times"></span>
+                                    </div>
 
-                                            <div class="content-popaap">
-                                                <form id="updatePrivacyForm" action="updatePrivateServlet" method="post">
-                                                    <input type="hidden" name="postId" value="${post.post_id}">
-                                                    <input type="hidden" name="privacyMode" id="privacyMode">
-                                                    <ul>
-                                                        <li id="public-btn" onclick="updatePrivacy('public')">
-                                                            <div class="icon-div">
-                                                                <i class="fas fa-globe-europe"></i>
-                                                            </div>
-                                                            <div class="text-aria">
-                                                                <h2>Public</h2>
-                                                                <p>Anyone on or off FUNET</p>
-                                                                <i id="public-li-icon" class="far fa-circle"></i>
-                                                            </div>
-                                                        </li>
-                                                        <li class="activ-li-div" id="friends-btn" onclick="updatePrivacy('friend')">
-                                                            <div class="icon-div">
-                                                                <i class="fas fa-user-friends frind-icon"></i>
-                                                            </div>
-                                                            <div class="text-aria">
-                                                                <h2>Friends</h2>
-                                                                <p>Your friends on FUNET</p>
-                                                                <i id="friends-li-icon" class="far fa-dot-circle activ-li-icon"></i>
-                                                            </div>
-                                                        </li>
-                                                        <li id="lock-btn" onclick="updatePrivacy('private')">
-                                                            <div class="icon-div">
-                                                                <i class="fas fa-lock"></i>
-                                                            </div>
-                                                            <div class="text-aria">
-                                                                <h2 class="onlu-me">Only Me</h2>
-                                                                <i id="lock-li-icon" class="far fa-circle"></i>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </form>
-                                            </div>
-                                        </div>
+                                    <div class="content-popaap">
+                                        <form class="updatePrivacyForm" action="updatePrivateServlet" method="post">
+                                            <input type="hidden" name="postId" value="${post.post_id}">
+                                            <input type="hidden" name="privacyMode" class="privacyMode">
+                                            <ul>
+                                                <li class="public-btn" onclick="updatePrivacy('public', this)">
+                                                    <div class="icon-div">
+                                                        <i class="fas fa-globe-europe"></i>
+                                                    </div>
+                                                    <div class="text-aria">
+                                                        <h2>Public</h2>
+                                                        <p>Anyone on or off FUNET</p>
+                                                        <i class="public-li-icon far fa-circle"></i>
+                                                    </div>
+                                                </li>
+                                                <li class="activ-li-div friends-btn" onclick="updatePrivacy('friend', this)">
+                                                    <div class="icon-div">
+                                                        <i class="fas fa-user-friends frind-icon"></i>
+                                                    </div>
+                                                    <div class="text-aria">
+                                                        <h2>Friends</h2>
+                                                        <p>Your friends on FUNET</p>
+                                                        <i class="friends-li-icon far fa-dot-circle activ-li-icon"></i>
+                                                    </div>
+                                                </li>
+                                                <li class="lock-btn" onclick="updatePrivacy('private', this)">
+                                                    <div class="icon-div">
+                                                        <i class="fas fa-lock"></i>
+                                                    </div>
+                                                    <div class="text-aria">
+                                                        <h2 class="onlu-me">Only Me</h2>
+                                                        <i class="lock-li-icon far fa-circle"></i>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </form>
+                                    </div>
+                                </div>
                                     </span>
                                 </div>
                                 <span class="thre-dto-btn fas fa-ellipsis-h"></span>
@@ -575,10 +577,7 @@
         <script src="assets/js/comment.js" defer></script>
 
         <script>
-                                        function updatePrivacy(postId, mode) {
-                                            document.getElementById('privacyMode-' + postId).value = mode;
-                                            document.getElementById('updatePrivacyForm-' + postId).submit();
-                                        }
+                                        
 
                                         function UpdatePostClick(id, body) {
                                             document.getElementById('postIdInput').value = id;

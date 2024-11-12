@@ -19,6 +19,7 @@ public class OrderDetailDTO {
     private Date orderDate;
     private String sellerName;
     
+    
     public OrderDetailDTO(int orderId, String productName, int quantity, double price, 
             String orderStatus, Date orderDate, String sellerName) {
         this.orderId = orderId;

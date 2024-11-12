@@ -4,7 +4,7 @@ var currentUser;
 function connectSessionUserSocket() {
     // sessionId is now accessible here because it's set in the JSP file.
     var sessionId = document.getElementById('user-info').getAttribute('data-session-id');
-    socket = new WebSocket('ws://' + window.location.host + '/chat/' + sessionId);
+    socket = new WebSocket('wss://' + window.location.host + '/chat/' + sessionId);
 
     socket.onopen = function () {
         console.log('WebSocket connection opened for session user');

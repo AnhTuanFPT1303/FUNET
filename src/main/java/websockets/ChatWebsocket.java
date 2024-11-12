@@ -42,13 +42,15 @@ public class ChatWebsocket {
 
     @OnMessage
     public void onMessage(MessageDTO message, Session session) throws DecodeException, Exception {
+        System.out.println("Message send to the socket: " + message.getMessage());
+        messageService.saveMessage(message);
         if (message.getReceiver() != 0) {
             chatService.sendMessageToOneUser(message, fileDTOs);
         } else {
             message.setReceiver(0);
             chatService.sendMessageToGroup(message, fileDTOs);
         }
-        messageService.saveMessage(message);
+
     }
 
     @OnClose

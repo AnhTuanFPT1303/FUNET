@@ -72,6 +72,10 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bar-chart-2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
                                 Analytics
                             </button>
+                            <button class="nav-button" data-page="games">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-play-circle"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+                                Games
+                            </button>
                         </div>
                     </div>
                 </nav>
@@ -149,6 +153,101 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Games Management Page -->
+                    <div id="games-page" class="page">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h1 class="mt-4">Games Management</h1>
+                            <button class="btn btn-primary" onclick="showAddGameModal()">
+                                Add New Game
+                            </button>
+                        </div>
+
+                        <!-- Games Filter Section -->
+                        <div class="row mt-4 mb-4">
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" id="gameSearch" placeholder="Search games...">
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-select" id="categoryFilter">
+                                    <option value="">All Categories</option>
+                                    <option value="1">Action</option>
+                                    <option value="2">Adventure</option>
+                                    <option value="3">Board game</option>
+                                    <option value="4">Card game</option>
+                                    <option value="5">Building</option>
+                                    <option value="6">Combat</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Games Grid -->
+                        <div class="row">
+                            <c:forEach var="game" items="${games}">
+                                <div class="col-md-4 mb-4">
+                                    <div class="card game-card">
+                                        <div class="position-relative">
+                                            <img src="${game.linkimg}" class="card-img-top" alt="${game.tengame}">
+                                            <span class="category-badge">${game.theloai}</span>
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="card-title">${game.tengame}</h5>
+                                            <p class="card-text">Game ID: ${game.magame}</p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <a href="${game.link}" target="_blank" class="btn btn-sm btn-outline-primary">Play Game</a>
+                                                <div class="btn-group">
+                                                    <button class="btn btn-sm btn-outline-danger" onclick="deleteGame(${game.magame})">Delete</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </c:forEach>
+                        </div>
+                    </div>
+
+
+
+                    <div class="modal fade" id="gameModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modalTitle">Add New Game</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="gameForm">
+                                        <div class="mb-3">
+                                            <label class="form-label">Game Name</label>
+                                            <input type="text" class="form-control" name="tengame" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Game Link</label>
+                                            <input type="url" class="form-control" name="link" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Game Image</label>
+                                            <input type="file" class="form-control" name="image" accept="image/*" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Category</label>
+                                            <select class="form-select" name="theloai" required>
+                                                <option value="1">Action</option>
+                                                <option value="2">Adventure</option>
+                                                <option value="3">Board game</option>
+                                                <option value="4">Card game</option>
+                                                <option value="5">Building</option>
+                                                <option value="6">Combat</option>
+                                            </select>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary" onclick="saveGame()">Save Game</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </main>
             </div>
         </div>
@@ -175,9 +274,6 @@
             let data4 = ${data4};
             let data5 = ${data5};
             let data6 = ${data6};
-
-
-
 
         </script>
     </body>

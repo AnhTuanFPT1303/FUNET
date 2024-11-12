@@ -8,32 +8,30 @@ import util.sqlConnect;
 public class MonthDAO {
     public List<Month> Get7Month() {
         List<Month> results = new ArrayList<>();
-        String sql = "WITH LastSevenMonths AS ("
-                + "    SELECT "
-                + "        DATEADD(MONTH, number, DATEADD(MONTH, -7, DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0))) AS MonthStart "
-                + "    FROM master.dbo.spt_values "
-                + "    WHERE type = 'P' AND number <= 6 "
-                + "), "
-                + "MonthlyRegistrations AS ("
-                + "    SELECT "
-                + "        DATEADD(MONTH, DATEDIFF(MONTH, 0, created_at), 0) AS MonthStart,"
-                + "        COUNT(*) AS RegistrationCount "
-                + "    FROM "
-                + "        userAccount "
-                + "    WHERE "
-                + "        created_at >= DATEADD(MONTH, -7, DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0)) "
-                + "        AND created_at < DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0) "
-                + "    GROUP BY "
-                + "        DATEADD(MONTH, DATEDIFF(MONTH, 0, created_at), 0) "
-                + ") "
-                + "SELECT "
-                + "    DATENAME(MONTH, m.MonthStart) AS MonthName, "
-                + "    ISNULL(r.RegistrationCount, 0) AS RegistrationCount "
-                + "FROM "
-                + "    LastSevenMonths m "
-                + "    LEFT JOIN MonthlyRegistrations r ON m.MonthStart = r.MonthStart "
-                + "ORDER BY "
-                + "    m.MonthStart ASC";
+        String sql = "WITH LastSevenMonths AS (
+    SELECT DATEADD(MONTH, -6, DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0)) AS MonthStart
+    UNION ALL
+    SELECT DATEADD(MONTH, 1, MonthStart)
+    FROM LastSevenMonths
+    WHERE MonthStart < DATEADD(MONTH, -1, DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0))
+),
+MonthlyRegistrations AS (
+    SELECT
+        DATEADD(MONTH, DATEDIFF(MONTH, 0, created_at), 0) AS MonthStart,
+        COUNT(*) AS RegistrationCount
+    FROM userAccount
+    WHERE
+        created_at >= DATEADD(MONTH, -7, DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0))
+        AND created_at < DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0)
+    GROUP BY DATEADD(MONTH, DATEDIFF(MONTH, 0, created_at), 0)
+)
+SELECT
+    DATENAME(MONTH, m.MonthStart) AS MonthName,
+    ISNULL(r.RegistrationCount, 0) AS RegistrationCount
+FROM LastSevenMonths m
+LEFT JOIN MonthlyRegistrations r ON m.MonthStart = r.MonthStart
+ORDER BY m.MonthStart ASC;
+";
 
         try (Connection conn = sqlConnect.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {

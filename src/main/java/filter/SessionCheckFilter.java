@@ -33,7 +33,7 @@ public class SessionCheckFilter implements Filter {
         String gLoginSubmit = "/login-submit";
         String forgotPassword = "/forgotPassword";
         String verify = "/verify";
-        String dashboard = "/dashBoard";
+        String dashBoard = "/dashBoard";
         String contextPath = httpRequest.getContextPath();
 
         boolean isDashBoard = httpRequest.getRequestURI().endsWith(dashBoard);

@@ -1,5 +1,4 @@
 package dao;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,10 +6,15 @@ import model.Month;
 import util.sqlConnect;
 
 public class MonthDAO {
-
     public List<Month> Get7Month() {
         List<Month> results = new ArrayList<>();
-        String sql = "WITH MonthlyRegistrations AS ("
+        String sql = "WITH LastSevenMonths AS ("
+                + "    SELECT "
+                + "        DATEADD(MONTH, number, DATEADD(MONTH, -7, DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0))) AS MonthStart "
+                + "    FROM master.dbo.spt_values "
+                + "    WHERE type = 'P' AND number <= 6 "
+                + "), "
+                + "MonthlyRegistrations AS ("
                 + "    SELECT "
                 + "        DATEADD(MONTH, DATEDIFF(MONTH, 0, created_at), 0) AS MonthStart,"
                 + "        COUNT(*) AS RegistrationCount "
@@ -23,14 +27,16 @@ public class MonthDAO {
                 + "        DATEADD(MONTH, DATEDIFF(MONTH, 0, created_at), 0) "
                 + ") "
                 + "SELECT "
-                + "    DATENAME(MONTH, MonthStart) AS MonthName, "
-                + "    RegistrationCount "
+                + "    DATENAME(MONTH, m.MonthStart) AS MonthName, "
+                + "    ISNULL(r.RegistrationCount, 0) AS RegistrationCount "
                 + "FROM "
-                + "    MonthlyRegistrations "
+                + "    LastSevenMonths m "
+                + "    LEFT JOIN MonthlyRegistrations r ON m.MonthStart = r.MonthStart "
                 + "ORDER BY "
-                + "    MonthStart ASC";
+                + "    m.MonthStart ASC";
 
-        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = sqlConnect.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     String monthName = rs.getString("MonthName");
@@ -45,13 +51,14 @@ public class MonthDAO {
     }
 
     public Month getLastMonthRegistrationCountAndName() {
-        String sql = "SELECT COUNT(*) AS registration_count, "
+        String sql = "SELECT ISNULL(COUNT(*), 0) AS registration_count, "
                 + "DATENAME(MONTH, DATEADD(MONTH, -1, GETDATE())) AS month_name "
                 + "FROM userAccount WHERE "
                 + "created_at >= DATEADD(MONTH, -1, DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0)) "
                 + "AND created_at < DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0)";
 
-        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = sqlConnect.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     int count = rs.getInt("registration_count");
@@ -64,19 +71,18 @@ public class MonthDAO {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return null; // Trả về null nếu không tìm thấy dữ liệu
+        return null;
     }
 
     public static void main(String[] args) {
         MonthDAO dao = new MonthDAO();
-
         // Kiểm tra Get7Month
         System.out.println("Get7Month Results:");
         List<Month> list = dao.Get7Month();
         for (Month a : list) {
             System.out.println(a);
         }
-
+        
         // Kiểm tra getLastMonthRegistrationCountAndName
         System.out.println("\nLast Month Registration Count and Name:");
         Month lastMonth = dao.getLastMonthRegistrationCountAndName();

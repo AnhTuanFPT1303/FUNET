@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class userDAO {
 
     private static userDAO instance = null;
@@ -133,7 +132,7 @@ public class userDAO {
                 u.setUser_id(rs.getInt(1));
                 u.setFirst_name(rs.getString(2));
                 u.setLast_name(rs.getString(3));
-                 u.setRole(rs.getString("role"));
+                u.setRole(rs.getString("role"));
                 u.setProfile_pic(rs.getString(4));
                 userList.add(u);
             }
@@ -188,7 +187,7 @@ public class userDAO {
                 u.setFirst_name(rs.getString("first_name"));
                 u.setLast_name(rs.getString("last_name"));
                 u.setEmail(rs.getString("email"));
-                 u.setRole(rs.getString("role"));
+                u.setRole(rs.getString("role"));
                 u.setProfile_pic(rs.getString("profile_pic"));
                 users.add(u);
             }
@@ -253,8 +252,8 @@ public class userDAO {
         }
     }
 
-    public List<User> findFriendsByKeyWord(int userId, String keyWord) throws SQLException, Exception {
-        String sql = "SELECT u.user_id, u.profile_pic, u.first_name, u.last_name"
+    public ArrayList<User> findFriendsByKeyWord(int userId, String keyWord) throws SQLException, Exception {
+        String sql = "SELECT u.user_id, u.profile_pic, u.first_name, u.last_name "
                 + "FROM userAccount u "
                 + "WHERE u.user_id != ? AND (u.first_name LIKE ? OR u.last_name LIKE ?)";
 
@@ -265,13 +264,13 @@ public class userDAO {
             ps.setString(3, "%" + keyWord + "%");
 
             ResultSet rs = ps.executeQuery();
-            List<User> users = new ArrayList<>();
+            ArrayList<User> users = new ArrayList<>();
             while (rs.next()) {
                 User user = new User();
                 user.setUser_id(rs.getInt("user_id"));
                 user.setProfile_pic(rs.getString("profile_pic"));
-                user.setFirst_name("first_name");
-                user.setLast_name("last_name");
+                user.setFirst_name(rs.getString("first_name"));
+                user.setLast_name(rs.getString("last_name"));
                 users.add(user);
             }
             return users;
@@ -281,7 +280,7 @@ public class userDAO {
     public List<User> findUsersByConversationId(int conversationId) throws SQLException, Exception {
         String sql = "SELECT u.user_id, u.profile_pic, u.last_name, u.first_name, cu.is_admin "
                 + "FROM userAccount u "
-                + "JOIN conversations_users cu ON u.user_id = cu.user_id "
+                + "JOIN conversation_users cu ON u.user_id = cu.user_id "
                 + "WHERE cu.conversation_id = ?";
 
         try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -294,8 +293,8 @@ public class userDAO {
                 User user = new User();
                 user.setUser_id(rs.getInt("user_id"));
                 user.setProfile_pic(rs.getString("profile_pic"));
-                user.setFirst_name("first_name");
-                user.setLast_name("last_name");
+                user.setFirst_name(rs.getString("first_name"));
+                user.setLast_name(rs.getString("last_name"));
                 user.setAdmin(rs.getBoolean("is_admin"));
                 users.add(user);
             }
@@ -303,58 +302,59 @@ public class userDAO {
         }
     }
 
-    public List<User> findFriendsNotInConversation(int userId, String keyword, int conversationId) throws SQLException, Exception {
-        String sql = "SELECT u2.user_id, u2.profile_pic, u2.last_name, u2.first_name"
+    public List<User> getFriendsNotInConversation(int userId, String keyword, int conversationId) throws SQLException, Exception {
+        List<User> list = new ArrayList<>();
+        String sql = "SELECT DISTINCT u2.user_id, u2.profile_pic, u2.last_name, u2.first_name "
                 + "FROM userAccount u1 "
-                + "JOIN friendship f ON u1.user_id = f.receiver "
-                + "JOIN userAccount u2 ON u2.user_id = f.sender "
-                + "WHERE u1.user_id = ? AND f.status = 1 AND (u2.first_name LIKE ? OR u2.last_name LIKE ?) "
+                + "LEFT JOIN friendship f ON (u1.user_id = f.receiver OR u1.user_id = f.sender) "
+                + "LEFT JOIN userAccount u2 ON (u2.user_id = f.sender OR u2.user_id = f.receiver) "
+                + "WHERE u1.user_id != u2.user_id "
+                + "AND u1.user_id = ? "
+                + "AND f.status = 'accepted' "
+                + "AND (u2.first_name LIKE ? OR u2.last_name LIKE ?) "
                 + "AND u2.user_id NOT IN ( "
                 + "    SELECT u.user_id FROM userAccount u "
-                + "    JOIN conversations_users cu ON u.user_id = cu.user_id "
+                + "    JOIN conversation_users cu ON u.user_id = cu.user_id "
                 + "    WHERE cu.conversation_id = ? )";
 
         try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-
             ps.setInt(1, userId);
             ps.setString(2, "%" + keyword + "%");
             ps.setString(3, "%" + keyword + "%");
             ps.setInt(4, conversationId);
 
             ResultSet rs = ps.executeQuery();
-            List<User> users = new ArrayList<>();
             while (rs.next()) {
                 User user = new User();
                 user.setUser_id(rs.getInt("user_id"));
                 user.setProfile_pic(rs.getString("profile_pic"));
-                user.setFirst_name("first_name");
-                user.setLast_name("last_name");
-                users.add(user);
+                user.setLast_name(rs.getString("last_name"));
+                user.setFirst_name(rs.getString("first_name"));
+                list.add(user);
             }
-            return users;
         }
-
+        return list;
     }
 
     public void updateUserIntroduction(int userId, String introduction) {
-    String query = "UPDATE userAccount SET user_introduce = ? WHERE user_id = ?";
-    try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
-        stmt.setString(1, introduction);
-        stmt.setInt(2, userId);
-        stmt.executeUpdate();
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }   catch (Exception ex) {
+        String query = "UPDATE userAccount SET user_introduce = ? WHERE user_id = ?";
+        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, introduction);
+            stmt.setInt(2, userId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
-}
+    }
 
     public String getUserIntroduce(int sessionUserId) {
         String query = "SELECT user_introduce FROM userAccount WHERE user_id = ?";
-        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)){
+        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, sessionUserId);
             try (ResultSet rs = stmt.executeQuery()) {
-                if(rs.next()){
+                if (rs.next()) {
                     return rs.getString("user_introduce");
                 }
             }
@@ -364,7 +364,10 @@ public class userDAO {
         return "Xin chao`";
     }
 
-    public static void main(String[] args) {
-        userDAO.getInstance().login("nguyenhuuanhtuan123@gmail.com", "123");
+    public static void main(String[] args) throws Exception {
+        List<User> list = userDAO.getInstance().findUsersByConversationId(1);
+        for (User user : list) {
+            System.out.println(user.getFirst_name());
+        }
     }
 }

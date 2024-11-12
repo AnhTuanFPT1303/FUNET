@@ -390,7 +390,7 @@
                     <!-- Game Cards -->
                     <c:forEach var="game" items="${list}">
                         <button data-theloai="${game.theloai}" onclick="showGame('${game.link}')" class="game-item relative overflow-hidden rounded-lg shadow-lg group transition-transform duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                            <img src="assets/game_image/${game.magame}.jpg" alt="Game image" class="w-full h-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-110" />
+                            <img src="${game.linkimg}" alt="Game image" class="w-full h-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-110" />
                             <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
                                 <h4 class="text-lg font-semibold text-white mb-1 transition-colors duration-300 ease-in-out group-hover:text-blue-300">${game.tengame}</h4>
                                 <p class="text-sm text-gray-300 transition-colors duration-300 ease-in-out group-hover:text-blue-200">${game.theloai}</p>

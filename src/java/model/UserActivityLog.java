@@ -18,6 +18,8 @@ public class UserActivityLog {
     private String activityType;
     private String FirstName;
     private String LastName;
+    private int postId;
+    private int commentId;
     private String activityDetails;
     private LocalDateTime timestamp;
 
@@ -41,6 +43,23 @@ public class UserActivityLog {
         this.activityDetails = activityDetails;
         this.timestamp = timestamp;
     }
+
+    public int getPostId() {
+        return postId;
+    }
+
+    public void setPostId(int postId) {
+        this.postId = postId;
+    }
+
+    public int getCommentId() {
+        return commentId;
+    }
+
+    public void setCommentId(int commentId) {
+        this.commentId = commentId;
+    }
+    
 
     public String getRole() {
         return role;
@@ -113,7 +132,9 @@ public class UserActivityLog {
 
     @Override
     public String toString() {
-        return "UserActivityLog{" + "logId=" + logId + ", userId=" + userId + ", role=" + role + ", activityType=" + activityType + ", FirstName=" + FirstName + ", LastName=" + LastName + ", activityDetails=" + activityDetails + ", timestamp=" + timestamp + '}';
+        return "UserActivityLog{" + "logId=" + logId + ", userId=" + userId + ", role=" + role + ", activityType=" + activityType + ", FirstName=" + FirstName + ", LastName=" + LastName + ", postId=" + postId + ", commentId=" + commentId + ", activityDetails=" + activityDetails + ", timestamp=" + timestamp + '}';
     }
+
+ 
 
 }

@@ -12,7 +12,7 @@ import java.util.List;
 public class gameDAO {
     public List<game> getAllGames() {
         List<game> games = new ArrayList<>();
-        String sql = "SELECT G.GameID, G.GameName, G.GameLink, T.CategoryName " +
+        String sql = "SELECT G.GameID, G.GameName, G.GameLink,G.Img, T.CategoryName " +
                      "FROM Game G " +
                      "JOIN GameCategory T ON G.CategoryID = T.CategoryID";
         
@@ -25,6 +25,7 @@ public class gameDAO {
                     rs.getInt("GameID"),
                     rs.getString("GameName"),
                     rs.getString("GameLink"),
+                  rs.getString("Img"),
                     rs.getString("CategoryName")
                 );
                 games.add(Game);

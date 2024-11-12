@@ -19,7 +19,24 @@ body {
 .user-introduction p {
     margin-bottom: 10px;
 }
-
+.three-dot-btn {
+    border: none;
+    background-color: white;
+    outline: none;
+    cursor: pointer;
+}
+.edit-comment-btn{
+    border: none;
+    background-color: white;
+    outline: none;
+    cursor: pointer;
+}
+.delete-comment-btn{
+    border: none;
+    background-color: white;
+    outline: none;
+    cursor: pointer;
+}
 #edit-intro-form {
     display: flex;
     flex-direction: column;
@@ -820,11 +837,11 @@ body {
 }
 
 .privacy-info {
-    display:flex;    
+    display:flex;
 }
 
 .privacy-info i{
-    font-size: 9px;  
+    font-size: 9px;
     margin-left: 2%;
     margin-top: 3px;
 }
@@ -847,7 +864,7 @@ body {
 }
 
 .thre-dto-btn:hover {
-	background-color: #E4E6E9;
+    background-color: #E4E6E9;
 }
 
 .post-div {
@@ -1479,7 +1496,7 @@ For multi pictures display function
 
 .dropdown-menu {
     position: absolute;
-    top: 30px; 
+    top: 30px;
     right: 0;
     display: none;
     background-color: white;

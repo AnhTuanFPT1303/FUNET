@@ -46,7 +46,7 @@ public class SearchGameServlet extends HttpServlet {
                 // Tạo mỗi game thành một div có hình ảnh, tên và thể loại game
                 out.println("<button  class='flex items-center space-x-4 p-2 border-b border-gray-200 hover:bg-gray-100 cursor-pointer w-full'"
                         + " onclick=\"showGame('" + sanPham.getLink() + "')\">"
-                        + "<img src='assets/game_image/" + sanPham.getMagame() + ".jpg' alt='" + sanPham.getTengame() + "' class='w-16 h-16 object-cover rounded-lg'>"
+                        + "<img src='" + sanPham.getLinkimg() + "' alt='" + sanPham.getTengame() + "' class='w-16 h-16 object-cover rounded-lg'>"
                         + "<div class='flex flex-col'>"
                         + "<h4 class='text-lg font-medium text-gray-800'>" + sanPham.getTengame() + "</h4>"
                         + "<p class='text-sm text-gray-500'>" + sanPham.getTheloai() + "</p>"

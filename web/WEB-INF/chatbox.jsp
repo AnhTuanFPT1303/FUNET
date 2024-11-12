@@ -12,10 +12,51 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     </head>
     <body>
+        <p id="first_name" style="display: none">${sessionScope.user['first_name']}</p>
+        <p id="last_name" style="display: none">${sessionScope.user['last_name']}</p>
         <p id="user_id" style="display: none">${sessionScope.user['user_id']}</p>
         <p id="userAvatar" style="display: none">assets/profile_avt/${sessionScope.user['profile_pic']}</p>
         <div class="container">
             <div class="conversation-container">
+                <div class="modal-box border" id="settings">
+                    <div class="modal-box-head">
+                        <div class="modal-box-title">
+                            Group Settings
+                        </div>
+                        <div class="modal-box-close toggle-btn" data-id="add-user" onclick="toggleModal(this, false)">
+                            <i class="fa fa-times"></i>
+                        </div>
+                    </div>
+                    <div class="modal-box-body">
+                        <div data-id="manage-user" onclick="toggleModal(this, true)">
+                            <h2>Groups Member</h2>
+                        </div>
+                        <div data-id="change-name" onclick="toggleModal(this, true)">
+                            <h2>Change Group Name</h2>
+                        </div>
+                        <label style="cursor: pointer; display: inline-block;">
+                            <input type="file" style="display: none;" accept="image/*" onchange="uploadGroupAvatar(this)" />
+                            <h2>Change Group Avatar</h2>
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-box border" id="change-name">
+                    <div class="modal-box-head">
+                        <div class="modal-box-title">
+                            Change Group Name
+                        </div>
+                        <div class="modal-box-close toggle-btn" data-id="add-group" onclick="toggleModal(this, false)">
+                            <i class="fa fa-times"></i>
+                        </div>
+                    </div>
+                    <hr>
+                    <form action="" onsubmit="changeGroupName(event)">
+                        <div class="modal-box-body">
+                            <input type="text" class="txt-input txt-new-group-name" placeholder="Group Name...">
+                        </div>		
+                        <button type="submit" class="btn">Save</button>		
+                    </form>
+                </div>
                 <div class="modal-box border" id="add-group">
                     <div class="modal-box-head">
                         <div class="modal-box-title">
@@ -26,7 +67,7 @@
                         </div>
                     </div>
                     <hr>
-                    <form action="" onsubmit="return createGroup(event);">
+                    <form action="" onsubmit="createGroup(event)">
                         <div class="modal-box-body">
                             <input type="text" class="txt-input txt-group-name" placeholder="Group Name...">
                         </div>		
@@ -78,12 +119,7 @@
                 <div class="left-side active">
                     <div class="add-group border toggle-btn" data-id="add-group" onclick="toggleModal(this, true)"><i class="fa fa-plus-circle"></i></div>
                     <h2>
-                        <a href="<c:url value="/users/update"/>"
-                           style="text-decoration: none; color: white;margin-right: 3rem;">Welcome
-                            ${sessionScope.user['user_id']}</a>
-                        :
-                        <a href="<c:url value="/users/logout"/>"
-                           style="text-decoration: none; color: white; margin-left: 3rem;">Logout</a>
+                        Chats
                     </h2>
                     <div class="tab-control">
                         <i class="fa fa-comment active" onclick="chatOne(this)"></i>

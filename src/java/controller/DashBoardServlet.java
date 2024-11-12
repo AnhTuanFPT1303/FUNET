@@ -27,7 +27,7 @@ import model.UserActivityLog;
  *
  * @author Quocb
  */
-@WebServlet("/dashBoard")
+//@WebServlet("/dashBoard")
 public class DashBoardServlet extends HttpServlet {
 
     @Override
@@ -35,7 +35,7 @@ public class DashBoardServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("user") != null) {
-            userDAO userdao=new userDAO();
+            userDAO userdao = new userDAO();
             MonthDAO monthdao = new MonthDAO();
             List<Month> results = monthdao.Get7Month();
             request.setAttribute("label0", results.get(0).getName());
@@ -45,18 +45,19 @@ public class DashBoardServlet extends HttpServlet {
             request.setAttribute("label4", results.get(4).getName());
             request.setAttribute("label5", results.get(5).getName());
             request.setAttribute("label6", results.get(6).getName());
-            request.setAttribute("data0",results.get(0).getCount());
-            request.setAttribute("data1",results.get(1).getCount());
-            request.setAttribute("data2",results.get(2).getCount());
-            request.setAttribute("data3",results.get(3).getCount());
-            request.setAttribute("data4",results.get(4).getCount());
-            request.setAttribute("data5",results.get(5).getCount());
-            request.setAttribute("data6",results.get(6).getCount());
+            request.setAttribute("data0", results.get(0).getCount() != null ? results.get(0).getCount() : 0);
+            request.setAttribute("data1", results.get(1).getCount() != null ? results.get(1).getCount() : 0);
+            request.setAttribute("data2", results.get(2).getCount() != null ? results.get(2).getCount() : 0);
+            request.setAttribute("data3", results.get(3).getCount() != null ? results.get(3).getCount() : 0);
+            request.setAttribute("data4", results.get(4).getCount() != null ? results.get(4).getCount() : 0);
+            request.setAttribute("data5", results.get(5).getCount() != null ? results.get(5).getCount() : 0);
+            request.setAttribute("data6", results.get(6).getCount() != null ? results.get(6).getCount() : 0);
+
             try {
                 // request.setAttribute("",);
                 //request.setAttribute("activities",activities);
-                ArrayList<User> users=userdao.getAllUsers();
-                request.setAttribute("users",users);
+                ArrayList<User> users = userdao.getAllUsers();
+                request.setAttribute("users", users);
             } catch (Exception ex) {
                 Logger.getLogger(DashBoardServlet.class.getName()).log(Level.SEVERE, null, ex);
             }

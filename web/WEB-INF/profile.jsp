@@ -16,9 +16,34 @@
         <script src="https://kit.fontawesome.com/7f80ec1f7e.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+
     </head>
 
     <body>
+        <header id="header">
+            <nav class="navbar custom-navbar">
+                <div class="container-fluid d-flex align-items-center">
+                    <a class="navbar-brand text-primary" href="/FUNET/home" style="font-weight: bold">FUNET</a>
+                    <form class="d-flex ms-2 flex-grow-1" method="get" action="/FUNET/searchServlet">
+                        <input class="form-control" name="search-name" type="search" placeholder="Searching in FUNET" aria-label="Search">
+                        <button type="submit" class="search-button">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </form>
+                    <div class="nav-icons d-flex align-items-center">
+                        <a href="/FUNET/friendRequestServlet" class="friend-icon me-3">
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" class="x19dipnz x1lliihq x1tzjh5l x1k90msu x2h7rmj x1qfuztq" style="--color:var(--secondary-icon)"><path d="M.5 12c0 6.351 5.149 11.5 11.5 11.5S23.5 18.351 23.5 12 18.351.5 12 .5.5 5.649.5 12zm2 0c0-.682.072-1.348.209-1.99a2 2 0 0 1 0 3.98A9.539 9.539 0 0 1 2.5 12zm.84-3.912A9.502 9.502 0 0 1 12 2.5a9.502 9.502 0 0 1 8.66 5.588 4.001 4.001 0 0 0 0 7.824 9.514 9.514 0 0 1-1.755 2.613A5.002 5.002 0 0 0 14 14.5h-4a5.002 5.002 0 0 0-4.905 4.025 9.515 9.515 0 0 1-1.755-2.613 4.001 4.001 0 0 0 0-7.824zM12 5a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm-2 4a2 2 0 1 0 4 0 2 2 0 0 0-4 0zm11.291 1.01a9.538 9.538 0 0 1 0 3.98 2 2 0 0 1 0-3.98zM16.99 20.087A9.455 9.455 0 0 1 12 21.5c-1.83 0-3.54-.517-4.99-1.414a1.004 1.004 0 0 1-.01-.148V19.5a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v.438a1 1 0 0 1-.01.148z"></path></svg>
+                        </a>
+                        <a href="/FUNET/chat" class="mess-icon me-3">
+                            <i class="fas fa-comments"></i>
+                        </a> 
+                    </div>
+                    <form method="post" action="/FUNET/logout">
+                        <button type="submit" class="navbar-brand text-primary log-out" style="font-weight: bold">Log out</button>
+                    </form>
+                </div>
+            </nav>
+        </header>
         <div class="popop-background"></div>
         <div class="thim-div">
             <div class="hadr-thim-bar">
@@ -49,10 +74,12 @@
                 <img src="assets/profile_avt/${user.profile_pic}">
                 <div class="cover-image-div">
                     <div class="cover-image-edite-btn">
-                        <button>
-                            <i class="fas fa-camera"></i>
-                            Edit Cover Photo
-                        </button>
+                        <a href="setting" style="text-decoration: none">
+                            <button>
+                                <i class="fas fa-camera"></i>
+                                Edit Cover Photo
+                            </button>
+                        </a>
                     </div>
                 </div>
             </header>
@@ -61,7 +88,7 @@
             <div class="profile-section-in">
                 <div class="profile-image-site">
                     <div class="profile-image-div">
-                        <a href="#">
+                        <a href="setting" style="text-decoration: none">
                             <img src="assets/profile_avt/${user.profile_pic}">
                         </a>
                         <span class="fas fa-camera"></span>
@@ -78,14 +105,18 @@
                         </span>
                     </p>
                 </div>
-                <div class="profile-button-site">
-                    <div class="btn-site-pro">
-                        <span class="edit-profile-btn">
-                            <i class="fas fa-pen"></i>
-                            Edit Profile
-                        </span>
-                    </div>
-                </div>
+                <%--
+    <div class="profile-button-site">
+        <div class="btn-site-pro">
+            <a href="setting" style="text-decoration: none">
+                <span class="edit-profile-btn">
+                    <i class="fas fa-pen"></i>
+                    Edit Profile
+                </span>
+            </a>
+        </div>
+    </div>
+                --%>
             </div>
         </section>
         <section class="full-navbar">
@@ -119,8 +150,9 @@
                         <div class="user-introduction">
                             <h2>Introduction</h2>
                             <p id="user-intro-text">${user.user_introduce}</p>
-                            <button id="edit-intro-btn" class="btn btn-primary">Edit Introduction</button>
-
+                            <c:if test="${sessionScope.user['user_id'] == user.user_id}">
+                                <button id="edit-intro-btn" class="btn btn-primary">Edit Introduction</button>
+                            </c:if>
                             <form id="edit-intro-form" action="userIntroduceServlet" method="post" style="display: none;">
                                 <input type="text" name="userIntro" class="form-control" placeholder="Introduce yourself..." value="${user.user_introduce}">
                                 <button type="submit" class="btn btn-success">Save</button>
@@ -195,11 +227,11 @@
 
                         <div class="at9-images">
                             <c:forEach var="post" items="${posts}">
-                                <c:if test="${not empty post.image_path}">
-                                    <div class="images-div">
-                                        <img src="${post.image_path}" alt="User posted image">
-                                    </div>
+
+                                <c:if test="${post.type == 'image'}">
+                                    <img src="${post.image_path}" style="max-width : 100%">
                                 </c:if>
+
                             </c:forEach>
                         </div>
                     </div>
@@ -209,7 +241,6 @@
                         <span>Friends <br>
                             <p>
                                 <span>
-                                    <!-- friend count here -->
                                     ${friendCount}
                                 </span>
                                 Friends
@@ -221,7 +252,7 @@
                             <c:forEach var="friend" items="${friends}">
                                 <div class="images-div">
                                     <img src="assets/profile_avt/${friend.profile_pic}" alt="${friend.first_name} ${friend.last_name}">
-                                    <p><a href="#" class="user-link friend" data-user-id="${friend.user_id}">${friend.first_name} ${friend.last_name}</a></p>
+                                    <p><a href="profile?userId=${friend.user_id}" class="user-link friend" data-user-id="${friend.user_id}">${friend.first_name} ${friend.last_name}</a></p>
                                 </div>
                             </c:forEach>
                         </div>
@@ -249,9 +280,9 @@
                                 <div class="post-upl">
 
 
-                                    <label for="photo-upload">
+                                    <p for="photo-upload">
                                         <i class="fas fa-cloud-upload-alt"></i> Photo/Video
-                                    </label>
+                                    </p>
                                     <input id="photo-upload" type="file" name="image" accept=".jpeg, .png, .jpg" style="display: none;" onchange="updateFileName(this)">
 
 
@@ -382,9 +413,17 @@
                             </div>
                             <p class="post-text-show">${post.body}</p>
                             <c:if test="${not empty post.image_path}">
-                                <div class=div-post-images>
-                                    <img class="post-images" src="${post.image_path}" style="max-width: 60%">
-                                </div>
+                                <c:choose>
+                                    <c:when test="${post.type == 'image'}">
+                                        <img src="${post.image_path}" style="max-width : 100%">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <video style="max-width: 100%" controls>
+                                            <source src="${post.image_path}" type="video/mp4">
+
+                                        </video>
+                                    </c:otherwise>
+                                </c:choose>
                             </c:if>
                             <div class="post-reaction">
                                 <div class="reaction">
@@ -413,22 +452,26 @@
                             <div class="activate">
                                 <div class="lcs-btn lcs-btn_i post-rating ${post.likedByCurrentUser ? 'post-rating-selected' : ''}">
                                     <p>
+
                                         <span class="material-icons" style="color: ${post.likedByCurrentUser ? '#1877f2' : '#65676b'};">
                                             thumb_up
                                         </span>
                                         <span class="post-icon-text_i">${post.likedByCurrentUser ? 'Liked' : 'Like'}</span>
                                     </p>
                                 </div>
-                                <div class="lcs-btn">
-                                    <p><i class="far fa-comment-alt"></i> Comment</p>
+                                <div class="lcs-btn d-flex align-items-center" style="font-weight: bold">
+                                    <i class="far fa-comment-alt"></i>
+                                    <span class="ms-1">Comment</span>
                                 </div>
-                                <div class="lcs-btn">
+                                <div class="lcs-btn d-flex align-items-center">
                                     <form action="sharePostServlet" method="post" style="display: inline;">
                                         <input type="hidden" name="postId" value="${post.post_id}">
                                         <input type="hidden" name="sourceUrl" value="profile">
-                                        <p><button type="submit" class="btn btn-link fas fa-share">Share</button></P>
+                                        <button type="submit" class="btn btn-link p-0 d-flex align-items-center" style="background:white; text-decoration: none">
+                                            <i class="fas fa-share"></i>
+                                            <span class="ms-1">Share</span>
+                                        </button>
                                     </form>
-
                                 </div>
                             </div>
                             <div class="comment-site">
@@ -438,22 +481,27 @@
                                     </a>
                                 </div>
                                 <div class="comment-input">
-                                    <form action="/FUNET/commentServlet" method="post" class="mb-4 post-method" id="commentForm">
+                                    <form action="/FUNET/commentServlet" method="post" class="mb-4 post-method" id="commentForm" enctype="multipart/form-data">
                                         <div class="mb-3">
-                                            <input class="form-control" id="body" name="commentContent" maxlength="300" rows="2" placeholder="Write a comment…">
+                                            <input type="text" class="form-control" id="body" name="commentContent" maxlength="300" rows="2" placeholder="Write a comment…">
                                         </div>
                                         <input type="hidden" name="sourceUrl" value="profile">
                                         <input type="hidden" name="post_id" value="${post.post_id}">
-                                    </form>
 
+                                        <!-- 
                                     <div class="comment-icon-div">
                                         <div>
                                             <i class="far fa-grin-alt"></i>
                                         </div>
                                         <div>
+                                             <label for="photo-upload">
                                             <i class="fas fa-camera"></i>
+                                            <input id="photo-upload" type="file" name="commentImage" accept=".jpeg, .png, .jpg">
+                                             </label>
                                         </div>
                                     </div>
+                                        -->
+                                    </form>
                                 </div>
                             </div>
                             <c:forEach var="comment" items="${post.comments}">
@@ -462,9 +510,27 @@
                                         <img src="assets/profile_avt/${comment.profile_pic}" class="img-fluid rounded-circle avatar me-2" style="width: 30px; height: 30px; object-fit: cover;">
                                         <small><strong>${comment.first_name} ${comment.last_name}</strong></small>
                                     </div>
-                                    <div class="comment-body">
-                                        <p style="margin-bottom: 0;">${comment.comment_text}</p>
+                                    <div class="comment-body" style="display: flex; justify-content: space-between; align-items: center;">
+                                        <p style="margin-bottom: 0;" class="comment-text">${comment.comment_text}</p>
+                                        <div class="comment-options">
+                                            <c:if test="${sessionScope.user['user_id'] == comment.user_id}">
+                                                <button class="three-dot-btn" data-comment-id="${comment.comment_id}">...</button>
+                                            </c:if>
+                                            <div class="comment-actions" style="display: none;">
+                                                <button class="edit-comment-btn" data-comment-id="${comment.comment_id}">Edit</button>
+                                                <form action="/FUNET/deleteCommentServlet" method="post" class="delete-comment-form" style="display: inline;">
+                                                    <input type="hidden" name="commentId" value="${comment.comment_id}">
+                                                    <button type="submit" class="delete-comment-btn">Delete</button>
+                                                </form>
+                                            </div>
+                                        </div>
                                     </div>
+                                    <form action="/FUNET/updateCommentServlet" method="post" class="edit-comment-form" style="display: none;">
+                                        <input type="hidden" name="commentId" value="${comment.comment_id}">
+                                        <textarea name="newCommentText" class="form-control">${comment.comment_text}</textarea>
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                        <button type="button" class="btn btn-secondary cancel-edit-comment">Cancel</button>
+                                    </form>
                                 </div>
                             </c:forEach>
 
@@ -489,7 +555,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="newImage" class="form-label" id="formupdateidimage photo-upload">New Image</label>
-                                    <input type="file" class="form-control" id="newImage" name="newImage" accept=".jpeg, .png, .jpg" onchange="updateFileName(this)">
+                                    <input type="file" class="form-control" id="newImage" name="newImage" accept=".jpeg, .png, .jpg, .mp4" onchange="updateFileName(this)">
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -506,12 +572,12 @@
         <script src="assets/js/profile.js"></script>
         <script src="assets/js/bootstrap.min.js"></script> 
         <script src="assets/js/likeButton.js" defer></script>
+        <script src="assets/js/comment.js" defer></script>
 
         <script>
-                                        function updatePrivacy(mode) {
-                                            document.getElementById('privacyMode').value = mode;
-                                            document.getElementById('updatePrivacyForm').submit();
-
+                                        function updatePrivacy(postId, mode) {
+                                            document.getElementById('privacyMode-' + postId).value = mode;
+                                            document.getElementById('updatePrivacyForm-' + postId).submit();
                                         }
 
                                         function UpdatePostClick(id, body) {
@@ -547,11 +613,8 @@
                                                 }
                                             });
                                         });
-
-
-
-
         </script>
+
 
         <script>
             document.addEventListener('DOMContentLoaded', function () {
@@ -567,6 +630,30 @@
                     }
                 });
             });
+
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                document.querySelectorAll('.edit-comment-btn').forEach(button => {
+                    button.addEventListener('click', function () {
+                        const commentId = this.getAttribute('data-comment-id');
+                        const commentText = this.closest('.comment').querySelector('.comment-text');
+                        const editForm = this.closest('.comment').querySelector('.edit-comment-form');
+                        commentText.style.display = 'none';
+                        editForm.style.display = 'block';
+                    });
+                });
+
+                document.querySelectorAll('.cancel-edit-comment').forEach(button => {
+                    button.addEventListener('click', function () {
+                        const commentText = this.closest('.comment').querySelector('.comment-text');
+                        const editForm = this.closest('.comment').querySelector('.edit-comment-form');
+                        commentText.style.display = 'block';
+                        editForm.style.display = 'none';
+                    });
+                });
+            });
         </script>
 
         <script>
@@ -580,17 +667,37 @@
 
                     if (showUpdateFormBtn) {
                         showUpdateFormBtn.addEventListener('click', () => {
-                           // updateForm.style.display = 'block';
+                            // updateForm.style.display = 'block';
                             showUpdateFormBtn.style.display = 'none';
                         });
                     }
 
                     if (cancelUpdateBtn) {
                         cancelUpdateBtn.addEventListener('click', () => {
-                           // updateForm.style.display = 'none';
+                            // updateForm.style.display = 'none';
                             showUpdateFormBtn.style.display = 'block';
                         });
                     }
+                });
+            });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const editBtn = document.getElementById('edit-intro-btn');
+                const editForm = document.getElementById('edit-intro-form');
+                const cancelBtn = document.getElementById('cancel-edit-btn');
+                const introText = document.getElementById('user-intro-text');
+
+                editBtn.addEventListener('click', function () {
+                    editForm.style.display = 'block';
+                    introText.style.display = 'none';
+                    editBtn.style.display = 'none';
+                });
+
+                cancelBtn.addEventListener('click', function () {
+                    editForm.style.display = 'none';
+                    introText.style.display = 'block';
+                    editBtn.style.display = 'block';
                 });
             });
         </script>
@@ -608,7 +715,7 @@
                     });
                     if (showUpdateFormBtn) {
                         showUpdateFormBtn.addEventListener('click', () => {
-                         //   updateForm.style.display = 'block';
+                            //   updateForm.style.display = 'block';
                             showUpdateFormBtn.style.display = 'none';
                             dropdownMenu.style.display = 'none';
                         });
@@ -616,7 +723,7 @@
 
                     if (cancelUpdateBtn) {
                         cancelUpdateBtn.addEventListener('click', () => {
-                           // updateForm.style.display = 'none';
+                            // updateForm.style.display = 'none';
                             showUpdateFormBtn.style.display = 'block';
                         });
                     }
@@ -629,6 +736,6 @@
                     }
                 });
             });
-        </script>
+        </script> 
     </body>
 </html>

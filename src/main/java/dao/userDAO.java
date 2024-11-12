@@ -61,6 +61,8 @@ public class userDAO {
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
                 generatedUserId = rs.getInt(1); // Get the generated user_id
+                shoppingCartDAO sCartDAO = new shoppingCartDAO();
+                sCartDAO.addShoppingCart(generatedUserId);
             }
         } catch (SQLException e) {
             e.printStackTrace();

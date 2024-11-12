@@ -88,14 +88,15 @@
                     <div class="chat-box mb-3"></div>
 
                     <form action ="SearchProductServlet" class="d-flex mb-3">
-                        <input type="text" class="form-control me-2" name="keyword" placeholder="Find product">
-                        <button class="btn btn-outline-dark fa-solid fa-magnifying-glass" type="submit"></button>
+                       <input type="text" class="form-control me-2" name="keyword" placeholder="Find product">
+                        <button class="btn btn-outline-primary" type="submit">Search</button>
                     </form>
 
                     <div class="btn-group-vertical w-100 mb-3">
-                        <a href="/FUNET/notificationServlet" class="btn btn-outline-dark fa-solid fa-bell mb-2"> Notifications</a>
-                        <a href="/FUNET/AddProductServlet" class="btn btn-outline-dark fa-solid fa-plus mb-2"> Add product</a>
-                        <a href="/FUNET/SellingProductServlet" class="btn btn-outline-dark fa-solid fa-money-bill mb-2"> Yours products</a>
+                        <a href="/FUNET/home" class="btn btn-outline-primary mb-2">Main Page</a>
+                        <a href="/FUNET/notificationServlet" class="btn btn-outline-primary mb-2">Notifications</a>
+                        <a href="/FUNET/AddProductServlet" class="btn btn-outline-primary mb-2">Add product to market</a>
+                        <a href="/FUNET/SellingProductServlet" class="btn btn-outline-primary mb-2">Yours products</a>
                     </div>
                 </nav>
 

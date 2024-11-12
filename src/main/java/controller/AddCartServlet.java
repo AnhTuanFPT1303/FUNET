@@ -4,7 +4,6 @@
  */
 package controller;
 
-import dao.productDAO;
 import dao.shoppingCartDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,7 +14,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.Product;
 import model.User;
 
 /**
@@ -37,20 +35,10 @@ public class AddCartServlet extends HttpServlet {
             int product_id = Integer.parseInt(request.getParameter("product_id"));
             int quantity = Integer.parseInt(request.getParameter("quantity"));
             shoppingCartDAO sCartDAO = new shoppingCartDAO();
-            sCartDAO.reduceProductQuantity(product_id, quantity);
             User currentUser = (User) request.getSession(false).getAttribute("user");
             int userId = (int) currentUser.getUser_id();
             
             int cartId = sCartDAO.getCartIdByUserId(userId);
-            
-            productDAO pDao = new productDAO();
-            Product product = pDao.getProductById(product_id);
-            int quantityInStock = product.getQuantity();
-            
-            if (quantity > quantityInStock){
-                response.sendRedirect("marketLink");
-            }
-            
             try {
                 boolean success = sCartDAO.addShoppingCartItem(cartId, product_id, quantity);
                 if(success){

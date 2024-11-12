@@ -7,14 +7,16 @@ import model.Product;
 import util.sqlConnect;
 
 public class productDAO {
-
+    
     public List<Product> getAll() throws Exception {
-
+        
         List<Product> productList = new ArrayList<>();
-
-        String sql = "SELECT * FROM product";
-
-        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement preparedStatement = conn.prepareStatement(sql); ResultSet resultSet = preparedStatement.executeQuery()) {
+        
+        String sql = "SELECT * FROM product";  
+        
+        try (Connection conn = sqlConnect.getInstance().getConnection();
+             PreparedStatement preparedStatement = conn.prepareStatement(sql);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
             // ket noi sql va lay thong tin product ra khoi sql
             while (resultSet.next()) {
                 int productId = resultSet.getInt("product_id");
@@ -23,59 +25,28 @@ public class productDAO {
                 String productDescription = resultSet.getString("product_description");
                 String product_img = resultSet.getString("product_img");
                 String productTag = resultSet.getString("product_tag");
-
+                
                 java.util.Date publishDate = resultSet.getDate("publish_date");
-
+                
                 double price = resultSet.getDouble("price");
                 int quantity = resultSet.getInt("quantity");
                 // luu product vao list product
                 Product product = new Product(productId, userId, productName, productDescription, product_img, productTag, publishDate, price, quantity);
-                productList.add(product);
+                productList.add(product);  
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        
         return productList;
     }
-
-    public Product getProductById(int productId) throws Exception {
-        Product product = null;
-
-        try {
-            Connection conn = sqlConnect.getInstance().getConnection();
-            PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM product WHERE product_id = ?");
-            preparedStatement.setInt(1, productId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            // Kiểm tra nếu có kết quả trả về
-            if (resultSet.next()) {
-                int userId = resultSet.getInt("user_id");
-                String productName = resultSet.getString("product_name");
-                String productDescription = resultSet.getString("product_description");
-                String product_img = resultSet.getString("product_img");
-                String productTag = resultSet.getString("product_tag");
-                java.util.Date publishDate = resultSet.getDate("publish_date");
-                double price = resultSet.getDouble("price");
-                int quantity = resultSet.getInt("quantity");
-
-                // Tạo đối tượng Product với thông tin từ cơ sở dữ liệu
-                product = new Product(productId, userId, productName, productDescription, product_img, productTag, publishDate, price, quantity);
-            }
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-
-        return product;
-    }
-
     // lấy dữ liệu những sản phẩm đang bán của người dùng
-    public List<Product> getSellingList(int userId) throws Exception {
-
+    public List<Product> getSellingList(int userId) throws Exception{
+        
         List<Product> sellingProductList = new ArrayList<>();
-
-        try {
+        
+        try{
             Connection conn = sqlConnect.getInstance().getConnection();
             PreparedStatement preparedStatement = conn.prepareStatement("Select * from product where user_id = ?");
             preparedStatement.setInt(1, userId);
@@ -205,19 +176,15 @@ public class productDAO {
         return searchResults;
     }
 
-    public boolean updateProductQuantityAndPrice(int productId, int quantity, double price) throws Exception {
-        String sql = "UPDATE Product SET quantity = ?, price = ? WHERE product_id = ?";
+    public void updateProductQuantityAndPrice(int productId, int quantity, double price) throws Exception {
+        String sql = "UPDATE Products SET quantity = ?, price = ? WHERE product_id = ?";
         try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-
             stmt.setInt(1, quantity);
             stmt.setDouble(2, price);
             stmt.setInt(3, productId);
-
-            int rowsAffected = stmt.executeUpdate();
-            return rowsAffected > 0;
-
+            stmt.executeUpdate();
         } catch (SQLException e) {
-            return false;
+            e.printStackTrace();
         }
     }
 

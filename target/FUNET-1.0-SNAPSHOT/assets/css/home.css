@@ -1,0 +1,379 @@
+body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                background-color: whitesmoke;
+            }
+            .container{
+                max-width: 100%;
+            }
+
+            .RightItem, .UserAvatar{
+
+                width: 350px;
+
+            }
+
+            .UserAvatar:hover{
+                background-color: #e4e6e8;
+                border-radius: 7px;
+            }
+            .RightItem div:hover{
+                background-color: #e4e6e8;
+                border-radius: 7px;
+            }
+            .RightItem div{
+                margin-top: 10px;
+                display: flex;
+                align-items: center;
+                padding: 10px 0;
+                cursor: pointer;
+                font-size: 16px;
+                gap:20px;
+            }
+            .post {
+                height: fit-content;
+                background-color: #fff;
+                border-radius: 15px;
+                padding: 10px;
+                box-sizing: border-box;
+                margin-top: 30px;
+            }
+            .avatar2{
+                height:40px;
+                width:40px;
+            }
+
+            .input {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+            }
+
+            .inputArea {
+                flex: 1;
+                min-width: 0;
+            }
+
+            .inputArea input {
+                border: none;
+                border-radius: 15px;
+                height: 30px;
+                width: 98%;
+                transition: width 0.3s ease;
+                outline: 1px solid rgb(133, 130, 130);
+                box-sizing: border-box;
+            }
+            .btn-document{
+                display:flex;
+                justify-content: space-between;
+                width:100%;
+            }
+
+
+            .item {
+                flex: 1;
+                text-align: center;
+                height:30px;
+                margin-left:5px;
+                margin-right: 5px;
+                
+                margin-top:1%;             
+                padding-top:1%;
+                transition: transform 0.2s;
+                cursor: pointer;
+            }
+            .item2 {
+                flex: 1;
+                text-align: center;
+                height:50px;
+                margin-left:5px;
+                margin-right: 5px;
+                
+                margin-top:1%;             
+                padding-top:1%;
+                transition: transform 0.2s;
+                cursor: pointer;
+            }
+
+            .item:hover {
+                transform: scale(1.1);
+                background-color: #e0e0e0;
+                border-radius: 20px;
+
+
+            }
+            .overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 10;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .form-container {
+                background: white;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+                z-index: 20;
+                max-width: 600px;
+                width: 100%;
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+            }
+            .post {
+                height: auto;
+                border-top: 1px solid #ddd;
+                padding-top: 10px;
+                border-bottom: 1px solid #ddd;
+                padding-bottom: 10px;
+                padding-top: 10px;
+            }
+
+            .post-header {
+                font-weight: bold;
+                margin-bottom: 5px;
+            }
+
+            .add-friend {
+                border-top: 1px solid #ddd;
+                padding-top: 10px;
+            }
+
+            .list-group-item {
+                border: none;
+                padding-left: 0;
+            }
+
+
+            .post-ratings-container {
+                display: flex;
+                justify-content: left;
+                padding: 12px 0;
+            }
+
+            .post-rating {
+                display: flex;
+                align-items: center;
+                cursor: default;
+            }
+
+            .post-rating-selected > .post-rating-button,
+            .post-rating-selected > .post-rating-count {
+                color: #009578;
+            }
+
+            .post-rating-button {
+                margin-right: 6px;
+                color: #555555;
+            }
+
+            .post-rating:not(.post-rating-selected) > .post-rating-button:hover {
+                color: #009578;
+            }
+
+            .three-dot-btn {
+                border: none;
+                background-color: white;
+                outline: none;
+                cursor: pointer;
+            }
+            .edit-comment-btn{
+                border: none;
+                background-color: white;
+                outline: none;
+                cursor: pointer;
+            }
+            .delete-comment-btn{
+                border: none;
+                background-color: white;
+                outline: none;
+                cursor: pointer;
+            }
+
+
+            @media screen and (max-width: 1250px) {
+                .center-buttons{
+                    display:none;
+                }
+                .ava-name{
+                    display: none;
+                }
+                .friend-list{
+                    display: none;
+                }
+                .chat-box{
+                    display: none;
+                }
+                .post-method{
+                    width: 125%;
+                }
+                .home-logo{
+                    display: none;
+                }
+                .all-post{
+                    margin-top: 5%;
+                }
+
+            }
+            @media screen and (max-width: 1050px) {
+                .search-bar input {
+                    width:200px;
+
+                }
+
+
+            }
+            @media screen and (max-width: 850px) {
+                .search-bar {
+                    display:none;
+                }
+                .logo{
+                    display:none;
+                }
+                .RightItem{
+                    margin:0;
+                    justify-content: center;
+                }
+            }
+            .form-container {
+                width: 554px;
+                min-height: 415px;
+                margin: 0 auto;
+                border: 1px solid #e5e5e5;
+                border-radius: 10px;
+                padding: 10px;
+                background-color: #ffffff;
+                font-family: Arial, sans-serif;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .form-title {
+                text-align: center;
+                font-size: 18px;
+                font-weight: bold;
+                margin: 0;
+                height: 15px;
+            }
+
+            .form-header {
+                display: flex;
+
+                margin: 5px 0 10px 40px;
+            }
+            .head {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+            }
+
+            .form-title {
+                flex-grow: 1;
+                text-align: center;
+                margin: 0;
+            }
+
+            .close-button {
+                width: 30px;
+                height:30px
+                    ;
+                border-radius: 50%;
+                text-align: center;
+            }
+            .close-button:hover{
+                background-color: #cccfd4;
+            }
+
+
+            .ava-name {
+                margin-left: 5px;
+                font-size: 14px;
+            }
+
+            .hr-line {
+                border: 0.5px solid black;
+                width: 100%;
+                margin:0;
+
+            }
+
+            .textarea-container {
+                margin: 0;
+                width: 462px;
+
+            }
+
+            .form-control {
+                width: 100%;
+                height: 125px;
+                padding: 10px;
+                border-radius: 5px;
+                border: none;
+                resize: none;
+                margin-left:15px;
+                margin-bottom:10px;
+                font-size: 25px;
+                overflow: hidden;
+            }
+            .form-content {
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .upload-section {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 10px;
+                width: 100%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .upload-div {
+                cursor: pointer;
+                font-size: 14px;
+                color: #007bff;
+                display: flex;
+                align-items: center;
+            }
+
+            .submit-button {
+                width: 100%;
+                padding: 10px;
+                background-color: #007bff;
+                border: none;
+                border-radius: 5px;
+                color: #ffffff;
+                cursor: pointer;
+                margin:0;
+                align-self: flex-end;
+            }
+
+            .submit-button:disabled {
+                background-color: #e0e0e0;
+            }
+            .dashBoard{
+                position:fixed;
+                
+            }
+            .mainContainer{
+                margin-left:33%;
+                
+                
+            }
+            .listFriend{
+                position:fixed;
+                margin-left: 67%;
+            }
+            

@@ -4,7 +4,6 @@
  */
 package controller;
 
-import dao.userDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,10 +11,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import model.User;
 
 /**
  *
@@ -62,26 +57,7 @@ public class LogServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-           Integer id=Integer.parseInt(request.getParameter("id"));
-        userDAO dao=new userDAO();
-       User us=null;
-        
-        try {
-            us = dao.getUserById(id);
-        } catch (SQLException ex) {
-            Logger.getLogger(LogServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-            while ( us==null){
-               try {
-                   us = dao.getUserById(id);
-               } catch (SQLException ex) {
-                   Logger.getLogger(LogServlet.class.getName()).log(Level.SEVERE, null, ex);
-               }
-            }
-            request.setAttribute("name", us.getFirst_name()+" "+us.getLast_name());
-            request.setAttribute("user", us);
-      
-      request.getRequestDispatcher("/WEB-INF/log.jsp?id="+id).forward(request, response);
+            String id=request.getParameter("id");
     }
 
     /**

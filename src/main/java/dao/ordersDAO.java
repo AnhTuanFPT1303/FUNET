@@ -48,37 +48,6 @@ public class ordersDAO {
         }
         return ordersList;
     }
-    
-    public List<OrderDetailDTO> getDetail(int orderId) throws Exception{
-        ordersDAO oDAO = new ordersDAO();
-        int cartId = oDAO.getCartIdByOrderId(orderId);
-
-        String sql = "Select * From OrderDetailDTO  Where orderId = ?";
-
-        List<OrderDetailDTO> orderDetailList = new ArrayList<>();
-
-        try (Connection connection = sqlConnect.getInstance().getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-
-            preparedStatement.setInt(1, orderId);
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                while (resultSet.next()) {
-                    OrderDetailDTO orderDetailDTO = new OrderDetailDTO(
-                            orderId,
-                            resultSet.getInt("productId"),
-                            resultSet.getInt("quantity"),
-                            resultSet.getInt("price"),
-                            resultSet.getString("orderStatus"),
-                            resultSet.getInt("sellerid"),
-                            resultSet.getInt("buyerid")
-                    );
-                    orderDetailList.add(orderDetailDTO);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();  
-        }
-        return orderDetailList;
-    }
 
     public List<Orders> getOrdersByUserId(int userId) throws Exception {
         List<Orders> orders = new ArrayList<>();
@@ -218,27 +187,76 @@ public class ordersDAO {
             e.printStackTrace();
         }
     }
-    
-    public int getCartIdByOrderId(int orderId) throws Exception {
-        String sql = "SELECT cart_id FROM Orders WHERE order_id = ?";
-        int cartId = -1;
 
-        try (Connection connection = sqlConnect.getInstance().getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+    public List<OrderDetailDTO> getOrderDetailsForUser(int userId) {
+        List<OrderDetailDTO> orderDetails = new ArrayList<>();
+        String sql = "SELECT o.order_id, p.product_name, sci.quantity, "
+                + "p.price * sci.quantity AS total_price, o.order_status, "
+                + "o.order_date, CONCAT(u.first_name, ' ', u.last_name) AS seller_name "
+                + "FROM Orders o "
+                + "JOIN ShoppingCartItem sci ON o.cart_id = sci.cart_id "
+                + "JOIN Product p ON sci.product_id = p.product_id "
+                + "JOIN userAccount u ON p.user_id = u.user_id "
+                + "WHERE o.user_id = ? "
+                + "ORDER BY o.order_date DESC;";
 
-            preparedStatement.setInt(1, orderId);
-            ResultSet resultSet = preparedStatement.executeQuery();
+        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            if (resultSet.next()) {
-                cartId = resultSet.getInt("cart_id");
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                OrderDetailDTO detail = new OrderDetailDTO(
+                        rs.getInt("order_id"),
+                        rs.getString("product_name"),
+                        rs.getInt("quantity"),
+                        rs.getDouble("total_price"),
+                        rs.getString("order_status"),
+                        rs.getTimestamp("order_date"),
+                        rs.getString("seller_name")
+                );
+                orderDetails.add(detail);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return orderDetails;
+    }
+
+    public List<OrderDetailDTO> getOrdersForSeller(int sellerId) throws Exception {
+        List<OrderDetailDTO> orderDetails = new ArrayList<>();
+        String sql = "SELECT o.order_id, o.order_date, p.product_name, sci.quantity, "
+                + "p.price, CONCAT(u.first_name, ' ', u.last_name) AS buyer_name "
+                + "FROM Orders o "
+                + "JOIN ShoppingCartItem sci ON o.cart_id = sci.cart_id "
+                + "JOIN Product p ON sci.product_id = p.product_id "
+                + "JOIN userAccount u ON o.user_id = u.user_id " // Ensure this matches your user table structure
+                + "WHERE p.user_id = ?"; // Filter by sellerId
+
+        try (Connection conn = sqlConnect.getInstance().getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, sellerId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                // Sử dụng constructor với tất cả các tham số
+                OrderDetailDTO detail = new OrderDetailDTO(
+                        rs.getInt("order_id"),
+                        rs.getString("product_name"),
+                        rs.getInt("quantity"),
+                        rs.getDouble("price"),
+                        "Pending", // Hoặc thay bằng trạng thái đơn hàng thực tế nếu có trong truy vấn
+                        rs.getTimestamp("order_date"), // Chuyển đổi thành Date
+                        rs.getString("buyer_name") // Tên người mua
+                );
+                orderDetails.add(detail);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return cartId;
+        return orderDetails;
     }
 
     public static void main(String[] args) throws Exception {
-
+        ordersDAO o = new ordersDAO();
+        System.out.println(o.getOrdersForSeller(4));
     }
 }

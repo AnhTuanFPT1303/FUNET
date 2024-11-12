@@ -257,20 +257,21 @@
 
                                 </div>
                             </div>
-                            <div class="photo-upload">
-                                <div class="post-upl" style="margin-left: 100px">
-                                    <label for="photo-upload-image" class="">
+                            <div class="photo-upload" style="display: flex; justify-content: center; gap: 100px; margin: 0 auto;">
+                                <div class="post-upl">
+                                    <label for="photo-upload-image" style="margin-top:10px">
                                         <i class="fas fa-images"></i> Photo
                                     </label>
                                     <input id="photo-upload-image" type="file" name="image" accept=".jpeg, .png, .jpg" style="display: none;" onchange="updateFileName(this)">
                                 </div>
-                                <div class="post-upl" style="margin-right: 300px">
+                                <div class="post-upl">
                                     <label for="photo-upload-video">
-                                        <i class="fas fa-video"></i> Video
+                                        <i class="fas fa-video" style="margin-top:10px"></i> Video
                                     </label>
                                     <input id="photo-upload-video" type="file" name="video" accept=".mp4, .webm, .mpeg" style="display: none;" onchange="updateFileName(this)">
                                 </div>
                             </div>
+
 
                         </form>
                     </div>

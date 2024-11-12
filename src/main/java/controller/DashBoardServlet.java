@@ -5,6 +5,7 @@
 package controller;
 
 import dao.MonthDAO;
+import dao.gameDAO;
 import dao.postDAO;
 import dao.userDAO;
 import java.io.IOException;
@@ -22,11 +23,13 @@ import java.util.logging.Logger;
 import model.Month;
 import model.User;
 import model.UserActivityLog;
+import model.game;
 
 /**
  *
  * @author Quocb
  */
+
 public class DashBoardServlet extends HttpServlet {
 
     @Override
@@ -54,7 +57,7 @@ public class DashBoardServlet extends HttpServlet {
             gameDAO gamedao=new gameDAO();
             List<game> gamelist= gamedao.getAllGames();
             request.setAttribute("games", gamelist);
-            
+
             try {
                 // request.setAttribute("",);
                 //request.setAttribute("activities",activities);

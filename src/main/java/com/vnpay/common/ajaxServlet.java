@@ -42,7 +42,7 @@ public class ajaxServlet extends HttpServlet {
 
         String vnp_TmnCode = Config.vnp_TmnCode;
         
-        Map<String, String>  vnp_Params = new HashMap<>();
+        Map<String, String> vnp_Params = new HashMap<>();
         vnp_Params.put("vnp_Version", vnp_Version);
         vnp_Params.put("vnp_Command", vnp_Command);
         vnp_Params.put("vnp_TmnCode", vnp_TmnCode);

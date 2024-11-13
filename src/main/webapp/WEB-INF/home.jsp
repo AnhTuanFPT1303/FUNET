@@ -89,7 +89,8 @@
             <box-icon name='cog' type='solid' style="margin-right:3%; margin-left:1%;">Settings</box-icon>Settings
 </a>
         </div>
-        
+         <div class="menu-item">
+        </div>
 
         <form method="post" action="/logout" style="display: inline; width: 100%;">
             <div class="menu-item" style="display: flex; align-items: center; cursor: pointer; width: 100%;">
@@ -141,8 +142,8 @@
                         </div>
                         <hr style="border: 1px solid black; width: 100%; margin:0;">
                         <div class="btn-document">
-                            <div class="item" id="photoVideoBtn" >Photo/Video</div>
-                            <div class="item" id="fileBtn">File</div>
+                            <div class="item" id="photoVideoBtn" >Photo</div>
+                            <div class="item" id="photoVideoBtn">Video</div>
                         </div>
                     </section>
                 </div>

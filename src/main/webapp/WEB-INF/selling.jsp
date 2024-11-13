@@ -13,42 +13,61 @@
         <link rel="stylesheet" href="assets/css/market.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
         <script src="https://kit.fontawesome.com/7f80ec1f7e.js" crossorigin="anonymous"></script>
+        <link href="assets/css/logonavbarmk.css" rel="stylesheet">  
     </head>
     <body>
         <header id="header">
-            <!-- navbar trên -->
-            <nav class="navbar custom-navbar">
-                <div class="container-fluid d-flex align-items-center">
+            <div class="flex-container navbar">
+                <a href="home" style="text-decoration:none">
+                    <div class="logo" style="margin-bottom: 10%">FUNET</div>
+                </a>
 
-                    <a class="navbar-brand" href="home">
-                        <img src="assets/images/logo.png" alt="Logo" style="width: 70px; height: auto;">
-                    </a>
-
-                    <form class="d-flex ms-auto me-auto flex-grow-1" method="get" action="searchServlet">
-                        <input class="form-control me-2" name="search-name" type="search" placeholder="Searching in FUNET" aria-label="Search">
-                        <button type="submit" class="btn btn-outline-primary">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </button>
-                    </form>
-
-                    <div class="nav-icons d-flex align-items-center justify-content-between">
-                        <a href="lmaterialLink" class="lm-icon fa-solid fa-book fa-lg me-3">
-                        </a>
-                        <a href="marketLink" class="market-icon fa-solid fa-store fa-lg me-3"></a>
-                        <a href="friendRequestServlet" class="friend-icon me-3">
-                            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" class="x19dipnz x1lliihq x1tzjh5l x1k90msu x2h7rmj x1qfuztq" style="--color:var(--secondary-icon)"><path d="M.5 12c0 6.351 5.149 11.5 11.5 11.5S23.5 18.351 23.5 12 18.351.5 12 .5.5 5.649.5 12zm2 0c0-.682.072-1.348.209-1.99a2 2 0 0 1 0 3.98A9.539 9.539 0 0 1 2.5 12zm.84-3.912A9.502 9.502 0 0 1 12 2.5a9.502 9.502 0 0 1 8.66 5.588 4.001 4.001 0 0 0 0 7.824 9.514 9.514 0 0 1-1.755 2.613A5.002 5.002 0 0 0 14 14.5h-4a5.002 5.002 0 0 0-4.905 4.025 9.515 9.515 0 0 1-1.755-2.613 4.001 4.001 0 0 0 0-7.824zM12 5a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm-2 4a2 2 0 1 0 4 0 2 2 0 0 0-4 0zm11.291 1.01a9.538 9.538 0 0 1 0 3.98 2 2 0 0 1 0-3.98zM16.99 20.087A9.455 9.455 0 0 1 12 21.5c-1.83 0-3.54-.517-4.99-1.414a1.004 1.004 0 0 1-.01-.148V19.5a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v.438a1 1 0 0 1-.01.148z"></path></svg>
-                        </a>
-                        <a href="chat" class="mess-icon me-3">
-                            <i class="fas fa-comments"></i>
-                        </a> 
+                <form method="get" action="/searchServlet" id="searchForm">
+                    <div class="search-bar" style="margin-top:1%;">
+                        <input class="form-control" name="search-name" type="search" placeholder="Searching in FUNET" aria-label="Search" id="search-input" style="padding-left:5%;">
                     </div>
-                    <form method="post" action="logout">
-                        <button type="submit" class="navbar-brand text-primary log-out" style="font-weight: bold">Log out</button>
-                    </form>
+                </form>
+
+                <!-- Các icon ở giữa -->
+                <div class="center-buttons">
+                    <a href="home">
+                        <button class="center-button" id="home-btn">
+                            <box-icon type='solid' name='home'></box-icon>
+                        </button>
+                    </a>
+                    <a href="lmaterialLink">
+                        <button class="center-button" id="video-btn">
+                            <box-icon type='solid' name='book'></box-icon>
+                        </button>
+                    </a>
+                    <a href="marketLink">
+                        <button class="center-button" id="market-btn">
+                            <box-icon name='store-alt' type='solid'></box-icon>
+                        </button>
+                    </a>
+                    <a href="/friendRequestServlet" class="friend-btn me-3">
+                        <button class="center-button" id="friend-btn">
+                            <box-icon name='group' type='solid'></box-icon>
+                        </button>
+                    </a>
+                    <a href="/chat" class="mess-icon" style="margin-right:5px">
+                        <span class="icon icon-circle" id="messenger-btn"><box-icon name='messenger' type='logo'></box-icon></span>
+                    </a>
+                    <span class="icon icon-circle" id="notification-btn" style="display:none">
+                        <box-icon name='bell' type='solid'></box-icon>
+                    </span>
+                    <span class="icon icon-circle" id="user-btn">&#128100;</span>
                 </div>
-            </nav>
+
+            </div>
+
         </header>
 
         <!-- chức năng ngang -->
@@ -77,7 +96,7 @@
 
                 <main class="main-class col-10">
 
-                    <h2 class="mt-4 mb-5 text-primary d-flex justify-content-center">Your Product</h2>
+                    <h2 class="mt-4 mb-5 text-dark d-flex justify-content-center">Your Product</h2>
                     <h5 class="text-danger text-center mt-3">${error}</h5>
                     <div class="row">
                         <c:forEach var="product" items="${productList}">
@@ -115,7 +134,7 @@
 
                                                         <div class="alert alert-danger d-none" role="alert" id="error${product.productId}"></div>
 
-                                                        <button type="submit" class="btn btn-primary">Update Product</button>
+                                                        <button type="submit" class="btn btn-dark">Update Product</button>
                                                     </form>
                                                 </div>
                                             </div>

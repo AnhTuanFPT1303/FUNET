@@ -10,9 +10,9 @@
         <meta name="author" content="">
         <title>qerydr</title>
         <!-- Bootstrap core CSS -->
-        <link href="/FUNET/assets/bootstrap.min.css" rel="stylesheet"/>
+        <link href="https://funet.azurewebsites.net/assets/bootstrap.min.css" rel="stylesheet"/>
         <!-- Custom styles for this template -->   
-        <script src="/FUNET/assets/jquery-1.11.3.min.js"></script>
+        <script src="https://funet.azurewebsites.net/assets/jquery-1.11.3.min.js"></script>
     </head>
 
     <body>
@@ -24,7 +24,7 @@
             </div>
             <h3>Query</h3>
             <div class="table-responsive">
-            <form action="/FUNET/vnpayquery" id="frmQerydr" method="Post">
+            <form action="https://funet.azurewebsites.net/vnpayquery" id="frmQerydr" method="Post">
                 <div class="form-group">
                 <label for="order_id">Mã giao dịch cần truy vấn (Giá trị của vnp_TxnRef)</label>
                 <input class="form-control" id="order_id"

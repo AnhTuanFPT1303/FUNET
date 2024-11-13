@@ -29,10 +29,6 @@
         <servlet-class>controller.UpdateOrderStatusServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>lmaterialLink</servlet-name>
-        <servlet-class>controller.lmaterialLink</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>AdminDeleteServlet</servlet-name>
         <servlet-class>controller.AdminDeleteServlet</servlet-class>
     </servlet>
@@ -59,10 +55,6 @@
     <servlet-mapping>
         <servlet-name>UpdateOrderStatusServlet</servlet-name>
         <url-pattern>/UpdateOrderStatusServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>lmaterialLink</servlet-name>
-        <url-pattern>/lmaterialLink</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>ajaxServlet</servlet-name>
@@ -276,6 +268,50 @@
         <servlet-name>testServlet</servlet-name>
         <servlet-class>controller.testServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>searchLearningMaterial</servlet-name>
+        <servlet-class>controller.searchLearningMaterial</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>lmaterialLink</servlet-name>
+        <servlet-class>controller.lmaterialLink</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>learningMaterialDepartmentSearch</servlet-name>
+        <servlet-class>controller.learningMaterialDepartmentSearch</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>createLearningMaterial</servlet-name>
+        <servlet-class>controller.createLearningMaterial</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>updateLearningMaterial</servlet-name>
+        <servlet-class>controller.updateLearningMaterial</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>deleteLearningMaterial</servlet-name>
+        <servlet-class>controller.deleteLearningMaterial</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateLearningMaterial</servlet-name>
+        <servlet-class>controller.CreateLearningMaterial</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>saveLearningMaterial</servlet-name>
+        <servlet-class>controller.saveLearningMaterial</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>viewSavedLearningMaterials</servlet-name>
+        <servlet-class>controller.viewSavedLearningMaterials</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreMaterialServlet</servlet-name>
+        <servlet-class>controller.CreMaterialServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DownloadMaterialServlet</servlet-name>
+        <servlet-class>controller.DownloadMaterialServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>loginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -460,6 +496,51 @@
         <servlet-name>AdminDeleteServlet</servlet-name>
         <url-pattern>/adminDelete</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>searchLearningMaterial</servlet-name>
+        <url-pattern>/searchLearningMaterial</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>lmaterialLink</servlet-name>
+        <url-pattern>/lmaterialLink</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>learningMaterialDepartmentSearch</servlet-name>
+        <url-pattern>/learningMaterialDepartmentSearch</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>createLearningMaterial</servlet-name>
+        <url-pattern>/createLearningMaterial</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updateLearningMaterial</servlet-name>
+        <url-pattern>/updateLearningMaterial</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>deleteLearningMaterial</servlet-name>
+        <url-pattern>/deleteLearningMaterial</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateLearningMaterial</servlet-name>
+        <url-pattern>/CreateLearningMaterial</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>saveLearningMaterial</servlet-name>
+        <url-pattern>/saveLearningMaterial</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>viewSavedLearningMaterials</servlet-name>
+        <url-pattern>/viewSavedLearningMaterials</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreMaterialServlet</servlet-name>
+        <url-pattern>/creMaterial</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DownloadMaterialServlet</servlet-name>
+        <url-pattern>/downloadMaterial</url-pattern>
+    </servlet-mapping>
+    
     <welcome-file-list>
         <welcome-file>/WEB-INF/login.jsp</welcome-file>
     </welcome-file-list>

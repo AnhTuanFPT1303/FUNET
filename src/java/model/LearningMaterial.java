@@ -1,4 +1,14 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package model;
+
+/**
+ *
+ * @author gabri
+ */
+
 
 import java.util.Date;
 
@@ -10,31 +20,36 @@ public class LearningMaterial {
     private int userId;    
     private String learningMaterialName; 
     private String learningMaterialDescription; 
-    private String learningMaterial_img;
     private String learningMaterialContext; 
     private String subjectCode; 
     private Date publishDate; 
     private String review; 
+    private int departmentId;
 
-    public LearningMaterial(int learningMaterialId, int userId, String learningMaterialName, String learningMaterialDescription, String learningMaterial_img, String learningMaterialContext, String subjectCode, Date publishDate, String review) {
+    public LearningMaterial(int learningMaterialId, int userId, String learningMaterialName, String learningMaterialDescription, String learningMaterialContext, String subjectCode, Date publishDate, String review, int departmentId) {
         this.learningMaterialId = learningMaterialId;
         this.userId = userId;
         this.learningMaterialName = learningMaterialName;
         this.learningMaterialDescription = learningMaterialDescription;
-        this.learningMaterial_img = learningMaterial_img;
         this.learningMaterialContext = learningMaterialContext;
         this.subjectCode = subjectCode;
         this.publishDate = publishDate;
         this.review = review;
+        this.departmentId = departmentId;
     }
 
-    public String getLearningMaterial_img() {
-        return learningMaterial_img;
+ 
+
+    // Getters and setters for all fields, including departmentId
+    public int getDepartmentId() {
+        return departmentId;
     }
 
-    public void setLearningMaterial_img(String learningMaterial_img) {
-        this.learningMaterial_img = learningMaterial_img;
+    public void setDepartmentId(int departmentId) {
+        this.departmentId = departmentId;
     }
+
+
 
     public int getLearningMaterialId() {
         return learningMaterialId;
@@ -100,3 +115,4 @@ public class LearningMaterial {
         this.review = review;
     } 
 }
+

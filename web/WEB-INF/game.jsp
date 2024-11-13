@@ -20,6 +20,7 @@
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+           <link href="assets/css/logonavbar.css" rel="stylesheet">   
 
 
         <style>
@@ -215,42 +216,80 @@
     <body class="bg-gray-100">
 
         <!-- Top Navigation -->
-        <div class="flex-container navbar">
-            <a href="home" style ="text-decoration:none">   <div class="logo" style="margin-bottom: 10%">Logo</div>
+       <div class="flex-container navbar">
+            <a href="home" style ="text-decoration:none">   <div class="logo" style="margin-bottom: 10%">FUNET</div>
             </a>
             <form class="" method="get" action="/FUNET/searchServlet" id="searchForm">
-                <div class="search-bar">
-                    <input class="form-control" name="search-name" type="search" placeholder="Searching in FUNET" aria-label="Search" id="search-input">
+                <div class="search-bar" style="margin-top:1%; margin-left:1%">
+                    <input class="form-control" name="search-name" type="search" placeholder="Searching in FUNET" aria-label="Search" id="search-input" style="padding-left:5%;">
 
                 </div>
             </form>
             <div class="center-buttons">
-
-                <button class="center-button" id="home-btn" href="home">
-                    <box-icon type='solid' name='home'></box-icon>
-                </button>
-                <button class="center-button" id="video-btn">
-                    <box-icon name='videos' type='solid'></box-icon>
-                </button>
-                <button class="center-button" id="market-btn">
-                    <box-icon name='store-alt' type='solid'></box-icon>
-                </button>
+                <a href="home">
+                    <button class="center-button" id="home-btn">
+                        <box-icon type='solid' name='home'></box-icon>
+                    </button>
+                </a>
+                <a href="lmaterialLink"> 
+                    <button class="center-button" id="video-btn">
+                        <box-icon type='solid' name='book'></box-icon>
+                    </button>
+                </a>
+                <a href="market">
+                    <button class="center-button" id="market-btn">
+                        <box-icon name='store-alt' type='solid'></box-icon>
+                    </button>
+                </a>
                 <a href="/FUNET/friendRequestServlet" class="friend-icon me-3">
                     <button class="center-button" id="friend-btn">
                         <box-icon name='group' type='solid'></box-icon>
-                    </button>                       
+                    </button>
                 </a>
-
             </div>
             <div class="right-icons">
-                <a href="/FUNET/chat" class="mess-icon me-3" style='margin-left:5px'>
-                    <span class="icon icon-circle" id="messenger-btn"><box-icon name='messenger' type='logo' ></box-icon></span>
+                <a href="/FUNET/chat" class="mess-icon" style='margin-left:5px'>
+                    <span class="icon icon-circle" id="messenger-btn"><box-icon name='messenger' type='logo'></box-icon></span>
                 </a>
-                <span class="icon icon-circle" id="notification-btn"><box-icon name='bell' type='solid' ></box-icon></span>
+                <span class="icon icon-circle" id="notification-btn" style="display:none"><box-icon name='bell' type='solid' ></box-icon></span>
                 <span class="icon icon-circle" id="user-btn">&#128100;</span>
             </div>
 
         </div>
+
+        <div class="dropdown-menu" id="notification-menu">
+            <p>Notification content goes here...</p>
+        </div>
+    
+    <div class="dropdown-menu" id="notification-menu">
+        <p>Notification content goes here...</p>
+    </div>
+    <div class="user-menu" id="user-menu" >
+        <div class="user-info">
+            <a href="profile?userId=${sessionScope.user['user_id']}" class="d-flex align-items-center text-decoration-none text-dark">
+                <button class="user-info-button">
+                    <img src="assets/profile_avt/${sessionScope.user['profile_pic']}" class="img-fluid rounded-circle avatar" style="object-fit: cover;">
+                    <p class="mb-0 ms-2 ava-name">${sessionScope.user['first_name']} ${sessionScope.user['last_name']}</p>
+                </button>
+            </a>
+        </div>
+        <div class="menu-item">
+            <box-icon name='cog' type='solid' style="margin-right:3%; margin-left:1%;">Settings</box-icon>Settings
+        </div>
+        <div class="menu-item" >
+            <box-icon name='error-circle'style="margin-right:3%; margin-left:1%;"></box-icon>Report
+        </div>
+        
+
+        <form method="post" action="/FUNET/logout" style="display: inline; width: 100%;">
+            <div class="menu-item" style="display: flex; align-items: center; cursor: pointer; width: 100%;">
+                <box-icon type='solid' name='log-out'style=" margin-left:1%;"></box-icon>
+                <button type="submit" style="border: none; background: none; color: black; font-size: 16px; margin-left: 5px; cursor: pointer; flex: 1; text-align: left;">
+                    Log Out
+                </button>
+            </div>
+        </form>
+    </div>
 
         <!-- Main Container -->
         <div class="flex h-screen">
@@ -413,6 +452,8 @@
                 </div>
             </div>
         </div>
+                        <script src="assets/js/logonavbar.js" defer></script>
+
         <script>
             function showGame(gameUrl) {
                 // Hiển thị modal chứa game

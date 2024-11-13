@@ -1,0 +1,52 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this template
+*/
+/* 
+    Created on : Oct 23, 2024, 12:01:13 AM
+    Author     : gabri
+*/
+.body{
+    
+}
+.search-form-controller{
+    border-radius: 15px;
+    border:none;
+    outline: 1px solid rgb(133,130,130);
+    padding-left: 5%;
+    height:100%;
+}
+.search-learning-material-container{
+    height:35px;
+}
+.main-class{
+        margin-top: 2%;
+
+}
+
+#learningMaterialForm {
+    display: none;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+.form-control{
+    height: 70px;
+}
+#savedBtn {
+    width: 100%;
+}
+
+/* Dropdown menu position for the three-dot button */
+.material-container .dropdown {
+   position:relative;
+   left:45%;
+}
+
+.material-container .dropdown .dropdown-menu {
+    min-width: 150px;
+}

@@ -85,10 +85,9 @@
             </a>
         </div>
         <div class="menu-item">
+            <a href="setting" style="text-decoration: none">
             <box-icon name='cog' type='solid' style="margin-right:3%; margin-left:1%;">Settings</box-icon>Settings
-        </div>
-        <div class="menu-item" >
-            <box-icon name='error-circle'style="margin-right:3%; margin-left:1%;"></box-icon>Report
+            </a>
         </div>
         
 

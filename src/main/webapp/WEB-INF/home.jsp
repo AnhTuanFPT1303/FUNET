@@ -85,10 +85,9 @@
             </a>
         </div>
         <div class="menu-item">
+<a href="setting" style="text-decoration: none">
             <box-icon name='cog' type='solid' style="margin-right:3%; margin-left:1%;">Settings</box-icon>Settings
-        </div>
-        <div class="menu-item" >
-            <box-icon name='error-circle'style="margin-right:3%; margin-left:1%;"></box-icon>Report
+</a>
         </div>
         
 
@@ -131,7 +130,6 @@
                     
                     <hr style="border: 1px solid black; width: 100%;"><!-- comment -->
 
-                    <p>Your ShortCut</p>
                 </div>
             </div>
             <div class="col-4 mainContainer">
@@ -169,13 +167,13 @@
                             <div class="upload-section" style="margin-top:0;margin-bottom:1%;">
                                 <div class="item" style="height:50px; padding-top:3%;">
                                     <label for="photo-upload">
-                                        <i class="fas fa-cloud-upload-alt"></i> Photo/Video
+                                        <i class="fas fa-cloud-upload-alt"></i> Photo
                                     </label>
                                     <input id="photo-upload" type="file" name="image" accept=".jpeg, .png, .jpg" style="display: none;" onchange="updateFileName(this)">
                                 </div>
                                 <div class="item"style="height:50px; padding-top:3%;">
                                     <label for="file-upload">
-                                        <i class="fas fa-file-alt"></i> File
+                                        <i class="fas fa-file-alt"></i> Video
                                     </label>
                                     <input id="file-upload" type="file" name="file" accept=".txt, .pdf, .docx" style="display: none;" onchange="updateFileName(this)">
                                 </div>

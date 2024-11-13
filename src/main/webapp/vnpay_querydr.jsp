@@ -8,7 +8,7 @@
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>qerydr</title>
+        <title>Refund</title>
         <!-- Bootstrap core CSS -->
         <link href="/assets/bootstrap.min.css" rel="stylesheet"/>
         <!-- Custom styles for this template -->   
@@ -22,30 +22,46 @@
 
                 <h3 class="text-muted">VNPAY DEMO</h3>
             </div>
-            <h3>Query</h3>
+            <h3>Refund</h3>
             <div class="table-responsive">
-            <form action="/vnpayquery" id="frmQerydr" method="Post">
-                <div class="form-group">
-                <label for="order_id">Mã giao dịch cần truy vấn (Giá trị của vnp_TxnRef)</label>
-                <input class="form-control" id="order_id"
-                       name="order_id" type="text"/>
-                </div>
-                <div class="form-group">
-                <label for="trans_date">Thời gian khởi tạo giao dịch (Giá trị của vnp_CreateDate yêu cầu thanh toán)</label>
-                <input class="form-control" id="trans_date"
-                       name="trans_date" type="text" placeholder="yyyyMMddHHmmss"/>
-            </div>
-                <div class="form-group">
-                <button type="submit" class="btn btn-primary">QueryDr</button>
-            </div>
-            </form>   
-            <p>
-                &nbsp;
-            </p>
-            <footer class="footer">
-                <p>&copy; VNPAY 2020</p>
-            </footer>
-        </div> 
+                <form action="/vnpayrefund" id="frmrefund" method="Post">
+                    <div class="form-group">
+                        <label for="order_id">Mã giao dịch cần hoàn (Giá trị của vnp_TxnRef)</label>
+                        <input class="form-control" id="order_id"
+                               name="order_id" type="text"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="amount">Số tiền hoàn</label>
+                        <input class="form-control" data-val="true" data-val-number="The field Amount must be a number." data-val-required="The Amount field is required." id="amount" max="100000000" min="1" name="amount" type="number" value="10000" />
+                    </div>
+                    <div class="form-group">
+                        <label for="trantype">Kiểu hoàn tiền</label>
+                        <select name="trantype" id="trantype" class="form-control">
+                            <option value="02">Hoàn tiền toàn phần</option>
+                            <option value="03">Hoàn tiền một phần</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="trans_date">Thời gian khởi tạo giao dịch (Giá trị của vnp_CreateDate yêu cầu thanh toán)</label>
+                        <input class="form-control" id="trans_date"
+                               name="trans_date" type="text" placeholder="yyyyMMddHHmmss"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="user">User khởi tạo hoàn</label>
+                        <input class="form-control" id="user"
+                               name="user" type="text"/>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Refund</button>
+                    </div>
+                </form>   
+                <p>
+                    &nbsp;
+                </p>
+                <footer class="footer">
+                    <p>&copy; VNPAY 2020</p>
+                </footer>
+            </div> 
         </div>
     </body>
 </html>

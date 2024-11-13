@@ -169,13 +169,13 @@
                             <div class="upload-section" style="margin-top:0;margin-bottom:1%;">
                                 <div class="item" style="height:50px; padding-top:3%;">
                                     <label for="photo-upload">
-                                        <i class="fas fa-cloud-upload-alt"></i> Photo/Video
+                                        <i class="fas fa-cloud-upload-alt"></i> Photo
                                     </label>
                                     <input id="photo-upload" type="file" name="image" accept=".jpeg, .png, .jpg" style="display: none;" onchange="updateFileName(this)">
                                 </div>
                                 <div class="item"style="height:50px; padding-top:3%;">
                                     <label for="file-upload">
-                                        <i class="fas fa-file-alt"></i> File
+                                        <i class="fas fa-file-alt"></i> Video
                                     </label>
                                     <input id="file-upload" type="file" name="file" accept=".txt, .pdf, .docx" style="display: none;" onchange="updateFileName(this)">
                                 </div>

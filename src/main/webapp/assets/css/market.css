@@ -1,9 +1,6 @@
 body {
     background-image: linear-gradient(to bottom, #f8f9fa, #fff);
 }
-.custom-navbar {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
 .profile-section, .settings-section {
     background-color: #f7f7f7;
     padding: 10px;
@@ -44,15 +41,6 @@ header{
     left: 0;
 }
 
-.custom-navbar {
-    background-color: #ececec;
-    padding: 0.5rem 1rem;
-}
-
-.custom-navbar .form-control {
-    margin-left: 1rem;
-    max-width: 300px;
-}
 .log-out{
     margin-right: 1rem;
     border: 0;
@@ -124,11 +112,7 @@ header{
     overflow-y: auto; /* Allow scrolling within the sidebar if content is too long */
 }
 
-.custom-navbar {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
+
 
 .custom-file-upload {
     border: 1px solid #ccc;
@@ -178,11 +162,6 @@ header{
     color: #009578;
 }
 
-.custom-navbar .form-control {
-    margin-left: 1rem;
-    max-width: 300px;
-    border-radius: 30px;
-}
 .log-out{
     margin-right: 1rem;
     border: 0;
@@ -298,18 +277,14 @@ header{
 .search-button:hover {
     color: #007bff;
 }
-.nav-icons {
-    position: absolute;
-    left: 57%;
-    transform: translateX(-50%);
-}
+
 .shopping-cart-icon{
-    color: orange;
+    color: black;
     background-color: white;
     width: 100px;
     height: 36px;
     border-radius: 5px;
-    border-color: #0b5ed7;
+    border-color: black;
 }
 
 .lm-icon,

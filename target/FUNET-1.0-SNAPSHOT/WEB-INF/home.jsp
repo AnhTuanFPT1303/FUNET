@@ -131,7 +131,7 @@
                     
                     <hr style="border: 1px solid black; width: 100%;"><!-- comment -->
 
-                    <p>Your ShortCut</p>
+                    
                 </div>
             </div>
             <div class="col-4 mainContainer">
@@ -143,8 +143,8 @@
                         </div>
                         <hr style="border: 1px solid black; width: 100%; margin:0;">
                         <div class="btn-document">
-                            <div class="item" id="photoVideoBtn" >Photo/Video</div>
-                            <div class="item" id="fileBtn">File</div>
+                            <div class="item" id="photoVideoBtn" >Photo</div>
+                            <div class="item" id="photoVideoBtn">Video</div>
                         </div>
                     </section>
                 </div>

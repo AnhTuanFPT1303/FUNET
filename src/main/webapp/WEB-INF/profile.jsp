@@ -302,7 +302,7 @@
                                     <c:if test="${post.isShared}">
 
                                         <div class="original-post-info d-flex align-items-center">
-                                            <img src="assets/profile_avt/${post.originalPosterAvatar}" class="img-fluid rounded-circle avatar me-2" style="width: 30px; height: 30px;object-fit: cover;">
+                                            <img src="data:image/jpg;base64,${post.originalPosterAvatar}" class="img-fluid rounded-circle avatar me-2" style="width: 30px; height: 30px;object-fit: cover;">
                                             <small>${post.originalPosterName}</small>
                                         </div>
                                     </c:if>

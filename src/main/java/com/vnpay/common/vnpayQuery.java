@@ -5,6 +5,7 @@
  */
 package com.vnpay.common;
 
+
 import com.google.gson.JsonObject;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -24,42 +25,57 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author CTT VNPAY
  */
-public class vnpayQuery extends HttpServlet {
+public class vnpayRefund extends HttpServlet {
 
     @Override
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //Command:querydr
 
+        //Command: refund
         String vnp_RequestId = Config.getRandomNumber(8);
         String vnp_Version = "2.1.0";
-        String vnp_Command = "querydr";
+        String vnp_Command = "refund";
         String vnp_TmnCode = Config.vnp_TmnCode;
+        String vnp_TransactionType = req.getParameter("trantype");
         String vnp_TxnRef = req.getParameter("order_id");
-        String vnp_OrderInfo = "Kiem tra ket qua GD OrderId:" + vnp_TxnRef;
-        //String vnp_TransactionNo = req.getParameter("transactionNo");
-        String vnp_TransDate = req.getParameter("trans_date");
+        long amount = Integer.parseInt(req.getParameter("amount"))*100;
+        String vnp_Amount = String.valueOf(amount);
+        String vnp_OrderInfo = "Hoan tien GD OrderId:" + vnp_TxnRef;
+        String vnp_TransactionNo = ""; //Assuming value of the parameter "vnp_TransactionNo" does not exist on your system.
+        String vnp_TransactionDate = req.getParameter("trans_date");
+        String vnp_CreateBy = req.getParameter("user");
         
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
         String vnp_CreateDate = formatter.format(cld.getTime());
         
         String vnp_IpAddr = Config.getIpAddress(req);
-        
+
         JsonObject  vnp_Params = new JsonObject ();
-        
+
         vnp_Params.addProperty("vnp_RequestId", vnp_RequestId);
         vnp_Params.addProperty("vnp_Version", vnp_Version);
         vnp_Params.addProperty("vnp_Command", vnp_Command);
         vnp_Params.addProperty("vnp_TmnCode", vnp_TmnCode);
+        vnp_Params.addProperty("vnp_TransactionType", vnp_TransactionType);
         vnp_Params.addProperty("vnp_TxnRef", vnp_TxnRef);
+        vnp_Params.addProperty("vnp_Amount", vnp_Amount);
         vnp_Params.addProperty("vnp_OrderInfo", vnp_OrderInfo);
-        //vnp_Params.put("vnp_TransactionNo", vnp_TransactionNo);
-        vnp_Params.addProperty("vnp_TransactionDate", vnp_TransDate);
+        
+        if(vnp_TransactionNo != null && !vnp_TransactionNo.isEmpty())
+        {
+            vnp_Params.addProperty("vnp_TransactionNo", "{get value of vnp_TransactionNo}");
+        }
+        
+        vnp_Params.addProperty("vnp_TransactionDate", vnp_TransactionDate);
+        vnp_Params.addProperty("vnp_CreateBy", vnp_CreateBy);
         vnp_Params.addProperty("vnp_CreateDate", vnp_CreateDate);
         vnp_Params.addProperty("vnp_IpAddr", vnp_IpAddr);
         
-        String hash_Data= String.join("|", vnp_RequestId, vnp_Version, vnp_Command, vnp_TmnCode, vnp_TxnRef, vnp_TransDate, vnp_CreateDate, vnp_IpAddr, vnp_OrderInfo);
+        String hash_Data= String.join("|", vnp_RequestId, vnp_Version, vnp_Command, vnp_TmnCode, 
+                vnp_TransactionType, vnp_TxnRef, vnp_Amount, vnp_TransactionNo, vnp_TransactionDate, 
+                vnp_CreateBy, vnp_CreateDate, vnp_IpAddr, vnp_OrderInfo);
+        
         String vnp_SecureHash = Config.hmacSHA512(Config.secretKey, hash_Data.toString());
         
         vnp_Params.addProperty("vnp_SecureHash", vnp_SecureHash);
@@ -86,5 +102,6 @@ public class vnpayQuery extends HttpServlet {
         }
         in.close();
         System.out.println(response.toString());
+
     }
 }

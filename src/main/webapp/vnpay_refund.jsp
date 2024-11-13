@@ -10,9 +10,9 @@
         <meta name="author" content="">
         <title>Refund</title>
         <!-- Bootstrap core CSS -->
-        <link href="/assets/bootstrap.min.css" rel="stylesheet"/>
+        <link href="/FUNET/assets/bootstrap.min.css" rel="stylesheet"/>
         <!-- Custom styles for this template -->   
-        <script src="/assets/jquery-1.11.3.min.js"></script>
+        <script src="/FUNET/assets/jquery-1.11.3.min.js"></script>
     </head>
 
     <body>
@@ -24,7 +24,7 @@
             </div>
             <h3>Refund</h3>
             <div class="table-responsive">
-                <form action="/vnpayrefund" id="frmrefund" method="Post">
+                <form action="/FUNET/vnpayrefund" id="frmrefund" method="Post">
                     <div class="form-group">
                         <label for="order_id">Mã giao dịch cần hoàn (Giá trị của vnp_TxnRef)</label>
                         <input class="form-control" id="order_id"

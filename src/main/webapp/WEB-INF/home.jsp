@@ -86,7 +86,7 @@
         </div>
         <div class="menu-item">
 <a href="setting" style="text-decoration: none">
-            <box-icon name='cog' type='solid' style="margin-right:3%; margin-left:1%;">Settings</box-icon>Settings
+            <box-icon name='cog' type='solid' style="margin-right:3%; margin-left:1%; width: 50%;">Settings</box-icon>Settings
 </a>
         </div>
          <div class="menu-item">

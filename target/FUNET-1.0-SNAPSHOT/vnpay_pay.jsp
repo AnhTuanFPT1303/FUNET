@@ -10,10 +10,10 @@
         <meta name="author" content="">
         <title>Tạo mới đơn hàng</title>
         <!-- Bootstrap core CSS -->
-        <link href="/assets/bootstrap.min.css" rel="stylesheet"/>
+        <link href="https://funet.azurewebsites.net/assets/bootstrap.min.css" rel="stylesheet"/>
         <!-- Custom styles for this template -->
-        <link href="/assets/jumbotron-narrow.css" rel="stylesheet">      
-        <script src="/assets/jquery-1.11.3.min.js"></script>
+        <link href="https://funet.azurewebsites.net/assets/jumbotron-narrow.css" rel="stylesheet">      
+        <script src="https://funet.azurewebsites.net/assets/jquery-1.11.3.min.js"></script>
     </head>
 
     <body>
@@ -73,6 +73,7 @@
             $("#frmCreateOrder").submit(function () {
                 var postData = $("#frmCreateOrder").serialize();
                 var submitUrl = $("#frmCreateOrder").attr("action");
+                console.log(postData + ' data ' + submitUrl);
                 $.ajax({
                     type: "POST",
                     url: submitUrl,

@@ -47,7 +47,7 @@
                         <box-icon type='solid' name='book'></box-icon>
                     </button>
                 </a>
-                <a href="market">
+                <a href="marketLink">
                     <button class="center-button" id="market-btn">
                         <box-icon name='store-alt' type='solid'></box-icon>
                     </button>
@@ -79,7 +79,7 @@
         <div class="user-info">
             <a href="profile?userId=${sessionScope.user['user_id']}" class="d-flex align-items-center text-decoration-none text-dark">
                 <button class="user-info-button">
-                    <img src="assets/profile_avt/${sessionScope.user['profile_pic']}" class="img-fluid rounded-circle avatar" style="object-fit: cover;">
+                    <img src="data:image/jpg;base64,${sessionScope.user['profile_pic']}" class="img-fluid rounded-circle avatar" style="object-fit: cover;">
                     <p class="mb-0 ms-2 ava-name">${sessionScope.user['first_name']} ${sessionScope.user['last_name']}</p>
                 </button>
             </a>
@@ -107,7 +107,7 @@
             <div class="col-4 dashBoard" style="margin-top:1%;">
                 <a href="profile?userId=${sessionScope.user['user_id']}" style="text-decoration:none; width: fit-content;">
                     <div class="UserAvatar" >
-                        <img src="assets/profile_avt/${user.profile_pic}" class="img-fluid rounded-circle avatar" style="margin-left:1%;">
+                        <img src="data:image/jpg;base64,${user.profile_pic}" class="img-fluid rounded-circle avatar" style="margin-left:1%;">
                         <span class="mb-0 ms-2 ava-name">${sessionScope.user['first_name']} ${sessionScope.user['last_name']}</span>        
                     </div></a>
 
@@ -137,7 +137,7 @@
             <div class="col-4 mainContainer">
                 <div class="post">
                     <section class="input">
-                        <a href="profile?userId=${sessionScope.user['user_id']}" style="text-decoration:none"  ><img src="assets/profile_avt/${user.profile_pic}"  class="img-fluid rounded-circle avatar2" style="margin-right: 10px;"></a> 
+                        <a href="profile?userId=${sessionScope.user['user_id']}" style="text-decoration:none"  ><img src="data:image/jpg;base64,${user.profile_pic}"  class="img-fluid rounded-circle avatar2" style="margin-right: 10px;"></a> 
                         <div class="inputArea">
                             <input type="text" placeholder="What ya thinking..." id="posting">
                         </div>
@@ -159,7 +159,7 @@
                             </div>
                             <hr class="hr-line">
                             <div class="form-header">                        
-                                <a href="profile?userId=${sessionScope.user['user_id']}" style="text-decoration:none"  ><img src="assets/profile_avt/${sessionScope.user['profile_pic']}" class="avatar"></a> 
+                                <a href="profile?userId=${sessionScope.user['user_id']}" style="text-decoration:none"  ><img src="data:image/jpg;base64,${sessionScope.user['profile_pic']}" class="avatar"></a> 
                                 <p class="mb-0 ava-name">${sessionScope.user['first_name']} ${sessionScope.user['last_name']}</p>
                             </div>
                             <div class="textarea-container"　id="formContainer">
@@ -191,7 +191,7 @@
                         <div class="post mb-4" style="overflow-wrap: break-word" data-post-id="${post.post_id}" data-liked="${post.likedByCurrentUser}">
                             <div class="post-header d-flex justify-content-between align-items-center">
                                 <div class="d-flex align-items-center">
-                                    <img src="assets/profile_avt/${post.profile_pic}" class="img-fluid rounded-circle avatar me-2" style="width: 40px; height: 40px;object-fit: cover;">
+                                    <img src="data:image/jpg;base64,${post.profile_pic}" class="img-fluid rounded-circle avatar me-2" style="width: 40px; height: 40px;object-fit: cover;">
                                     <small>${post.first_name} ${post.last_name} -- <fmt:formatDate value="${post.post_time}" pattern="yyyy-MM-dd HH:mm:ss" /></small>
                                 </div>
                                 <span class="thre-dto-btn fas fa-ellipsis-h"></span>
@@ -217,7 +217,7 @@
                             <c:if test="${post.isShared}">
 
                                 <div class="original-post-info d-flex align-items-center">
-                                    <img src="assets/profile_avt/${post.originalPosterAvatar}" class="img-fluid rounded-circle avatar me-2" style="width: 30px; height: 30px;object-fit: cover;">
+                                    <img src="data:image/jpg;base64,${post.originalPosterAvatar}" class="img-fluid rounded-circle avatar me-2" style="width: 30px; height: 30px;object-fit: cover;">
                                     <small>${post.originalPosterName}</small>
                                 </div>
                             </c:if>
@@ -252,7 +252,7 @@
                                 </div>
                                 <%-- <c:if test="${!post.isShared}"> --%>
                               
-                                <div class="post-share" style="margin-left:78%">
+                                <div class="post-share" style="margin-left:73%">
                                     <form action="sharePostServlet" method="post" style="display: inline;">
                                         <input type="hidden" name="postId" value="${post.post_id}">
                                         <input type="hidden" name="sourceUrl" value="home">
@@ -266,7 +266,7 @@
                                 <c:forEach var="comment" items="${post.comments}">
                                     <div class="comment mb-2" style="margin-left: 20px;">
                                         <div class="comment-header">
-                                            <img src="assets/profile_avt/${comment.profile_pic}" class="img-fluid rounded-circle avatar me-2" style="width: 30px; height: 30px; object-fit: cover;">
+                                            <img src="data:image/jpg;base64,${comment.profile_pic}" class="img-fluid rounded-circle avatar me-2" style="width: 30px; height: 30px; object-fit: cover;">
                                             <small><strong>${comment.first_name} ${comment.last_name}</strong></small>
                                         </div>
                                         <div class="comment-body" style="display: flex; justify-content: space-between; align-items: center;">
@@ -288,7 +288,7 @@
                                         </div>
                                         <form action="/updateCommentServlet" method="post" class="edit-comment-form" style="display: none;">
                                             <input type="hidden" name="commentId" value="${comment.comment_id}">
-                                            <textarea name="newCommentText" class="form-control">${comment.comment_text}</textarea>
+                                            <textarea name="newCommentText" class="form-control" style="margin-left: 0px; margin-top: 10px">${comment.comment_text}</textarea>
                                             <button type="submit" class="btn btn-primary">Save</button>
                                             <button type="button" class="btn btn-secondary cancel-edit-comment">Cancel</button>
                                         </form>
@@ -320,7 +320,7 @@
                     <c:forEach var="friend" items="${friends}">
                         <div class="post mb-4 d-flex align-items-center friends" style="overflow-wrap: break-word;border: none;background: none;">
                             <a href="profile?userId=${friend.user_id}" class="user-link friend" data-user-id="${friend.user_id}" style="text-decoration:none;">
-                                <img src="assets/profile_avt/${friend.profile_pic}" alt="avatar picture" class="img-fluid rounded-circle avatar me-2" style="width: 50px; height: 50px; object-fit: cover;">
+                                <img src="data:image/jpg;base64,${friend.profile_pic}" alt="avatar picture" class="img-fluid rounded-circle avatar me-2" style="width: 50px; height: 50px; object-fit: cover;">
                                  <small>${friend.first_name} ${friend.last_name}</small>
                             </a>
                            

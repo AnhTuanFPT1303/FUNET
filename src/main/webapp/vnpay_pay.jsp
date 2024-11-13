@@ -25,7 +25,7 @@
             </div>
             <h3>Tạo mới đơn hàng</h3>
             <div class="table-responsive">
-                <form action="https://funet.azurewebsites.net/vnpayajax" id="frmCreateOrder" method="post">        
+                <form action="/vnpayajax" id="frmCreateOrder" method="post">        
                     <div class="form-group">
                         <label for="amount">Số tiền</label>
                         <input type="hidden" id = "orderId" name = "orderId" value ="${orderId}">
@@ -73,6 +73,7 @@
             $("#frmCreateOrder").submit(function () {
                 var postData = $("#frmCreateOrder").serialize();
                 var submitUrl = $("#frmCreateOrder").attr("action");
+                console.log(postData + ' data ' + submitUrl);
                 $.ajax({
                     type: "POST",
                     url: submitUrl,

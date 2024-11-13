@@ -252,7 +252,7 @@
                                 </div>
                                 <%-- <c:if test="${!post.isShared}"> --%>
                               
-                                <div class="post-share" style="margin-left:78%">
+                                <div class="post-share" style="margin-left:73%">
                                     <form action="sharePostServlet" method="post" style="display: inline;">
                                         <input type="hidden" name="postId" value="${post.post_id}">
                                         <input type="hidden" name="sourceUrl" value="home">

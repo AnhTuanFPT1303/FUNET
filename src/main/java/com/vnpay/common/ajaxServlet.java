@@ -75,7 +75,7 @@ public class ajaxServlet extends HttpServlet {
         String vnp_CreateDate = formatter.format(cld.getTime());
         vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
        
-        cld.add(Calendar.MINUTE, 15);
+        cld.add(Calendar.HOUR_OF_DAY, 24);
         LOGGER.info("expired time: " + cld.getTime());
         String vnp_ExpireDate = formatter.format(cld.getTime());
         vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);

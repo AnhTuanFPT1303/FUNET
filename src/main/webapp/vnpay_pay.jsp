@@ -10,10 +10,10 @@
         <meta name="author" content="">
         <title>Tạo mới đơn hàng</title>
         <!-- Bootstrap core CSS -->
-        <link href="/FUNET/assets/bootstrap.min.css" rel="stylesheet"/>
+        <link href="https://funet.azurewebsites.net/assets/bootstrap.min.css" rel="stylesheet"/>
         <!-- Custom styles for this template -->
-        <link href="/FUNET/assets/jumbotron-narrow.css" rel="stylesheet">      
-        <script src="/FUNET/assets/jquery-1.11.3.min.js"></script>
+        <link href="https://funet.azurewebsites.net/assets/jumbotron-narrow.css" rel="stylesheet">      
+        <script src="https://funet.azurewebsites.net/assets/jquery-1.11.3.min.js"></script>
     </head>
 
     <body>
@@ -25,7 +25,7 @@
             </div>
             <h3>Tạo mới đơn hàng</h3>
             <div class="table-responsive">
-                <form action="/FUNET/vnpayajax" id="frmCreateOrder" method="post">        
+                <form action="https://funet.azurewebsites.net/vnpayajax" id="frmCreateOrder" method="post">        
                     <div class="form-group">
                         <label for="amount">Số tiền</label>
                         <input type="hidden" id = "orderId" name = "orderId" value ="${orderId}">

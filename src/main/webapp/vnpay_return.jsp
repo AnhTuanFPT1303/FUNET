@@ -22,10 +22,10 @@
         <meta name="author" content="">
         <title>KẾT QUẢ THANH TOÁN</title>
         <!-- Bootstrap core CSS -->
-        <link href="/assets/bootstrap.min.css" rel="stylesheet"/>
+        <link href="https://funet.azurewebsites.net/assets/bootstrap.min.css" rel="stylesheet"/>
         <!-- Custom styles for this template -->
-        <link href="/assets/jumbotron-narrow.css" rel="stylesheet"> 
-        <script src="/assets/jquery-1.11.3.min.js"></script>
+        <link href="https://funet.azurewebsites.net/assets/jumbotron-narrow.css" rel="stylesheet"> 
+        <script src="https://funet.azurewebsites.net/assets/jquery-1.11.3.min.js"></script>
         
     </head>
     <body>
@@ -108,7 +108,7 @@
                         String orderId = request.getParameter("vnp_TxnRef");
                         request.setAttribute("orderId", orderId);
                     %>
-                    <form id="redirectForm" action="/OrderControlServlet" method="POST">
+                    <form id="redirectForm" action="https://funet.azurewebsites.net/OrderControlServlet" method="POST">
         <input type="hidden" name="orderId" value="<%=orderId%>">
         <input type="hidden" name="transactionStatus" value="<%=transactionStatus%>">
     </form>

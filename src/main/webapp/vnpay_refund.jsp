@@ -24,7 +24,7 @@
             </div>
             <h3>Refund</h3>
             <div class="table-responsive">
-                <form action="/vnpayrefund" id="frmrefund" method="Post">
+                <form action="vnpayrefund" id="frmrefund" method="Post">
                     <div class="form-group">
                         <label for="order_id">Mã giao dịch cần hoàn (Giá trị của vnp_TxnRef)</label>
                         <input class="form-control" id="order_id"

@@ -47,7 +47,7 @@
                         <box-icon type='solid' name='book'></box-icon>
                     </button>
                 </a>
-                <a href="market">
+                <a href="marketLink">
                     <button class="center-button" id="market-btn">
                         <box-icon name='store-alt' type='solid'></box-icon>
                     </button>

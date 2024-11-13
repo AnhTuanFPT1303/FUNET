@@ -4,7 +4,6 @@
  */
 package model;
 
-import java.util.Date;
 
 /**
  *
@@ -12,22 +11,21 @@ import java.util.Date;
  */
 public class OrderDetailDTO {
     private int orderId;
-    private String productName;
+    private int productId;
     private int quantity;
     private double price;
     private String orderStatus;
-    private Date orderDate;
-    private String sellerName;
-    
-    public OrderDetailDTO(int orderId, String productName, int quantity, double price, 
-            String orderStatus, Date orderDate, String sellerName) {
+    private int sellerID;
+    private int buyerID;
+
+    public OrderDetailDTO(int orderId, int productId, int quantity, double price, String orderStatus, int sellerID, int buyerID) {
         this.orderId = orderId;
-        this.productName = productName;
+        this.productId = productId;
         this.quantity = quantity;
         this.price = price;
         this.orderStatus = orderStatus;
-        this.orderDate = orderDate;
-        this.sellerName = sellerName;
+        this.sellerID = sellerID;
+        this.buyerID = buyerID;
     }
 
     public int getOrderId() {
@@ -38,12 +36,12 @@ public class OrderDetailDTO {
         this.orderId = orderId;
     }
 
-    public String getProductName() {
-        return productName;
+    public int getProductId() {
+        return productId;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setProductId(int productId) {
+        this.productId = productId;
     }
 
     public int getQuantity() {
@@ -70,21 +68,24 @@ public class OrderDetailDTO {
         this.orderStatus = orderStatus;
     }
 
-    public Date getOrderDate() {
-        return orderDate;
+    public int getSellerID() {
+        return sellerID;
     }
 
-    public void setOrderDate(Date orderDate) {
-        this.orderDate = orderDate;
+    public void setSellerID(int sellerID) {
+        this.sellerID = sellerID;
     }
 
-    public String getSellerName() {
-        return sellerName;
+    public int getBuyerID() {
+        return buyerID;
     }
 
-    public void setSellerName(String sellerName) {
-        this.sellerName = sellerName;
+    public void setBuyerID(int buyerID) {
+        this.buyerID = buyerID;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "OrderDetailDTO{" + "orderId=" + orderId + ", productId=" + productId + ", quantity=" + quantity + ", price=" + price + ", orderStatus=" + orderStatus + ", sellerID=" + sellerID + ", buyerID=" + buyerID + '}';
+    }
 }

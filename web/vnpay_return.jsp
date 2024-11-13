@@ -108,7 +108,7 @@
                         String orderId = request.getParameter("vnp_TxnRef");
                         request.setAttribute("orderId", orderId);
                     %>
-                    <form id="redirectForm" action="/FUNET/OrderControlServlet" method="POST">
+                    <form id="redirectForm" action="OrderControlServlet" method="POST">
         <input type="hidden" name="orderId" value="<%=orderId%>">
         <input type="hidden" name="transactionStatus" value="<%=transactionStatus%>">
     </form>

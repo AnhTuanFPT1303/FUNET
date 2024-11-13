@@ -10,9 +10,9 @@
         <meta name="author" content="">
         <title>Refund</title>
         <!-- Bootstrap core CSS -->
-        <link href="/FUNET/assets/bootstrap.min.css" rel="stylesheet"/>
+        <link href="https://funet.azurewebsites.net/assets/bootstrap.min.css" rel="stylesheet"/>
         <!-- Custom styles for this template -->   
-        <script src="/FUNET/assets/jquery-1.11.3.min.js"></script>
+        <script src="https://funet.azurewebsites.net/assets/jquery-1.11.3.min.js"></script>
     </head>
 
     <body>
